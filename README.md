@@ -1,6 +1,6 @@
 fallback.js
 ===========
-#### The library is only 2 KB!!!
+#### The library is only 1.5 KB!!!
 
 
 ## About
