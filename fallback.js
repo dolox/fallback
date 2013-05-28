@@ -90,7 +90,7 @@ fallback.load = function(libraries, options) {
 };
 
 fallback.ready = function(callback) {
-	this.ready_functions[fallback.length] = callback;
+	this.ready_functions[this.ready_functions.length] = callback;
 };
 
 fallback.ready_invocation = function() {
