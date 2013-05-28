@@ -66,3 +66,5 @@ fallback.js
 ## Changelog
 ### v0.1 / 2013-05-27
 	- Initial release.
+
+[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/e57ed3fad26831b768bd39ff002571a2 "githalytics.com")](http://githalytics.com/sgarbesi/fallback.js)
