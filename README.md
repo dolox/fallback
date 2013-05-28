@@ -3,6 +3,7 @@ fallback.js
 
 
 ## About
+### < 1 KB!
 * _JavaScript library for dynamically loading javascript files from a CDN with a fallback option._
 * _Load scripts on demand for faster page load time!_
 * _Loads all scripts in parralel!_
