@@ -7,9 +7,9 @@
 */
 
 fallback = {
-	'callback': null,
+	callback: null,
 	
-	'ready_invoke': true,
+	ready_invoke: true,
 	ready_functions: [],
 	
 	head: document.getElementsByTagName('head')[0],
@@ -69,7 +69,7 @@ fallback.load = function(libraries, options) {
 	this.ready_invoke = true;
 
 	if (options) {
-		if (options.ready_invoke) {
+		if (options.ready_invoke === false) {
 			this.ready_invoke = options.ready_invoke;
 		}
 
@@ -86,7 +86,7 @@ fallback.load = function(libraries, options) {
 	this.initialize();
 };
 
-fallback['ready'] = function(callback) {
+fallback.ready = function(callback) {
 	this.ready_functions[fallback.length] = callback;
 };
 
