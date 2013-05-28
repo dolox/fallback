@@ -1,6 +1,6 @@
 fallback.js
 ===========
-#### The library is only 1.5 KB!!!
+#### The library is < 2 KB!!!
 
 ## About
 * _JavaScript library for dynamically loading javascript files from a CDN with a fallback option._
