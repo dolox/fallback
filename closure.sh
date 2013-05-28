@@ -1,0 +1,1 @@
+java -jar ../compiler.jar --language_in ECMASCRIPT5 --externs example.js --compilation_level ADVANCED_OPTIMIZATIONS --js fallback.js --js_output_file fallback.min.js
