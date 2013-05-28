@@ -8,23 +8,69 @@
 	</body>
 	
 	<script src="fallback.min.js"></script>
-	<script>
-		fallback.load({
-			jquery: [
-				'//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.FAIL_ON_PURPOSE.min.js',
-				'//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js',
-				'//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.0/jquery.min.js'
-			],
 
-			stacktrace: '//cdnjs.cloudflare.com/ajax/libs/stacktrace.js/0.5.0/stacktrace.min.js'
-		}, function(success, failed) {
-			console.log('success');
+	<script>
+	/*
+		In this example we load our first batch of libraries.
+
+		Batches? Why?
+
+		Well libraries such as jQuery UI are dependent on jQuery to be loaded first, and this is how we
+		solve this problem but setting `ready_invoke` to false on the first batch, and let it execute our
+		2nd and final batch.
+	*/
+
+	fallback.load({
+		stacktrace: [
+			'//cdnjs.cloudflare.com/ajax/libs/stacktrace.js/0.5.0/stacktrace.min.js',
+			'//js/loader.js?i=vendor/stacktrace.min.js'
+		],
+
+		socket: [
+			'//cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.10/socket.io.min.js',
+			'//js/loader.js?i=vendor/socket.io.min.js'
+		],
+
+		jQuery: [
+			'//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.FAIL_ON_PURPOSE.min.js',
+			'//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js',
+			'//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.0/jquery.min.js',
+			'//js/loader.js?i=vendor/jquery.min.js'
+		]
+	}, {
+		ready_invoke: false, // Stop ready from invoking until we load everything we want.
+
+		callback: function(success, failed) {
+			console.log('1st batch success');
 			console.log('-------');
 			console.log(success);
 
-			console.log('failed');
+			console.log('1st batch failed');
 			console.log('-------');
 			console.log(failed);
-		});
+
+			fallback.load({
+				'jQuery.ui': [
+					'//ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js',
+					'//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js',
+					'//js/loader.js?i=vendor/jquery-ui.min.js'
+				]
+			}, {
+				callback: function(success, failed) {
+					console.log('2nd batch success');
+					console.log('-------');
+					console.log(success);
+
+					console.log('2nd batch failed');
+					console.log('-------');
+					console.log(failed);
+				}
+			});
+		}
+	});
+	
+	fallback.ready(function() {
+		console.log('EXECUTE MY CODE NOW! :)');
+	});
 	</script>
 </html>
