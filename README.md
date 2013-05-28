@@ -1,9 +1,10 @@
 fallback.js
 ===========
-#### The library is only 1.5 KB!!!
+#### The library is only 2 KB!!!
 
 ## About
-* _JavaScript library for dynamically loading javascript files from a CDN with a fallback option._
+* _JavaScript library for dynamically loading CSS and JS files._
+* _Ability to load multiple files from a CDN with multiple fallback options._
 * _Load scripts on demand for faster page load time!_
 * _Loads all scripts in parralel!_
 * _It's extremely easy to implement!_
@@ -26,6 +27,7 @@ fallback.js
 - Expects parameter to be an object.
 - `callback` must be a function, which will return a success and failure object as individual parameters. ex: function(success, failed)
 - `ready_invoke` defaults to true. If set to false, when fallback is completed it will not invoke the .ready function.
+- `shim` ability to set libraries to wait in line for other libraries to finish loading.
 
 ```
 	<script src="fallback.min.js"></script>
