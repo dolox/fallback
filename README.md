@@ -11,10 +11,10 @@ fallback.js
 
 ## API
 ### fallback.load(libraries)
-- Libaries is an object that expected it's key to be the libary that is loaded. Per example jQuery's key is `jQuery`.
-- You can pass either an array or string as the value 
-- All of the top level scripts will be executing in parallel.
-- The fallback scripts will be executed in the order they are in the array
+- Libaries is an object that expects it's key to be the libary that is loaded. Per example jQuery's key is `jQuery`.
+- You can pass either an array or string as the value for each library.
+- All libraries will be executing in parallel.
+- The fallback libraries will be executed in the order they are in the array.
 
 
 ```
