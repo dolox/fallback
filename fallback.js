@@ -41,11 +41,11 @@ fallback.initialize = function() {
 
 fallback.completed = function() {
 	if (this.libraries_count == this.loaded_count + this.broken_count) {
-		this.callback(this.loaded, this.broken);
-
 		if (this.ready_invoke) {
 			this.ready_invocation();
 		}
+
+		this.callback(this.loaded, this.broken);
 	}
 };
 
