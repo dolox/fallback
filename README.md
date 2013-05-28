@@ -33,8 +33,6 @@ fallback.js
 - `shim` ability to set libraries to wait in line for other libraries to finish loading.
 
 ```javascript
-<script src="fallback.min.js"></script>
-
 fallback.load({
 	// Stylesheet support. If a file contains .css it will attempt to load it as a stylesheet.
 	ex_style: 'example.css',
