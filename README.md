@@ -32,7 +32,7 @@ fallback.js
 - `ready_invoke` defaults to true. If set to false, when fallback is completed it will not invoke the .ready function.
 - `shim` ability to set libraries to wait in line for other libraries to finish loading.
 
-```
+```javascript
 <script src="fallback.min.js"></script>
 
 fallback.load({
