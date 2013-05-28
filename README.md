@@ -2,6 +2,7 @@ fallback.js
 ===========
 #### The library is only 2 KB!!!
 
+
 ## About
 * _JavaScript library for dynamically loading CSS and JS files._
 * _Ability to load multiple files from a CDN with multiple fallback options._
@@ -10,11 +11,13 @@ fallback.js
 * _It's extremely easy to implement!_
 * __This is the only external script that needs to be loaded in your HTML!__
 
+
 ## API
 ### fallback.ready(function)
 `function`
 - Ready expects a function and will execute after `load` has completed.
 - You can call ready multiple times throughout any of your scripts as it will chain all your functions and execute them upon completion.
+
 
 ### fallback.load(libraries, options)
 `libraries`
@@ -30,41 +33,43 @@ fallback.js
 - `shim` ability to set libraries to wait in line for other libraries to finish loading.
 
 ```
-	<script src="fallback.min.js"></script>
+<script src="fallback.min.js"></script>
 
-	fallback.load({
-		// Stylesheet support. If a file contains .css it will attempt to load it as a stylesheet.
-		ex_style: 'example.css',
+fallback.load({
+	// Stylesheet support. If a file contains .css it will attempt to load it as a stylesheet.
+	ex_style: 'example.css',
 
-		jquery: [
-			'//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.FAIL_ON_PURPOSE.min.js',
-			'//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js',
-			'//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.0/jquery.min.js'
-		],
+	jquery: [
+		'//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.FAIL_ON_PURPOSE.min.js',
+		'//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js',
+		'//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.0/jquery.min.js'
+	],
 
-		jquery_ui: [
-			'//ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js',
-			'//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js',
-			'//js/loader.js?i=vendor/jquery-ui.min.js'
-		]
-	}, {
-		// Only load jquery ui after jquery itself has loaded!
-		shim: {
-			jquery_ui: ['jquery']
-		},
+	jquery_ui: [
+		'//ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js',
+		'//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js',
+		'//js/loader.js?i=vendor/jquery-ui.min.js'
+	]
+}, {
+	// Only load jquery ui after jquery itself has loaded!
+	shim: {
+		jquery_ui: ['jquery']
+	},
 
-		callback: function(success, failed) {
-			// Inline callback
-		}
-	});
-	
-	fallback.ready(function() {
-		// Completed
-	});
+	callback: function(success, failed) {
+		// Inline callback
+	}
+});
+
+fallback.ready(function() {
+	// Completed
+});
 ```
+
 
 ## Changelog
 ### v0.1 / 2013-05-27
 	- Initial release.
+
 
 [![githalytics.com alpha](https://cruel-carlota.pagodabox.com/e57ed3fad26831b768bd39ff002571a2 "githalytics.com")](http://githalytics.com/sgarbesi/fallback.js)
