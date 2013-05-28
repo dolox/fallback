@@ -9,6 +9,11 @@ fallback.js
 * _It's extremely easy to implement!_
 * __This is the only external script that needs to be loaded in your HTML!__
 
+## Todo
+
+- Add support for stylesheets.
+- Add optional dependencies array.
+
 ## API
 ### fallback.ready(function)
 `function`
