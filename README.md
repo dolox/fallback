@@ -2,15 +2,14 @@ fallback.js
 ===========
 
 
-##About
+## About
 * _JavaScript library for dynamically loading javascript files from a CDN with a fallback option._
 * _Load scripts on demand for faster page load time!_
 * _Loads all scripts in parralel!_
 * __This is the only external script that needs to be loaded in your HTML!__
 
 
-# API
-##How to use it.
+## API
 ### fallback.load(libraries)
 - Libaries is an object that expected it's key to be the libary that is loaded. Per example jQuery's key is `jQuery`.
 - You can pass either an array or string as the value 
@@ -42,6 +41,6 @@ fallback.js
 ```
 
 
-##Changelog
-###0.01 / 2013-05-27
+## Changelog
+### 0.01 / 2013-05-27
 	- Initial release.
