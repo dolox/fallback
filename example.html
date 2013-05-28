@@ -4,66 +4,42 @@
 	</head>
 
 	<body>
-		Get the loading!
+		<strong>LOAD AWAY! :-O</strong>
 	</body>
 	
 	<script src="fallback.min.js"></script>
 
 	<script>
-	/*
-		In this example we load our first batch of libraries.
-
-		Batches? Why?
-
-		Well libraries such as jQuery UI are dependent on jQuery to be loaded first, and this is how we
-		solve this problem by setting `ready_invoke` to false on the first batch, and then let it execute
-		on the 2nd and final batch.
-	*/
-
 	fallback.load({
-		stacktrace: '//cdnjs.cloudflare.com/ajax/libs/stacktrace.js/0.5.0/stacktrace.min.js',
+		css: 'example.css',
 
-		socket: '//cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.10/socket.io.min.js',
-
-		jQuery: [
+		jquery: [
 			'//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.FAIL_ON_PURPOSE.min.js',
 			'//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js',
 			'//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.0/jquery.min.js'
+		],
+
+		jquery_ui: [
+			'//ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js',
+			'//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js',
+			'//js/loader.js?i=vendor/jquery-ui.min.js'
 		]
 	}, {
-		ready_invoke: false, // Stop ready from invoking until we load everything we want.
+		// Only load jquery ui after jquery itself has loaded!
+		shim: {
+			jquery_ui: ['jquery']
+		},
 
 		callback: function(success, failed) {
-			console.log('1st batch success');
-			console.log('-------');
-			console.log(success);
-
-			console.log('1st batch failed');
-			console.log('-------');
-			console.log(failed);
-
-			fallback.load({
-				'jQuery.ui': [
-					'//ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js',
-					'//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js',
-					'//js/loader.js?i=vendor/jquery-ui.min.js'
-				]
-			}, {
-				callback: function(success, failed) {
-					console.log('2nd batch success');
-					console.log('-------');
-					console.log(success);
-
-					console.log('2nd batch failed');
-					console.log('-------');
-					console.log(failed);
-				}
-			});
+			pre = '\nSuccess!\n-------\n' + JSON.stringify(success, null, 4);
+			pre += '\n\n\n\nFailed!\n-------\n' + JSON.stringify(failed, null, 4);
+			$('body').prepend('<pre style="display: none">' + pre + '</pre>');
+			$('pre').show(1500, function() { $('strong').show('slide', {direction: 'left', duration: 1000}).css('display', 'block'); });
 		}
 	});
 	
 	fallback.ready(function() {
-		console.log('EXECUTE MY CODE NOW! :)');
+		$('body').append('<strong style="display: none; color: green">EXECUTE MY CODE NOW! ;-)</strong>');
 	});
 	</script>
 </html>

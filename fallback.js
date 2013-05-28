@@ -1,17 +1,11 @@
-/*
-*    fallback.js v0.1
-*
-*    @author Salvatore Garbesi <sal@dolox.com>
-*    @url https://github.com/sgarbesi/fallback.js
-*    @copyright 2013 Dolox Inc.
-*/
+/* fallback.js v0.1 | https://github.com/sgarbesi/fallback.js | Salvatore Garbesi <sal@dolox.com> | (c) 2013 Dolox Inc. */
 
 fallback = {
 	callback: null,
-	
+
 	ready_invoke: true,
 	ready_functions: [],
-	
+
 	head: document.getElementsByTagName('head')[0],
 
 	libraries: {},
@@ -21,7 +15,9 @@ fallback = {
 	loaded_count: 0,
 
 	broken: {},
-	broken_count: 0
+	broken_count: 0,
+
+	shim: {}
 };
 
 fallback.initialize = function() {
@@ -35,7 +31,10 @@ fallback.initialize = function() {
 		}
 
 		this.libraries_count++;
-		this.spawn(library, urls[0], 0);
+
+		if (!this.shim[library]) {
+			this.spawn(library, urls[0], 0);
+		}
 	}
 };
 
@@ -68,7 +67,6 @@ fallback.error = function(library, index) {
 };
 
 fallback.load = function(libraries, options) {
-	var type = {};
 	this.ready_invoke = true;
 
 	if (options) {
@@ -76,8 +74,12 @@ fallback.load = function(libraries, options) {
 			this.ready_invoke = options.ready_invoke;
 		}
 
-		if (!options.callback || (options.callback && type.toString.call(options.callback) !== '[object Function]')) {
+		if (!options.callback || (options.callback && ({}).toString.call(options.callback) !== '[object Function]')) {
 			options.callback = function() {};
+		}
+
+		if (options.shim) {
+			this.shim = options.shim;
 		}
 	} else {
 		options = {};
@@ -94,34 +96,65 @@ fallback.ready = function(callback) {
 };
 
 fallback.ready_invocation = function() {
-	var index;
-
 	if (this.ready_functions) {
-		for (index in this.ready_functions) {
+		for (var index in this.ready_functions) {
 			this.ready_functions[index](this.loaded, this.broken);
 		}
 	}
 };
 
 fallback.spawn = function(library, url, index) {
-	var script = document.createElement('script');
+	var element;
+	
+	if (url.indexOf('.css') > -1) {
+		element = document.createElement('link');
+		element.rel = 'stylesheet';
+		element.href = url;
+	} else {
+		element = document.createElement('script');
+		element.src = url;
+	}
 
-	script.src = url;
-	script.onload = function() {
+	element.onload = function() {
 		fallback.success(library, index);
 	};
 
-	script.onerror = function() {
+	element.onerror = function() {
 		fallback.error(library, index);
 	};
 
-	this.head.appendChild(script);
+	this.head.appendChild(element);
 };
 
 fallback.success = function(library, index) {
 	this.loaded[library] = this.libraries[library][index];
 	this.loaded_count++;
+	
+	if (this.shim) {
+		this.shim_invocation(library);
+	}
+
 	this.completed();
+};
+
+fallback.shim_invocation = function() {
+	for (var shim in this.shim) {
+		var count = 0;
+
+		if (!this.loaded[shim]) {
+			for (var index in this.shim[shim]) {
+
+				if (this.loaded[this.shim[shim][index]]) {
+					count++;
+				}
+			}
+
+			if (count == this.shim[shim].length) {
+				this.spawn(shim, this.libraries[shim][0], 0);
+				delete this.shim[shim];
+			}
+		}
+	}
 };
 
 window.fallback = fallback;

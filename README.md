@@ -17,7 +17,7 @@ fallback.js
 
 ### fallback.load(libraries, options)
 `libraries`
-- Object that expects it's key to be the libary that is loaded. Per example jQuery's key is `jQuery`.
+- Object that expects its values to be either a string or array of urls.
 - You can pass either an array or string as the value for each library.
 - All libraries will be executing in parallel.
 - The fallback libraries will be executed in the order they are in the array.
@@ -30,63 +30,35 @@ fallback.js
 ```
 	<script src="fallback.min.js"></script>
 
-	<script>
-	/*
-		In this example we load our first batch of libraries.
-
-		Batches? Why?
-
-		Well libraries such as jQuery UI are dependent on jQuery to be loaded first, and this is how we
-		solve this problem but setting `ready_invoke` to false on the first batch, and let it execute our
-		2nd and final batch.
-	*/
-
 	fallback.load({
-		stacktrace: '//js/loader.js?i=vendor/stacktrace.min.js',
+		// Stylesheet support. If a file contains .css it will attempt to load it as a stylesheet.
+		ex_style: 'example.css',
 
-		socket: '//cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.10/socket.io.min.js',
-
-		jQuery: [
+		jquery: [
 			'//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.FAIL_ON_PURPOSE.min.js',
 			'//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js',
 			'//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.0/jquery.min.js'
+		],
+
+		jquery_ui: [
+			'//ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js',
+			'//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js',
+			'//js/loader.js?i=vendor/jquery-ui.min.js'
 		]
 	}, {
-		ready_invoke: false, // Stop ready from invoking until we load everything we want.
+		// Only load jquery ui after jquery itself has loaded!
+		shim: {
+			jquery_ui: ['jquery']
+		},
 
 		callback: function(success, failed) {
-			console.log('1st batch success');
-			console.log('-------');
-			console.log(success);
-
-			console.log('1st batch failed');
-			console.log('-------');
-			console.log(failed);
-
-			fallback.load({
-				'jQuery.ui': [
-					'//ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js',
-					'//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js',
-					'//js/loader.js?i=vendor/jquery-ui.min.js'
-				]
-			}, {
-				callback: function(success, failed) {
-					console.log('2nd batch success');
-					console.log('-------');
-					console.log(success);
-
-					console.log('2nd batch failed');
-					console.log('-------');
-					console.log(failed);
-				}
-			});
+			// Inline callback
 		}
 	});
 	
 	fallback.ready(function() {
-		console.log('EXECUTE MY CODE NOW! :)');
+		// Completed
 	});
-	</script>
 ```
 
 ## Changelog
