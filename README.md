@@ -44,5 +44,5 @@ fallback.js
 
 
 ## Changelog
-### 0.01 / 2013-05-27
+### v0.1 / 2013-05-27
 	- Initial release.
