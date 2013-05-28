@@ -1,3 +1,9 @@
+/*
+*    fallback.js v0.1
+*    https://github.com/sgarbesi/fallback.js
+*    (c) 2013 Dolox Inc.
+*/
+
 fallback = {
 	callback: null,
 	head: document.getElementsByTagName('head')[0],
