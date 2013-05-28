@@ -37,7 +37,7 @@ fallback.js
 		Batches? Why?
 
 		Well libraries such as jQuery UI are dependent on jQuery to be loaded first, and this is how we
-		solve this problem but setting `ready_invoke` to false on the first batch, and let it execute our
+		solve this problem by setting `ready_invoke` to false on the first batch, and let it execute our
 		2nd and final batch.
 	*/
 
