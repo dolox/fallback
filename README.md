@@ -1,7 +1,9 @@
 fallback.js
 ===========
-#### The library is only 1.5 KB!!!
+*** this documentation will be updated shortly. the keys for the JavaScript libraries you wish to load need to be their variable names. for instance jquery is "window.jQuery" so the key needs to be "jQuery" in order for this to work in older versions of IE.
 
+
+#### The library is only 1.5 KB!!!
 
 ## About
 * _JavaScript library for dynamically loading CSS and JS files._
@@ -35,15 +37,17 @@ fallback.js
 ```javascript
 fallback.load({
 	// Stylesheet support. If a file contains .css it will attempt to load it as a stylesheet.
-	ex_style: 'example.css',
+	css: 'index.css',
 
-	jquery: [
-		'//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.FAIL_ON_PURPOSE.min.js',
-		'//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js',
-		'//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.0/jquery.min.js'
+	JSON: '//cdnjs.cloudflare.com/ajax/libs/json2/20121008/json2.min.js',
+
+	jQuery: [
+		'//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.FAIL_ON_PURPOSE.min.js',
+		'//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js',
+		'//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.0/jquery.min.js'
 	],
 
-	jquery_ui: [
+	'jQuery.ui': [
 		'//ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js',
 		'//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js',
 		'//js/loader.js?i=vendor/jquery-ui.min.js'
@@ -51,7 +55,7 @@ fallback.load({
 }, {
 	// Only load jquery ui after jquery itself has loaded!
 	shim: {
-		jquery_ui: ['jquery']
+		'jQuery.ui': ['jQuery']
 	},
 
 	callback: function(success, failed) {
@@ -66,8 +70,14 @@ fallback.ready(function() {
 
 
 ## Changelog
+### v0.2 / 2013-06-13
+- Fixes for IE 7, 8 and 9.
+- Added MIT license.
+- Added .gitignore
+- Added `release` branch.
+
 ### v0.1 / 2013-05-27
-	- Initial release.
+- Initial release.
 
 
 [![githalytics.com alpha](https://cruel-carlota.pagodabox.com/e57ed3fad26831b768bd39ff002571a2 "githalytics.com")](http://githalytics.com/sgarbesi/fallback.js)
