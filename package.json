@@ -1,0 +1,30 @@
+{
+  "name": "fallback",
+  "description": "JavaScript library for dynamically loading javascript files from a CDN with a fallback.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Sal Garbesi",
+    "url": "http://github.com/sgarbesi/"
+  },
+  "homepage": "https://github.com/sgarbesi/fallback.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/sgarbesi/fallback.js.git"
+  },
+  "bugs": {
+    "url": "http://github.com/sgarbesi/fallback.js/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://github.com/sgarbesi/fallback.js/blob/master/LICENSE-MIT"
+    }
+  ],
+  "keywords": [
+    "async",
+    "cdn",
+    "require",
+  ],
+  "dependencies": {
+  },
+}
