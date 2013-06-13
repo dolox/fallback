@@ -2,9 +2,9 @@ fallback.load({
 	css: 'example.css',
 
 	jquery: [
-		'//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.FAIL_ON_PURPOSE.min.js',
-		'//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js',
-		'//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.0/jquery.min.js'
+		'//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.FAIL_ON_PURPOSE.min.js',
+		'//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js',
+		'//cdnjs.cloudflare.com/ajax/libs/jquery/1.10.1/jquery.min.js'
 	],
 
 	jquery_ui: [
