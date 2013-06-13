@@ -3,7 +3,7 @@ fallback.js
 *** this documentation will be updated shortly. the keys for the JavaScript libraries you wish to load need to be their variable names. for instance jquery is "window.jQuery" so the key needs to be "jQuery" in order for this to work in older versions of IE.
 
 
-#### The library is only 1.5 KB!!!
+#### The library is only 1.7 KB!!!
 
 ## About
 * _JavaScript library for dynamically loading CSS and JS files._
