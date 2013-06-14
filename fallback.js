@@ -1,4 +1,4 @@
-/* fallback.js v0.1 | https://github.com/sgarbesi/fallback.js | Salvatore Garbesi <sal@dolox.com> | (c) 2013 Dolox Inc. */
+/* fallback.js v0.2 | https://github.com/sgarbesi/fallback.js | Salvatore Garbesi <sal@dolox.com> | (c) 2013 Dolox Inc. */
 
 fallback = {
 	callback: null,
@@ -105,7 +105,7 @@ fallback.ready_invocation = function() {
 
 fallback.spawn = function(library, url, index) {
 	var element;
-	
+
 	if (url.indexOf('.css') > -1) {
 		element = document.createElement('link');
 		element.rel = 'stylesheet';
@@ -119,6 +119,20 @@ fallback.spawn = function(library, url, index) {
 		fallback.success(library, index);
 	};
 
+	element.onreadystatechange = function() {
+		if (!this.readyState || this.readyState == 'loaded' || this.readyState == 'complete') {
+			this.onreadystatechange = null;
+
+			var defined = eval('window.' + library);
+
+			if (!defined) {
+				fallback.error(library, index);
+			} else {
+				fallback.success(library, index);
+			}
+		}
+	};
+
 	element.onerror = function() {
 		fallback.error(library, index);
 	};
@@ -129,7 +143,7 @@ fallback.spawn = function(library, url, index) {
 fallback.success = function(library, index) {
 	this.loaded[library] = this.libraries[library][index];
 	this.loaded_count++;
-	
+
 	if (this.shim) {
 		this.shim_invocation(library);
 	}
