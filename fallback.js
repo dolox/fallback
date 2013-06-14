@@ -1,9 +1,7 @@
-/* fallback.js v0.2 | https://github.com/sgarbesi/fallback.js | Salvatore Garbesi <sal@dolox.com> | (c) 2013 Dolox Inc. */
+/* fallback.js v0.3 | https://github.com/sgarbesi/fallback.js | Salvatore Garbesi <sal@dolox.com> | (c) 2013 Dolox Inc. */
 
 fallback = {
 	callback: null,
-
-	ready_invoke: true,
 	ready_functions: [],
 
 	head: document.getElementsByTagName('head')[0],
@@ -39,11 +37,9 @@ fallback.initialize = function() {
 };
 
 fallback.completed = function() {
-	if (this.libraries_count == this.loaded_count + this.broken_count) {
-		if (this.ready_invoke) {
-			this.ready_invocation();
-		}
+	this.ready_invocation();
 
+	if (this.libraries_count == this.loaded_count + this.broken_count) {
 		this.callback(this.loaded, this.broken);
 	}
 };
@@ -67,13 +63,7 @@ fallback.error = function(library, index) {
 };
 
 fallback.load = function(libraries, options) {
-	this.ready_invoke = true;
-
 	if (options) {
-		if (options.ready_invoke === false) {
-			this.ready_invoke = options.ready_invoke;
-		}
-
 		if (!options.callback || (options.callback && ({}).toString.call(options.callback) !== '[object Function]')) {
 			options.callback = function() {};
 		}
@@ -91,14 +81,40 @@ fallback.load = function(libraries, options) {
 	this.initialize();
 };
 
-fallback.ready = function(callback) {
-	this.ready_functions[this.ready_functions.length] = callback;
+fallback.ready = function(libraries, callback) {
+	var options =  {
+		callback: callback,
+		libraries: libraries
+	};
+
+	if (!(libraries instanceof Array)) {
+		options.callback = libraries;
+		options.libraries = [];
+	}
+
+	this.ready_functions[this.ready_functions.length] = options;
 };
 
 fallback.ready_invocation = function() {
-	if (this.ready_functions) {
-		for (var index in this.ready_functions) {
-			this.ready_functions[index](this.loaded, this.broken);
+	for (var index in this.ready_functions) {
+		var options = this.ready_functions[index];
+
+		if (options.libraries.length > 0) {
+			var count = 0;
+			for (library in this.loaded) {
+				if (options.libraries.indexOf(library) >= 0) {
+					count++;
+				}
+			}
+
+			if (count == options.libraries.length) {
+				options.callback();
+				delete this.ready_functions[index];
+			}
+		}
+
+		if (this.libraries_count == this.loaded_count + this.broken_count && options.libraries.length == 0) {
+			options.callback(this.loaded, this.broken);
 		}
 	}
 };

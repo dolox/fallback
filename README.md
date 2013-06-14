@@ -3,7 +3,7 @@ fallback.js
 *** this documentation will be updated shortly. the keys for the JavaScript libraries you wish to load need to be their variable names. for instance jquery is "window.jQuery" so the key needs to be "jQuery" in order for this to work in older versions of IE.
 
 
-#### The library is only 1.7 KB!!!
+#### The library is only 2 KB!!!
 
 ## About
 * _JavaScript library for dynamically loading CSS and JS files._
@@ -15,7 +15,11 @@ fallback.js
 
 
 ## API
-### fallback.ready(function)
+### fallback.ready([object], function)
+`[object]`
+- *Is optional.* If object is not passed it will assume it's the callback function.
+- You can pass an array of libraries that you only want to execute your code for.
+
 `function`
 - Ready expects a function and will execute after `load` has completed.
 - You can call ready multiple times throughout any of your scripts as it will chain all your functions and execute them upon completion.
@@ -31,7 +35,6 @@ fallback.js
 `options`
 - Expects parameter to be an object.
 - `callback` must be a function, which will return a success and failure object as individual parameters. ex: function(success, failed)
-- `ready_invoke` defaults to true. If set to false, when fallback is completed it will not invoke the .ready function.
 - `shim` ability to set libraries to wait in line for other libraries to finish loading.
 
 ```javascript
@@ -63,6 +66,10 @@ fallback.load({
 	}
 });
 
+fallback.ready(['jQuery'], function() {
+	// jQuery Completed
+});
+
 fallback.ready(function() {
 	// Completed
 });
@@ -70,6 +77,10 @@ fallback.ready(function() {
 
 
 ## Changelog
+### v0.3 / 2013-06-14
+- Removed `ready_invoke` option.
+- Added the ability to pass in an array of libraries to the `ready` event.
+
 ### v0.2 / 2013-06-13
 - Fixes for IE 7, 8 and 9.
 - Added MIT license.

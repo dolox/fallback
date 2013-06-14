@@ -7,7 +7,7 @@
 		<strong>LOAD AWAY! :-O</strong>
 	</body>
 	
-	<script src="../fallback.min.js"></script>
+	<script src="../fallback.js"></script>
 
 	<script>
 	fallback.load({
@@ -39,8 +39,25 @@
 			$('pre').show(1500, function() { $('strong').show(500).css('display', 'block'); });
 		}
 	});
-	
+
+	fallback.ready(['jQuery'], function() {
+		// jQuery Completed
+		//console.log('jQuery Completed');
+	});
+
+	fallback.ready(['jQuery.ui'], function() {
+		// jQuery Completed
+		//console.log('jQuery UI Completed');
+	});
+
+	fallback.ready(['jQuery', 'jQuery.ui'], function() {
+		// jQuery Completed
+		//console.log('jQuery + jQuery UI Completed');
+	});
+
 	fallback.ready(function() {
+		// All Completed
+		//console.log('All Completed');
 		$('body').append('<strong style="display: none; color: green">EXECUTE MY CODE NOW! ;-)</strong>');
 	});
 	</script>

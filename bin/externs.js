@@ -26,6 +26,10 @@ fallback.load({
 	}
 });
 
+fallback.ready(['jQuery'], function() {
+	// jQuery Completed
+});
+
 fallback.ready(function() {
-	// Completed
+	// All Completed
 });
