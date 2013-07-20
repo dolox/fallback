@@ -1,0 +1,10 @@
+{
+  "name": "fallback.js",
+  "version": "0.1.0",
+  "main": "fallback.js",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "components"
+  ]
+}
