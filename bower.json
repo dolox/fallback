@@ -1,0 +1,31 @@
+{
+	"name": "fallback",
+	"version": "1.0.0",
+	"description": "JavaScript library for dynamically loading CSS and JS files. Also provides the ability to load multiple files from a CDN with multiple fallback options and shimming!",
+	"keywords": [
+		"fallback",
+		"failover",
+		"ondemand",
+		"require",
+		"ajax",
+		"component"
+	],
+	"main": "fallback.js",
+	"license": "MIT",
+	"readmeFilename": "README.md",
+	"ignore": [
+		"**/.*",
+		"node_modules",
+		"components",
+		"bower_components",
+		"test",
+		"tests",
+		".gitignore",
+		"/bin",
+		"/example"
+	],
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/dolox/fallback.git"
+	}
+}
