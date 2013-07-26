@@ -118,8 +118,6 @@ fallback.ready_invocation = function(bypass) {
 				options.callback();
 				wipe = true;
 			}
-		} else {
-			wipe = true;
 		}
 		
 		if (wipe) {
