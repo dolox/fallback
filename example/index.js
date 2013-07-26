@@ -20,12 +20,17 @@ fallback.load({
 		'jQuery.ui': ['jQuery']
 	}
 }, function(success, failed) {
-	console.log('fallback.load: Inline Callback');
+	$('body').append('<p>fallback.load: Inline Callback</p>');
 
 	pre = '\nSuccess!\n-------\n' + JSON.stringify(success, null, 4);
 	pre += '\n\n\n\nFailed!\n-------\n' + JSON.stringify(failed, null, 4);
+
 	$('body').prepend('<pre style="display: none">' + pre + '</pre>');
-	$('pre').show(1500, function() { $('strong').show(500).css('display', 'block'); });
+	$('body').prepend('<strong style="display: none; color: green">EXECUTE MY CODE NOW! ;-)</strong>');
+
+	$('pre').show(1500, function() {
+		$('strong').show(500).css('display', 'block');
+	});
 });
 
 fallback.ready(['jQuery'], function() {
@@ -45,6 +50,5 @@ fallback.ready(['jQuery', 'jQuery.ui'], function() {
 
 fallback.ready(function() {
 	// All Completed
-	console.log('fallback.ready: ALL Completed');
-	$('body').append('<strong style="display: none; color: green">EXECUTE MY CODE NOW! ;-)</strong>');
+	$('body').append('<p>fallback.ready: ALL Completed</p>');
 });
