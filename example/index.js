@@ -30,17 +30,17 @@ fallback.load({
 
 fallback.ready(['jQuery'], function() {
 	// jQuery Completed
-	console.log('fallback.ready: jQuery Completed');
+	$('body').append('<p>fallback.ready: jQuery Completed</p>');
 });
 
 fallback.ready(['jQuery.ui'], function() {
 	// jQuery UI Completed
-	console.log('fallback.ready: jQuery UI Completed');
+	$('body').append('<p>fallback.ready: jQuery UI Completed</p>');
 });
 
 fallback.ready(['jQuery', 'jQuery.ui'], function() {
 	// jQuery + jQuery UI Completed
-	console.log('fallback.ready: jQuery + jQuery UI Completed');
+	$('body').append('<p>fallback.ready: jQuery + jQuery UI Completed</p>');
 });
 
 fallback.ready(function() {
