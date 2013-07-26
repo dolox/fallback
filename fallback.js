@@ -1,6 +1,7 @@
 /* fallback.js v1.0.1 | https://github.com/dolox/fallback/ | Salvatore Garbesi <sal@dolox.com> | (c) 2013 Dolox Inc. */
-
-fallback = {
+(function(window){
+'use strict';
+var fallback = {
 	callback: null,
 	callbacks: [],
 
@@ -45,7 +46,7 @@ fallback.completed = function() {
 };
 
 fallback.error = function(library, index) {
-	index = parseInt(index);
+	index = parseInt(index,0);
 
 	if (!this.fail[library]) {
 		this.fail[library] = [];
@@ -108,7 +109,7 @@ fallback.ready_invocation = function(bypass) {
 		if (options.libraries.length > 0) {
 			var count = 0;
 
-			for (library in this.loaded) {
+			for (var library in this.loaded) {
 				if (options.libraries.indexOf(library) >= 0) {
 					count++;
 				}
@@ -124,14 +125,14 @@ fallback.ready_invocation = function(bypass) {
 			delete this.callbacks[index];
 		}
 
-		if (this.libraries_count == this.loaded_count + this.fail_count && options.libraries.length == 0) {
+		if (this.libraries_count == this.loaded_count + this.fail_count && options.libraries.length === 0) {
 			options.callback(this.loaded, this.fail);
 		}
 	}
 };
 
 fallback.spawn = function(library, url, index) {
-	var defined = eval('window.' + library);
+	var defined = library in window;
 
 	if (defined) {
 		return fallback.success(library, index);
@@ -156,7 +157,7 @@ fallback.spawn = function(library, url, index) {
 		if (!this.readyState || this.readyState == 'loaded' || this.readyState == 'complete') {
 			this.onreadystatechange = null;
 
-			var defined = eval('window.' + library);
+			var defined = library in window;
 
 			if (!defined) {
 				fallback.error(library, index);
@@ -205,3 +206,4 @@ fallback.shim_invocation = function() {
 };
 
 window.fallback = fallback;
+})(window);
