@@ -85,6 +85,8 @@ fallback.ready(function() {
 
 ### v1.0.0 / 2013-07-20
 - Initial public release.
+- Added bower.json and to bower repository.
+- Added ability to call .ready() after libraries have already loaded.
 
 ### v0.3.0 / 2013-06-14
 - Removed `ready_invoke` option.
