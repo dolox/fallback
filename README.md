@@ -2,7 +2,7 @@ fallback.js
 ===========
 *** Tested and working in Chrome, FireFox, Safari, Opera and IE 7 - 10
 
-*** this documentation will be updated shortly. the keys for the JavaScript libraries you wish to load need to be their variable names. for instance jquery is "window.jQuery" so the key needs to be "jQuery" in order for this to work in older versions of IE.
+*** This documentation will be updated shortly. the keys for the JavaScript libraries you wish to load need to be their variable names. for instance jquery is "window.jQuery" so the key needs to be "jQuery" in order for this to work in older versions of IE.
 
 
 
@@ -37,8 +37,10 @@ fallback.js
 
 `options`
 - Expects parameter to be an object.
-- `callback` must be a function, which will return a success and failure object as individual parameters. ex: function(success, failed)
 - `shim` ability to set libraries to wait in line for other libraries to finish loading.
+
+`callback`
+- Must be a function, which will return a success and failure object as individual parameters. ex: function(success, failed)
 
 ```javascript
 fallback.load({
@@ -62,11 +64,9 @@ fallback.load({
 	// Only load jquery ui after jquery itself has loaded!
 	shim: {
 		'jQuery.ui': ['jQuery']
-	},
-
-	callback: function(success, failed) {
-		// Inline callback
 	}
+}, function(success, failed) {
+	// Inline callback
 });
 
 fallback.ready(['jQuery'], function() {
@@ -80,17 +80,24 @@ fallback.ready(function() {
 
 
 ## Changelog
-### v0.3 / 2013-06-14
+### v1.0.1 / 2013-07-20
+- Bug with .ready() function not being called. Contributors: @mrgamer @claudyus
+- Updates to the example demonstration.
+
+### v1.0.0 / 2013-07-20
+- Stable release.
+
+### v0.3.0 / 2013-06-14
 - Removed `ready_invoke` option.
 - Added the ability to pass in an array of libraries to the `ready` event.
 
-### v0.2 / 2013-06-13
+### v0.2.0 / 2013-06-13
 - Fixes for IE 7, 8 and 9.
 - Added MIT license.
 - Added .gitignore
 - Added `release` branch.
 
-### v0.1 / 2013-05-27
+### v0.1.0 / 2013-05-27
 - Initial release.
 
 
