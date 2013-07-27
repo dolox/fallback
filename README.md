@@ -79,7 +79,7 @@ fallback.ready(function() {
 
 
 ## Changelog
-### v1.0.1 / 2013-07-20
+### v1.0.1 / 2013-07-26
 - Bug with .ready() function not being called. Contributors: @mrgamer @claudyus
 - Updates to the example demonstration.
 
