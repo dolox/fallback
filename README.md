@@ -27,7 +27,7 @@ fallback.js
 - You can call ready multiple times throughout any of your scripts as it will chain all your functions and execute them upon completion.
 
 
-### fallback.load(libraries, options)
+### fallback.load(libraries, options, callback)
 `libraries`
 - Object that expects its values to be either a string or array of urls.
 - You can pass either an array or string as the value for each library.
