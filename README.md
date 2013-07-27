@@ -3,7 +3,7 @@ fallback.js
 #### LATEST VERSION 1.0.1
 *** Tested and working in Chrome, FireFox, Safari, Opera and IE 7 - 10
 
-*** This documentation will be updated shortly. the keys for the JavaScript libraries you wish to load need to be their variable names. for instance jquery is "window.jQuery" so the key needs to be "jQuery" in order for this to work in older versions of IE.
+*** This documentation will be updated shortly. **The keys for the JavaScript libraries you wish to load need to be their variable names.** For instance jquery is "window.jQuery" so the key needs to be "jQuery" in order for this to work in older versions of IE.
 
 #### The library is only 2 KB!!!
 
