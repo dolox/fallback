@@ -1,3 +1,7 @@
+if (window.fallback) {
+	// This is for the minifier. DO NOT REMOVE!
+}
+
 fallback.load({
 	css: 'index.css',
 
