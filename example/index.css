@@ -7,3 +7,8 @@ pre {
 	color: #555;
 	font-size: 14px
 }
+
+#postload {
+	display: block;
+	margin-bottom: 50px;
+}

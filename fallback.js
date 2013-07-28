@@ -1,4 +1,4 @@
-/* fallback.js v1.0.2 | https://github.com/dolox/fallback/ | Salvatore Garbesi <sal@dolox.com> | (c) 2013 Dolox Inc. */
+/* fallback.js v1.0.3 | https://github.com/dolox/fallback/ | Salvatore Garbesi <sal@dolox.com> | (c) 2013 Dolox Inc. */
 
 (function(window) {
 	'use strict';
@@ -21,6 +21,51 @@
 		shim: {}
 	};
 
+	fallback.is_array = function(variable) {
+		if (variable instanceof Array) {
+			return true;
+		}
+
+		return false;
+	};
+
+	fallback.is_defined = function(variable) {
+		/* jslint evil: true */
+		if (eval('window.' + variable)) {
+			return true;
+		}
+		
+		return false;
+	};
+
+	fallback.is_function = function(variable) {
+		if (({}).toString.call(variable) === '[object Function]') {
+			return true;
+		}
+
+		return false;
+	};
+
+	fallback.is_object = function(variable) {
+		if (typeof variable === 'object') {
+			return true;
+		}
+
+		return false;
+	};
+
+	fallback.index_of = function(object, value) {
+		var index;
+
+		for (index in object) {
+			if (object[index] === value) {
+				return index;
+			}
+		}
+
+		return -1;
+	};
+
 	fallback.initialize = function() {
 		var library, urls;
 
@@ -28,7 +73,7 @@
 			if (this.libraries[library]) {
 				urls = this.libraries[library];
 
-				if (!(urls instanceof Array)) {
+				if (!this.is_array(urls)) {
 					this.libraries[library] = urls = [urls];
 				}
 
@@ -38,7 +83,6 @@
 					this.spawn(library, urls[0], 0);
 				}
 			}
-			
 		}
 	};
 
@@ -47,6 +91,7 @@
 
 		if (this.libraries_count === this.loaded_count + this.fail_count) {
 			this.callback(this.loaded, this.fail);
+			this.callback = null;
 		}
 	};
 
@@ -69,12 +114,12 @@
 	};
 
 	fallback.load = function(libraries, options, callback) {
-		if (({}).toString.call(options) === '[object Function]') {
+		if (this.is_function(options)) {
 			callback = options;
 			options = {};
 		}
 
-		if (typeof options !== 'object') {
+		if (!this.is_object(options)) {
 			options = {};
 		}
 
@@ -82,7 +127,7 @@
 			this.shim = options.shim;
 		}
 
-		if (({}).toString.call(callback) !== '[object Function]') {
+		if (!this.is_function(callback)) {
 			callback = function() {};
 		}
 
@@ -97,7 +142,7 @@
 			libraries: libraries
 		};
 
-		if (!(libraries instanceof Array)) {
+		if (!this.is_array(libraries)) {
 			options.callback = libraries;
 			options.libraries = [];
 		}
@@ -107,10 +152,10 @@
 	};
 
 	fallback.ready_invocation = function() {
-		var index, options, wipe, count, library;
+		var index, options, count, library, wipe;
 
 		for (index in this.callbacks) {
-			if (this.callbacks[index]) {
+			if (this.is_object(this.callbacks[index])) {
 				options = this.callbacks[index];
 				wipe = false;
 
@@ -118,7 +163,7 @@
 					count = 0;
 
 					for (library in this.loaded) {
-						if (options.libraries.indexOf(library) >= 0) {
+						if (this.index_of(options.libraries, library) >= 0) {
 							count++;
 						}
 					}
@@ -127,23 +172,22 @@
 						options.callback();
 						wipe = true;
 					}
-				}
-		
-				if (wipe) {
-					delete this.callbacks[index];
+				} else if (this.libraries_count === this.loaded_count + this.fail_count) {
+					options.callback(this.loaded, this.fail);
+					wipe = true;
 				}
 
-				if (this.libraries_count === this.loaded_count + this.fail_count && options.libraries.length === 0) {
-					options.callback(this.loaded, this.fail);
+				if (wipe) {
+					delete this.callbacks[index];
 				}
 			}
 		}
 	};
 
 	fallback.spawn = function(library, url, index) {
-		var defined = library in window, element;
+		var element;
 
-		if (defined) {
+		if (this.is_defined(library)) {
 			return fallback.success(library, index);
 		}
 
@@ -161,14 +205,10 @@
 		};
 
 		element.onreadystatechange = function() {
-			var defined;
-
 			if (!this.readyState || this.readyState === 'loaded' || this.readyState === 'complete') {
 				this.onreadystatechange = null;
 
-				defined = library in window;
-
-				if (!defined) {
+				if (!fallback.is_defined(library)) {
 					fallback.error(library, index);
 				} else {
 					fallback.success(library, index);
@@ -204,7 +244,6 @@
 
 				if (!this.loaded[shim]) {
 					for (index in shimming) {
-
 						if (this.loaded[shimming[index]]) {
 							count++;
 						}

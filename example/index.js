@@ -55,4 +55,11 @@ fallback.ready(['jQuery', 'jQuery.ui'], function() {
 fallback.ready(function() {
 	// All Completed
 	$('body').append('<p>fallback.ready: ALL Completed</p>');
+	
+	$('#postload').click(function() {
+		fallback.ready(['jQuery'], function() {
+			// jQuery POSTLOAD!
+			$('body').append('<p>fallback.ready: jQuery POSTLOAD!</p>');
+		});
+	});
 });
