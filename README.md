@@ -15,6 +15,9 @@ fallback.js
 * _It's extremely easy to implement!_
 * __This is the only external script that needs to be loaded in your HTML!__
 
+## Todo
+- `import` function that will allow you add all your libraries and .ready will lazy load when attempting to use the library in question.
+- `baseUrl` ability to set a base url for local files.
 
 ## API
 ### fallback.ready([object], function)
