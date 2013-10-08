@@ -1,4 +1,4 @@
-/* fallback.js v1.0.3 | https://github.com/dolox/fallback/ | Salvatore Garbesi <sal@dolox.com> | (c) 2013 Dolox Inc. */
+/* fallback.js v1.0.4 | https://github.com/dolox/fallback/ | Salvatore Garbesi <sal@dolox.com> | (c) 2013 Dolox Inc. */
 
 (function(window) {
 	'use strict';
@@ -89,10 +89,11 @@
 	fallback.completed = function() {
 		this.ready_invocation();
 
-		if (this.libraries_count === this.loaded_count + this.fail_count) {
+		if (this.is_function(this.callback) && this.libraries_count === this.loaded_count + this.fail_count) {
 			this.callback(this.loaded, this.fail);
-			this.callback = null;
 		}
+
+		this.callback = null;
 	};
 
 	fallback.error = function(library, index) {

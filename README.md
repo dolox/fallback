@@ -1,7 +1,7 @@
 fallback.js
 ===========
-#### LATEST VERSION 1.0.3
-*** Tested and working in Chrome, FireFox, Safari, Opera and IE 7 - 10
+#### LATEST VERSION 1.0.4
+*** Tested and working in Chrome, FireFox, Safari, Opera and IE 6 - 10
 
 *** This documentation will be updated shortly. **The keys for the JavaScript libraries you wish to load need to be their variable names.** For instance jquery is "window.jQuery" so the key needs to be "jQuery" in order for this to work in older versions of IE.
 
@@ -79,6 +79,10 @@ fallback.ready(function() {
 
 
 ## Changelog
+### v1.0.4 / 2013-10-08
+- Fixing issue with missing callback sometimes throwing an error expecting a function.
+- Tested and confirmed as working in IE6.
+
 ### v1.0.3 / 2013-07-28
 - Fixing broken ready function in IE7-9. Contributors @displague
 - Fixing issues with IE7 and IE8 due to new changes/adjustments.
