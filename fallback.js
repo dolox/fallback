@@ -89,11 +89,13 @@
 	fallback.completed = function() {
 		this.ready_invocation();
 
-		if (this.is_function(this.callback) && this.libraries_count === this.loaded_count + this.fail_count) {
-			this.callback(this.loaded, this.fail);
-		}
+		if (this.libraries_count === this.loaded_count + this.fail_count) {
+			if (this.is_function(this.callback)) {
+				this.callback(this.loaded, this.fail);
+			}
 
-		this.callback = null;
+			this.callback = null;
+		}
 	};
 
 	fallback.error = function(library, index) {
