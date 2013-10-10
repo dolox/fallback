@@ -6,12 +6,12 @@ Fallback JS
 
 **Fallback JS** is a tiny library that allows you to load both your JavaScript and CSS libaries after your page has already loaded. The library also allows you to specify **"failovers"** or **"fallbacks"** for each of your libraries, this way in case one of those external libraries your using happens to fail, you won't be leaving your users with a dysfunctional website. Just because someone elses website breaks, it doesn't mean that yours should!
 
-######<a class="button1" href="http://fallback.io/" title="The official Fallback JS homepage." target="_blank">Official Homepage</a>
-######<a class="button1" href="https://github.com/dolox/fallback/" title="The official Fallback JS homepage." target="_blank">GitHub Repository</a>
+######<a class="button1" href="http://fallback.io/" title="The official Fallback JS homepage!" target="_blank">Official Homepage</a>
+######<a class="button1" href="https://github.com/dolox/fallback/" title="Fallback JS on GitHub" target="_blank">GitHub Repository</a>
 
 #Downloads
-######<a class="button2" href="https://raw.github.com/dolox/fallback/v1.0.5/fallback.min.js" title="The official Fallback JS homepage." target="_blank">Production (v1.0.5)</a> *Compressed 2.11kb*
-######<a class="button2" href="https://raw.github.com/dolox/fallback/v1.0.5/fallback.js" title="The official Fallback JS homepage." target="_blank">Development (v1.0.5)</a> *Uncompressed 5.03kb*
+######<a class="button2" href="https://raw.github.com/dolox/fallback/v1.0.5/fallback.min.js" title="Production version of Fallback JS" target="_blank">Production (v1.0.5)</a> *Compressed 2.11kb*
+######<a class="button2" href="https://raw.github.com/dolox/fallback/v1.0.5/fallback.js" title="Development version of Fallback JS" target="_blank">Development (v1.0.5)</a> *Uncompressed 5.03kb*
 
 #Introduction
 ##Getting Started

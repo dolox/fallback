@@ -1,7 +1,7 @@
 {
 	"name": "fallback",
-	"version": "1.0.4",
-	"description": "JavaScript library for dynamically loading CSS and JS files. Also provides the ability to load multiple files from a CDN with multiple fallback options and shimming!",
+	"version": "1.0.5",
+	"description": "JavaScript library for dynamically loading CSS and JS files. Also provides the ability to load multiple files from a CDN with multiple fallback options and shimming! http://fallback.io/",
 	"keywords": [
 		"fallback",
 		"failover",
@@ -14,15 +14,9 @@
 	"license": "MIT",
 	"readmeFilename": "README.md",
 	"ignore": [
-		"**/.*",
-		"node_modules",
-		"components",
-		"bower_components",
-		"test",
-		"tests",
 		".gitignore",
-		"/bin",
-		"/example"
+		"bin",
+		"example"
 	],
 	"repository": {
 		"type": "git",
