@@ -10,8 +10,8 @@ Fallback JS
 ######<a class="button1" href="https://github.com/dolox/fallback/" title="Fallback JS on GitHub" target="_blank">GitHub Repository</a>
 
 #Downloads
-######<a class="button2" href="https://raw.github.com/dolox/fallback/v1.0.5/fallback.min.js" title="Production version of Fallback JS" target="_blank">Production (v1.0.5)</a> *Compressed 2.11kb*
-######<a class="button2" href="https://raw.github.com/dolox/fallback/v1.0.5/fallback.js" title="Development version of Fallback JS" target="_blank">Development (v1.0.5)</a> *Uncompressed 5.03kb*
+######<a class="button2" href="https://raw.github.com/dolox/fallback/v1.0.6/fallback.min.js" title="Production version of Fallback JS" target="_blank">Production (v1.0.6)</a> *Compressed 2.11kb*
+######<a class="button2" href="https://raw.github.com/dolox/fallback/v1.0.6/fallback.js" title="Development version of Fallback JS" target="_blank">Development (v1.0.6)</a> *Uncompressed 5.03kb*
 
 #Introduction
 ##Getting Started
@@ -198,6 +198,11 @@ Expects to be a function and will accept 2 parameters `success` and `failed` whi
 ```
 
 #Change Log
+## v1.0.6 / 2013-12-01
+- Adding document and undefined to constructor.
+- Wrapping eval for `is_defined` function in a try catch.
+- Checking that callback is a function before attempting to invoke.
+
 ## v1.0.5 / 2013-10-09
 - Launched http://fallback.io/
 - Updated documentation.

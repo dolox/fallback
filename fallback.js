@@ -1,6 +1,7 @@
-/* fallback.js v1.0.5 | https://github.com/dolox/fallback/ | Salvatore Garbesi <sal@dolox.com> | (c) 2013 Dolox Inc. */
+/* fallback.js v1.0.6 | https://github.com/dolox/fallback/ | Salvatore Garbesi <sal@dolox.com> | (c) 2013 Dolox Inc. */
+/*jslint browser: true*/
 
-(function(window) {
+(function (window, document, undefined) {
 	'use strict';
 
 	var fallback = {
@@ -30,11 +31,15 @@
 	};
 
 	fallback.is_defined = function(variable) {
-		/* jslint evil: true */
-		if (eval('window.' + variable)) {
-			return true;
+		try {
+			/*jslint evil: true*/
+			if (eval('window.' + variable)) {
+				return true;
+			}
+		} catch (exception) {
+			return false;
 		}
-		
+
 		return false;
 	};
 
@@ -176,7 +181,10 @@
 						wipe = true;
 					}
 				} else if (this.libraries_count === this.loaded_count + this.fail_count) {
-					options.callback(this.loaded, this.fail);
+					if (this.is_function(options.callback)) {
+						options.callback(this.loaded, this.fail);
+					}
+
 					wipe = true;
 				}
 
@@ -262,4 +270,4 @@
 	};
 
 	window.fallback = fallback;
-})(window);
+})(window, document);
