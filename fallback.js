@@ -257,7 +257,7 @@
 			libraries = [];
 		}
 
-		if (me.is_string(libraries)) {
+		if (!me.is_array(libraries) || me.is_string(libraries)) {
 			libraries = [libraries];
 		}
 
