@@ -10,8 +10,8 @@ Fallback JS
 ######<a class="button1" href="https://github.com/dolox/fallback/" title="Fallback JS on GitHub" target="_blank">GitHub Repository</a>
 
 #Downloads
-######<a class="button2" href="https://raw.github.com/dolox/fallback/v1.0.6/fallback.min.js" title="Production version of Fallback JS" target="_blank">Production (v1.0.6)</a> *Compressed 2.11kb*
-######<a class="button2" href="https://raw.github.com/dolox/fallback/v1.0.6/fallback.js" title="Development version of Fallback JS" target="_blank">Development (v1.0.6)</a> *Uncompressed 5.03kb*
+######<a class="button2" href="https://raw.github.com/dolox/fallback/v1.1.0/fallback.min.js" title="Production version of Fallback JS" target="_blank">Production (v1.1.0)</a> *Compressed 3.13 KB*
+######<a class="button2" href="https://raw.github.com/dolox/fallback/v1.1.0/fallback.js" title="Development version of Fallback JS" target="_blank">Development (v1.1.0)</a> *Uncompressed 11.14 KB*
 
 #Introduction
 ##Getting Started
@@ -198,6 +198,14 @@ Expects to be a function and will accept 2 parameters `success` and `failed` whi
 ```
 
 #Change Log
+## v1.1.0 / 2013-12-03
+- Entire library revamped.
+- Added stylesheet selector check for CSS files.
+- Added .import() function.
+- Added .load() invocation to .ready() function.
+- Fixed bug where parallel scripts would break.
+- Fixed bug where code running in parallel up against the same library would attempt to load it more than once during a load cycle.
+
 ## v1.0.6 / 2013-12-01
 - Adding document and undefined to constructor.
 - Wrapping eval for `is_defined` function in a try catch.

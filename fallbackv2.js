@@ -36,10 +36,8 @@
 
 	// Bootstrap our library.
 	fallback.bootstrap = function() {
-		var index, type;
-
-		for (index in fallback.utilities) {
-			type = fallback.utilities[index];
+		for (var index in fallback.utilities) {
+			var type = fallback.utilities[index];
 			fallback.utility(type);
 		}
 	};
@@ -197,10 +195,9 @@
 		}
 
 		var rules = document.styleSheets[0].rules || document.styleSheets[0].cssRules;
-		var index, css_rule;
 
-		for (index = 0; index < rules.length; index++) {
-			css_rule = rules[index];
+		for (var index = 0; index < rules.length; index++) {
+			var css_rule = rules[index];
 
 			if (css_rule.selectorText === selector) {
 				return true;
@@ -213,7 +210,6 @@
 	// Spawn an instance of the library.
 	fallback.load = function(libraries, options, callback) {
 		var me = this;
-		var imported, library, urls;
 
 		// If `libraries` is not a object, die out.
 		if (!me.is_object(libraries)) {
@@ -232,11 +228,11 @@
 		}
 
 		// Import libraries.
-		imported = me.importer(libraries, options);
+		var imported = me.importer(libraries, options);
 
 		// Spawn library instances from user input.
-		for (library in imported.libraries) {
-			urls = imported.libraries[library];
+		for (var library in imported.libraries) {
+			var urls = imported.libraries[library];
 
 			if (!me.shims[library]) {
 				me.spawn(library, urls);
@@ -250,7 +246,6 @@
 	// Callback array of objects.
 	fallback.ready = function(libraries, callback) {
 		var me = this;
-		var index, library;
 
 		if (me.is_function(libraries)) {
 			callback = libraries;
@@ -262,8 +257,8 @@
 		}
 
 		if (libraries.length) {
-			for (index in libraries) {
-				library = libraries[index];
+			for (var index in libraries) {
+				var library = libraries[index];
 
 				if (me.libraries[library] && !me.shims[library]) {
 					me.spawn(library, me.libraries[library]);
@@ -282,11 +277,11 @@
 	// Invoke any `ready` callbacks.
 	fallback.ready_invocation = function() {
 		var me = this;
-		var index, count, library, wipe, payload;
+		var index, count, library, wipe;
 
 		for (index in me.callbacks) {
 			// If callback is not an object, skip and remove it;
-			payload = me.callbacks[index];
+			var payload = me.callbacks[index];
 
 			if (!me.is_object(payload) || !me.is_array(payload.libraries)) {
 				delete me.callbacks[index];
