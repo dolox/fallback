@@ -1,4 +1,4 @@
-/* fallback.js v1.1.0 | https://github.com/dolox/fallback/ | Salvatore Garbesi <sal@dolox.com> | (c) 2013 Dolox Inc. */
+/* fallback.js v1.1.1 | http://fallback.io/ | Salvatore Garbesi <sal@dolox.com> | (c) 2013 Dolox Inc. */
 /*jslint browser: true*/
 
 (function (window, document, undefined) {
@@ -134,7 +134,7 @@
 		// Cleanse the shims.
 		cleansed_shims = {};
 
-		if (options.shim) {
+		if (me.is_object(options) && me.is_object(options.shim)) {
 			shims = options.shim;
 
 			for (shim in shims) {
@@ -191,24 +191,53 @@
 	};
 
 	// CSS check if selector exists.
-	fallback.css = function(selector) {
-		if (!document.styleSheets || !document.styleSheets.length) {
+	fallback.css = {};
+
+	fallback.css.check = function(selector) {
+		var me = fallback;
+
+		if (!document.styleSheets) {
 			return false;
 		}
 
-		var rules = document.styleSheets[0].rules || document.styleSheets[0].cssRules;
-		var index, css_rule;
+		var index, stylesheet, found;
 
-		for (index = 0; index < rules.length; index++) {
-			css_rule = rules[index];
+		for (index in document.styleSheets) {
+			stylesheet = document.styleSheets[index];
 
-			if (css_rule.selectorText === selector) {
-				return true;
+			if (stylesheet.rules) {
+				found = me.css.scan(stylesheet.rules, selector);
+
+				if (found) {
+					return found;
+				}
+			}
+
+			if (stylesheet.cssRules) {
+				found = me.css.scan(stylesheet.cssRules, selector);
+
+				if (found) {
+					return found;
+				}
 			}
 		}
 
 		return false;
 	};
+
+    fallback.css.scan = function(ruleset, selector) {
+		var index, rule;
+
+		for (index in ruleset) {
+			rule = ruleset[index];
+
+			if (rule.selectorText === selector) {
+				return true;
+			}
+		}
+
+		return false;
+    };
 
 	// Spawn an instance of the library.
 	fallback.load = function(libraries, options, callback) {
@@ -244,7 +273,9 @@
 		}
 
 		// Fork the callback over to the `ready` function.
-		return me.ready([], callback);
+		if (me.is_function(callback)) {
+			me.ready([], callback);
+		}
 	};
 
 	// Callback array of objects.
@@ -255,13 +286,11 @@
 		if (me.is_function(libraries)) {
 			callback = libraries;
 			libraries = [];
-		}
+		} else {
+			if (!me.is_array(libraries) || me.is_string(libraries)) {
+				libraries = [libraries];
+			}
 
-		if (!me.is_array(libraries) || me.is_string(libraries)) {
-			libraries = [libraries];
-		}
-
-		if (libraries.length) {
 			for (index in libraries) {
 				library = libraries[index];
 
@@ -281,20 +310,16 @@
 
 	// Invoke any `ready` callbacks.
 	fallback.ready_invocation = function() {
-		var me = this;
-		var index, count, library, wipe, payload;
+		var me = this, index, count, library, wipe, payload, processed = [], callbacks = [];
 
 		for (index in me.callbacks) {
 			// If callback is not an object, skip and remove it;
 			payload = me.callbacks[index];
 
-			if (!me.is_object(payload) || !me.is_array(payload.libraries)) {
-				delete me.callbacks[index];
+			if (!me.is_object(payload) || !me.is_array(payload.libraries) || !me.is_function(payload.callback)) {
 				continue;
 			}
 
-			// Cast fallback as a function if it not currently a function.
-			payload.callback = me.callback(payload.callback);
 			wipe = false;
 
 			if (payload.libraries.length > 0) {
@@ -314,9 +339,17 @@
 			}
 
 			if (wipe) {
-				payload.callback(me.success, me.failed);
-				delete this.callbacks[index];
+				callbacks.push(payload.callback);
+			} else {
+				processed.push(me.callbacks[index]);
 			}
+		}
+
+		me.callbacks = processed;
+
+		// We need to process the callbacks here that way they can run in parallel as well in nested callbacks and not get caught in a endless loop.
+		for (index in callbacks) {
+			callbacks[index](me.success, me.failed);
 		}
 	};
 
@@ -343,7 +376,7 @@
 				}
 			}
 
-			// If all dependcies were loaded, spawn the shim.
+			// If all dependencies were loaded, spawn the shim.
 			if (count === shimming.length) {
 				me.spawn(shim, me.libraries[shim]);
 
@@ -385,7 +418,7 @@
 			type = 'css';
 
 			// CSS selector already exists, do not attempt to spawn library.
-			if (me.css(library)) {
+			if (me.css.check(library)) {
 				payload.spawned = false;
 				return me.spawn.success(payload);
 			}
@@ -405,17 +438,8 @@
 		}
 
 		element.onload = function() {
-			// If it's a CSS library, check for it.
-			if (type === 'css') {
-				if (!me.css(library)) {
-					return me.spawn.failed(payload);
-				}
-
-				return me.spawn.success(payload);
-			}
-
 			// Checks for JavaScript library.
-			if (!me.is_defined(library)) {
+			if (type === 'js' && !me.is_defined(library)) {
 				return me.spawn.failed(payload);
 			}
 
@@ -427,8 +451,6 @@
 				this.onreadystatechange = null;
 
 				if (type === 'js' && !me.is_defined(library)) {
-					return me.spawn.failed(payload);
-				} else if (type === 'css' && !me.css(library)) {
 					return me.spawn.failed(payload);
 				}
 

@@ -10,8 +10,10 @@ Fallback JS
 ######<a class="button1" href="https://github.com/dolox/fallback/" title="Fallback JS on GitHub" target="_blank">GitHub Repository</a>
 
 #Downloads
-######<a class="button2" href="https://raw.github.com/dolox/fallback/v1.1.0/fallback.min.js" title="Production version of Fallback JS" target="_blank">Production (v1.1.0)</a> *Compressed 3.13 KB*
-######<a class="button2" href="https://raw.github.com/dolox/fallback/v1.1.0/fallback.js" title="Development version of Fallback JS" target="_blank">Development (v1.1.0)</a> *Uncompressed 11.14 KB*
+######<a class="button2" href="https://raw.github.com/dolox/fallback/v1.1.1/fallback.min.js" title="Production version of Fallback JS" target="_blank">Production (v1.1.1)</a> *Compressed 3.16 KB*
+######<a class="button2" href="https://raw.github.com/dolox/fallback/v1.1.1/fallback.js" title="Development version of Fallback JS" target="_blank">Development (v1.1.1)</a> *Uncompressed 11.49 KB*
+
+**SEE WORKING DEMOS WITH SOURCE CODE AT <a href="http://plnkr.co/tags/fallbackjs">http://plnkr.co/tags/fallbackjs</a>**
 
 #Introduction
 ##Getting Started
@@ -198,6 +200,11 @@ Expects to be a function and will accept 2 parameters `success` and `failed` whi
 ```
 
 #Change Log
+## v1.1.1 / 2013-12-13
+- Fixing bug with stylesheet selector check.
+- Fixing parallel callback issues.
+- Various other performance tweaks.
+
 ## v1.1.0 / 2013-12-03
 - Entire library revamped.
 - Added stylesheet selector check for CSS files.
