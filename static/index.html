@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<base href="./" />
+
+		<link rel="canonical" href="http://fallback.io/" />
+		<link rel="shortcut icon" href="./favicon.ico" />
+
+		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" />
+
+		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Nunito:400" />
+		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Nunito:700" />
+		
+		<link rel="stylesheet" href="./css/app.css" />
+		<link rel="stylesheet" href="./css/header.css" />
+		<link rel="stylesheet" href="./css/footer.css" />
+		<link rel="stylesheet" href="./css/clipart.css" />
+
+		<meta charset="utf-8" />
+
+		<meta name="description" content="Lightweight JavaScript library for dynamically loading CSS and JS files with the ability to have fallbacks incase your CDN fails." />
+		<meta name="keywords" content="javascript, js, fallback, cdn, failover, lib, library, ajax, async, hosted" />
+		<meta name="revisit-after" content="7 days" />
+		<meta name="robots" content="index" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+		<script src="./js/fallback.js" data-bootstrap="./js/app.js"></script>
+
+		<title>Fallback JS</title>
+	</head>
+
+	<body>
+		<header class="navbar navbar-fixed-top" role="navigation">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+
+					<a class="navbar-brand" href="./" title="Back to the homepage." data-toggle="tooltip" data-placement="bottom">Fallback.js</a>
+				</div>
+
+				<div class="collapse navbar-collapse navbar-right">
+					<ul class="nav navbar-nav">
+						<li class="active"><a href="./" title="Back to the homepage." data-toggle="tooltip" data-placement="bottom">Home</a></li>
+						<li><a href="https://github.com/dolox/fallback/tree/release/" title="View the documentation." data-toggle="tooltip" data-placement="bottom">Docs</a></li>
+						<li><a href="https://github.com/dolox/fallback/tree/release/" title="Get the source code!" target="_blank" data-toggle="tooltip" data-placement="bottom">Source</a></li>
+					</ul>
+				</div>
+			</div>
+		</header>
+
+		<section id="splash" class="jumbotron">
+			<div class="container">
+				<div id="logo" class="col-md-5 col-sm-5">
+					<img id="bird" class="img-responsive" alt="Fallback.js" src="./img/logo.png" />
+					<i id="egg" class="egg"><i></i></i>
+					<small id="browser-support">Mobile, Chrome, FireFox, Safari, Opera, IE 6+</small>
+				</div>
+
+				<div id="splash-context" class="col-md-7 col-sm-7">
+					<h1>Fallback.js</h1>
+					<p>Lightweight JavaScript library for dynamically loading CSS and JS files with the ability to have fallbacks incase your CDN fails.</p>
+
+					<a class="btn btn-primary btn-lg" href="./docs/" role="button" title="View the documentation." data-toggle="tooltip">Documentation</a>
+					<a class="btn btn-primary btn-lg" href="https://github.com/dolox/fallback/" role="button" target="_blank" title="Get the source code!" data-toggle="tooltip">Source Code</a>
+
+					<div id="social" class="row">
+						<!-- GitHub -->
+						<div id="social-github" class="col-md-2 col-sm-3 col-xs-12">
+							<iframe src="http://ghbtns.com/github-btn.html?user=dolox&repo=fallback&type=watch&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="170" height="30"></iframe>
+						</div>
+
+						<!-- Facebook -->
+						<div id="social-facebook" class="col-md-2 col-sm-3 col-xs-12">
+							<div id="fb-root"></div>
+							<div class="fb-like" data-href="http://fallback.io/" data-layout="button_count" data-action="like" data-show-faces="false" data-share="false"></div>
+						</div>
+
+						<!-- Twitter -->
+						<div id="social-twitter" class="col-md-2 col-sm-3 col-xs-12">
+							<a href="https://twitter.com/share" class="twitter-share-button" data-hashtags="fallbackjs">Tweet</a>
+						</div>
+
+						<!-- Google+ -->
+						<div id="social-google" class="col-md-2 col-sm-3 col-xs-12">
+							<div class="g-plusone" data-size="medium"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section class="row">
+			<div class="container">
+				<div class="clipart-container col-md-2 col-sm-3">
+					<i class="clipart clipart-heart"></i>
+				</div>
+
+				<div class="col-md-10 col-sm-9">
+					<h1>WHAT IS IT? WHY USE IT?</h1>
+					<h2>INCREASE PERFROMANCE, KEEP YOUR SITE WORKING!</h2>
+				
+					<p><strong>Fallback JS</strong> is a tiny library that allows you to load both JavaScript and CSS libaries after your page has already loaded. Our library also allows you to specify <strong>"failovers"</strong> or <strong>"fallbacks"</strong> for each of your libraries, that way in case one of those external libraries your site is using happens to go down, you won't be leaving your users with a dysfunctional website. Just because someone elses website breaks, it doesn't mean that yours should!</p>
+				</div>
+			</div>
+		</section>
+
+		<section class="row white">
+			<div class="container">
+				<div class="clipart-container col-md-2 col-sm-3">
+					<i class="clipart clipart-mouse"></i>
+				</div>
+
+				<div class="col-md-10 col-sm-9">
+					<h1>FAST AND EASY TO USE</h1>
+					<h2>TINY LIBRARY. FASTER SITE. EASY IMPLEMENTATION.</h2>
+				
+					<p>The production version of our library is only <strong>2 KB!</strong> Purposely made to be tiny and lightweight so that it can be hosted locally within your project and load extremely fast. It's also extremely easy to use! <em>See the sample below.</em></p>
+					<a class="jsbin-embed" href="http://jsbin.com/dike/1/embed?js">JS Bin</a>
+				</div>
+			</div>
+		</section>
+
+		<section class="row">
+			<div class="container">
+				<div class="clipart-container col-md-2 col-sm-3">
+					<i class="clipart clipart-statistics"></i>
+				</div>
+
+				<div class="col-md-10 col-sm-9">
+					<h1>FAILOVERS FOR YOUR LIBRARIES</h1>
+					<h2>CRUCIAL SO THAT YOUR WEBSITE DOESN'T BREAK!</h2>
+				
+					<p>Add all of your favorite CDNs and still failover to your local copy if that CDN goes down! Not only can you have as many failovers as you want for each of your libraries, but you can also implement <strong>shimming</strong> as well. Shimming is the ability to load certain libraries only when other libraries have first finished loading. A case by example would be jQuery UI, jQuery UI depends on jQuery and won't work without it. You simply cannot load jQuery UI until jQuery has finished loading. In this instance you would <strong>shim</strong> jQuery UI to load after jQuery has finished loading.</p>
+				</div>
+			</div>
+		</section>
+
+		<section class="row white">
+			<div class="container">
+				<div class="clipart-container col-md-2 col-sm-3">
+					<i class="clipart clipart-hourglass"></i>
+				</div>
+
+				<div class="col-md-10 col-sm-9">
+					<h1>INCREASE PAGE LOAD TIMES</h1>
+					<h2>BY AN AVERAGE OF 35%!</h2>
+				
+					<p>Most websites throughout the internet put their javascript and stylesheet references in the <strong>&lt;head&gt;</strong> of the websites HTML. By doing this they're forcing the browser to wait for those libraries to finish loading before actually displaying the page to the user. To significantly boost the page load time, you can simply not reference those libraries at all in the HTML and instead let JavaScript load those libraries after the page has finished loading. This is exactly what <strong>Fallback JS</strong> does!</p>
+				</div>
+			</div>
+		</section>
+
+		<footer id="footer" class="row">
+			<div class="container">
+				<a id="copyright" href="http://dolox.com/" title="Dolox Inc." target="_blank" data-toggle="tooltip">Copyright &copy; Dolox Inc.</a>
+				<a id="bower" href="http://bower.io/" title="BOWER: A package manager for the web" target="_blank" data-toggle="tooltip"><i class="clipart clipart-bower"></i></a>
+				<i id="nest"><i></i></i>
+				<i id="egg-static" class="egg"><i></i></i>
+			</div>
+		</footer>
+	</body>
+</html>

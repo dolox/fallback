@@ -1,0 +1,40 @@
+.clipart {
+	display: inline-block
+}
+
+.clipart-logo {
+	background: transparent url('../img/clipart-logo.png') no-repeat 0px 0px;
+	height: 269px;
+	width: 405px
+}
+
+.clipart-hourglass {
+	background: transparent url('../img/clipart-hourglass.png') no-repeat 0px 0px;
+	height: 128px;
+	width: 128px
+}
+
+.clipart-statistics {
+	background: transparent url('../img/clipart-statistics.png') no-repeat 0px 0px;
+	height: 128px;
+	width: 128px
+}
+
+.clipart-heart {
+	background: transparent url('../img/clipart-heart.png') no-repeat 0px 0px;
+	height: 128px;
+	width: 128px
+}
+
+.clipart-mouse {
+	background: transparent url('../img/clipart-mouse.png') no-repeat 0px 0px;
+	height: 128px;
+	width: 128px
+}
+
+.clipart-bower {
+	background: transparent url('http://bower.io/img/bower-logo.png') no-repeat 0px 0px;
+	background-size: 100%;
+	height: 256px;
+	width: 256px;
+}
