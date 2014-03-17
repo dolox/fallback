@@ -1,4 +1,4 @@
 .DS_Store
 node_modules
-./browserstack.json
+browserstack.json
 npm-debug.log
