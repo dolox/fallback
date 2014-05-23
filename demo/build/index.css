@@ -1,5 +1,7 @@
+@import url(http://fonts.googleapis.com/css?family=Open+Sans);
+
 * {
-	font-family: arial;
+	font-family: 'Open Sans';
 	font-size: 22
 }
 

@@ -1,4 +1,4 @@
-/* fallback.js v1.1.1 | http://fallback.io/ | Salvatore Garbesi <sal@dolox.com> | (c) 2013 Dolox Inc. */
+/* fallback.js v1.1.2 | http://fallback.io/ | Salvatore Garbesi <sal@dolox.com> | (c) 2013 Dolox Inc. */
 /*jslint browser: true*/
 
 (function (window, document, undefined) {
@@ -205,6 +205,10 @@
 		for (index in document.styleSheets) {
 			stylesheet = document.styleSheets[index];
 
+			if (stylesheet === 0) {
+				continue;
+			}
+
 			if (stylesheet.rules) {
 				found = me.css.scan(stylesheet.rules, selector);
 
@@ -213,12 +217,17 @@
 				}
 			}
 
-			if (stylesheet.cssRules) {
-				found = me.css.scan(stylesheet.cssRules, selector);
+			// Issues with CORS at times, don't let the script bomb.
+			try {
+				if (stylesheet.cssRules) {
+					found = me.css.scan(stylesheet.cssRules, selector);
 
-				if (found) {
-					return found;
+					if (found) {
+						return found;
+					}
 				}
+			} catch (e) {
+				continue;
 			}
 		}
 
@@ -424,6 +433,7 @@
 			}
 
 			element = document.createElement('link');
+			element.crossorigin = true;
 			element.rel = 'stylesheet';
 			element.href = payload.url;
 		} else {

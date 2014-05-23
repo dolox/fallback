@@ -148,3 +148,14 @@ fallback.ready(function() {
 		});
 	});
 });
+
+fallback.load({
+	bootstrap_css: '//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css',
+	jasny_css: '//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/css/jasny-bootstrap.min.css',
+	jQuery: '//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js',
+	'jQuery.fn.modal': '//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js'
+}, {
+	shim: { //establishes load dependencies
+		'jQuery.fn.modal': ['jQuery']
+	}
+});
