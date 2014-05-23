@@ -1,4 +1,5 @@
-/*global $, fallback, require*/
+/*global fallback, require*/
+/*jshint browser: true*/
 
 (function(global) {
 	var app = {
@@ -41,21 +42,21 @@
 			}
 		});
 
-		require(function(bootstrap, jsbin) {
+		require(['bootstrap', 'jsbin'], function() {
 			app.initiate();
-		})
+		});
 	};
 
 	app.initiate = function() {
-		$(function() {
+		window.$(function() {
 			app.header();
 			app.tooltips();
 			app.analytics();
 			app.social();
 		});
 
-		$(global).resize(app.update);
-		$(global.document).scroll(app.update);
+		window.$(global).resize(app.update);
+		window.$(global.document).scroll(app.update);
 	};
 
 	app.analytics = function() {
@@ -69,24 +70,24 @@
 	};
 
 	app.header = function() {
-		$('#bird').css({
-			left: $(global).width() + 'px',
+		window.$('#bird').css({
+			left: window.$(global).width() + 'px',
 			position: 'relative'
 		}).animate({
 			left: 0
 		}, 1500, 'easeOutBounce', function() {
-			$('#splash-context').animate({
+			window.$('#splash-context').animate({
 				opacity: 1
 			}, 1000, function() {
-				$('#social').animate({
+				window.$('#social').animate({
 					opacity: 1
 				});
 
-				$('#browser-support').animate({
+				window.$('#browser-support').animate({
 					opacity: 1
 				});
 
-				$('#egg').css('opacity', 0.95);
+				window.$('#egg').css('opacity', 0.95);
 				app.animating = false;
 			});
 		});
@@ -96,16 +97,16 @@
 		var me = this;
 		var top = 340;
 
-		if ($(document).scrollTop() > 200) {
+		if (window.$(document).scrollTop() > 200) {
 			top = app.height - 20;
 		}
 
-		var egg_top = parseInt($('#egg').css('top')) || 0;
+		var egg_top = parseInt(window.$('#egg').css('top'), 10) || 0;
 
 		if (!me.animating && top != egg_top) {
 			me.animating = true;
 
-			$('#egg').animate({
+			window.$('#egg').animate({
 				top: top
 			}, {
 				duration: 500,
@@ -142,7 +143,7 @@
 	};
 
 	app.social.twitter = function() {
-		!function(d,s,id){
+		(function(d,s,id){
 			var js,fjs=d.getElementsByTagName(s)[0],
 			p=/^http:/.test(d.location)?'http':'https';
 
@@ -150,19 +151,19 @@
 				js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';
 				fjs.parentNode.insertBefore(js,fjs);
 			}
-		}(global.document, 'script', 'twitter-wjs');
+		})(global.document, 'script', 'twitter-wjs');
 	};
 
 	app.tooltips = function() {
-		$('[data-toggle=tooltip]').tooltip({
+		window.$('[data-toggle=tooltip]').tooltip({
 			container: 'body'
 		});
 	};
 
 	app.update = function() {
-		var height = $(window).height();
-		var top = $(document).scrollTop();
-		var width = $(window).width();
+		var height = window.$(window).height();
+		var top = window.$(document).scrollTop();
+		var width = window.$(window).width();
 
 		if (height != app.height || top != app.top || width != app.width) {
 			app.height = height;
