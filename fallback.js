@@ -1,4 +1,4 @@
-/* fallback.js v1.1.2 | http://fallback.io/ | Salvatore Garbesi <sal@dolox.com> | (c) 2013 Dolox Inc. */
+/* fallback.js v1.1.3 | http://fallback.io/ | Salvatore Garbesi <sal@dolox.com> | (c) 2013 Dolox Inc. */
 /*jslint browser: true*/
 
 (function (window, document, undefined) {
@@ -417,6 +417,7 @@
 		var type = 'js';
 
 		var payload = {
+			loaded: false,
 			library: library,
 			spawned: true,
 			url: urls.shift(),
@@ -501,8 +502,11 @@
 		var me = fallback;
 
 		// Mark the library and url as successful.
-		me.success[payload.library] = payload.url;
-		me.success_count++;
+		if (!payload.loaded) {
+			payload.loaded = true;
+			me.success[payload.library] = payload.url;
+			me.success_count++;
+		}
 
 		// Invoke any `shim` dependencies.
 		me.shim_invocation();
