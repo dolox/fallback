@@ -10,8 +10,8 @@ Fallback JS
 ######<a class="button1" href="https://github.com/dolox/fallback/" title="Fallback JS on GitHub" target="_blank">GitHub Repository</a>
 
 #Downloads
-######<a class="button2" href="https://raw.github.com/dolox/fallback/v1.1.3/fallback.min.js" title="Production version of Fallback JS" target="_blank">Production (v1.1.3)</a> *Compressed 3.16 KB*
-######<a class="button2" href="https://raw.github.com/dolox/fallback/v1.1.3/fallback.js" title="Development version of Fallback JS" target="_blank">Development (v1.1.3)</a> *Uncompressed 11.49 KB*
+######<a class="button2" href="https://raw.github.com/dolox/fallback/v1.1.4/fallback.min.js" title="Production version of Fallback JS" target="_blank">Production (v1.1.4)</a> *Compressed 3.16 KB*
+######<a class="button2" href="https://raw.github.com/dolox/fallback/v1.1.4/fallback.js" title="Development version of Fallback JS" target="_blank">Development (v1.1.4)</a> *Uncompressed 11.49 KB*
 
 **SEE WORKING DEMOS WITH SOURCE CODE AT <a href="http://plnkr.co/tags/fallbackjs">http://plnkr.co/tags/fallbackjs</a>**
 
@@ -89,7 +89,7 @@ To let you dive right in, we're going to provide you with a sample of code below
 ###Unlimited failovers, and size that does matter!
 The sole purpose of Fallback JS is to make it extremely easy for you as a developer to load as many external JavaScript and/or CSS libraries that you want with the ability to have as many failovers as you want without you having to write custom code or run through extra loops to achieve this goal.
 
-Along with this premise, the filesize the extremely small, the main purpose of loading JavaScript files after your website has already loaded is to increase you page load time (see below). You want your users to load as little as possible so you website can load as fast as it possibly can. Think outside the box. All of your users won't always be on high speed internet connections, and we all know how slow surfing the web can sometimes be on mobile devices.
+Along with this premise, the filesize the extremely small, the main purpose of loading JavaScript files after your website has already loaded is to decrease your page load time (see below). You want your users to load as little as possible so you website can load as fast as it possibly can. Think outside the box. All of your users won't always be on high speed internet connections, and we all know how slow surfing the web can sometimes be on mobile devices.
 
 ##Improving Page Load Times
 ###Speed is important!
@@ -198,73 +198,6 @@ Expects to be a function and will accept 2 parameters `success` and `failed` whi
 	}
 }
 ```
-
-#Change Log
-## v1.1.3 / 2014-07-20
-- Fixing IE10 `onReadyStateChange` and `onLoad` callback issues with CSS files.
-
-## v1.1.2 / 2014-03-24
-- Fixing CORS issue with stylesheet selector check.
-
-## v1.1.1 / 2013-12-13
-- Fixing bug with stylesheet selector check.
-- Fixing parallel callback issues.
-- Various other performance tweaks.
-
-## v1.1.0 / 2013-12-03
-- Entire library revamped.
-- Added stylesheet selector check for CSS files.
-- Added .import() function.
-- Added .load() invocation to .ready() function.
-- Fixed bug where parallel scripts would break.
-- Fixed bug where code running in parallel up against the same library would attempt to load it more than once during a load cycle.
-
-## v1.0.6 / 2013-12-01
-- Adding document and undefined to constructor.
-- Wrapping eval for `is_defined` function in a try catch.
-- Checking that callback is a function before attempting to invoke.
-
-## v1.0.5 / 2013-10-09
-- Launched http://fallback.io/
-- Updated documentation.
-
-## v1.0.4 / 2013-10-08
-- Fixing issue with missing callback sometimes throwing an error expecting a function.
-- Tested and confirmed as working in IE6.
-
-## v1.0.3 / 2013-07-28
-- Fixing broken ready function in IE7-9. Contributors @displague
-- Fixing issues with IE7 and IE8 due to new changes/adjustments.
-- Added utility functions to trim down code and support older versions of IE.
-- Fixed example index.html so that no console notices/errors are thrown in IE.
-- Added POSTLOAD test to example.
-
-## v1.0.2 / 2013-07-27
-- Added .jshintrc file and fixes for JSHint validation. Contributors: @displague
-- Updated the closure.sh file to auto prepend the tagline.
-- Update example/index.js for the minifier's externs that way window.fallback doesn't get removed.
-
-## v1.0.1 / 2013-07-26
-- Bug with .ready() function not being called. Contributors: @mrgamer @claudyus
-- Updates to the example demonstration.
-
-## v1.0.0 / 2013-07-20
-- Initial public release.
-- Added bower.json and to bower repository.
-- Added ability to call .ready() after libraries have already loaded.
-
-## v0.3.0 / 2013-06-14
-- Removed `ready_invoke` option.
-- Added the ability to pass in an array of libraries to the `ready` event.
-
-## v0.2.0 / 2013-06-13
-- Fixes for IE 7, 8 and 9.
-- Added MIT license.
-- Added .gitignore
-- Added `release` branch.
-
-## v0.1.0 / 2013-05-27
-- Initial development release.
 
 #About
 ##License

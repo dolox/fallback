@@ -1,4 +1,4 @@
-/* fallback.js v1.1.3 | http://fallback.io/ | Salvatore Garbesi <sal@dolox.com> | (c) 2013 Dolox Inc. */
+/* fallback.js v1.1.4 | http://fallback.io/ | Salvatore Garbesi <sal@dolox.com> | (c) 2013 Dolox Inc. */
 /*jslint browser: true*/
 
 (function (window, document, undefined) {
@@ -282,6 +282,10 @@
 		}
 
 		// Fork the callback over to the `ready` function.
+		if (me.is_function(options['callback'])) {
+			me.ready([], options['callback']);
+		}
+
 		if (me.is_function(callback)) {
 			me.ready([], callback);
 		}
