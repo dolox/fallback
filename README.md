@@ -10,8 +10,8 @@ Fallback JS
 ######<a class="button1" href="https://github.com/dolox/fallback/" title="Fallback JS on GitHub" target="_blank">GitHub Repository</a>
 
 #Downloads
-######<a class="button2" href="https://raw.github.com/dolox/fallback/v1.1.4/fallback.min.js" title="Production version of Fallback JS" target="_blank">Production (v1.1.4)</a> *Compressed 3.16 KB*
-######<a class="button2" href="https://raw.github.com/dolox/fallback/v1.1.4/fallback.js" title="Development version of Fallback JS" target="_blank">Development (v1.1.4)</a> *Uncompressed 11.49 KB*
+######<a class="button2" href="https://raw.github.com/dolox/fallback/v1.1.5/fallback.min.js" title="Production version of Fallback JS" target="_blank">Production (v1.1.5)</a> *Compressed 3.16 KB*
+######<a class="button2" href="https://raw.github.com/dolox/fallback/v1.1.5/fallback.js" title="Development version of Fallback JS" target="_blank">Development (v1.1.5)</a> *Uncompressed 11.49 KB*
 
 **SEE WORKING DEMOS WITH SOURCE CODE AT <a href="http://plnkr.co/tags/fallbackjs">http://plnkr.co/tags/fallbackjs</a>**
 

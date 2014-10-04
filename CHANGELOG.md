@@ -1,6 +1,12 @@
 CHANGELOG
 ========
 
+## v1.1.5 / 2014-10-04
+- Fixing CORS issues with IE11 and stylesheets.
+- Added `fbk` as a library alias for short-hand. e.g. `fbk.load()`
+- Added ESLint for linting
+- Added aliases `deps` and `dependencies` for `options.shim`
+
 ## v1.1.4 / 2014-09-02
 - Moved CHANGELOG from `README.md` to `CHANGELOG.md`
 - Fixing typo in README.md

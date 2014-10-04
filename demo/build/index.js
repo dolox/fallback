@@ -12,6 +12,10 @@ if (!window.fallback) {
 	fallback.ready = {};
 }
 
+if (!window.fbk) {
+	var fbk = {};
+}
+
 // fallback.importer / .ready on demand example
 fallback.importer({
 	'#postload': 'index.css',
@@ -30,6 +34,10 @@ fallback.importer({
 		'//js/loader.js?i=vendor/jquery-ui.min.js'
 	]
 }, {
+	// This is for the minifier. DO NOT REMOVE!
+	deps: {},
+	dependencies: {},
+
 	// Only load jQuery UI after jQuery itself has loaded!
 	shim: {
 		'jQuery.ui': ['jQuery']

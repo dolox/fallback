@@ -1,7 +1,6 @@
-/* fallback.js v1.1.4 | http://fallback.io/ | Salvatore Garbesi <sal@dolox.com> | (c) 2013 Dolox Inc. */
-/*jslint browser: true*/
+/* fallback.js v1.1.5 | http://fallback.io/ | Salvatore Garbesi <sal@dolox.com> | (c) 2013 Dolox Inc. */
 
-(function (window, document, undefined) {
+(function (window, document) {
 	'use strict';
 
 	var fallback = {
@@ -36,11 +35,12 @@
 
 	// Bootstrap our library.
 	fallback.bootstrap = function() {
-		var index, type;
+		var index;
 
 		for (index in fallback.utilities) {
-			type = fallback.utilities[index];
-			fallback.utility(type);
+			if (fallback.utilities[index]) {
+				fallback.utility(fallback.utilities[index]);
+			}
 		}
 	};
 
@@ -50,7 +50,9 @@
 	// Setup individual utility function.
 	fallback.utility = function(type) {
 		fallback['is_' + type.toLowerCase()] = function(variable) {
+			/*eslint-disable*/
 			return Object.prototype.toString.call(variable) == '[object ' + type + ']';
+			/*eslint-enable*/
 		};
 	};
 
@@ -81,22 +83,25 @@
 	// Check if our variable is defined.
 	fallback.is_defined = function(variable) {
 		try {
-			/*jslint evil: true*/
+			/*eslint-disable*/
 			if (eval('window.' + variable)) {
 				return true;
 			}
+			/*eslint-enable*/
 		} catch (exception) {
 			return false;
 		}
-		
+
 		return false;
 	};
 
 	// Import and cleanse libraries from user input.
 	fallback.importer = function(libraries, options) {
-		var me = this, current, index;
+		var me = this;
+		var current, index;
 		var library, urls;
-		var cleansed_shims, shim, shims, shim_libraries, shim_libraries_cleansed;
+		var cleansed_shims, shim, shims;
+		var shim_libraries, shim_libraries_cleansed;
 
 		// Cleanse the libraries.
 		var cleansed_libraries = {};
@@ -134,53 +139,64 @@
 		// Cleanse the shims.
 		cleansed_shims = {};
 
-		if (me.is_object(options) && me.is_object(options.shim)) {
-			shims = options.shim;
-
-			for (shim in shims) {
-				shim_libraries = shims[shim];
-
-				// If `shim` doesn't exist in libraries, skip, it's invalid.
-				if (!me.libraries[shim]) {
-					continue;
+		if (me.is_object(options)) {
+			// Shim aliases, `deps` and dependencies`.
+			if (!me.is_object(options.shim)) {
+				if (me.is_object(options.deps)) {
+					options.shim = options.deps;
+				} else if (me.is_object(options.dependencies)) {
+					options.shim = options.dependencies;
 				}
+			}
 
-				// If `shim_libraries` is undefined, null or an empty string, skip, it's invalid.
-				if (!shim_libraries) {
-					continue;
-				}
+			if (me.is_object(options.shim)) {
+				shims = options.shim;
 
-				// If `shim_libraries` is a string, convert it to any array.
-				if (me.is_string(shim_libraries)) {
-					shim_libraries = [shim_libraries];
-				}
+				for (shim in shims) {
+					shim_libraries = shims[shim];
 
-				// If `shim_libraries` is not an array, skip, it's invalid.
-				if (!me.is_array(shim_libraries)) {
-					continue;
-				}
-
-				// Check to make sure the libraries exist otherwise remove them.
-				shim_libraries_cleansed = [];
-
-				for (index in shim_libraries) {
-					library = shim_libraries[index];
-
-					// Make sure the library actually exists and that it's not itself.
-					if (me.libraries[library] && library !== shim) {
-						shim_libraries_cleansed.push(library);
+					// If `shim` doesn't exist in libraries, skip, it's invalid.
+					if (!me.libraries[shim]) {
+						continue;
 					}
+
+					// If `shim_libraries` is undefined, null or an empty string, skip, it's invalid.
+					if (!shim_libraries) {
+						continue;
+					}
+
+					// If `shim_libraries` is a string, convert it to any array.
+					if (me.is_string(shim_libraries)) {
+						shim_libraries = [shim_libraries];
+					}
+
+					// If `shim_libraries` is not an array, skip, it's invalid.
+					if (!me.is_array(shim_libraries)) {
+						continue;
+					}
+
+					// Check to make sure the libraries exist otherwise remove them.
+					shim_libraries_cleansed = [];
+
+					for (index in shim_libraries) {
+						library = shim_libraries[index];
+
+						// Make sure the library actually exists and that it's not itself.
+						if (me.libraries[library] && library !== shim) {
+							shim_libraries_cleansed.push(library);
+						}
+					}
+
+					// Check to see if the shim already exists, if it does, merge the new shims.
+					current = [];
+
+					if (me.is_array(me.shims[shim])) {
+						current = me.shims[shim];
+					}
+
+					cleansed_shims[shim] = shim_libraries_cleansed;
+					me.shims[shim] = current.concat(shim_libraries_cleansed);
 				}
-
-				// Check to see if the shim already exists, if it does, merge the new shims.
-				current = [];
-
-				if (me.is_array(me.shims[shim])) {
-					current = me.shims[shim];
-				}
-
-				cleansed_shims[shim] = shim_libraries_cleansed;
-				me.shims[shim] = current.concat(shim_libraries_cleansed);
 			}
 		}
 
@@ -209,16 +225,16 @@
 				continue;
 			}
 
-			if (stylesheet.rules) {
-				found = me.css.scan(stylesheet.rules, selector);
-
-				if (found) {
-					return found;
-				}
-			}
-
 			// Issues with CORS at times, don't let the script bomb.
 			try {
+				if (stylesheet.rules) {
+					found = me.css.scan(stylesheet.rules, selector);
+
+					if (found) {
+						return found;
+					}
+				}
+
 				if (stylesheet.cssRules) {
 					found = me.css.scan(stylesheet.cssRules, selector);
 
@@ -520,5 +536,6 @@
 	};
 
 	fallback.bootstrap();
-	window.fallback = fallback;
-})(window, document, undefined);
+
+	window.fallback = window.fbk = fallback;
+}(window, document));
