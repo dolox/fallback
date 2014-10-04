@@ -93,7 +93,7 @@ Along with this premise, the filesize the extremely small, the main purpose of l
 
 ##Improving Page Load Times
 ###Speed is important!
-An extremely common way of coding websites throughout the internet for years has been to put your javascript and stylesheet references in the <head> of your HTML. By doing this you're forcing the browser to wait for those libraries to load before it actually displays the page to the user.
+An extremely common way of coding websites throughout the internet for years has been to put your javascript and stylesheet references in the &lt;head&gt; of your HTML. By doing this you're forcing the browser to wait for those libraries to load before it actually displays the page to the user.
 Alternatively there are a few ways around this. First you can put your references at the bottom of the page before closing the <body> tag. This alone will boost the speed of your page loads.
 To boost the page load speed even further, you simply don't reference those libraries at all in the HTML and instead you can let JavaScript load those libraries for you after the page load. This is exactly what Fallback JS does for you!
 
