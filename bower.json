@@ -14,8 +14,11 @@
 	"license": "MIT",
 	"readmeFilename": "README.md",
 	"ignore": [
+		".eslintrc",
 		".gitignore",
+		".jshintrc",
 		"build/",
+		"CHANGELOG.md",
 		"demo/"
 	],
 	"repository": {
