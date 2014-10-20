@@ -1,6 +1,6 @@
 {
 	"name": "fallback",
-	"version": "1.1.4",
+	"version": "1.1.6",
 	"description": "JavaScript library for dynamically loading CSS and JS files. Also provides the ability to load multiple files from a CDN with multiple fallback options and shimming! http://fallback.io/",
 	"keywords": [
 		"fallback",
@@ -19,7 +19,8 @@
 		".jshintrc",
 		"build/",
 		"CHANGELOG.md",
-		"demo/"
+		"demo/",
+		"v2-DRAFT.md"
 	],
 	"repository": {
 		"type": "git",

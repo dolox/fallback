@@ -1,4 +1,4 @@
-/* fallback.js v1.1.5 | http://fallback.io/ | Salvatore Garbesi <sal@dolox.com> | (c) 2013 Dolox Inc. */
+/* fallback.js v1.1.6 | http://fallback.io/ | Salvatore Garbesi <sal@dolox.com> | (c) 2013 Dolox Inc. */
 
 (function (window, document) {
 	'use strict';
@@ -471,6 +471,11 @@
 		element.onload = function() {
 			// Checks for JavaScript library.
 			if (type === 'js' && !me.is_defined(library)) {
+				return me.spawn.failed(payload);
+			}
+
+			// Needed for IE11 especially. `onload` is fired even when there's a 404 for `link` elements.
+			if (!me.css.check(library) && Object.hasOwnProperty.call(window, "ActiveXObject") && !window.ActiveXObject) {
 				return me.spawn.failed(payload);
 			}
 

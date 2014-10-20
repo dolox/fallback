@@ -1,6 +1,10 @@
 CHANGELOG
 ========
 
+## v1.1.6 / 2014-10-20
+- Fixing IE11 CSS loading issue where it's not loading fallback stylesheets.
+- Adding more files to ignore to the `bower.json` file. PR from @jieryn
+
 ## v1.1.5 / 2014-10-04
 - Fixing CORS issues with IE11 and stylesheets.
 - Added `fbk` as a library alias for short-hand. e.g. `fbk.load()`
