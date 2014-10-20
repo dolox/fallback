@@ -57,8 +57,8 @@ urls | Object | null | Yes | Expects an object containing the configuration for 
 	"globals": true,
 
 	"urls": {
-		"bootstrapCSS": "css!//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min",
-		"imgPreloader": "img!http://fallback.io/img/logo.png",
+		"css!bootstrapCSS": "//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min",
+		"img!imgPreloader": "http://fallback.io/img/logo.png",
 		"jquery": "//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min"
 	}
 }
@@ -148,7 +148,7 @@ init | Function | *null* | No | ...
 			"files": "//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.10.0/ui-bootstrap-tpls.min"
 		},
 
-		"bootstrapCSS": "css!//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min",
+		"css!bootstrapCSS": "//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min",
 
 		"jquery": {
 			"alias": "$",
