@@ -7,11 +7,97 @@
 
 To let you dive right in, we're going to provide you with a sample of code below. You can view the full [API Documentation](#api-documentation) along with other complex examples listed further down the page.
 
-@todo
 
-simple code snippet here
+**HTML**
 
-plnkr links of code examples for people to fork
+```html
+<html>
+<head>
+	<script data-main="main" src="fallback.min.js" type="text/javascript"></script>
+</head>
+
+<body>
+	<div id="status">
+		<h1>Libraries Loaded</h1>
+	</div>
+</body>
+</html>
+```
+
+**main.js**
+```javascript
+conf({
+	// Here we're setting the path where our local fallback files live.
+	// This way we don't have to retype it over and over again.
+	base: '/js/',
+
+	libs: {
+		// Here we're loading the Bootstrap CSS library.
+		// We explicity `css$` to the beginning of our key, so the library
+		// knows to load this file file as a stylesheet.
+		css$bootstrap: '//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min',
+
+		// Our JSON library, it has not dependencies and only a single URL.
+		json: '//cdnjs.cloudflare.com/ajax/libs/json2/20121008/json2.min',
+
+		// Our jQuery library.
+		jquery: {
+			// Here we're giving it an alias, so we can reference jquery as `$`
+			// instead of typing `jquery`.
+			alias: '$',
+
+			// In order to load the `jQuery` library, we must first load our `JSON`
+			// library.
+			deps: ['css$bootstrap', 'json'],
+
+			// A list of all of the files for our jQuery library.
+			// If one fails, we'll try another, until 1 succeeds or they all fails.
+			urls: [
+				'//.....some-bad-cdn...../.....FAIL-ON-PURPOSE.....',
+				'//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min',
+				'//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min'
+			]
+		},
+
+		// Our jQuery UI library.
+		jqueryUI: {
+			// Load jQuery first before loading jQuery UI.
+			deps: ['jquery'],
+
+			// A list of all of the files for our jQuery UI library.
+			urls: [
+				'//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery.min',
+				'//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min'
+			]
+		}
+	}
+});
+
+// Load jQuery!
+require(function($) {
+	$('#test').append('<div>Loaded jQuery</div>');
+});
+
+// Load Jquery UI!
+require(function(jqueryUI) {
+	$('#test').append('<div>Loaded jQuery UI</div>');
+});
+
+// Load JSON!
+require(function(json) {
+	$('#test').append('<div>Loaded JSON</div>');
+});
+```
+
+---
+
+## Open Source Examples
+
+Link | Description
+------------- | -------------
+[AngularJS Lazy Loading](http://plnkr.co/Q1mPmY) | This example illustrates how you can lazy load controllers, directives, modules and services in AngularJS using the FallbackJS library.
+
+[<p align="center">View more open source examples on Plunker under the tag #fallbackjs!</p>](http://plnkr.co/tags/fallbackjs)
 
 ---
 
@@ -163,7 +249,7 @@ init | Function | *null* | No | ...
 
 			"files": [
 				"//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min",
-				"//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"
+				"//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min"
 			]
 		},
 
