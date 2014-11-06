@@ -13,6 +13,7 @@ To let you dive right in, we're going to provide you with a sample of code below
 ```html
 <html>
 <head>
+	<!-- By specifying `data-main` the library will automatically load `main.js` -->
 	<script data-main="main" src="fallback.min.js" type="text/javascript"></script>
 </head>
 
@@ -26,66 +27,58 @@ To let you dive right in, we're going to provide you with a sample of code below
 
 **main.js**
 ```javascript
-conf({
+cfg({
 	// Here we're setting the path where our local fallback files live.
 	// This way we don't have to retype it over and over again.
-	base: '/js/',
+	"base": "/js/",
 
-	libs: {
+	"libs": {
 		// Here we're loading the Bootstrap CSS library.
 		// We explicity `css$` to the beginning of our key, so the library
 		// knows to load this file file as a stylesheet.
-		css$bootstrap: '//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min',
-
-		// Our JSON library, it has not dependencies and only a single URL.
-		json: '//cdnjs.cloudflare.com/ajax/libs/json2/20121008/json2.min',
+		"css$bootstrap": "//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min",
 
 		// Our jQuery library.
-		jquery: {
+		"jquery": {
 			// Here we're giving it an alias, so we can reference jquery as `$`
 			// instead of typing `jquery`.
-			alias: '$',
+			"alias": "$",
 
 			// In order to load the `jQuery` library, we must first load our `JSON`
 			// library.
-			deps: ['css$bootstrap', 'json'],
+			"deps": ["css$bootstrap"],
 
 			// A list of all of the files for our jQuery library.
 			// If one fails, we'll try another, until 1 succeeds or they all fails.
-			urls: [
-				'//.....some-bad-cdn...../.....FAIL-ON-PURPOSE.....',
-				'//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min',
-				'//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min'
+			"urls": [
+				"//.....some-bad-cdn...../.....FAIL-ON-PURPOSE.....",
+				"//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min",
+				"//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min"
 			]
 		},
 
 		// Our jQuery UI library.
-		jqueryUI: {
+		"jqueryUI": {
 			// Load jQuery first before loading jQuery UI.
-			deps: ['jquery'],
+			"deps": ["jquery"],
 
 			// A list of all of the files for our jQuery UI library.
-			urls: [
-				'//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery.min',
-				'//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min'
+			"urls": [
+				"//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery.min",
+				"//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min"
 			]
 		}
 	}
 });
 
 // Load jQuery!
-require(function($) {
-	$('#test').append('<div>Loaded jQuery</div>');
+req(function($) {
+	$("#test").append("<div>Loaded jQuery</div>");
 });
 
 // Load Jquery UI!
-require(function(jqueryUI) {
-	$('#test').append('<div>Loaded jQuery UI</div>');
-});
-
-// Load JSON!
-require(function(json) {
-	$('#test').append('<div>Loaded JSON</div>');
+req(function(jqueryUI) {
+	$("#test").append("<div>Loaded jQuery UI</div>");
 });
 ```
 
@@ -107,21 +100,22 @@ Link | Description
 
 Function | Aliases | Description
 ------------- | ------------- | -------------
-[config](#fallbackconfiginput) | `conf`, `config`, `fallback.conf`, `fallback.config`, `fbk.conf`, `fbk.config` | How to configure Fallback with your libraries.
+[config](#fallbackconfiginput) |`cfg`, `conf`, `config`, `fallback.cfg`, `fallback.conf`, `fallback.config`, `fbk.cfg`, `fbk.conf`, `fbk.config` | How to configure Fallback with your libraries.
 [define](#fallbackdefinename-dependencies-function) | `def`, `define`, `fallback.def`, `fallback.define`, `fbk.def`, `fbk.define` | How to properly define your JavaScript files.
 [require](#fallbackrequiredependencies-function) | `fallback.req`, `fallback.require`, `fbk.req`, `fbk.require`, `req`, `require` | How to go about loading your JavaScript files.
+[stats](#fallbackrequiredependencies-function) | `fallback.stats`, `fbk.stats` | Exports statistics for libraries that were loaded in the console.
 
 =====
 
 ### **fallback.config(`input`)**
 
-***Aliases:*** `conf`, `config`, `fallback.conf`, `fallback.config`, `fbk.conf`, `fbk.config`
+***Aliases:*** `cfg`, `conf`, `config`, `fallback.cfg`, `fallback.conf`, `fallback.config`, `fbk.cfg`, `fbk.conf`, `fbk.config`
 
-This function allows you to configure the defaults along with the URLs for your libraries. It only takes a single parameter, and expects it to be an `Object`. The `keys` of this object will correlate to the variables you'll use to load the library in question.
+This function allows you to configure the defaults along with the URLs for your libraries. It only takes a single parameter, and expects it to be an `Object`.
 
 Parameter | Type | Default | Required | Description
 ------------- | ------------- | ------------- | ------------- | -------------
-*input* | Object | *null* | Yes | The configuration for the Fallback library.
+*input* | Object | *null* | Yes | Key/Value pair object that contains the configuration for the Fallback library.
 
 =====
 
@@ -129,22 +123,26 @@ Parameter | Type | Default | Required | Description
 
 Parameter | Type | Default | Required | Description
 ------------- | ------------- | ------------- | ------------- | -------------
+amd | Boolean | false | No | Whether or not to allow your libraries to be accessible via global scope. If this value is `false` you won't be able to access your libraries directly through the browsers `window` object.
 base | Object/String | null | No | Accepts an object/string to be used as the prefix for all of your URLs. See the `input.base` table below for further details.
 debug | Boolean | false | No | Toggle debugging mode. If turned on, helpful messages will show up in the console.
-globals | Boolean | true | No | Whether or not to allow your libraries to be accessible via global scope. If this value is `false` you won't be able to access your libraries directly through the browsers `window` object.
-urls | Object | null | Yes | Expects an object containing the configuration for each of your libraries. See the `input.urls` table below for further details.
+delimiter | String | $ | No | The string to dictate loading non-JavaScript files. For example to load css files you'd use: `css$my_css_file`.
+globals | Boolean | true | No | Whether or not to check the global scope before attemping to load your libaries. This way if a library has already been loaded, `Fallback` won't attempt to load it again.
+urls | Object | null | No | Expects an object containing the configuration for each of your libraries. See the `input.urls` table below for further details.
 
 **Example**
 
 ```json
 {
+	"amd": false,
 	"base": "./js/",
 	"debug": true,
+	"delimiter": "_",
 	"globals": true,
 
 	"urls": {
-		"css!bootstrapCSS": "//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min",
-		"img!imgPreloader": "http://fallback.io/img/logo.png",
+		"css_bootstrapCSS": "//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min",
+		"img_imgPreloader": "http://fallback.io/img/logo.png",
 		"jquery": "//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min"
 	}
 }
@@ -154,7 +152,7 @@ urls | Object | null | Yes | Expects an object containing the configuration for 
 
 **<p align="center">INPUT.BASE</p>**
 
-If the `input.url` value is a string, all of your libraries will be prefixed with this path, as long as the path of those libraries doesn't start with `/`, `data:`, `http://` or `https://`. The following table below reflects the acceptable parameters when the value of `input.url` is an object.
+If the `input.base` value is a `String`, all of your URLs will be prefixed with this path, as long as the path in question doesn't start with `/`, `data:`, `http://` or `https://`. The following table below reflects the acceptable parameters when the value of `input.base` is an `Object`.
 
 Parameter | Type | Default | Required | Description
 ------------- | ------------- | ------------- | ------------- | -------------
@@ -178,43 +176,100 @@ js | String | *null* | No | The path to prefix all of your JS files with.
 
 **<p align="center">INPUT.URLS</p>**
 
+The `keys` of this object will correlate to the variables you'll use to load the library in question.
+
+If the `value` of our `key` is a...
+
+- `String`, it will be treated as the URL for the library.
+
+- `Array`, it will be treated as the URLs for the library.
+
+- `Object`, it may have it's own specific configuration set. See below.
+
 Parameter | Type | Default | Required | Description
 ------------- | ------------- | ------------- | ------------- | -------------
 *key* | String | *null* | Yes | The subkeys of our objects correlate to the names of our libraries. *Example: 'jQuery'*
-*value* | Array/Object/String | *null* | Yes | The acceptable parameters of our *inputs object values* are listed in the table below.
+*value* | Array/Object/String | *null* | Yes | Either a `String`, or `Array` of `Strings` which represent the URLs for the library. If the `value` is an `Object` then please see the `INPUT.URLS (VALUES AS OBJECTS)` section below for a list of acceptable parameters.
 
 **Example**
 
 ```javascript
-conf({
+cfg({
 	"urls": {
-		"jquery": {
-			alias: "$",
-			files: "//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min"
+		"angular": '//ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min'
+	}
+});
+
+cfg({
+	"urls": {
+		"jquery": [
+			'//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery.min',
+			'//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min'
+		]
+	}
+});
+
+cfg({
+	"urls": {
+		"jqueryUI": {
+			"deps": ["jquery"],
+			"files": "//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min"
 		}
 	}
 });
 
-req(function($) {
-	$('body').html('jQuery Loaded!');
+req(function(angular, jquery, jqueryUI) {
+	$("body").html("Angular JS, jQuery and jQuery UI Loaded!");
 });
 ```
 
 =====
 
-**<p align="center">INPUT.URLS OBJECT VALUES</p>**
+**<p align="center">INPUT.URLS (KEYS)</p>**
+
+Any `keys` which have a specific prefix (listed in the table below) followed by our delimiter (which can be set via the configuration function) will be handled in their own special way.
+
+Prefix | Description
+------------- | ------------- | -------------
+css | All files listed for the library in question would be loaded as Cascading Style Sheets (CSS).
+img | All files listed for the library in question would be loaded as images.
+js | All files listed for the library in question would be loaded as JavaScript files.
+
+**Example**
+
+```javascript
+// The following example illustrates how we'd load CSS, Image and JavaScript files, with the delimiter in our libraries configuration being to set to a `$`.
+cfg({
+	"libs": {
+		// Load this file as a stylesheet.
+		"css$bootstrap": "//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min",
+
+		// This will load our logo image. Useful if we're attempting to preload parts of our website.
+		"img$logo": "http://fallbackjs.com/img/logo.png",
+
+		// You don't have to specify `js$`, but default we'll automatically treat files as JavaScript files.
+		"js$angular": "//ajax.googleapis.com/ajax/libs/angularjs/1.2.20/angular.min"
+	}
+});
+
+req(function(css$bootstrap, img$logo, js$angular) {
+	window.console.log("Loaded Bootsrap CSS, Logo Image, and Angular JS!");
+});
+```
+
+=====
+
+**<p align="center">INPUT.URLS (VALUES AS OBJECTS)</p>**
 
 Parameter | Type | Default | Required | Description
 ------------- | ------------- | ------------- | ------------- | -------------
-alias | Array/String | *null* | No | Aliases you want to use for your library. For example you might name your key `jquery` for the jQuery library, but instead of using the variable `jquery` you may want to use `$` to reference it. In that case you would set `$` as an alias.
-deps | Array/String | *null* | No | ...
-exports | String | *null* | No | ...
-files | Array/String | *null* | No | ...
-init | Function | *null* | No | ...
+alias | Array/String | *null* | No | Aliases you want to use for your library. For example you might name your key `jquery` for the jQuery library, but instead of using the variable `jquery` you may want to use `$` to reference it. In that case you would set `$` as an alias for the library.
+deps | Array/String | *null* | No | An `Array` or `String` of dependcies that are required to load prior to the library in question. The `Array` of `Strings` or `String` should represent either the `key` of the library, or one of it's `aliases`.
+exports | String | *null* | No | The `window` variable that represents the library. For example Angular JS would be `angular`, jQuery would be `jQuery` and jQuery UI would be `jQuery.ui`.
+files | Array/String | *null* | No | The list of paths/URLs for our library. You can add as many fallbacks as you want in this `Array`.
+init | Function | *null* | No | If present, this function will be immediately executed as a soon as the library in question has finished loading successfully.
 
-@todo much more details needed here
-
-@todo explain css! img! prefixes
+@todo left off here
 
 **Example**
 
@@ -275,7 +330,7 @@ true | Boolean | The config was imported properly.
 
 -----
 
-### **fallback.define(name, dependencies, function)**
+### **fallback.define(`name`, `dependencies`, `function`)**
 
 ***Aliases:*** `def`, `define`, `fallback.def`, `fallback.define`, `fbk.def`, `fbk.define`
 
@@ -369,15 +424,57 @@ function | Function | Yes | null | If dependencies are specified, then they will
 
 ## FAQ
 
+**Q: What dependencies does Fallback JS have?**
+
+A: None! Fallback JS is a standalone library.
+
+-
+
+**Q: Can I provide multiple fallbacks for any given asset?**
+
+A: Yes! You can provide as many as you want, there is no limit.
+
+-
+
+**Q: How should Fallback JS be loaded?**
+
+A: @todo
+
+-
+
+**Q: Can I load up my CSS and JavaScript files in a single configuration block?**
+
+A: Yes, please see the example at the top of the `README.md` file.
+
+-
+
 **Q: Can I run the `config` function more than once?**
 
 A: Yes.
 
+-
+
 **Q: Why can't I call the `define` function more than once without a name in the same file?**
 
-A: ...
+A: @todo
 
-@todo more here
+-
+
+**Q: What is the `amd` parameter in the configuration for?**
+
+A: @todo
+
+-
+
+**Q: What is the `globals` parameter in the configuration for?**
+
+A: @todo
+
+-
+
+**Q: What is the `delimiter` parameter in the configuration for?**
+
+A: @todo
 
 -----
 
@@ -395,10 +492,14 @@ Please read the [CONTRIBUTING.md](https://github.com/dolox/fallback/blob/master/
 
 ## Support
 
+### Contributing
+
+@todo
+
 ### Need help? We use GitHub!
 
 Any questions, suggestions or bugs should all be submitted to the issues section of the projects GitHub repository.
 
 ### Staying Alive
 
-Over the course of the life of this project, we've come to find out that about 4-5x the amounts of people are actually actively using this project then what the stars reflects on GitHub. We encourage our users to star the project, so it can help us see how widely the project is growing and how urgent issues are.
+Over the course of the life of this project, we've come to find out that 4-5x our star count on GitHub reflects the actual adoption rate of this project. We encourage our users to star the project, so that it can help us see how large the project is growing and how urgent the issues are.
