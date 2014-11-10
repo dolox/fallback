@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+<head>
+	<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../css/main.css" rel="stylesheet" />
+	<script src="../../dist/fallback.js" type="text/javascript"></script>
+	<title>Fallback JS - Examples - Getting Started</title>
+</head>
+
+<body class="container">
+	<a class="col-xs-12 text-right" href="../">Back to Examples</a>
+
+	<h1 class="text-center">Getting Started</h1>
+
+	<script type="text/javascript">
+		fallback.config({
+			'libs': {
+				'jquery': {
+					// Make the `$` our alias, so we can reference it in our `require` functions.
+					'alias': '$',
+
+					// This is the variable that jQuery stored in the pages `window` object (window.jQuery).
+					'exports': 'jQuery',
+
+					// The URL that points to the jQuery library. (We don't need to specify `.js`, the library adds it automatically.
+					'urls': [
+						'//.....JQUERY..FAIL..ON..PURPOSE.....',
+						'//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min'
+					]
+				},
+
+				'jqueryui': {
+					// jQuery UI gets stored in `window.jQuery.ui`, we need to set that here so the library knows whether it's loads.
+					'exports': 'jQuery.ui',
+
+					// Load jQuery before we load jQuery UI.
+					'deps': 'jquery',
+
+					// The URL that points to the jQuery UI library.
+					'urls': [
+						'//.....JQUERY..UI..FAIL..ON..PURPOSE.....',
+						'//ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min'
+					]
+				}
+			}
+		});
+
+		// Load up jQuery.
+		require(function($) {
+			console.log('jquery', $);
+			$('.container').append('<h3 class="alert-success">`jQuery` is ready!</h3>');
+		});
+
+		// Load up jQuery and jQuery UI.
+		require(function(jqueryui) {
+			$('.container').append('<h3 class="alert-success">`jQuery UI` is ready!</h3>');
+		});
+
+		// Load up jQuery and jQuery UI.
+		require(function(fallback, jquery, jqueryui) {
+			$('.container').append('<h1 class="text-center">Stats</h1>');
+			$('.container').append('<div id="stats">' + fallback.stats() + '</div>');
+		});
+	</script>
+</body>
+</html>

@@ -1,83 +1,51 @@
-CHANGELOG:
-add use strict for jshint
-minify plugins to dist.
+code documentation
+	[x] config
+	[x] core					-- couple @todo's fix them
+	[x] define
+	[x] loader
+	[x] loaderImage
+	[ ] loaderJavaScript
+	[ ] loaderStylesheet
+	[ ] module
+	[ ] require
 
-	core:
-		override -- if set to true define can be override for require and define functions
-		namespace -- @todo
+@todo
+	fetch url of out of combiner, so fallback.url it comes out of from package.json
+	add loader delimiter to the config file.
+	grep for `indexOf` and use `me.indexOf`
+	integrate and test `define.amd = {};`
+	dont automatically import aliases as exports, fix that shit
+	strip all me.logs(), me.banner, me.log and me.stats function from minification version
+	automatically rename the docs fallback.html to index.html after it's generated.
 
-@todo requirejs.js
-	- turn globals off by def
-	- change `dependenciess` to `shims` --- requirejs fallback plz thx
-	- fix shim config to use requirejs configs
+readme documentation
+	- delimiter is changeable.
+	- add `init` and `check` functions for libs.
+	- redocument the `global` attribute in config.
+	- change README.md to README.hbs and automatically generate it with the current version # and file sizes of the dists.
+	- make links from the root of the project to fallback.min.js in the dist folder.
 
-@todo migrate.js
-	- fallback.ready success and failed variables for the old thang :O
+tests
+	- copy over core unit tests to start with and finish out the core.
+	- http://stackoverflow.com/questions/4904096/whats-the-difference-between-unit-functional-acceptance-and-integration-test
+	- cleanup the example and code document them better for people.
 
-@todo travis.yml
-@todo david-dm
-@todo sauce labs
+	- Add SauceLabs: https://saucelabs.com/account?new=1
+	- Add Travic CI: https://travis-ci.org/
+	- Add David DM: https://david-dm.org/
 
-
-@todo check that init function works properly especially w/ jquery noconflict!
-
-config.init.jQuery = function() {
-	// on init noConflict
-};
-
-
-
-// @todo require js migration look at the shim/config
-
-- Maintain header comment in 1 file, not multiples through Grunt
-
-- Follow https://github.com/rwaldron/idiomatic.js/
-Style Guidlines: Real Tabs, Single Quotes, No padding spaces in parenthesis: if ( a )
-
-
-- Document everything, heavy comments in code.
-
-- Add SauceLabs: https://saucelabs.com/account?new=1
-
-- Add Travic CI: https://travis-ci.org/
-
-- Add David DM: https://david-dm.org/
-
-Unit Tests
-
-
-
-
-website:
-	- ok first you need to minify all the site css and js files.
-	- create a new branch gh-pages for the website: http://blog.teamtreehouse.com/using-github-pages-to-host-your-website
-
-library:
-	- v1: before making a push, check TTM mobile patch for IE and apply to current.
-	- v1: fix ie8 bug on TTM mobile. @todo remove css check
-	- finish the unit test and look for bugs.
-	- finish the documentation.
-	- push everything to the master. this is version 2.0
+contributing
+	- Follow https://github.com/rwaldron/idiomatic.js/
+		- Style Guidlines: Real Tabs, Single Quotes, No padding spaces in parenthesis: if ( a )
+	- update sample code on the website and file size
+	- get fallbackjs.com pointing to github and fallback.io to 301
 
 ---
 
-tests for require/define:
-	- define/require in same file
-	- define/require in different file
-	- define/require in different file but defined in paths{}
-	- define/require in a different file with dep in the remote file for other deps in paths{}
-	- define/require in a different file with dep in the remote file for other deps not in paths{}
+deploy to git v2 branch
 
-update to tests:
-	core.config.input --- added debug
-	core.utility.types --- added boolean
-	core.config --- added debug
-	core.config.paths
-	core.config.paths.url
-	
-	amd -- bootstrap
-	amd -- initialize
-	define
-	defineModule
-	require
-	require.invoke
+- migration code from 1.0 to 2.0
+
+---
+
+fallback CLI utility where it automatically adds your libraries to a JSON file and installs via bower

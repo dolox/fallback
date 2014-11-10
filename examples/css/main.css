@@ -1,0 +1,71 @@
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:700,400);
+
+* {
+	font-family: 'Open Sans';
+	font-size: 22px
+}
+
+a,
+a:active,
+a:hover,
+a:visited,
+h1,
+strong {
+	color: #db552e !important;
+}
+
+h1 {
+	margin-bottom: 60px;
+	margin-top: 60px;
+}
+
+.col-xs-12.text-right {
+	background: #db552e;
+	border-radius: 5px;
+	color: #fff !important;
+	display: inline-block;
+	float: none;
+	font-size: 14px;
+	font-weight: 700;
+	left: 100%;
+	margin-left: -200px;
+	margin-top: 30px;
+	padding: 5px;
+	position: relative;
+	text-align: center;
+	width: 200px;
+}
+
+p {
+	font-size: 18px;
+}
+
+.img-responsive {
+	margin: 30px auto;
+}
+
+th {
+	font-weight: bold;
+}
+
+.alert-success {
+	border-radius: 5px;
+	padding: 10px;
+	text-align: center;
+}
+
+.alert-success img {
+	margin-bottom: 15px;
+}
+
+.table {
+	margin-bottom: 60px;
+}
+
+#stats {
+	font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+	font-size: 12px;
+	overflow-x: scroll;
+	margin-bottom: 60px;
+	white-space: pre;
+}

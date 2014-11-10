@@ -1,276 +1,509 @@
-<img alt="Fallback JS" height="128" src="http://fallback.io/img/logo.png" />
-Fallback JS
-========
-**WORKS IN LEGACY AND MODERN BROWSERS!**
-*Tested and working in Chrome, Firefox, Safari and IE 6 - 10!*
+<p align="center"><img alt="Fallback JS" height="128" src="http://fallback.io/img/logo.png" /></p>
+<h1 align="center">Fallback JS</h1>
 
-**Fallback JS** is a tiny library that allows you to load both your JavaScript and CSS libaries after your page has already loaded. The library also allows you to specify **"failovers"** or **"fallbacks"** for each of your libraries, this way in case one of those external libraries your using happens to fail, you won't be leaving your users with a dysfunctional website. Just because someone elses website breaks, it doesn't mean that yours should!
+---
 
-######<a class="button1" href="http://fallback.io/" title="The official Fallback JS homepage!" target="_blank">Official Homepage</a>
-######<a class="button1" href="https://github.com/dolox/fallback/" title="Fallback JS on GitHub" target="_blank">GitHub Repository</a>
+<img src="https://travis-ci.org/dolox/fallback.svg" />
+<img src="https://david-dm.org/dolox/fallback/status.svg?style=flat" />
+<img src="https://david-dm.org/dolox/fallback/dev-status.svg?style=flat" />
 
-#Downloads
-######<a class="button2" href="https://raw.github.com/dolox/fallback/v1.1.1/fallback.min.js" title="Production version of Fallback JS" target="_blank">Production (v1.1.1)</a> *Compressed 3.16 KB*
-######<a class="button2" href="https://raw.github.com/dolox/fallback/v1.1.1/fallback.js" title="Development version of Fallback JS" target="_blank">Development (v1.1.1)</a> *Uncompressed 11.49 KB*
+## Getting Started
 
-**SEE WORKING DEMOS WITH SOURCE CODE AT <a href="http://plnkr.co/tags/fallbackjs">http://plnkr.co/tags/fallbackjs</a>**
+To let you dive right in, we're going to provide you with a sample of code below. You can view the full [API Documentation](#api-documentation) along with other complex examples listed further down the page.
 
-#Introduction
-##Getting Started
-###Quick and easy demonstration.
 
-To let you dive right in, we're going to provide you with a sample of code below. If you want to learn more you can read through the rest of this page for all of the technical details. This quick and easy demonstration should be enough for you to understand how to use the library and implement it in your code.
+**HTML**
 
+```html
+<html>
+<head>
+	<!-- By specifying `data-main` the library will automatically load `main.js` -->
+	<script data-main="main" src="fallback.min.js" type="text/javascript"></script>
+</head>
+
+<body>
+	<div id="status">
+		<h1>Libraries Loaded</h1>
+	</div>
+</body>
+</html>
 ```
-// Include the Fallback JS library.
-<script src="fallback.min.js"></script>
 
-// Script block to execute Fallback JS
-<script>
+**main.js**
+```javascript
+cfg({
+	// Here we're setting the path where our local fallback files live.
+	// This way we don't have to retype it over and over again.
+	"base": "/js/",
 
-	// Here we actually invoke Fallback JS to retrieve the following libraries for the page.
-	fallback.load({
-		// Include your stylesheets, this can be an array of stylesheets or a string!
-		page_css: 'index.css',
-		global_css: ['public.css', 'members.css'],
+	"libs": {
+		// Here we're loading the Bootstrap CSS library.
+		// We explicity `css$` to the beginning of our key, so the library
+		// knows to load this file file as a stylesheet.
+		"css$bootstrap": "//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min",
 
-		// JavaScript library. THE KEY MUST BE THE LIBARIES WINDOW VARIABLE!
-		JSON: '//cdnjs.cloudflare.com/ajax/libs/json2/20121008/json2.min.js',
+		// Our jQuery library.
+		"jquery": {
+			// Here we're giving it an alias, so we can reference jquery as `$`
+			// instead of typing `jquery`.
+			"alias": "$",
 
-		// Here goes a failover example. The first will fail, therefore Fallback JS will load the second!
-		jQuery: [
-			'//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.FAIL_ON_PURPOSE.min.js',
-			'//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js',
-			'//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.0/jquery.min.js'
-		],
+			// In order to load the `jQuery` library, we must first load our `JSON`
+			// library.
+			"deps": ["css$bootstrap"],
 
-		'jQuery.ui': [
-			'//ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js',
-			'//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js',
-			'//js/loader.js?i=vendor/jquery-ui.min.js'
-		]
-	}, {
-		// Shim jQuery UI so that it will only load after jQuery has completed!
-		shim: {
-			'jQuery.ui': ['jQuery']
+			// A list of all of the files for our jQuery library.
+			// If one fails, we'll try another, until 1 succeeds or they all fails.
+			"urls": [
+				"//.....some-bad-cdn...../.....FAIL-ON-PURPOSE.....",
+				"//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min",
+				"//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min"
+			]
 		},
 
-		callback: function(success, failed) {
-			// success - object containing all libraries that loaded successfully.
-			// failed - object containing all libraries that failed to load.
+		// Our jQuery UI library.
+		"jqueryUI": {
+			// Load jQuery first before loading jQuery UI.
+			"deps": ["jquery"],
 
-			// All of my libraries have finished loading!
-
-			// Execute my code that applies to all of my libraries here!
+			// A list of all of the files for our jQuery UI library.
+			"urls": [
+				"//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery.min",
+				"//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min"
+			]
 		}
-	});
-
-	fallback.ready(['jQuery'], function() {
-		// jQuery Finished Loading
-
-		// Execute my jQuery dependent code here!
-	});
-
-	fallback.ready(['jQuery', 'JSON'], function() {
-		// jQuery and JSON Finished Loading
-
-		// Execute my jQuery + JSON dependent code here!
-	});
-
-	fallback.ready(function() {
-		// All of my libraries have finished loading!
-
-		// Execute my code that applies to all of my libraries here!
-	});
-</script>
-```
-
-##Why Fallback JS?
-###Unlimited failovers, and size that does matter!
-The sole purpose of Fallback JS is to make it extremely easy for you as a developer to load as many external JavaScript and/or CSS libraries that you want with the ability to have as many failovers as you want without you having to write custom code or run through extra loops to achieve this goal.
-
-Along with this premise, the filesize the extremely small, the main purpose of loading JavaScript files after your website has already loaded is to increase you page load time (see below). You want your users to load as little as possible so you website can load as fast as it possibly can. Think outside the box. All of your users won't always be on high speed internet connections, and we all know how slow surfing the web can sometimes be on mobile devices.
-
-##Improving Page Load Times
-###Speed is important!
-An extremely common way of coding websites throughout the internet for years has been to put your javascript and stylesheet references in the <head> of your HTML. By doing this you're forcing the browser to wait for those libraries to load before it actually displays the page to the user.
-Alternatively there are a few ways around this. First you can put your references at the bottom of the page before closing the <body> tag. This alone will boost the speed of your page loads.
-To boost the page load speed even further, you simply don't reference those libraries at all in the HTML and instead you can let JavaScript load those libraries for you after the page load. This is exactly what Fallback JS does for you!
-
-##Failovers For Your Libraries
-###So that your website doesn't break!
-So you found all of these great CDNs that host popular libraries such as jQuery, Dojo and Underscore.js just to name a few. You don't want to waste bandwidth on libraries that you can include for free on your website, that's understandable. But what happens when one of those CDNs you're using goes down for maintainence? Or mysteriously stops working out of the blue? Your website breaks! That's what happens!
-
-Don't get stuck leaving your users with a dysfunctional website because of someone elses mistakes. You should always have mutliple failovers for any external library you decide to bundle for your website.
-Fallback JS makes this extremely easy for you to integrate into your website. Not only can you have as many failovers as you want for each of your libraries, but you can also implement shimming as well. Shimming for example is the ability to load certain libraries if other libraries have finished loading. Case by example jQuery UI depends on jQuery. You simply cannot load jQuery UI before jQuery has finished loading. In this instance you would shim jQuery UI to load after jQuery has completed.
-
-##What is shimming?
-```
-shim
-verb (used with object)
-
-	"to fill out or bring to a level by inserting a shim or shims."
-	
-	"to modify a load, clearance, or magnetic field by the use of shims"
-
-	Source: http://dictionary.reference.com/browse/shim/
-```
-
-When we refer to **shims** or **shimming** we are refering to modifying the load context of your libraries that you specify. For instance there will be cases where you cannot load certain libraries until other libraries have first loaded. One of the main cases by example that is pointed out is jQuery UI. jQuery UI cannot be loaded until jQuery has loaded, therefore jQuery must load first, and we must **shim** jQuery UI to load only after jQuery has finished.
-
-#API
-##ready
-###fallback.ready([libraries], callback)
-`[libaries]` **array** *optional*
-
-`callback` **function** *optional*
-
-Executes your function provided to the `callback` as soon as your libraries have finished loading. The `[libraries]` array parameter is **optional**, if an array is not passed in the code will assume that the first parameter passed is the `callback` and in turn will only execute once all of your libraries have finished loading. If you provide the `[libraries]` array, the `callback` will only trigger your callback when those libraries provided have finished loading. You may define the `ready` function multiple times throughout your code.
-
-```
-fallback.ready(function() {
-	// All of my libraries are loaded. Execute my code here!
+	}
 });
 
-fallback.ready(['jQuery', 'jQuery.ui'], function() {
-	// jQuery and jQuery UI are finished. Spin up my animation code here!
+// Load jQuery!
+req(function($) {
+	$("#test").append("<div>Loaded jQuery</div>");
+});
+
+// Load Jquery UI!
+req(function(jqueryUI) {
+	$("#test").append("<div>Loaded jQuery UI</div>");
 });
 ```
 
-##load
-###fallback.load({libraries}, {options})
-`{libaries}` **object** *optional*
+---
 
-Expects to be an *object* containing a key value pair where the **key** is the library's window variable, and the value is the **url** to fetch the library from. The **keys** must be the window variable name of the library you're loading if it's a JavaScript library. This is only relevant for JavaScript libraries and **not StyleSheets**, for StyleSheets you can name them however you please. For example jQuery's key would be **jQuery** since **window.jQuery** exists after jQuery has finished loading. This is required to provide support for legacy browsers.
+## Open Source Examples
 
-The values of your keys can be either a **string** or **array**. If you happen to pass an **array** as the **value** Fallback JS will iterate through each of items in the **order provided** until one of them has loaded successfully. This provides the *failover functionality* so that if your first request *fails*, it will try the next item in the array to load for the library in question.
+Link | Description
+------------- | -------------
+[AngularJS Lazy Loading](http://plnkr.co/Q1mPmY) | This example illustrates how you can lazy load controllers, directives, modules and services in AngularJS using the FallbackJS library.
 
-```
+[<p align="center">View more open source examples on Plunker under the tag #fallbackjs!</p>](http://plnkr.co/tags/fallbackjs)
+
+---
+
+## API Documentation
+
+### Overview
+
+Function | Aliases | Description
+------------- | ------------- | -------------
+[config](#fallbackconfiginput) |`cfg`, `conf`, `config`, `fallback.cfg`, `fallback.conf`, `fallback.config`, `fbk.cfg`, `fbk.conf`, `fbk.config` | How to configure Fallback with your libraries.
+[define](#fallbackdefinename-dependencies-function) | `def`, `define`, `fallback.def`, `fallback.define`, `fbk.def`, `fbk.define` | How to properly define your JavaScript files.
+[require](#fallbackrequiredependencies-function) | `fallback.req`, `fallback.require`, `fbk.req`, `fbk.require`, `req`, `require` | How to go about loading your JavaScript files.
+[stats](#fallbackrequiredependencies-function) | `fallback.stats`, `fbk.stats` | Exports statistics for libraries that were loaded in the console.
+
+=====
+
+### **fallback.config(`input`)**
+
+***Aliases:*** `cfg`, `conf`, `config`, `fallback.cfg`, `fallback.conf`, `fallback.config`, `fbk.cfg`, `fbk.conf`, `fbk.config`
+
+This function allows you to configure the defaults along with the URLs for your libraries. It only takes a single parameter, and expects it to be an `Object`.
+
+Parameter | Type | Default | Required | Description
+------------- | ------------- | ------------- | ------------- | -------------
+*input* | Object | *null* | Yes | Key/Value pair object that contains the configuration for the Fallback library.
+
+=====
+
+**<p align="center">INPUT</p>**
+
+Parameter | Type | Default | Required | Description
+------------- | ------------- | ------------- | ------------- | -------------
+amd | Boolean | false | No | Whether or not to allow your libraries to be accessible via global scope. If this value is `false` you won't be able to access your libraries directly through the browsers `window` object.
+base | Object/String | null | No | Accepts an object/string to be used as the prefix for all of your URLs. See the `input.base` table below for further details.
+debug | Boolean | false | No | Toggle debugging mode. If turned on, helpful messages will show up in the console.
+delimiter | String | $ | No | The string to dictate loading non-JavaScript files. For example to load css files you'd use: `css$my_css_file`.
+globals | Boolean | true | No | Whether or not to check the global scope before attemping to load your libaries. This way if a library has already been loaded, `Fallback` won't attempt to load it again.
+urls | Object | null | No | Expects an object containing the configuration for each of your libraries. See the `input.urls` table below for further details.
+
+**Example**
+
+```json
 {
-	// The key for stylesheets **doesn't matter**, name them however you like.
-	css: 'index.css',
+	"amd": false,
+	"base": "./js/",
+	"debug": true,
+	"delimiter": "_",
+	"globals": true,
 
-	// You have the option to pass a string as your value
-	JSON: '//cdnjs.cloudflare.com/ajax/libs/json2/20121008/json2.min.js',
-
-	// You have the option to pass an array as your value
-	jQuery: [
-		'//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.**FAILONPURPOSE** .min.js',
-		'//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js',
-		'//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.0/jquery.min.js',
-		'//localhost/js/jquery.min.js'
-	],
-
-	// Note that the **key** correlates to jQuery UI's window variable.
-	'jQuery.ui': [
-		'//ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js',
-		'//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js',
-		'//js/loader.js?i=vendor/jquery-ui.min.js',
-		'//localhost/js/jquery-ui.min.js'
-	]
-}
-```
-
-`options` **object** *optional*
-
-Expects to be an *object* containing a key value pair where the **key** is either `shim` or `callback`.
-
-`>` `shim` **object** *optional*
-
-Expects it's value to be an **object** containaing a key value pair where the **key** is the library you want to **shim**, and the **value** is an **array** of libraries you want to finish loading first before attempting to actually load the library specified as the **key**.
-
-`>` `callback` **function** *optional*
-
-Expects to be a function and will accept 2 parameters `success` and `failed` which will be returned as objects. The first parameter will be `success` which is an **object** of all the libraries that were successfully loaded. The second parameter will be `failed` which is an **object** of all the libraries that failed to load.
-
-```
-{
-	// Shimming example. We only want to load jQuery UI after jQuery has loaded!
-	// Otherwise if jQuery UI loads before jQuery we will get JavaScript errors.
-	shim: {
-		'jQuery.ui': ['jQuery']
-	},
-
-	// Here you have the ability to place callback within the object.
-	// This is the equivalent of calling fallback.ready()
-	callback: function(success, failed) {
-		// Inline Callback
+	"urls": {
+		"css_bootstrapCSS": "//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min",
+		"img_imgPreloader": "http://fallback.io/img/logo.png",
+		"jquery": "//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min"
 	}
 }
 ```
 
-#Change Log
-## v1.1.1 / 2013-12-13
-- Fixing bug with stylesheet selector check.
-- Fixing parallel callback issues.
-- Various other performance tweaks.
+=====
 
-## v1.1.0 / 2013-12-03
-- Entire library revamped.
-- Added stylesheet selector check for CSS files.
-- Added .import() function.
-- Added .load() invocation to .ready() function.
-- Fixed bug where parallel scripts would break.
-- Fixed bug where code running in parallel up against the same library would attempt to load it more than once during a load cycle.
+**<p align="center">INPUT.BASE</p>**
 
-## v1.0.6 / 2013-12-01
-- Adding document and undefined to constructor.
-- Wrapping eval for `is_defined` function in a try catch.
-- Checking that callback is a function before attempting to invoke.
+If the `input.base` value is a `String`, all of your URLs will be prefixed with this path, as long as the path in question doesn't start with `/`, `data:`, `http://` or `https://`. The following table below reflects the acceptable parameters when the value of `input.base` is an `Object`.
 
-## v1.0.5 / 2013-10-09
-- Launched http://fallback.io/
-- Updated documentation.
+Parameter | Type | Default | Required | Description
+------------- | ------------- | ------------- | ------------- | -------------
+css | String | *null* | No | The path to prefix all of your CSS files with.
+img | String | *null* | No | The path to prefix all of your images with.
+js | String | *null* | No | The path to prefix all of your JS files with.
 
-## v1.0.4 / 2013-10-08
-- Fixing issue with missing callback sometimes throwing an error expecting a function.
-- Tested and confirmed as working in IE6.
+**Example**
 
-## v1.0.3 / 2013-07-28
-- Fixing broken ready function in IE7-9. Contributors @displague
-- Fixing issues with IE7 and IE8 due to new changes/adjustments.
-- Added utility functions to trim down code and support older versions of IE.
-- Fixed example index.html so that no console notices/errors are thrown in IE.
-- Added POSTLOAD test to example.
+```json
+{
+	"base": {
+		"css": "./css/",
+		"img": "./img/",
+		"js": "./js/"
+	}
+}
+```
 
-## v1.0.2 / 2013-07-27
-- Added .jshintrc file and fixes for JSHint validation. Contributors: @displague
-- Updated the closure.sh file to auto prepend the tagline.
-- Update example/index.js for the minifier's externs that way window.fallback doesn't get removed.
+=====
 
-## v1.0.1 / 2013-07-26
-- Bug with .ready() function not being called. Contributors: @mrgamer @claudyus
-- Updates to the example demonstration.
+**<p align="center">INPUT.URLS</p>**
 
-## v1.0.0 / 2013-07-20
-- Initial public release.
-- Added bower.json and to bower repository.
-- Added ability to call .ready() after libraries have already loaded.
+The `keys` of this object will correlate to the variables you'll use to load the library in question.
 
-## v0.3.0 / 2013-06-14
-- Removed `ready_invoke` option.
-- Added the ability to pass in an array of libraries to the `ready` event.
+If the `value` of our `key` is a...
 
-## v0.2.0 / 2013-06-13
-- Fixes for IE 7, 8 and 9.
-- Added MIT license.
-- Added .gitignore
-- Added `release` branch.
+- `String`, it will be treated as the URL for the library.
 
-## v0.1.0 / 2013-05-27
-- Initial development release.
+- `Array`, it will be treated as the URLs for the library.
 
-#About
-##License
-###The MIT License (MIT)
-Copyright (c) 2013 Dolox Inc.
+- `Object`, it may have it's own specific configuration set. See below.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+Parameter | Type | Default | Required | Description
+------------- | ------------- | ------------- | ------------- | -------------
+*key* | String | *null* | Yes | The subkeys of our objects correlate to the names of our libraries. *Example: 'jQuery'*
+*value* | Array/Object/String | *null* | Yes | Either a `String`, or `Array` of `Strings` which represent the URLs for the library. If the `value` is an `Object` then please see the `INPUT.URLS (VALUES AS OBJECTS)` section below for a list of acceptable parameters.
 
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+**Example**
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+```javascript
+cfg({
+	"urls": {
+		"angular": '//ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min'
+	}
+});
 
-##Support
-###We use GitHub!
+cfg({
+	"urls": {
+		"jquery": [
+			'//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery.min',
+			'//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min'
+		]
+	}
+});
+
+cfg({
+	"urls": {
+		"jqueryUI": {
+			"deps": ["jquery"],
+			"files": "//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min"
+		}
+	}
+});
+
+req(function(angular, jquery, jqueryUI) {
+	$("body").html("Angular JS, jQuery and jQuery UI Loaded!");
+});
+```
+
+=====
+
+**<p align="center">INPUT.URLS (KEYS)</p>**
+
+Any `keys` which have a specific prefix (listed in the table below) followed by our delimiter (which can be set via the configuration function) will be handled in their own special way.
+
+Prefix | Description
+------------- | ------------- | -------------
+css | All files listed for the library in question would be loaded as Cascading Style Sheets (CSS).
+img | All files listed for the library in question would be loaded as images.
+js | All files listed for the library in question would be loaded as JavaScript files.
+
+**Example**
+
+```javascript
+// The following example illustrates how we'd load CSS, Image and JavaScript files, with the delimiter in our libraries configuration being to set to a `$`.
+cfg({
+	"libs": {
+		// Load this file as a stylesheet.
+		"css$bootstrap": "//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min",
+
+		// This will load our logo image. Useful if we're attempting to preload parts of our website.
+		"img$logo": "http://fallbackjs.com/img/logo.png",
+
+		// You don't have to specify `js$`, but default we'll automatically treat files as JavaScript files.
+		"js$angular": "//ajax.googleapis.com/ajax/libs/angularjs/1.2.20/angular.min"
+	}
+});
+
+req(function(css$bootstrap, img$logo, js$angular) {
+	window.console.log("Loaded Bootsrap CSS, Logo Image, and Angular JS!");
+});
+```
+
+=====
+
+**<p align="center">INPUT.URLS (VALUES AS OBJECTS)</p>**
+
+Parameter | Type | Default | Required | Description
+------------- | ------------- | ------------- | ------------- | -------------
+alias | Array/String | *null* | No | Aliases you want to use for your library. For example you might name your key `jquery` for the jQuery library, but instead of using the variable `jquery` you may want to use `$` to reference it. In that case you would set `$` as an alias for the library.
+deps | Array/String | *null* | No | An `Array` or `String` of dependcies that are required to load prior to the library in question. The `Array` of `Strings` or `String` should represent either the `key` of the library, or one of it's `aliases`.
+exports | String | *null* | No | The `window` variable that represents the library. For example Angular JS would be `angular`, jQuery would be `jQuery` and jQuery UI would be `jQuery.ui`.
+files | Array/String | *null* | No | The list of paths/URLs for our library. You can add as many fallbacks as you want in this `Array`.
+init | Function | *null* | No | If present, this function will be immediately executed as a soon as the library in question has finished loading successfully.
+
+@todo left off here
+
+**Example**
+
+```json
+{
+	"urls": {
+		"angular": "//ajax.googleapis.com/ajax/libs/angularjs/1.2.20/angular.min",
+
+		"angularUIBootstrap": {
+			"deps": [
+				"angular",
+				"bootstrapCSS"
+			],
+
+			"exports": "angular.module('ui.bootstrap')",
+
+			"files": "//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.10.0/ui-bootstrap-tpls.min"
+		},
+
+		"css!bootstrapCSS": "//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min",
+
+		"jquery": {
+			"alias": "$",
+			"files": "//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min"
+		},
+
+		"jqueryUI": {
+			"deps": [
+				"jquery",
+				"jqueryUICSS"
+			],
+
+			"files": [
+				"//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min",
+				"//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min"
+			]
+		},
+
+		"jqueryUICSS": {
+			"exports": ".ui-helper-hidden",
+
+			"files": {
+				"//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui"
+			}
+		}
+	}
+}
+```
+
+=====
+
+**<p align="center">RETURN VALUES</p>**
+
+Value | Type | Description
+------------- | ------------- | -------------
+false | Boolean | The config wasn't imported due to being malformed. Turn debugging on and check console for helper messages.
+true | Boolean | The config was imported properly.
+
+-----
+
+### **fallback.define(`name`, `dependencies`, `function`)**
+
+***Aliases:*** `def`, `define`, `fallback.def`, `fallback.define`, `fbk.def`, `fbk.define`
+
+The parameters in this function will fallback on one another. So for example, if you only pass in 2 parameters to the function `fallback.define(a, b)`, `a` will be treated as the `dependencies` and `b` will be treated as the `function`. If you only pass in a single parameter, that parameter will be treated as the `function`.
+
+Parameter | Type | Required | Default | Description
+------------- | ------------- | ------------- | ------------- | -------------
+name | String | No | null | If a name is not passed in, the URL that was used to load the file in question will be used as the name for this definition. Please note that you can't have multiple nameless/anonymous definitions in the same file.
+dependencies | Array/String | No | null | A string/array of dependencies that we expected to be loaded before executing our function.
+function | Function | Yes | null | If dependencies are specified, then they will be sent to this function as their arguments. However, if you don't specify the dependencies, whatever arguments are within this function will be correlated as the dependencies for this function. See below for further details along with an example.
+
+**Example**
+
+Each of following examples below will achieve the same goal. We're simply illustrating how you can use the library, and why you may use one method over another.
+
+**config.js**
+
+*First we need to configure our jQuery library, then load up our definition files.*
+
+```javascript
+conf({
+	"urls": {
+		"jquery": {
+			alias: "$",
+			files: "//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min"
+		}
+	}
+});
+
+req(function(test, test2, test3) {
+	test();
+	test2();
+	test3();
+});
+```
+
+**test1.js**
+
+*Full illustration, passing in all parameters.*
+
+*Notice that the filename is `test1.js` yet we've explicity named it `test` instead. When we goto reference this file, we now must use the name `test` in order to load it properly. In cases where you want to explicity give a name to your definition which differs from it's default, you would specify the `name` parameter.*
+
+```javascript
+def('test', ['jquery'], function($) {
+	return function() {
+		$('body').html('jQuery Loaded!');
+	};
+});
+```
+
+**test2.js**
+
+*If you're using a minifier which doesn't automatically preserve your functions arguments names, you would want to explicity specify your dependencies in an array of strings.*
+
+```javascript
+def(['jquery'], function($) {
+	return function() {
+		$('body').html('jQuery Loaded!');
+	};
+});
+```
+
+**test3.js**
+
+*Short-hand, less typing, faster coding.*
+
+```javascript
+def(function($) {
+	return function() {
+		$('body').html('jQuery Loaded!');
+	};
+});
+```
+
+-----
+
+### **fallback.require(dependencies, function)**
+
+***Aliases:*** `fallback.req`, `fallback.require`, `fbk.req`, `fbk.require`, `req`, `require`
+
+The parameters in this function will fallback on one another. So for example, if you only pass in a single parameter, that parameter will be treated as the `function`.
+
+Parameter | Type | Required | Default | Description
+------------- | ------------- | ------------- | ------------- | -------------
+dependencies | Array/String | No | null | A string/array of dependencies that we expected to be loaded before executing our function.
+function | Function | Yes | null | If dependencies are specified, then they will be sent to this function as their arguments. However, if you don't specify the dependencies, whatever arguments are within this function will be correlated as the dependencies for this function. See below for further details along with an example.
+
+@todo here
+
+-----
+
+## FAQ
+
+**Q: What dependencies does Fallback JS have?**
+
+A: None! Fallback JS is a standalone library.
+
+-
+
+**Q: Can I provide multiple fallbacks for any given asset?**
+
+A: Yes! You can provide as many as you want, there is no limit.
+
+-
+
+**Q: How should Fallback JS be loaded?**
+
+A: @todo
+
+-
+
+**Q: Can I load up my CSS and JavaScript files in a single configuration block?**
+
+A: Yes, please see the example at the top of the `README.md` file.
+
+-
+
+**Q: Can I run the `config` function more than once?**
+
+A: Yes.
+
+-
+
+**Q: Why can't I call the `define` function more than once without a name in the same file?**
+
+A: @todo
+
+-
+
+**Q: What is the `amd` parameter in the configuration for?**
+
+A: @todo
+
+-
+
+**Q: What is the `globals` parameter in the configuration for?**
+
+A: @todo
+
+-
+
+**Q: What is the `delimiter` parameter in the configuration for?**
+
+A: @todo
+
+-----
+
+## About
+
+### Contributing
+
+Please read the [CONTRIBUTING.md](https://github.com/dolox/fallback/blob/master/CONTRIBUTING.md) file located in the root of this project to see how you can help contribute to this project. We encourage our users to test and report all/any problems they find with the library.
+
+### License
+
+[The MIT License (MIT)](https://github.com/dolox/fallback/blob/master/LICENSE.txt)
+
+-----
+
+## Support
+
+### Contributing
+
+@todo
+
+### Need help? We use GitHub!
+
 Any questions, suggestions or bugs should all be submitted to the issues section of the projects GitHub repository.
+
+### Staying Alive
+
+Over the course of the life of this project, we've come to find out that 4-5x our star count on GitHub reflects the actual adoption rate of this project. We encourage our users to star the project, so that it can help us see how large the project is growing and how urgent the issues are.

@@ -1,0 +1,14 @@
+language: node_js
+git:
+  depth: 10
+node_js:
+  - "0.10"
+install:
+  - npm install -g grunt-cli
+  - npm install
+before_script: grunt build
+env:
+  global:
+    - SAUCE_USERNAME: dolox
+    - secure: guWLZVQzte4JCte8llCus4JRw/RIE7BahW5+FzdaStVpMRbEuSvdwp04tmhl4hrGnASKQ84a0IbesQe7cFzH2RQkVgxzd7PE8uvQq1FlzP22Z2qfBulQ26zevUhYj1FMwvdYnt3SdnpiHNpuFMSgH/M6llEcaW7xELKnG0hHqSg=
+    - secure: mUJoa1yFVg+sVeVMjVadkxOYNZtzzUk97WOA0ItFd33g2uAHYRK/HIy7HXgWTwaf1klu/38wx0PrxL61dmI9a8fiZLoFzunmmZblFdcJ43QAzvt4WSEUpjBFdRxIPTY/a6Yue+AL0l4vkkGUz/0QagrIpZiDTeINYpYUOqmnBds=
