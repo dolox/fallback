@@ -32,7 +32,7 @@ tests
 
 	- Add SauceLabs: https://saucelabs.com/account?new=1
 	- Add Travic CI: https://travis-ci.org/
-	- Add David DM: https://david-dm.org/
+	[x] Add David DM: https://david-dm.org/
 
 contributing
 	- Follow https://github.com/rwaldron/idiomatic.js/

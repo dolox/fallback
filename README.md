@@ -3,14 +3,16 @@
 
 ---
 
-<img src="https://travis-ci.org/dolox/fallback.svg" />
+<img src="https://travis-ci.org/dolox/fallback.svg?style=flat" />
+
 <img src="https://david-dm.org/dolox/fallback/status.svg?style=flat" />
 <img src="https://david-dm.org/dolox/fallback/dev-status.svg?style=flat" />
+
+[![Sauce Test Status](https://saucelabs.com/browser-matrix/fallback.svg)](https://saucelabs.com/u/fallback)
 
 ## Getting Started
 
 To let you dive right in, we're going to provide you with a sample of code below. You can view the full [API Documentation](#api-documentation) along with other complex examples listed further down the page.
-
 
 **HTML**
 
