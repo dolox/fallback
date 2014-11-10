@@ -39,6 +39,7 @@ contributing
 		- Style Guidlines: Real Tabs, Single Quotes, No padding spaces in parenthesis: if ( a )
 	- update sample code on the website and file size
 	- get fallbackjs.com pointing to github and fallback.io to 301
+	- replace all fallback.io references
 
 ---
 
