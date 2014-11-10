@@ -1,14 +1,12 @@
 <p align="center"><img alt="Fallback JS" height="128" src="http://fallback.io/img/logo.png" /></p>
 <h1 align="center">Fallback JS</h1>
 
-<p align="center">
-	[<img src="https://travis-ci.org/dolox/fallback.svg?style=flat" />](https://david-dm.org/dolox/fallback)
-	[![GitHub version](https://badge.fury.io/gh/dolox%2Ffallback.svg)](http://badge.fury.io/gh/dolox%2Ffallback)
-	[![Bower version](https://badge.fury.io/bo/fallback.svg)](http://badge.fury.io/bo/fallback)
-	[<img src="https://david-dm.org/dolox/fallback/status.svg?style=flat" />](https://david-dm.org/dolox/fallback)
-	[<img src="https://david-dm.org/dolox/fallback/dev-status.svg?style=flat" />](https://david-dm.org/dolox/fallback#info=devDependencies)
-	[<img src="https://saucelabs.com/browser-matrix/fallback.svg" />](https://saucelabs.com/u/fallback)
-</p>
+[<img src="https://travis-ci.org/dolox/fallback.svg?style=flat" />](https://david-dm.org/dolox/fallback)
+[![GitHub version](https://badge.fury.io/gh/dolox%2Ffallback.svg)](http://badge.fury.io/gh/dolox%2Ffallback)
+[![Bower version](https://badge.fury.io/bo/fallback.svg)](http://badge.fury.io/bo/fallback)
+[<img src="https://david-dm.org/dolox/fallback/status.svg?style=flat" />](https://david-dm.org/dolox/fallback)
+[<img src="https://david-dm.org/dolox/fallback/dev-status.svg?style=flat" />](https://david-dm.org/dolox/fallback#info=devDependencies)
+[<img src="https://saucelabs.com/browser-matrix/fallback.svg" />](https://saucelabs.com/u/fallback)
 
 ---
 
