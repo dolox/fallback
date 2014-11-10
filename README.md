@@ -4,11 +4,10 @@
 ---
 
 [<img src="https://travis-ci.org/dolox/fallback.svg?style=flat" />](https://david-dm.org/dolox/fallback)
-[<img src="https://david-dm.org/dolox/fallback/status.svg?style=flat" />](https://david-dm.org/dolox/fallback)
-[<img src="https://david-dm.org/dolox/fallback/dev-status.svg?style=flat" />](https://david-dm.org/dolox/fallback#info=devDependencies)
-
 [![GitHub version](https://badge.fury.io/gh/dolox%2Ffallback.svg)](http://badge.fury.io/gh/dolox%2Ffallback)
 [![Bower version](https://badge.fury.io/bo/fallback.svg)](http://badge.fury.io/bo/fallback)
+[<img src="https://david-dm.org/dolox/fallback/status.svg?style=flat" />](https://david-dm.org/dolox/fallback)
+[<img src="https://david-dm.org/dolox/fallback/dev-status.svg?style=flat" />](https://david-dm.org/dolox/fallback#info=devDependencies)
 
 
 [<img src="https://saucelabs.com/browser-matrix/fallback.svg" />](https://saucelabs.com/u/fallback)
