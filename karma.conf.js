@@ -24,7 +24,7 @@ module.exports = function(config) {
 
 		logLevel: 'INFO',
 		port: 9876,
-		reporters: ['progress', 'html', 'saucelabs'],
+		reporters: ['progress', 'saucelabs'],
 
 		saurceLabs: {
 			testName: 'Fallback JS - Karma Unit Test'
