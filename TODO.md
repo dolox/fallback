@@ -1,9 +1,20 @@
 code documentation
 	[x] config
-	[x] core					-- change the logger to have levels
+	[x] core
 	[x] define
 	[x] loader
 	[x] loaderImage
+	[ ] loaderJavaScript
+	[ ] loaderStylesheet
+	[ ] module
+	[ ] require
+
+unit tests
+	[ ] config
+	[x] core
+	[ ] define
+	[ ] loader
+	[ ] loaderImage
 	[ ] loaderJavaScript
 	[ ] loaderStylesheet
 	[ ] module
@@ -22,16 +33,13 @@ code documentation
 	automatically rename the docs fallback.html to index.html after it's generated.
 
 readme documentation
+	- document the debugger levels
 	- delimiter is changeable.
 	- add `init` and `check` functions for libs.
 	- redocument the `global` attribute in config.
 	- change README.md to README.hbs and automatically generate it with the current version # and file sizes of the dists.
 	- make links from the root of the project to fallback.min.js in the dist folder.
-
-tests
-	- copy over core unit tests to start with and finish out the core.
-	- http://stackoverflow.com/questions/4904096/whats-the-difference-between-unit-functional-acceptance-and-integration-test
-	- cleanup the example and code document them better for people.
+	- cleanup in the examples folder and code document them better for people.
 
 contributing
 	- Follow https://github.com/rwaldron/idiomatic.js/
@@ -41,8 +49,6 @@ contributing
 
 ---
 
-deploy to git v2 branch
-
 - migration code from 1.0 to 2.0
 
 ---
@@ -50,3 +56,5 @@ deploy to git v2 branch
 fallback CLI utility where it automatically adds your libraries to a JSON file and installs via bower
 	Programmatic API --- http://bower.io/docs/api/#programmatic-api
 	real easy, fallback install bang, same commands hopefully
+
+grunt-fallback-annotate --> similar to grunt-ng-annotate
