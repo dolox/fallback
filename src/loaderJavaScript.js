@@ -62,6 +62,54 @@ me.loader.js.boot = function(module, url, callbackSuccess, callbackFailed) {
 	return me.head.appendChild(element);
 };
 
+// Sift through the script elements on the page and attempt to derive the values from `attribute` that is passed in to
+// the `Function`. Along with checking the `attribute` that is passed in, this `Function` will also prefix the
+// given `attribute` with `data-` and check for that attribute as well. For example if the `Function` was called with
+// `base`, then the `Function` will atempt to derive values for the attributes `base` and `data-base`.
+me.loader.js.attributes = function(attribute) {
+	// The `Array` to store our `attribute` values.
+	var values = [];
+
+	// If the `attribute` is not a string, halt the `Function`.
+	if (!me.isString(attribute)) {
+		return values;
+	}
+
+	// Fetch all script tags that are on the page.
+	var scripts = window.document.getElementsByTagName('script');
+
+	// Check to make sure that we retrieved a `HTMLCollection`, otherwise halt the `Function`.
+	if (!me.isHTMLCollection(scripts)) {
+		return values;
+	}
+
+	// Loop through each of our scripts.
+	me.each(scripts, function(script) {
+		// If our script instance isn't an `HTMLScriptElement`, then skip the iteration.
+		if (!me.isHTMLScriptElement(script)) {
+			return;
+		}
+
+		// Check to see if our `attribute` exists along with the prefix `data-` for the `attribute` in questino.
+		me.each([attribute, 'data-' + attribute], function(attribute) {
+			// Fetch the value for the attribute.
+			var value = script.getAttribute(attribute);
+
+			// If the value exists then use it.
+			if (value) {
+				// Split our value on `,` that way we can pass in multiple values.
+				value = value.split(',');
+
+				// Merge our values.
+				values = values.concat(value);
+			}
+		});
+	});
+
+	// Return the values for attributes.
+	return values;
+};
+
 // @todo document it
 // @todo if there are no exports, simply rely on the callbacks
 me.loader.js.check = function(module) {

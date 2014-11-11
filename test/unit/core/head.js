@@ -5,5 +5,6 @@ describe('fallback.head', function() {
 
 	it('should be a reference to the documents head element', function() {
 		expect(result).to.be.an('object');
+		expect(fallback.isType(result, 'HTMLHeadElement')).to.equal(true);
 	});
 });

@@ -7,6 +7,40 @@
 // all logic which performs trying additional fallbacks and checks lives within the loader object.
 me.loader = {};
 
+// Initialization function for our loader object.
+me.loader.init = function() {
+	// Automatically configure our library via attributes being set on any `script` elements on the page.
+	me.loader.init.autoloader();
+
+	// Flag that our loader has been initialized.
+	return me.loader.inited = true;
+};
+
+// If the attributes `base` or `data-base` are found on any of the `script` tags within the page when the library is
+// loaded, automatically set the `base` variable for our configuration to that `value`. If the attributes `main` or
+// `data-main` are found on any of the `script` tags when the library is loaded on the page, automatically load up that
+// `value` as a module. If the `value` is a comma delimited string, we'll split on the comma and load each separately.
+me.loader.init.autoloader = function() {
+	// Fetch `base` and/or `data-base`.
+	var base = me.normalizeStringSeries(me.loader.js.attributes('base'));
+
+	// If our `attribute` exists, then configure it.
+	if (base.length) {
+		// Since `me.autoloader` will return an `Array` series, only use the first value of our `Array`.
+		me.config({
+			base: base.shift()
+		});
+	}
+
+	// Fetch `main` and/or `data-main`.
+	var main = me.normalizeStringSeries(me.loader.js.attributes('main'));
+
+	// If our `attribute` exists, then `require` it.
+	if (main.length) {
+		me.require(main);
+	}
+};
+
 // Attempt to load our module.
 me.loader.boot = function(moduleName, callback) {
 	// Fetch the instance of our module.

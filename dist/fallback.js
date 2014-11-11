@@ -1,4 +1,4 @@
-/* fallback.js v2.0.0 | http://fallback.io/ | Salvatore Garbesi <sal@dolox.com> | (c) 2014 Dolox, Inc. */
+/* fallback.js v2.0.0 | http://fallback.io/| Salvatore Garbesi <sal@dolox.com> | (c) 2014 Dolox, Inc. */
 
 (function(window) {
 
@@ -9,16 +9,19 @@ var me = {};
 // Initialize our library. This function must be invoked before we start using the library.
 me.init = function() {
 	// Reference the `head` element of our document and store it into memory.
-	me.init.head();
+	me.head = window.document.getElementsByTagName('head')[0];
 
 	// Spawn our utility functions for the library.
-	me.init.utilities(me.utility.types);
+	me.init.utilities(me, me.utility.types);
 
 	// Reference aliases for the library into the `global` object for the user to directly access.
 	me.init.aliases(me.aliases);
 
-	// Automatically configure our library via attributes being set on any `script` elements on the page.
-	me.init.autoloader();
+	// Initialize our loader object.
+	me.loader.init();
+
+	// Flag that our library has been initialized.
+	return me.inited = true;
 };
 
 // Reference the library's aliases into the `global` `Object` for the user to directly access. If a alias that we're
@@ -55,7 +58,7 @@ me.init.aliases = function(input) {
 		// Map all of our aliases to our module.
 		me.each(aliases, function(alias) {
 			// If the alias is currently defined in the `global` object, skip it and throw a warning to the end user.
-			if (me.isDefined(window[alias])) {
+			if (me.isDefined(me.global[alias])) {
 				me.log('core', 'init', 'aliases', 'The variable global["' + alias + '"] already exists.');
 				return;
 			}
@@ -69,47 +72,16 @@ me.init.aliases = function(input) {
 	});
 };
 
-// If the attributes `base` or `data-base` are found on any of the `script` tags within the page when the library is
-// loaded, automatically set the `base` variable for our configuration to that `value`. If the attributes `main` or
-// `data-main` are found on any of the `script` tags when the library is loaded on the page, automatically load up that
-// `value` as a module. If the `value` is a comma delimited string, we'll split on the comma and load each separately.
-me.init.autoloader = function() {
-	// Fetch `base` and/or `data-base`.
-	var base = me.normalizeStringSeries(me.autoloader('base'));
-
-	// If our `attribute` exists, then configure it.
-	if (base.length) {
-		// Since `me.autoloader` will return an `Array` series, only use the first value of our `Array`.
-		me.config({
-			base: base.shift()
-		});
-	}
-
-	// Fetch `main` and/or `data-main`.
-	var main = me.normalizeStringSeries(me.autoloader('main'));
-
-	// If our `attribute` exists, then `require` it.
-	if (main.length) {
-		me.require(main);
-	}
-};
-
-// Fetch the `head` element that resides on the page.
-me.init.head = function() {
-	// If the `head` element ever contains more than a single element, then the document is malformed.
-	me.head = window.document.getElementsByTagName('head')[0];
-};
-
 // Automatically spawn helper functions that we'll use throughout the library. For example we're spawning the following
 // functions: `isArray`, `normalizeArray`, `normalizeArraySeries`, etc. Spawning these functions this way results in
 // less code for the library and achieves the same objective.
-me.init.utilities = function(input) {
+me.init.utilities = function(container, input) {
 	// Loop through each of our different utility types.
 	for (var index in input) {
 		// Make sure it's not empty.
 		if (input[index]) {
 			// Spawn the utility function for the library.
-			me.utility(me, input[index]);
+			me.utility(container, input[index]);
 		}
 	}
 };
@@ -195,54 +167,6 @@ me.arrayUnique = function(input) {
 
 	// Return our normalized set of unique values.
 	return normalized;
-};
-
-// Sift through the script elements on the page and attempt to derive the values from `attribute` that is passed in to
-// the `Function`. Along with checking the `attribute` that is passed in, this `Function` will also prefix the
-// given `attribute` with `data-` and check for that attribute as well. For example if the `Function` was called with
-// `base`, then the `Function` will atempt to derive values for the attributes `base` and `data-base`.
-me.autoloader = function(attribute) {
-	// The `Array` to store our `attribute` values.
-	var values = [];
-
-	// If the `attribute` is not a string, halt the `Function`.
-	if (!me.isString(attribute)) {
-		return values;
-	}
-
-	// Fetch all script tags that are on the page.
-	var scripts = window.document.getElementsByTagName('script');
-
-	// Check to make sure that we retrieved a `HTMLCollection`, otherwise halt the `Function`.
-	if (!me.isHTMLCollection(scripts)) {
-		return values;
-	}
-
-	// Loop through each of our scripts.
-	me.each(scripts, function(script) {
-		// If our script instance isn't an `HTMLScriptElement`, then skip the iteration.
-		if (!me.isHTMLScriptElement(script)) {
-			return;
-		}
-
-		// Check to see if our `attribute` exists along with the prefix `data-` for the `attribute` in questino.
-		me.each([attribute, 'data-' + attribute], function(attribute) {
-			// Fetch the value for the attribute.
-			var value = script.getAttribute(attribute);
-
-			// If the value exists then use it.
-			if (value) {
-				// Split our value on `,` that way we can pass in multiple values.
-				value = value.split(',');
-
-				// Merge our values.
-				values = values.concat(value);
-			}
-		});
-	});
-
-	// Return the values for attributes.
-	return values;
 };
 
 // ASCII banner for the library.
@@ -643,9 +567,9 @@ me.stringPad = function(input, pad, left) {
 // - isNumber, normalizeNumber, normalizeNumberSeries
 // - isObject, normalizeObject, normalizeObjectSeries
 // - isString, normalizeString, normalizeStringSeries
-me.utility = function(object, type) {
+me.utility = function(container, type) {
 	// Adding a function prefixed with `is` to check if a variable is actually the type that's being passed in.
-	object['is' + type] = function(variable) {
+	container['is' + type] = function(variable) {
 		return me.isType(variable, type);
 	};
 
@@ -655,12 +579,12 @@ me.utility = function(object, type) {
 	}
 
 	// Our normalization function.
-	object['normalize' + type] = function(input, fallback) {
+	container['normalize' + type] = function(input, fallback) {
 		return me.normalize(input, type, me.isDefined(fallback) ? fallback : null);
 	};
 
 	// Our normalization series function.
-	object['normalize' + type + 'Series'] = function(input, fallback, strip) {
+	container['normalize' + type + 'Series'] = function(input, fallback, strip) {
 		return me.normalizeSeries(input, type, me.isDefined(fallback) ? fallback : [], strip);
 	};
 };
@@ -1058,6 +982,40 @@ me.define.module.last = null;
 // all logic which performs trying additional fallbacks and checks lives within the loader object.
 me.loader = {};
 
+// Initialization function for our loader object.
+me.loader.init = function() {
+	// Automatically configure our library via attributes being set on any `script` elements on the page.
+	me.loader.init.autoloader();
+
+	// Flag that our loader has been initialized.
+	return me.loader.inited = true;
+};
+
+// If the attributes `base` or `data-base` are found on any of the `script` tags within the page when the library is
+// loaded, automatically set the `base` variable for our configuration to that `value`. If the attributes `main` or
+// `data-main` are found on any of the `script` tags when the library is loaded on the page, automatically load up that
+// `value` as a module. If the `value` is a comma delimited string, we'll split on the comma and load each separately.
+me.loader.init.autoloader = function() {
+	// Fetch `base` and/or `data-base`.
+	var base = me.normalizeStringSeries(me.loader.js.attributes('base'));
+
+	// If our `attribute` exists, then configure it.
+	if (base.length) {
+		// Since `me.autoloader` will return an `Array` series, only use the first value of our `Array`.
+		me.config({
+			base: base.shift()
+		});
+	}
+
+	// Fetch `main` and/or `data-main`.
+	var main = me.normalizeStringSeries(me.loader.js.attributes('main'));
+
+	// If our `attribute` exists, then `require` it.
+	if (main.length) {
+		me.require(main);
+	}
+};
+
 // Attempt to load our module.
 me.loader.boot = function(moduleName, callback) {
 	// Fetch the instance of our module.
@@ -1278,6 +1236,54 @@ me.loader.js.boot = function(module, url, callbackSuccess, callbackFailed) {
 
 	// Load our URL on the page.
 	return me.head.appendChild(element);
+};
+
+// Sift through the script elements on the page and attempt to derive the values from `attribute` that is passed in to
+// the `Function`. Along with checking the `attribute` that is passed in, this `Function` will also prefix the
+// given `attribute` with `data-` and check for that attribute as well. For example if the `Function` was called with
+// `base`, then the `Function` will atempt to derive values for the attributes `base` and `data-base`.
+me.loader.js.attributes = function(attribute) {
+	// The `Array` to store our `attribute` values.
+	var values = [];
+
+	// If the `attribute` is not a string, halt the `Function`.
+	if (!me.isString(attribute)) {
+		return values;
+	}
+
+	// Fetch all script tags that are on the page.
+	var scripts = window.document.getElementsByTagName('script');
+
+	// Check to make sure that we retrieved a `HTMLCollection`, otherwise halt the `Function`.
+	if (!me.isHTMLCollection(scripts)) {
+		return values;
+	}
+
+	// Loop through each of our scripts.
+	me.each(scripts, function(script) {
+		// If our script instance isn't an `HTMLScriptElement`, then skip the iteration.
+		if (!me.isHTMLScriptElement(script)) {
+			return;
+		}
+
+		// Check to see if our `attribute` exists along with the prefix `data-` for the `attribute` in questino.
+		me.each([attribute, 'data-' + attribute], function(attribute) {
+			// Fetch the value for the attribute.
+			var value = script.getAttribute(attribute);
+
+			// If the value exists then use it.
+			if (value) {
+				// Split our value on `,` that way we can pass in multiple values.
+				value = value.split(',');
+
+				// Merge our values.
+				values = values.concat(value);
+			}
+		});
+	});
+
+	// Return the values for attributes.
+	return values;
 };
 
 // @todo document it
