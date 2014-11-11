@@ -395,8 +395,18 @@ me.normalizeSeries = function(input, type, fallback, strip) {
 
 // Constrain an object to only contain a specific set of keys. All other keys are discarded, and a warning is thrown.
 me.objectConstrain = function(input, whitelist, reference) {
+	// If we don't have a `whitelist` or if it's not an `Array`, return our `input`.
+	if (!me.isArray(whitelist)) {
+		return input;
+	}
+
 	// Store our normalized `Object`.
 	var normalized = {};
+
+	// If our `input` is not an `Object` return an empty `Object`.
+	if (!me.isObject(input)) {
+		return normalized;
+	}
 
 	// Loop through our `Object`.
 	me.each(input, function(value, key) {

@@ -1705,11 +1705,13 @@ result set.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-105">&#182;</a>
               </div>
-              <p>Store our normalized <code>Object</code>.</p>
+              <p>If we don’t have a <code>whitelist</code> or if it’s not an <code>Array</code>, return our <code>input</code>.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> normalized = {};</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (!me.isArray(whitelist)) {
+		<span class="hljs-keyword">return</span> input;
+	}</pre></div></div>
             
         </li>
         
@@ -1720,11 +1722,11 @@ result set.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-106">&#182;</a>
               </div>
-              <p>Loop through our <code>Object</code>.</p>
+              <p>Store our normalized <code>Object</code>.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	me.each(input, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(value, key)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> normalized = {};</pre></div></div>
             
         </li>
         
@@ -1735,11 +1737,13 @@ result set.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-107">&#182;</a>
               </div>
-              <p>If the <code>key</code> is not defined in the <code>whitelist</code>, then discard it.</p>
+              <p>If our <code>input</code> is not an <code>Object</code> return an empty <code>Object</code>.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> (whitelist.indexOf(key) === -<span class="hljs-number">1</span>) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (!me.isObject(input)) {
+		<span class="hljs-keyword">return</span> normalized;
+	}</pre></div></div>
             
         </li>
         
@@ -1749,6 +1753,36 @@ result set.</p>
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-108">&#182;</a>
+              </div>
+              <p>Loop through our <code>Object</code>.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	me.each(input, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(value, key)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-109">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-109">&#182;</a>
+              </div>
+              <p>If the <code>key</code> is not defined in the <code>whitelist</code>, then discard it.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> (whitelist.indexOf(key) === -<span class="hljs-number">1</span>) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-110">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-110">&#182;</a>
               </div>
               <p>Throw a warning to the user that we’ve discarded the <code>key</code> in question.</p>
 
@@ -1764,11 +1798,11 @@ result set.</p>
         </li>
         
         
-        <li id="section-109">
+        <li id="section-111">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-109">&#182;</a>
+                <a class="pilcrow" href="#section-111">&#182;</a>
               </div>
               <p>Set our normalized value.</p>
 
@@ -1780,11 +1814,11 @@ result set.</p>
         </li>
         
         
-        <li id="section-110">
+        <li id="section-112">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-110">&#182;</a>
+                <a class="pilcrow" href="#section-112">&#182;</a>
               </div>
               <p>Return our normalized <code>Object</code>.</p>
 
@@ -1796,11 +1830,11 @@ result set.</p>
         </li>
         
         
-        <li id="section-111">
+        <li id="section-113">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-111">&#182;</a>
+                <a class="pilcrow" href="#section-113">&#182;</a>
               </div>
               <p>Merge an <code>Object</code> with a set of default values. If the <code>defaults</code> parameter is an <code>Array</code>, it will treat whatever
 the value is for <code>fallback</code> as it’s value.</p>
@@ -1812,11 +1846,11 @@ the value is for <code>fallback</code> as it’s value.</p>
         </li>
         
         
-        <li id="section-112">
+        <li id="section-114">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-112">&#182;</a>
+                <a class="pilcrow" href="#section-114">&#182;</a>
               </div>
               <p>Our merge <code>Object</code>.</p>
 
@@ -1827,11 +1861,11 @@ the value is for <code>fallback</code> as it’s value.</p>
         </li>
         
         
-        <li id="section-113">
+        <li id="section-115">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-113">&#182;</a>
+                <a class="pilcrow" href="#section-115">&#182;</a>
               </div>
               <p>The defaults to merge with.</p>
 
@@ -1842,11 +1876,11 @@ the value is for <code>fallback</code> as it’s value.</p>
         </li>
         
         
-        <li id="section-114">
+        <li id="section-116">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-114">&#182;</a>
+                <a class="pilcrow" href="#section-116">&#182;</a>
               </div>
               <p>Loop through our defaults.</p>
 
@@ -1857,11 +1891,11 @@ the value is for <code>fallback</code> as it’s value.</p>
         </li>
         
         
-        <li id="section-115">
+        <li id="section-117">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-115">&#182;</a>
+                <a class="pilcrow" href="#section-117">&#182;</a>
               </div>
               <p>If our <code>defaults</code> is an <code>Array</code> we need to swap out the key/values.</p>
 
@@ -1875,11 +1909,11 @@ the value is for <code>fallback</code> as it’s value.</p>
         </li>
         
         
-        <li id="section-116">
+        <li id="section-118">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-116">&#182;</a>
+                <a class="pilcrow" href="#section-118">&#182;</a>
               </div>
               <p>If the <code>key</code> is defined in our <code>input</code> object, then don’t override it, reference it.</p>
 
@@ -1893,11 +1927,11 @@ the value is for <code>fallback</code> as it’s value.</p>
         </li>
         
         
-        <li id="section-117">
+        <li id="section-119">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-117">&#182;</a>
+                <a class="pilcrow" href="#section-119">&#182;</a>
               </div>
               <p>Set the value of our default <code>key</code>.</p>
 
@@ -1909,11 +1943,11 @@ the value is for <code>fallback</code> as it’s value.</p>
         </li>
         
         
-        <li id="section-118">
+        <li id="section-120">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-118">&#182;</a>
+                <a class="pilcrow" href="#section-120">&#182;</a>
               </div>
               <p>Return our merged <code>Object</code>.</p>
 
@@ -1925,11 +1959,11 @@ the value is for <code>fallback</code> as it’s value.</p>
         </li>
         
         
-        <li id="section-119">
+        <li id="section-121">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-119">&#182;</a>
+                <a class="pilcrow" href="#section-121">&#182;</a>
               </div>
               <p>Run a number of functions in parallel with the ability to call a single callback once they’ve all completed.</p>
 
@@ -1940,11 +1974,11 @@ the value is for <code>fallback</code> as it’s value.</p>
         </li>
         
         
-        <li id="section-120">
+        <li id="section-122">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-120">&#182;</a>
+                <a class="pilcrow" href="#section-122">&#182;</a>
               </div>
               <p>Our reference argument must be an <code>Array</code>, if not halt the function.</p>
 
@@ -1958,11 +1992,11 @@ the value is for <code>fallback</code> as it’s value.</p>
         </li>
         
         
-        <li id="section-121">
+        <li id="section-123">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-121">&#182;</a>
+                <a class="pilcrow" href="#section-123">&#182;</a>
               </div>
               <p>Normalize our references.</p>
 
@@ -1973,11 +2007,11 @@ the value is for <code>fallback</code> as it’s value.</p>
         </li>
         
         
-        <li id="section-122">
+        <li id="section-124">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-122">&#182;</a>
+                <a class="pilcrow" href="#section-124">&#182;</a>
               </div>
               <p>Generate a new queue instance.</p>
 
@@ -1988,11 +2022,11 @@ the value is for <code>fallback</code> as it’s value.</p>
         </li>
         
         
-        <li id="section-123">
+        <li id="section-125">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-123">&#182;</a>
+                <a class="pilcrow" href="#section-125">&#182;</a>
               </div>
               <p>Loop through all of our refernces and execute them.</p>
 
@@ -2003,11 +2037,11 @@ the value is for <code>fallback</code> as it’s value.</p>
         </li>
         
         
-        <li id="section-124">
+        <li id="section-126">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-124">&#182;</a>
+                <a class="pilcrow" href="#section-126">&#182;</a>
               </div>
               <p>Anonymous spawn and track our <code>Function</code> to invoke.</p>
 
@@ -2020,11 +2054,11 @@ the value is for <code>fallback</code> as it’s value.</p>
         </li>
         
         
-        <li id="section-125">
+        <li id="section-127">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-125">&#182;</a>
+                <a class="pilcrow" href="#section-127">&#182;</a>
               </div>
               <p>Our anonymous functions that we’re executing in parallel.</p>
 
@@ -2035,11 +2069,11 @@ the value is for <code>fallback</code> as it’s value.</p>
         </li>
         
         
-        <li id="section-126">
+        <li id="section-128">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-126">&#182;</a>
+                <a class="pilcrow" href="#section-128">&#182;</a>
               </div>
               <p>Invoke our queued function.</p>
 
@@ -2050,11 +2084,11 @@ the value is for <code>fallback</code> as it’s value.</p>
         </li>
         
         
-        <li id="section-127">
+        <li id="section-129">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-127">&#182;</a>
+                <a class="pilcrow" href="#section-129">&#182;</a>
               </div>
               <p>Reference the instance of our parallel runner.</p>
 
@@ -2065,11 +2099,11 @@ the value is for <code>fallback</code> as it’s value.</p>
         </li>
         
         
-        <li id="section-128">
+        <li id="section-130">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-128">&#182;</a>
+                <a class="pilcrow" href="#section-130">&#182;</a>
               </div>
               <p>If the <code>guid</code> is not defined in our queue, then it was cancelled.</p>
 
@@ -2082,11 +2116,11 @@ the value is for <code>fallback</code> as it’s value.</p>
         </li>
         
         
-        <li id="section-129">
+        <li id="section-131">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-129">&#182;</a>
+                <a class="pilcrow" href="#section-131">&#182;</a>
               </div>
               <p>Increment our callback invocation count.</p>
 
@@ -2097,11 +2131,11 @@ the value is for <code>fallback</code> as it’s value.</p>
         </li>
         
         
-        <li id="section-130">
+        <li id="section-132">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-130">&#182;</a>
+                <a class="pilcrow" href="#section-132">&#182;</a>
               </div>
               <p>If all of our functions ran successful, process our final callback and clear our memory of the queue.</p>
 
@@ -2112,11 +2146,11 @@ the value is for <code>fallback</code> as it’s value.</p>
         </li>
         
         
-        <li id="section-131">
+        <li id="section-133">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-131">&#182;</a>
+                <a class="pilcrow" href="#section-133">&#182;</a>
               </div>
               <p>Remove our runner instance from the queue.</p>
 
@@ -2127,11 +2161,11 @@ the value is for <code>fallback</code> as it’s value.</p>
         </li>
         
         
-        <li id="section-132">
+        <li id="section-134">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-132">&#182;</a>
+                <a class="pilcrow" href="#section-134">&#182;</a>
               </div>
               <p>Fire off our final callback, as the queue has been exhausted.</p>
 
@@ -2145,11 +2179,11 @@ the value is for <code>fallback</code> as it’s value.</p>
         </li>
         
         
-        <li id="section-133">
+        <li id="section-135">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-133">&#182;</a>
+                <a class="pilcrow" href="#section-135">&#182;</a>
               </div>
               <p>Generate a new parallel instance into our queue.</p>
 
@@ -2160,11 +2194,11 @@ the value is for <code>fallback</code> as it’s value.</p>
         </li>
         
         
-        <li id="section-134">
+        <li id="section-136">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-134">&#182;</a>
+                <a class="pilcrow" href="#section-136">&#182;</a>
               </div>
               <p>Generate a unique identifier for our parallel instance to avoid collisions.</p>
 
@@ -2175,11 +2209,11 @@ the value is for <code>fallback</code> as it’s value.</p>
         </li>
         
         
-        <li id="section-135">
+        <li id="section-137">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-135">&#182;</a>
+                <a class="pilcrow" href="#section-137">&#182;</a>
               </div>
               <p>Add the our <code>references</code> to our parallel queue.</p>
 
@@ -2190,11 +2224,11 @@ the value is for <code>fallback</code> as it’s value.</p>
         </li>
         
         
-        <li id="section-136">
+        <li id="section-138">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-136">&#182;</a>
+                <a class="pilcrow" href="#section-138">&#182;</a>
               </div>
               <p>The number of callbacks that were invoked.</p>
 
@@ -2205,11 +2239,11 @@ the value is for <code>fallback</code> as it’s value.</p>
         </li>
         
         
-        <li id="section-137">
+        <li id="section-139">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-137">&#182;</a>
+                <a class="pilcrow" href="#section-139">&#182;</a>
               </div>
               <p>The total number of callbacks to run in parralel.</p>
 
@@ -2224,11 +2258,11 @@ the value is for <code>fallback</code> as it’s value.</p>
         </li>
         
         
-        <li id="section-138">
+        <li id="section-140">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-138">&#182;</a>
+                <a class="pilcrow" href="#section-140">&#182;</a>
               </div>
               <p>Container <code>Object</code> for all of the currently running parallel jobs.</p>
 
@@ -2239,11 +2273,11 @@ the value is for <code>fallback</code> as it’s value.</p>
         </li>
         
         
-        <li id="section-139">
+        <li id="section-141">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-139">&#182;</a>
+                <a class="pilcrow" href="#section-141">&#182;</a>
               </div>
               <p>Output the configured libraries, their load times and other useful statistics for the end user. @todo</p>
 
@@ -2287,11 +2321,11 @@ the value is for <code>fallback</code> as it’s value.</p>
         </li>
         
         
-        <li id="section-140">
+        <li id="section-142">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-140">&#182;</a>
+                <a class="pilcrow" href="#section-142">&#182;</a>
               </div>
               <p>A function which simply pads a <code>String</code> with whatever <code>String</code> is supplied.</p>
 
@@ -2312,11 +2346,11 @@ the value is for <code>fallback</code> as it’s value.</p>
         </li>
         
         
-        <li id="section-141">
+        <li id="section-143">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-141">&#182;</a>
+                <a class="pilcrow" href="#section-143">&#182;</a>
               </div>
               <p>Automatically generate utility functions for our library. This library will generate the following functions:</p>
 <ul>
@@ -2336,11 +2370,11 @@ the value is for <code>fallback</code> as it’s value.</p>
         </li>
         
         
-        <li id="section-142">
+        <li id="section-144">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-142">&#182;</a>
+                <a class="pilcrow" href="#section-144">&#182;</a>
               </div>
               <p>Adding a function prefixed with <code>is</code> to check if a variable is actually the type that’s being passed in.</p>
 
@@ -2353,11 +2387,11 @@ the value is for <code>fallback</code> as it’s value.</p>
         </li>
         
         
-        <li id="section-143">
+        <li id="section-145">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-143">&#182;</a>
+                <a class="pilcrow" href="#section-145">&#182;</a>
               </div>
               <p>We cannot generate normalize functions for the following types, so skip them.</p>
 
@@ -2370,11 +2404,11 @@ the value is for <code>fallback</code> as it’s value.</p>
         </li>
         
         
-        <li id="section-144">
+        <li id="section-146">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-144">&#182;</a>
+                <a class="pilcrow" href="#section-146">&#182;</a>
               </div>
               <p>Our normalization function.</p>
 
@@ -2387,11 +2421,11 @@ the value is for <code>fallback</code> as it’s value.</p>
         </li>
         
         
-        <li id="section-145">
+        <li id="section-147">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-145">&#182;</a>
+                <a class="pilcrow" href="#section-147">&#182;</a>
               </div>
               <p>Our normalization series function.</p>
 
@@ -2405,11 +2439,11 @@ the value is for <code>fallback</code> as it’s value.</p>
         </li>
         
         
-        <li id="section-146">
+        <li id="section-148">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-146">&#182;</a>
+                <a class="pilcrow" href="#section-148">&#182;</a>
               </div>
               <p>The different utility types that we want to generate functions for.</p>
 
@@ -2422,11 +2456,11 @@ the value is for <code>fallback</code> as it’s value.</p>
         </li>
         
         
-        <li id="section-147">
+        <li id="section-149">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-147">&#182;</a>
+                <a class="pilcrow" href="#section-149">&#182;</a>
               </div>
               <p>Configure the library. If the <code>input</code> is malformed then the <code>Function</code> will return <code>false</code>, otherwise the <code>Function</code>
 will return the normalized value that was imported.</p>
@@ -2438,11 +2472,11 @@ will return the normalized value that was imported.</p>
         </li>
         
         
-        <li id="section-148">
+        <li id="section-150">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-148">&#182;</a>
+                <a class="pilcrow" href="#section-150">&#182;</a>
               </div>
               <p>If the <code>input</code> parameter is not an <code>Object</code>, then halt the <code>Function</code>.</p>
 
@@ -2456,11 +2490,11 @@ will return the normalized value that was imported.</p>
         </li>
         
         
-        <li id="section-149">
+        <li id="section-151">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-149">&#182;</a>
+                <a class="pilcrow" href="#section-151">&#182;</a>
               </div>
               <p>Drop off any values in the user configuration <code>Object</code> which aren’t whitelisted.</p>
 
@@ -2471,11 +2505,11 @@ will return the normalized value that was imported.</p>
         </li>
         
         
-        <li id="section-150">
+        <li id="section-152">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-150">&#182;</a>
+                <a class="pilcrow" href="#section-152">&#182;</a>
               </div>
               <p>Merge in the whitelist with a <code>null</code> value for default, if not specified by the user.</p>
 
@@ -2486,11 +2520,11 @@ will return the normalized value that was imported.</p>
         </li>
         
         
-        <li id="section-151">
+        <li id="section-153">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-151">&#182;</a>
+                <a class="pilcrow" href="#section-153">&#182;</a>
               </div>
               <p>Loop through each of the keys for our <code>input</code> and run our normalization/import functions on each of them.</p>
 
@@ -2501,11 +2535,11 @@ will return the normalized value that was imported.</p>
         </li>
         
         
-        <li id="section-152">
+        <li id="section-154">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-152">&#182;</a>
+                <a class="pilcrow" href="#section-154">&#182;</a>
               </div>
               <p>Only accept the <code>value</code> if it’s actually defined, otherwise we’ll wind up overriding our existing configuration.</p>
 
@@ -2519,11 +2553,11 @@ will return the normalized value that was imported.</p>
         </li>
         
         
-        <li id="section-153">
+        <li id="section-155">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-153">&#182;</a>
+                <a class="pilcrow" href="#section-155">&#182;</a>
               </div>
               <p>Return our normalized configuration.</p>
 
@@ -2535,11 +2569,11 @@ will return the normalized value that was imported.</p>
         </li>
         
         
-        <li id="section-154">
+        <li id="section-156">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-154">&#182;</a>
+                <a class="pilcrow" href="#section-156">&#182;</a>
               </div>
               <p>Normalize and import the configuration for our <code>base</code> parameter. If a <code>String</code> is passed in, then the value for the
 <code>String</code> will be used for all of the loader types.</p>
@@ -2551,11 +2585,11 @@ will return the normalized value that was imported.</p>
         </li>
         
         
-        <li id="section-155">
+        <li id="section-157">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-155">&#182;</a>
+                <a class="pilcrow" href="#section-157">&#182;</a>
               </div>
               <p>We expect the <code>base</code> parameter to be either a <code>String</code> or <code>Object</code>.</p>
 
@@ -2569,11 +2603,11 @@ will return the normalized value that was imported.</p>
         </li>
         
         
-        <li id="section-156">
+        <li id="section-158">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-156">&#182;</a>
+                <a class="pilcrow" href="#section-158">&#182;</a>
               </div>
               <p>If we have a <code>String</code>, generate an object with out whitelist of keys, and use the <code>String</code> as the value.</p>
 
@@ -2586,11 +2620,11 @@ will return the normalized value that was imported.</p>
         </li>
         
         
-        <li id="section-157">
+        <li id="section-159">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-157">&#182;</a>
+                <a class="pilcrow" href="#section-159">&#182;</a>
               </div>
               <p>If we received an <code>Object</code>, then merge in our defaults with a <code>null</code> value if they weren’t specified.</p>
 
@@ -2602,11 +2636,11 @@ will return the normalized value that was imported.</p>
         </li>
         
         
-        <li id="section-158">
+        <li id="section-160">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-158">&#182;</a>
+                <a class="pilcrow" href="#section-160">&#182;</a>
               </div>
               <p>The whitelist of acceptable keys for <code>base</code> parameter if it’s an <code>Object</code>.</p>
 
@@ -2617,11 +2651,11 @@ will return the normalized value that was imported.</p>
         </li>
         
         
-        <li id="section-159">
+        <li id="section-161">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-159">&#182;</a>
+                <a class="pilcrow" href="#section-161">&#182;</a>
               </div>
               <p>Normalize and import the <code>amd</code> parameters value. This’ll determine whether or not to enforce the use of AMD when
 using this library. By turning this on, when you include library they’ll be unavailable in the glboal scope and
@@ -2638,11 +2672,11 @@ or if they don’t support AMD. This value is turned off by default.
         </li>
         
         
-        <li id="section-160">
+        <li id="section-162">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-160">&#182;</a>
+                <a class="pilcrow" href="#section-162">&#182;</a>
               </div>
               <p>Normalize and import the <code>debug</code> parameters value. This’ll determine whether debugging will be turned on/off. By
 default debugging is turned off.</p>
@@ -2656,11 +2690,11 @@ default debugging is turned off.</p>
         </li>
         
         
-        <li id="section-161">
+        <li id="section-163">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-161">&#182;</a>
+                <a class="pilcrow" href="#section-163">&#182;</a>
               </div>
               <p>Normalize and import the <code>global</code> parameter value. By default this value will be a reference to the <code>window</code> object.
 The library will use this reference when attempting to load a library, to check whether or not the library has
@@ -2676,11 +2710,11 @@ by seeing that <code>window.angular</code> already exists in the <code>window</c
         </li>
         
         
-        <li id="section-162">
+        <li id="section-164">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-162">&#182;</a>
+                <a class="pilcrow" href="#section-164">&#182;</a>
               </div>
               <p>Normalize and import the <code>libs</code> parameter’s series of <code>Objects</code>.</p>
 
@@ -2691,11 +2725,11 @@ by seeing that <code>window.angular</code> already exists in the <code>window</c
         </li>
         
         
-        <li id="section-163">
+        <li id="section-165">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-163">&#182;</a>
+                <a class="pilcrow" href="#section-165">&#182;</a>
               </div>
               <p>If the <code>libs</code> parameter is not an <code>Object</code>, discard it and throw a warning to the end user.</p>
 
@@ -2711,11 +2745,11 @@ by seeing that <code>window.angular</code> already exists in the <code>window</c
         </li>
         
         
-        <li id="section-164">
+        <li id="section-166">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-164">&#182;</a>
+                <a class="pilcrow" href="#section-166">&#182;</a>
               </div>
               <p>Loop through our series of <code>Objects</code> for the <code>libs</code> parameter.</p>
 
@@ -2726,11 +2760,11 @@ by seeing that <code>window.angular</code> already exists in the <code>window</c
         </li>
         
         
-        <li id="section-165">
+        <li id="section-167">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-165">&#182;</a>
+                <a class="pilcrow" href="#section-167">&#182;</a>
               </div>
               <p>Normalize the value.</p>
 
@@ -2741,11 +2775,11 @@ by seeing that <code>window.angular</code> already exists in the <code>window</c
         </li>
         
         
-        <li id="section-166">
+        <li id="section-168">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-166">&#182;</a>
+                <a class="pilcrow" href="#section-168">&#182;</a>
               </div>
               <p>If our value is not an <code>Object</code> then the value is malformed, discard it and throw a warning to the end user.</p>
 
@@ -2759,11 +2793,11 @@ by seeing that <code>window.angular</code> already exists in the <code>window</c
         </li>
         
         
-        <li id="section-167">
+        <li id="section-169">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-167">&#182;</a>
+                <a class="pilcrow" href="#section-169">&#182;</a>
               </div>
               <p>Populate our <code>normalized</code> <code>Object</code> with a normalized value.</p>
 
@@ -2774,11 +2808,11 @@ by seeing that <code>window.angular</code> already exists in the <code>window</c
         </li>
         
         
-        <li id="section-168">
+        <li id="section-170">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-168">&#182;</a>
+                <a class="pilcrow" href="#section-170">&#182;</a>
               </div>
               <p>Generate a module for this library.</p>
 
@@ -2793,11 +2827,11 @@ by seeing that <code>window.angular</code> already exists in the <code>window</c
         </li>
         
         
-        <li id="section-169">
+        <li id="section-171">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-169">&#182;</a>
+                <a class="pilcrow" href="#section-171">&#182;</a>
               </div>
               <p>Normalize the <code>value</code> parameter and populate it within the <code>normalized</code> <code>Object</code>.</p>
 
@@ -2808,11 +2842,11 @@ by seeing that <code>window.angular</code> already exists in the <code>window</c
         </li>
         
         
-        <li id="section-170">
+        <li id="section-172">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-170">&#182;</a>
+                <a class="pilcrow" href="#section-172">&#182;</a>
               </div>
               <p>Reference our whitelist.</p>
 
@@ -2823,11 +2857,11 @@ by seeing that <code>window.angular</code> already exists in the <code>window</c
         </li>
         
         
-        <li id="section-171">
+        <li id="section-173">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-171">&#182;</a>
+                <a class="pilcrow" href="#section-173">&#182;</a>
               </div>
               <p>Constrain the keys of this object to our whitelist.</p>
 
@@ -2838,11 +2872,11 @@ by seeing that <code>window.angular</code> already exists in the <code>window</c
         </li>
         
         
-        <li id="section-172">
+        <li id="section-174">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-172">&#182;</a>
+                <a class="pilcrow" href="#section-174">&#182;</a>
               </div>
               <p>Merge in our defaults to fill in whatever keys are missing.</p>
 
@@ -2853,11 +2887,11 @@ by seeing that <code>window.angular</code> already exists in the <code>window</c
         </li>
         
         
-        <li id="section-173">
+        <li id="section-175">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-173">&#182;</a>
+                <a class="pilcrow" href="#section-175">&#182;</a>
               </div>
               <p>Loop through and normalize each of the values for our <code>Object</code>.</p>
 
@@ -2870,11 +2904,11 @@ by seeing that <code>window.angular</code> already exists in the <code>window</c
         </li>
         
         
-        <li id="section-174">
+        <li id="section-176">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-174">&#182;</a>
+                <a class="pilcrow" href="#section-176">&#182;</a>
               </div>
               <p>Set our normalize value up for return.</p>
 
@@ -2885,11 +2919,11 @@ by seeing that <code>window.angular</code> already exists in the <code>window</c
         </li>
         
         
-        <li id="section-175">
+        <li id="section-177">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-175">&#182;</a>
+                <a class="pilcrow" href="#section-177">&#182;</a>
               </div>
               <p>Return our populated normalized <code>Object</code>.</p>
 
@@ -2901,11 +2935,11 @@ by seeing that <code>window.angular</code> already exists in the <code>window</c
         </li>
         
         
-        <li id="section-176">
+        <li id="section-178">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-176">&#182;</a>
+                <a class="pilcrow" href="#section-178">&#182;</a>
               </div>
               <p>Normalize the value for an iteration of <code>libs</code> <code>Object</code>.</p>
 
@@ -2916,11 +2950,11 @@ by seeing that <code>window.angular</code> already exists in the <code>window</c
         </li>
         
         
-        <li id="section-177">
+        <li id="section-179">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-177">&#182;</a>
+                <a class="pilcrow" href="#section-179">&#182;</a>
               </div>
               <p>If the value is a <code>String</code>, convert it to an <code>Array</code>.</p>
 
@@ -2933,11 +2967,11 @@ by seeing that <code>window.angular</code> already exists in the <code>window</c
         </li>
         
         
-        <li id="section-178">
+        <li id="section-180">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-178">&#182;</a>
+                <a class="pilcrow" href="#section-180">&#182;</a>
               </div>
               <p>If the value is an <code>Array</code>, convert it to an <code>Object</code> where the parameter <code>urls</code> is the value.</p>
 
@@ -2952,11 +2986,11 @@ by seeing that <code>window.angular</code> already exists in the <code>window</c
         </li>
         
         
-        <li id="section-179">
+        <li id="section-181">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-179">&#182;</a>
+                <a class="pilcrow" href="#section-181">&#182;</a>
               </div>
               <p>Return our normalized value.</p>
 
@@ -2968,11 +3002,11 @@ by seeing that <code>window.angular</code> already exists in the <code>window</c
         </li>
         
         
-        <li id="section-180">
+        <li id="section-182">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-180">&#182;</a>
+                <a class="pilcrow" href="#section-182">&#182;</a>
               </div>
               <p>Each of these functions expect to have values that are either a <code>String</code> or series of strings. If neither is the
 case, then a value of <code>null</code> will be returned. If any non-string values are apart of the series, they’ll be dropped
@@ -2992,11 +3026,11 @@ me.config.libs.urls = <span class="hljs-function"><span class="hljs-keyword">fun
         </li>
         
         
-        <li id="section-181">
+        <li id="section-183">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-181">&#182;</a>
+                <a class="pilcrow" href="#section-183">&#182;</a>
               </div>
               <p>If either <code>check</code> or <code>init is specified within the</code>libs<code>`Object</code>, then they must be a function or they’ll be
 discarded.</p>
@@ -3015,11 +3049,11 @@ me.config.libs.init = <span class="hljs-function"><span class="hljs-keyword">fun
         </li>
         
         
-        <li id="section-182">
+        <li id="section-184">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-182">&#182;</a>
+                <a class="pilcrow" href="#section-184">&#182;</a>
               </div>
               <p>The whitelist of acceptable keys for an <code>Object</code> in the <code>libs</code> parameter.</p>
 
@@ -3030,11 +3064,11 @@ me.config.libs.init = <span class="hljs-function"><span class="hljs-keyword">fun
         </li>
         
         
-        <li id="section-183">
+        <li id="section-185">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-183">&#182;</a>
+                <a class="pilcrow" href="#section-185">&#182;</a>
               </div>
               <p>The whitelist of acceptable keys for the <code>config</code> functions input <code>Object</code>.</p>
 
@@ -3047,11 +3081,11 @@ me.config.libs.init = <span class="hljs-function"><span class="hljs-keyword">fun
         </li>
         
         
-        <li id="section-184">
+        <li id="section-186">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-184">&#182;</a>
+                <a class="pilcrow" href="#section-186">&#182;</a>
               </div>
               <p>Defining anonymous and named modules for our library is done through this function. There are a number of ways to
 pass arguments into this function, for more details see comments in the <code>me.define.args</code> function.</p>
@@ -3063,11 +3097,11 @@ pass arguments into this function, for more details see comments in the <code>me
         </li>
         
         
-        <li id="section-185">
+        <li id="section-187">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-185">&#182;</a>
+                <a class="pilcrow" href="#section-187">&#182;</a>
               </div>
               <p>Fetch and normalize the argument that were passed in.</p>
 
@@ -3078,11 +3112,11 @@ pass arguments into this function, for more details see comments in the <code>me
         </li>
         
         
-        <li id="section-186">
+        <li id="section-188">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-186">&#182;</a>
+                <a class="pilcrow" href="#section-188">&#182;</a>
               </div>
               <p>If a name and factory weren’t passed in, throw a notice to the end user and halt our function.</p>
 
@@ -3096,11 +3130,11 @@ pass arguments into this function, for more details see comments in the <code>me
         </li>
         
         
-        <li id="section-187">
+        <li id="section-189">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-187">&#182;</a>
+                <a class="pilcrow" href="#section-189">&#182;</a>
               </div>
               <p>Fill up our dependencies.</p>
 
@@ -3111,11 +3145,11 @@ pass arguments into this function, for more details see comments in the <code>me
         </li>
         
         
-        <li id="section-188">
+        <li id="section-190">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-188">&#182;</a>
+                <a class="pilcrow" href="#section-190">&#182;</a>
               </div>
               <p>If we’re attempting to define an anonymous module, and we already have an anonymous module that was previously
 passed to the function before we had a chance to actually declare it’s name, then there was 2 anonymous modules
@@ -3134,11 +3168,11 @@ throw a notice to our end user.</p>
         </li>
         
         
-        <li id="section-189">
+        <li id="section-191">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-189">&#182;</a>
+                <a class="pilcrow" href="#section-191">&#182;</a>
               </div>
               <p>If we don’t have a name for our module, then we’ll define it as an anonymous module. Our callback that loaded our
 file will see this and set the proper name once the callback executes, which will happen synchronously.</p>
@@ -3153,11 +3187,11 @@ file will see this and set the proper name once the callback executes, which wil
         </li>
         
         
-        <li id="section-190">
+        <li id="section-192">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-190">&#182;</a>
+                <a class="pilcrow" href="#section-192">&#182;</a>
               </div>
               <p>Generate our new module and reference it as our last defined module.</p>
 
@@ -3168,11 +3202,11 @@ file will see this and set the proper name once the callback executes, which wil
         </li>
         
         
-        <li id="section-191">
+        <li id="section-193">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-191">&#182;</a>
+                <a class="pilcrow" href="#section-193">&#182;</a>
               </div>
               <p>Reset any anonymous modules that were waiting in limbo. If we don’t configure a module, use the <code>require</code> function
 to load it,and the file that loads has explicitly define the module name, then we no longer need this anonymous
@@ -3186,11 +3220,11 @@ definition since the name was explicitly defined.</p>
         </li>
         
         
-        <li id="section-192">
+        <li id="section-194">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-192">&#182;</a>
+                <a class="pilcrow" href="#section-194">&#182;</a>
               </div>
               <p>If a module is sitting in an anonymous state and waiting to be imported properly, this function will take the
 <code>dependencies</code> and <code>factory from that anonymous module, import them in to our properly named module, and then
@@ -3211,11 +3245,11 @@ out completely.</p>
         </li>
         
         
-        <li id="section-193">
+        <li id="section-195">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-193">&#182;</a>
+                <a class="pilcrow" href="#section-195">&#182;</a>
               </div>
               <p>If we don’t have a anonymous module waiting to be defined, then halt the function. We should at the very least have
 either a <code>factory</code> or reference to the last defined module (which in this case would be our anonymous module
@@ -3230,11 +3264,11 @@ without a name).</p>
         </li>
         
         
-        <li id="section-194">
+        <li id="section-196">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-194">&#182;</a>
+                <a class="pilcrow" href="#section-196">&#182;</a>
               </div>
               <p>Fetch the instance of our module.</p>
 
@@ -3245,11 +3279,11 @@ without a name).</p>
         </li>
         
         
-        <li id="section-195">
+        <li id="section-197">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-195">&#182;</a>
+                <a class="pilcrow" href="#section-197">&#182;</a>
               </div>
               <p>If we couldn’t find our module, then something went wrong. Let the end user know and halt the <code>Function</code>.</p>
 
@@ -3263,11 +3297,11 @@ without a name).</p>
         </li>
         
         
-        <li id="section-196">
+        <li id="section-198">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-196">&#182;</a>
+                <a class="pilcrow" href="#section-198">&#182;</a>
               </div>
               <p>If our module exists and there’s module that’s set as our last, then it’s not anonymous. Halt the <code>Function</code>.</p>
 
@@ -3280,11 +3314,11 @@ without a name).</p>
         </li>
         
         
-        <li id="section-197">
+        <li id="section-199">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-197">&#182;</a>
+                <a class="pilcrow" href="#section-199">&#182;</a>
               </div>
               <p>Set the dependencies for our anonymous <code>module</code>.</p>
 
@@ -3295,11 +3329,11 @@ without a name).</p>
         </li>
         
         
-        <li id="section-198">
+        <li id="section-200">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-198">&#182;</a>
+                <a class="pilcrow" href="#section-200">&#182;</a>
               </div>
               <p>Set the factory for our anonymous <code>module</code>.</p>
 
@@ -3310,11 +3344,11 @@ without a name).</p>
         </li>
         
         
-        <li id="section-199">
+        <li id="section-201">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-199">&#182;</a>
+                <a class="pilcrow" href="#section-201">&#182;</a>
               </div>
               <p>Reset the pending anonymous values waiting to be populated.</p>
 
@@ -3326,11 +3360,11 @@ without a name).</p>
         </li>
         
         
-        <li id="section-200">
+        <li id="section-202">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-200">&#182;</a>
+                <a class="pilcrow" href="#section-202">&#182;</a>
               </div>
               <p>The dependencies for our anonymous <code>module</code> waiting to be properly defined.</p>
 
@@ -3341,11 +3375,11 @@ without a name).</p>
         </li>
         
         
-        <li id="section-201">
+        <li id="section-203">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-201">&#182;</a>
+                <a class="pilcrow" href="#section-203">&#182;</a>
               </div>
               <p>The factory for our anonymous <code>module</code> waiting to be properly defined.</p>
 
@@ -3356,11 +3390,11 @@ without a name).</p>
         </li>
         
         
-        <li id="section-202">
+        <li id="section-204">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-202">&#182;</a>
+                <a class="pilcrow" href="#section-204">&#182;</a>
               </div>
               <p>Clear out any saved anonymous <code>module</code> properties.</p>
 
@@ -3371,11 +3405,11 @@ without a name).</p>
         </li>
         
         
-        <li id="section-203">
+        <li id="section-205">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-203">&#182;</a>
+                <a class="pilcrow" href="#section-205">&#182;</a>
               </div>
               <p>Clear the dependencies.</p>
 
@@ -3386,11 +3420,11 @@ without a name).</p>
         </li>
         
         
-        <li id="section-204">
+        <li id="section-206">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-204">&#182;</a>
+                <a class="pilcrow" href="#section-206">&#182;</a>
               </div>
               <p>Clear the factory.</p>
 
@@ -3402,11 +3436,11 @@ without a name).</p>
         </li>
         
         
-        <li id="section-205">
+        <li id="section-207">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-205">&#182;</a>
+                <a class="pilcrow" href="#section-207">&#182;</a>
               </div>
               <p>Store the anonymous module waiting to be defined.</p>
 
@@ -3417,11 +3451,11 @@ without a name).</p>
         </li>
         
         
-        <li id="section-206">
+        <li id="section-208">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-206">&#182;</a>
+                <a class="pilcrow" href="#section-208">&#182;</a>
               </div>
               <p>Remove the reference for our last defined module.</p>
 
@@ -3432,11 +3466,11 @@ without a name).</p>
         </li>
         
         
-        <li id="section-207">
+        <li id="section-209">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-207">&#182;</a>
+                <a class="pilcrow" href="#section-209">&#182;</a>
               </div>
               <p>Set the dependencies for our anonymous module.</p>
 
@@ -3447,11 +3481,11 @@ without a name).</p>
         </li>
         
         
-        <li id="section-208">
+        <li id="section-210">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-208">&#182;</a>
+                <a class="pilcrow" href="#section-210">&#182;</a>
               </div>
               <p>Set the factory for our anonymous module.</p>
 
@@ -3463,11 +3497,11 @@ without a name).</p>
         </li>
         
         
-        <li id="section-209">
+        <li id="section-211">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-209">&#182;</a>
+                <a class="pilcrow" href="#section-211">&#182;</a>
               </div>
               <p>Handle the arguments for our define function in a special way. In certain cases only 1, 2 or 3 parameters may be
 passed to the <code>Function</code>. This <code>Function</code> will determine what those parameters should be defined as.</p>
@@ -3479,11 +3513,11 @@ passed to the <code>Function</code>. This <code>Function</code> will determine w
         </li>
         
         
-        <li id="section-210">
+        <li id="section-212">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-210">&#182;</a>
+                <a class="pilcrow" href="#section-212">&#182;</a>
               </div>
               <p>Convert our <code>arguments</code> into an <code>Array</code>.</p>
 
@@ -3494,11 +3528,11 @@ passed to the <code>Function</code>. This <code>Function</code> will determine w
         </li>
         
         
-        <li id="section-211">
+        <li id="section-213">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-211">&#182;</a>
+                <a class="pilcrow" href="#section-213">&#182;</a>
               </div>
               <p>We’ll fill up these variables based on the arguments.</p>
 
@@ -3513,11 +3547,11 @@ passed to the <code>Function</code>. This <code>Function</code> will determine w
         </li>
         
         
-        <li id="section-212">
+        <li id="section-214">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-212">&#182;</a>
+                <a class="pilcrow" href="#section-214">&#182;</a>
               </div>
               <p>If we have no arguments, halt our function.</p>
 
@@ -3530,11 +3564,11 @@ passed to the <code>Function</code>. This <code>Function</code> will determine w
         </li>
         
         
-        <li id="section-213">
+        <li id="section-215">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-213">&#182;</a>
+                <a class="pilcrow" href="#section-215">&#182;</a>
               </div>
               <p>If we only got a single argument, treat it as the factory.</p>
 
@@ -3549,11 +3583,11 @@ passed to the <code>Function</code>. This <code>Function</code> will determine w
         </li>
         
         
-        <li id="section-214">
+        <li id="section-216">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-214">&#182;</a>
+                <a class="pilcrow" href="#section-216">&#182;</a>
               </div>
               <p>If we have 2 arguments, then there’s some special checks here.</p>
 
@@ -3564,11 +3598,11 @@ passed to the <code>Function</code>. This <code>Function</code> will determine w
         </li>
         
         
-        <li id="section-215">
+        <li id="section-217">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-215">&#182;</a>
+                <a class="pilcrow" href="#section-217">&#182;</a>
               </div>
               <p>The last parameter in this case will always be our factory.</p>
 
@@ -3579,11 +3613,11 @@ passed to the <code>Function</code>. This <code>Function</code> will determine w
         </li>
         
         
-        <li id="section-216">
+        <li id="section-218">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-216">&#182;</a>
+                <a class="pilcrow" href="#section-218">&#182;</a>
               </div>
               <p>If our first argument happens to be a string, treat it as the name.</p>
 
@@ -3598,11 +3632,11 @@ passed to the <code>Function</code>. This <code>Function</code> will determine w
         </li>
         
         
-        <li id="section-217">
+        <li id="section-219">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-217">&#182;</a>
+                <a class="pilcrow" href="#section-219">&#182;</a>
               </div>
               <p>If our first argument wasn’t a string, treat it as the <code>deps</code> or discard it.</p>
 
@@ -3616,11 +3650,11 @@ passed to the <code>Function</code>. This <code>Function</code> will determine w
         </li>
         
         
-        <li id="section-218">
+        <li id="section-220">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-218">&#182;</a>
+                <a class="pilcrow" href="#section-220">&#182;</a>
               </div>
               <p>If we have more 3 or more arguments, ignore everything after the 3rd argument.</p>
 
@@ -3633,11 +3667,11 @@ passed to the <code>Function</code>. This <code>Function</code> will determine w
         </li>
         
         
-        <li id="section-219">
+        <li id="section-221">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-219">&#182;</a>
+                <a class="pilcrow" href="#section-221">&#182;</a>
               </div>
               <p>Return our normalized payload of parameters.</p>
 
@@ -3649,11 +3683,11 @@ passed to the <code>Function</code>. This <code>Function</code> will determine w
         </li>
         
         
-        <li id="section-220">
+        <li id="section-222">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-220">&#182;</a>
+                <a class="pilcrow" href="#section-222">&#182;</a>
               </div>
               <p>Fill up our dependencies based on our arguments if we need to.</p>
 
@@ -3664,11 +3698,11 @@ passed to the <code>Function</code>. This <code>Function</code> will determine w
         </li>
         
         
-        <li id="section-221">
+        <li id="section-223">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-221">&#182;</a>
+                <a class="pilcrow" href="#section-223">&#182;</a>
               </div>
               <p>If we already have our dependencies defined, then skip the function.</p>
 
@@ -3681,11 +3715,11 @@ passed to the <code>Function</code>. This <code>Function</code> will determine w
         </li>
         
         
-        <li id="section-222">
+        <li id="section-224">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-222">&#182;</a>
+                <a class="pilcrow" href="#section-224">&#182;</a>
               </div>
               <p>If our factory isn’t a function, and our dependcies are empty, then we have no dependencies.</p>
 
@@ -3699,11 +3733,11 @@ passed to the <code>Function</code>. This <code>Function</code> will determine w
         </li>
         
         
-        <li id="section-223">
+        <li id="section-225">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-223">&#182;</a>
+                <a class="pilcrow" href="#section-225">&#182;</a>
               </div>
               <p>If we made it this far, set the arguments from our factory as our dependencies.</p>
 
@@ -3714,11 +3748,11 @@ passed to the <code>Function</code>. This <code>Function</code> will determine w
         </li>
         
         
-        <li id="section-224">
+        <li id="section-226">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-224">&#182;</a>
+                <a class="pilcrow" href="#section-226">&#182;</a>
               </div>
               <p>Send back our arguments array with our populated dependencies.</p>
 
@@ -3730,11 +3764,11 @@ passed to the <code>Function</code>. This <code>Function</code> will determine w
         </li>
         
         
-        <li id="section-225">
+        <li id="section-227">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-225">&#182;</a>
+                <a class="pilcrow" href="#section-227">&#182;</a>
               </div>
               <p>Generate and return our new module.</p>
 
@@ -3745,11 +3779,11 @@ passed to the <code>Function</code>. This <code>Function</code> will determine w
         </li>
         
         
-        <li id="section-226">
+        <li id="section-228">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-226">&#182;</a>
+                <a class="pilcrow" href="#section-228">&#182;</a>
               </div>
               <p>Generate the module.</p>
 
@@ -3760,11 +3794,11 @@ passed to the <code>Function</code>. This <code>Function</code> will determine w
         </li>
         
         
-        <li id="section-227">
+        <li id="section-229">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-227">&#182;</a>
+                <a class="pilcrow" href="#section-229">&#182;</a>
               </div>
               <p>Set our dependencies.</p>
 
@@ -3775,11 +3809,11 @@ passed to the <code>Function</code>. This <code>Function</code> will determine w
         </li>
         
         
-        <li id="section-228">
+        <li id="section-230">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-228">&#182;</a>
+                <a class="pilcrow" href="#section-230">&#182;</a>
               </div>
               <p>Set our factory.</p>
 
@@ -3790,11 +3824,11 @@ passed to the <code>Function</code>. This <code>Function</code> will determine w
         </li>
         
         
-        <li id="section-229">
+        <li id="section-231">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-229">&#182;</a>
+                <a class="pilcrow" href="#section-231">&#182;</a>
               </div>
               <p>Explicity flag that the module has been loaded, that way when we reference it, we don’t attempt to load it.</p>
 
@@ -3809,11 +3843,11 @@ passed to the <code>Function</code>. This <code>Function</code> will determine w
         </li>
         
         
-        <li id="section-230">
+        <li id="section-232">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-230">&#182;</a>
+                <a class="pilcrow" href="#section-232">&#182;</a>
               </div>
               <p>Our last defined module reference. This is used to reference the proper names with our anonymous modules.</p>
 
@@ -3826,11 +3860,11 @@ passed to the <code>Function</code>. This <code>Function</code> will determine w
         </li>
         
         
-        <li id="section-231">
+        <li id="section-233">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-231">&#182;</a>
+                <a class="pilcrow" href="#section-233">&#182;</a>
               </div>
               <p>The loader object handles asynchronously loading of all the files for the library. It acts as a middle man between
 the <code>require</code> function and our loader libraries. Loader libraries for example being <code>loaderImage.js</code>,
@@ -3845,11 +3879,11 @@ all logic which performs trying additional fallbacks and checks lives within the
         </li>
         
         
-        <li id="section-232">
+        <li id="section-234">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-232">&#182;</a>
+                <a class="pilcrow" href="#section-234">&#182;</a>
               </div>
               <p>Attempt to load our module.</p>
 
@@ -3860,11 +3894,11 @@ all logic which performs trying additional fallbacks and checks lives within the
         </li>
         
         
-        <li id="section-233">
+        <li id="section-235">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-233">&#182;</a>
+                <a class="pilcrow" href="#section-235">&#182;</a>
               </div>
               <p>Fetch the instance of our module.</p>
 
@@ -3875,11 +3909,11 @@ all logic which performs trying additional fallbacks and checks lives within the
         </li>
         
         
-        <li id="section-234">
+        <li id="section-236">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-234">&#182;</a>
+                <a class="pilcrow" href="#section-236">&#182;</a>
               </div>
               <p>If our module is already loaded, then skip the loading process and hit the callback.</p>
 
@@ -3893,11 +3927,11 @@ all logic which performs trying additional fallbacks and checks lives within the
         </li>
         
         
-        <li id="section-235">
+        <li id="section-237">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-235">&#182;</a>
+                <a class="pilcrow" href="#section-237">&#182;</a>
               </div>
               <p>Push our callback to the queue.</p>
 
@@ -3908,11 +3942,11 @@ all logic which performs trying additional fallbacks and checks lives within the
         </li>
         
         
-        <li id="section-236">
+        <li id="section-238">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-236">&#182;</a>
+                <a class="pilcrow" href="#section-238">&#182;</a>
               </div>
               <p>If this module is currently in the process of being loaded, queue our callback and skip processing.</p>
 
@@ -3925,11 +3959,11 @@ all logic which performs trying additional fallbacks and checks lives within the
         </li>
         
         
-        <li id="section-237">
+        <li id="section-239">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-237">&#182;</a>
+                <a class="pilcrow" href="#section-239">&#182;</a>
               </div>
               <p>If we made it this far, we need to actually process the module in question.</p>
 
@@ -3940,11 +3974,11 @@ all logic which performs trying additional fallbacks and checks lives within the
         </li>
         
         
-        <li id="section-238">
+        <li id="section-240">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-238">&#182;</a>
+                <a class="pilcrow" href="#section-240">&#182;</a>
               </div>
               <p>Set our start time for statistics.</p>
 
@@ -3955,11 +3989,11 @@ all logic which performs trying additional fallbacks and checks lives within the
         </li>
         
         
-        <li id="section-239">
+        <li id="section-241">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-239">&#182;</a>
+                <a class="pilcrow" href="#section-241">&#182;</a>
               </div>
               <p>Setup our temporary variables to use for our working URLs.</p>
 
@@ -3970,11 +4004,11 @@ all logic which performs trying additional fallbacks and checks lives within the
         </li>
         
         
-        <li id="section-240">
+        <li id="section-242">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-240">&#182;</a>
+                <a class="pilcrow" href="#section-242">&#182;</a>
               </div>
               <p>Make sure to clone our URLs array as we’re going to be manipulating it.</p>
 
@@ -3986,11 +4020,11 @@ all logic which performs trying additional fallbacks and checks lives within the
         </li>
         
         
-        <li id="section-241">
+        <li id="section-243">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-241">&#182;</a>
+                <a class="pilcrow" href="#section-243">&#182;</a>
               </div>
               <p>Load the URLs passed in for the module in question. This will run a loop through each of the URLs, attempting to
 load one at a time, only stopping when either all URLs have been exhausted or a URL has loaded successfully. Other
@@ -4004,11 +4038,11 @@ scripts themselves.</p>
         </li>
         
         
-        <li id="section-242">
+        <li id="section-244">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-242">&#182;</a>
+                <a class="pilcrow" href="#section-244">&#182;</a>
               </div>
               <p>Reference our working URLs.</p>
 
@@ -4019,11 +4053,11 @@ scripts themselves.</p>
         </li>
         
         
-        <li id="section-243">
+        <li id="section-245">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-243">&#182;</a>
+                <a class="pilcrow" href="#section-245">&#182;</a>
               </div>
               <p>If we’ve exhausted all URLs available for the module, then the library has failed to load.</p>
 
@@ -4036,11 +4070,11 @@ scripts themselves.</p>
         </li>
         
         
-        <li id="section-244">
+        <li id="section-246">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-244">&#182;</a>
+                <a class="pilcrow" href="#section-246">&#182;</a>
               </div>
               <p>Shift our URL off of the <code>Array</code>, that way if we have to loop around, we don’t retry the same URL again.</p>
 
@@ -4051,11 +4085,11 @@ scripts themselves.</p>
         </li>
         
         
-        <li id="section-245">
+        <li id="section-247">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-245">&#182;</a>
+                <a class="pilcrow" href="#section-247">&#182;</a>
               </div>
               <p>Throw a log message to the end user.</p>
 
@@ -4066,11 +4100,11 @@ scripts themselves.</p>
         </li>
         
         
-        <li id="section-246">
+        <li id="section-248">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-246">&#182;</a>
+                <a class="pilcrow" href="#section-248">&#182;</a>
               </div>
               <p>Call upon our specific loader script to load our URL.</p>
 
@@ -4082,11 +4116,11 @@ scripts themselves.</p>
         </li>
         
         
-        <li id="section-247">
+        <li id="section-249">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-247">&#182;</a>
+                <a class="pilcrow" href="#section-249">&#182;</a>
               </div>
               <p>Common operations to perform whether a module loaded successfully or not.</p>
 
@@ -4097,11 +4131,11 @@ scripts themselves.</p>
         </li>
         
         
-        <li id="section-248">
+        <li id="section-250">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-248">&#182;</a>
+                <a class="pilcrow" href="#section-250">&#182;</a>
               </div>
               <p>Flag our module has having already attempted to load.</p>
 
@@ -4112,11 +4146,11 @@ scripts themselves.</p>
         </li>
         
         
-        <li id="section-249">
+        <li id="section-251">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-249">&#182;</a>
+                <a class="pilcrow" href="#section-251">&#182;</a>
               </div>
               <p>Set our end time for statistics.</p>
 
@@ -4127,11 +4161,11 @@ scripts themselves.</p>
         </li>
         
         
-        <li id="section-250">
+        <li id="section-252">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-250">&#182;</a>
+                <a class="pilcrow" href="#section-252">&#182;</a>
               </div>
               <p>Flag our module as no longer in a working/in progress state.</p>
 
@@ -4142,11 +4176,11 @@ scripts themselves.</p>
         </li>
         
         
-        <li id="section-251">
+        <li id="section-253">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-251">&#182;</a>
+                <a class="pilcrow" href="#section-253">&#182;</a>
               </div>
               <p>Fire off all of our callbacks.</p>
 
@@ -4158,11 +4192,11 @@ scripts themselves.</p>
         </li>
         
         
-        <li id="section-252">
+        <li id="section-254">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-252">&#182;</a>
+                <a class="pilcrow" href="#section-254">&#182;</a>
               </div>
               <p>When a URL or module fails to load this function will be called.</p>
 
@@ -4173,11 +4207,11 @@ scripts themselves.</p>
         </li>
         
         
-        <li id="section-253">
+        <li id="section-255">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-253">&#182;</a>
+                <a class="pilcrow" href="#section-255">&#182;</a>
               </div>
               <p>Setup our log message that we’ll send to the end user.</p>
 
@@ -4188,11 +4222,11 @@ scripts themselves.</p>
         </li>
         
         
-        <li id="section-254">
+        <li id="section-256">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-254">&#182;</a>
+                <a class="pilcrow" href="#section-256">&#182;</a>
               </div>
               <p>If there’s no URL, then all URLs have been exhausted!</p>
 
@@ -4206,11 +4240,11 @@ scripts themselves.</p>
         </li>
         
         
-        <li id="section-255">
+        <li id="section-257">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-255">&#182;</a>
+                <a class="pilcrow" href="#section-257">&#182;</a>
               </div>
               <p>Reset the anonymous module name.</p>
 
@@ -4221,11 +4255,11 @@ scripts themselves.</p>
         </li>
         
         
-        <li id="section-256">
+        <li id="section-258">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-256">&#182;</a>
+                <a class="pilcrow" href="#section-258">&#182;</a>
               </div>
               <p>Let the end user know which specific URL failed to load.</p>
 
@@ -4237,11 +4271,11 @@ scripts themselves.</p>
         </li>
         
         
-        <li id="section-257">
+        <li id="section-259">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-257">&#182;</a>
+                <a class="pilcrow" href="#section-259">&#182;</a>
               </div>
               <p>Try the next URL in our URLs list.</p>
 
@@ -4253,11 +4287,11 @@ scripts themselves.</p>
         </li>
         
         
-        <li id="section-258">
+        <li id="section-260">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-258">&#182;</a>
+                <a class="pilcrow" href="#section-260">&#182;</a>
               </div>
               <p>When a URL loads sucessfully this function will be called.</p>
 
@@ -4268,11 +4302,11 @@ scripts themselves.</p>
         </li>
         
         
-        <li id="section-259">
+        <li id="section-261">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-259">&#182;</a>
+                <a class="pilcrow" href="#section-261">&#182;</a>
               </div>
               <p>We’re going to store the name of the module we’re attempting to load here. This way if the file that’s loaded
 happens to call the <code>define</code> function with an anonymous name, this is the name that we’ll use for the definition.</p>
@@ -4284,11 +4318,11 @@ happens to call the <code>define</code> function with an anonymous name, this is
         </li>
         
         
-        <li id="section-260">
+        <li id="section-262">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-260">&#182;</a>
+                <a class="pilcrow" href="#section-262">&#182;</a>
               </div>
               <p>If our library was already loaded, we don’t know what URL was successful, so we’ll skip setting it.</p>
 
@@ -4304,11 +4338,11 @@ happens to call the <code>define</code> function with an anonymous name, this is
         </li>
         
         
-        <li id="section-261">
+        <li id="section-263">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-261">&#182;</a>
+                <a class="pilcrow" href="#section-263">&#182;</a>
               </div>
               <p>If we have a <code>init</code> function, we’ll run it now.</p>
 
@@ -4321,11 +4355,11 @@ happens to call the <code>define</code> function with an anonymous name, this is
         </li>
         
         
-        <li id="section-262">
+        <li id="section-264">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-262">&#182;</a>
+                <a class="pilcrow" href="#section-264">&#182;</a>
               </div>
               <p>If we don’t have a factory for our module, then there was no definition. Regardless of what our value is we’ll
 reference it here.</p>
@@ -4340,11 +4374,11 @@ reference it here.</p>
         </li>
         
         
-        <li id="section-263">
+        <li id="section-265">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-263">&#182;</a>
+                <a class="pilcrow" href="#section-265">&#182;</a>
               </div>
               <p>Wrap up the loader process and handle our callbacks.</p>
 
@@ -4358,11 +4392,11 @@ reference it here.</p>
         </li>
         
         
-        <li id="section-264">
+        <li id="section-266">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-264">&#182;</a>
+                <a class="pilcrow" href="#section-266">&#182;</a>
               </div>
               <p>Image loader which is responsible for loading any images for the library.</p>
 
@@ -4373,11 +4407,11 @@ reference it here.</p>
         </li>
         
         
-        <li id="section-265">
+        <li id="section-267">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-265">&#182;</a>
+                <a class="pilcrow" href="#section-267">&#182;</a>
               </div>
               <p>The image loader is pretty straight forward as legacy browser support goes way back, we don’t need to perform any
 extra checking or manipulation.</p>
@@ -4389,11 +4423,11 @@ extra checking or manipulation.</p>
         </li>
         
         
-        <li id="section-266">
+        <li id="section-268">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-266">&#182;</a>
+                <a class="pilcrow" href="#section-268">&#182;</a>
               </div>
               <p>Create a new <code>img</code> element.</p>
 
@@ -4404,11 +4438,11 @@ extra checking or manipulation.</p>
         </li>
         
         
-        <li id="section-267">
+        <li id="section-269">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-267">&#182;</a>
+                <a class="pilcrow" href="#section-269">&#182;</a>
               </div>
               <p>If we get an <code>onerror</code> callback, the image failed to load.</p>
 
@@ -4419,11 +4453,11 @@ extra checking or manipulation.</p>
         </li>
         
         
-        <li id="section-268">
+        <li id="section-270">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-268">&#182;</a>
+                <a class="pilcrow" href="#section-270">&#182;</a>
               </div>
               <p>Remove the element from the page.</p>
 
@@ -4434,11 +4468,11 @@ extra checking or manipulation.</p>
         </li>
         
         
-        <li id="section-269">
+        <li id="section-271">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-269">&#182;</a>
+                <a class="pilcrow" href="#section-271">&#182;</a>
               </div>
               <p>Process our failed callback.</p>
 
@@ -4450,11 +4484,11 @@ extra checking or manipulation.</p>
         </li>
         
         
-        <li id="section-270">
+        <li id="section-272">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-270">&#182;</a>
+                <a class="pilcrow" href="#section-272">&#182;</a>
               </div>
               <p>If we get an <code>onload</code> callback, the image loaded successfully.</p>
 
@@ -4465,11 +4499,11 @@ extra checking or manipulation.</p>
         </li>
         
         
-        <li id="section-271">
+        <li id="section-273">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-271">&#182;</a>
+                <a class="pilcrow" href="#section-273">&#182;</a>
               </div>
               <p>Remove the element from the page.</p>
 
@@ -4480,11 +4514,11 @@ extra checking or manipulation.</p>
         </li>
         
         
-        <li id="section-272">
+        <li id="section-274">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-272">&#182;</a>
+                <a class="pilcrow" href="#section-274">&#182;</a>
               </div>
               <p>In the case of images, the factory represents the URL.</p>
 
@@ -4496,11 +4530,11 @@ extra checking or manipulation.</p>
         </li>
         
         
-        <li id="section-273">
+        <li id="section-275">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-273">&#182;</a>
+                <a class="pilcrow" href="#section-275">&#182;</a>
               </div>
               <p>Set the actual URL that we’re going to request to load for our image.</p>
 
@@ -4511,11 +4545,11 @@ extra checking or manipulation.</p>
         </li>
         
         
-        <li id="section-274">
+        <li id="section-276">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-274">&#182;</a>
+                <a class="pilcrow" href="#section-276">&#182;</a>
               </div>
               <p>Attempt to load the image on the page.</p>
 
@@ -4529,11 +4563,11 @@ extra checking or manipulation.</p>
         </li>
         
         
-        <li id="section-275">
+        <li id="section-277">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-275">&#182;</a>
+                <a class="pilcrow" href="#section-277">&#182;</a>
               </div>
               <p>JavaScript loader which is responsible for loading any scripts for the library.</p>
 
@@ -4544,11 +4578,11 @@ extra checking or manipulation.</p>
         </li>
         
         
-        <li id="section-276">
+        <li id="section-278">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-276">&#182;</a>
+                <a class="pilcrow" href="#section-278">&#182;</a>
               </div>
               <p>Attempt to load a script onto the page.</p>
 
@@ -4559,11 +4593,11 @@ extra checking or manipulation.</p>
         </li>
         
         
-        <li id="section-277">
+        <li id="section-279">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-277">&#182;</a>
+                <a class="pilcrow" href="#section-279">&#182;</a>
               </div>
               <p>If the library is already loaded on the page, don’t attempt to reload it.</p>
 
@@ -4574,11 +4608,11 @@ extra checking or manipulation.</p>
         </li>
         
         
-        <li id="section-278">
+        <li id="section-280">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-278">&#182;</a>
+                <a class="pilcrow" href="#section-280">&#182;</a>
               </div>
               <p>console.log(module);
 @todo we need to check if its already on the page*#@$%()
@@ -4591,11 +4625,11 @@ return callbackSuccess(module, url, ‘predefined’, factory);
         </li>
         
         
-        <li id="section-279">
+        <li id="section-281">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-279">&#182;</a>
+                <a class="pilcrow" href="#section-281">&#182;</a>
               </div>
               <p>@todo make these their own functions and use .apply on them
 If our library failed to load, we’ll call upon this function.</p>
@@ -4609,11 +4643,11 @@ If our library failed to load, we’ll call upon this function.</p>
         </li>
         
         
-        <li id="section-280">
+        <li id="section-282">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-280">&#182;</a>
+                <a class="pilcrow" href="#section-282">&#182;</a>
               </div>
               <p>Whether a callback comes back as an error/success, they’re not always trustworthy.
 We need to manually check to make sure that our libraries were loaded properly.</p>
@@ -4633,11 +4667,11 @@ We need to manually check to make sure that our libraries were loaded properly.<
         </li>
         
         
-        <li id="section-281">
+        <li id="section-283">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-281">&#182;</a>
+                <a class="pilcrow" href="#section-283">&#182;</a>
               </div>
               <p>Create a new script element instance.</p>
 
@@ -4648,11 +4682,11 @@ We need to manually check to make sure that our libraries were loaded properly.<
         </li>
         
         
-        <li id="section-282">
+        <li id="section-284">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-282">&#182;</a>
+                <a class="pilcrow" href="#section-284">&#182;</a>
               </div>
               <p>Set the actual URL that we’re going to request to load for our library.</p>
 
@@ -4663,11 +4697,11 @@ We need to manually check to make sure that our libraries were loaded properly.<
         </li>
         
         
-        <li id="section-283">
+        <li id="section-285">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-283">&#182;</a>
+                <a class="pilcrow" href="#section-285">&#182;</a>
               </div>
               <p>Set the type, some legacy browsers require this attribute be present.</p>
 
@@ -4678,11 +4712,11 @@ We need to manually check to make sure that our libraries were loaded properly.<
         </li>
         
         
-        <li id="section-284">
+        <li id="section-286">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-284">&#182;</a>
+                <a class="pilcrow" href="#section-286">&#182;</a>
               </div>
               <p>If we get an error callback, bypass any checking and just fail.</p>
 
@@ -4693,11 +4727,11 @@ We need to manually check to make sure that our libraries were loaded properly.<
         </li>
         
         
-        <li id="section-285">
+        <li id="section-287">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-285">&#182;</a>
+                <a class="pilcrow" href="#section-287">&#182;</a>
               </div>
               <p>Do our checks and throw our callback.</p>
 
@@ -4708,11 +4742,11 @@ We need to manually check to make sure that our libraries were loaded properly.<
         </li>
         
         
-        <li id="section-286">
+        <li id="section-288">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-286">&#182;</a>
+                <a class="pilcrow" href="#section-288">&#182;</a>
               </div>
               <p>Special event handler for certain versions of IE. @ie</p>
 
@@ -4724,11 +4758,11 @@ We need to manually check to make sure that our libraries were loaded properly.<
         </li>
         
         
-        <li id="section-287">
+        <li id="section-289">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-287">&#182;</a>
+                <a class="pilcrow" href="#section-289">&#182;</a>
               </div>
               <p>Explicity remove the callback after we receive it.
 Some versions of IE tend to fire off multiple success events.</p>
@@ -4740,11 +4774,11 @@ Some versions of IE tend to fire off multiple success events.</p>
         </li>
         
         
-        <li id="section-288">
+        <li id="section-290">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-288">&#182;</a>
+                <a class="pilcrow" href="#section-290">&#182;</a>
               </div>
               <p>Do our checks and throw our callback.</p>
 
@@ -4757,11 +4791,11 @@ Some versions of IE tend to fire off multiple success events.</p>
         </li>
         
         
-        <li id="section-289">
+        <li id="section-291">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-289">&#182;</a>
+                <a class="pilcrow" href="#section-291">&#182;</a>
               </div>
               <p>Load our URL on the page.</p>
 
@@ -4773,11 +4807,11 @@ Some versions of IE tend to fire off multiple success events.</p>
         </li>
         
         
-        <li id="section-290">
+        <li id="section-292">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-290">&#182;</a>
+                <a class="pilcrow" href="#section-292">&#182;</a>
               </div>
               <p>@todo document it
 @todo if there are no exports, simply rely on the callbacks</p>
@@ -4800,11 +4834,11 @@ Some versions of IE tend to fire off multiple success events.</p>
         </li>
         
         
-        <li id="section-291">
+        <li id="section-293">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-291">&#182;</a>
+                <a class="pilcrow" href="#section-293">&#182;</a>
               </div>
               <p>By default just return true, as this function was hit from a success callback.</p>
 
@@ -4816,11 +4850,11 @@ Some versions of IE tend to fire off multiple success events.</p>
         </li>
         
         
-        <li id="section-292">
+        <li id="section-294">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-292">&#182;</a>
+                <a class="pilcrow" href="#section-294">&#182;</a>
               </div>
               <p>This function will check for the instance of our library based on the exports given. If the instance of our library
 exists it’ll be returned, otherwise this function will return <code>null</code>.</p>
@@ -4833,11 +4867,11 @@ exists it’ll be returned, otherwise this function will return <code>null</code
         </li>
         
         
-        <li id="section-293">
+        <li id="section-295">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-293">&#182;</a>
+                <a class="pilcrow" href="#section-295">&#182;</a>
               </div>
               <p>Loop through each of our exports variable, until we find a match.</p>
 
@@ -4848,11 +4882,11 @@ exists it’ll be returned, otherwise this function will return <code>null</code
         </li>
         
         
-        <li id="section-294">
+        <li id="section-296">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-294">&#182;</a>
+                <a class="pilcrow" href="#section-296">&#182;</a>
               </div>
               <p>We have to explicity use <code>eval</code> because variables will come in many forms. In particular sometimes they will come
 in the form of being a child of an object. For example <code>jQuery UI</code> loads under the window variable <code>jQuery.ui</code>. In
@@ -4870,11 +4904,11 @@ order for us to get to this programtically we have to use <code>eval</code>.</p>
         </li>
         
         
-        <li id="section-295">
+        <li id="section-297">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-295">&#182;</a>
+                <a class="pilcrow" href="#section-297">&#182;</a>
               </div>
               <p>Force our variable back to a <code>null</code>.</p>
 
@@ -4895,11 +4929,11 @@ order for us to get to this programtically we have to use <code>eval</code>.</p>
         </li>
         
         
-        <li id="section-296">
+        <li id="section-298">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-296">&#182;</a>
+                <a class="pilcrow" href="#section-298">&#182;</a>
               </div>
               <p>@todo remove the auto adding of exports, if exports aren’t present then just rely on the native browser callbacks
 @todo critical for css files^^^^^ debating…</p>
@@ -4914,11 +4948,11 @@ me.loader.css.boot = <span class="hljs-function"><span class="hljs-keyword">func
         </li>
         
         
-        <li id="section-297">
+        <li id="section-299">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-297">&#182;</a>
+                <a class="pilcrow" href="#section-299">&#182;</a>
               </div>
               <p>If the library is already defined on the page, don’t attempt to reload it.</p>
 
@@ -4929,11 +4963,11 @@ me.loader.css.boot = <span class="hljs-function"><span class="hljs-keyword">func
         </li>
         
         
-        <li id="section-298">
+        <li id="section-300">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-298">&#182;</a>
+                <a class="pilcrow" href="#section-300">&#182;</a>
               </div>
               <p>@todo we need to check if its already on the page*#@$%()
 if (factory) {
@@ -4945,11 +4979,11 @@ if (factory) {
         </li>
         
         
-        <li id="section-299">
+        <li id="section-301">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-299">&#182;</a>
+                <a class="pilcrow" href="#section-301">&#182;</a>
               </div>
               <p>If our library failed to load, we’ll call upon this function.</p>
 
@@ -4962,11 +4996,11 @@ if (factory) {
         </li>
         
         
-        <li id="section-300">
+        <li id="section-302">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-300">&#182;</a>
+                <a class="pilcrow" href="#section-302">&#182;</a>
               </div>
               <p>Whether a callback comes back as an error/success, they’re not always trustworthy.
 We need to manually check to make sure that our libraries were loaded properly.</p>
@@ -4986,11 +5020,11 @@ We need to manually check to make sure that our libraries were loaded properly.<
         </li>
         
         
-        <li id="section-301">
+        <li id="section-303">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-301">&#182;</a>
+                <a class="pilcrow" href="#section-303">&#182;</a>
               </div>
               <p>Create a new script element instance.</p>
 
@@ -5001,11 +5035,11 @@ We need to manually check to make sure that our libraries were loaded properly.<
         </li>
         
         
-        <li id="section-302">
+        <li id="section-304">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-302">&#182;</a>
+                <a class="pilcrow" href="#section-304">&#182;</a>
               </div>
               <p>Set the actual URL that we’re going to request to load for our library.</p>
 
@@ -5016,11 +5050,11 @@ We need to manually check to make sure that our libraries were loaded properly.<
         </li>
         
         
-        <li id="section-303">
+        <li id="section-305">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-303">&#182;</a>
+                <a class="pilcrow" href="#section-305">&#182;</a>
               </div>
               <p>Set the type, some legacy browsers require this attribute be present.</p>
 
@@ -5031,11 +5065,11 @@ We need to manually check to make sure that our libraries were loaded properly.<
         </li>
         
         
-        <li id="section-304">
+        <li id="section-306">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-304">&#182;</a>
+                <a class="pilcrow" href="#section-306">&#182;</a>
               </div>
               <p>If we get an error callback, bypass any checking and just fail.</p>
 
@@ -5046,11 +5080,11 @@ We need to manually check to make sure that our libraries were loaded properly.<
         </li>
         
         
-        <li id="section-305">
+        <li id="section-307">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-305">&#182;</a>
+                <a class="pilcrow" href="#section-307">&#182;</a>
               </div>
               <p>Do our checks and throw our callback.</p>
 
@@ -5061,11 +5095,11 @@ We need to manually check to make sure that our libraries were loaded properly.<
         </li>
         
         
-        <li id="section-306">
+        <li id="section-308">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-306">&#182;</a>
+                <a class="pilcrow" href="#section-308">&#182;</a>
               </div>
               <p>Special event handler for certain versions of IE. @ie</p>
 
@@ -5077,11 +5111,11 @@ We need to manually check to make sure that our libraries were loaded properly.<
         </li>
         
         
-        <li id="section-307">
+        <li id="section-309">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-307">&#182;</a>
+                <a class="pilcrow" href="#section-309">&#182;</a>
               </div>
               <p>Explicity remove the callback after we receive it.
 Some versions of IE tend to fire off multiple success events.</p>
@@ -5093,11 +5127,11 @@ Some versions of IE tend to fire off multiple success events.</p>
         </li>
         
         
-        <li id="section-308">
+        <li id="section-310">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-308">&#182;</a>
+                <a class="pilcrow" href="#section-310">&#182;</a>
               </div>
               <p>Do our checks and throw our callback.</p>
 
@@ -5110,11 +5144,11 @@ Some versions of IE tend to fire off multiple success events.</p>
         </li>
         
         
-        <li id="section-309">
+        <li id="section-311">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-309">&#182;</a>
+                <a class="pilcrow" href="#section-311">&#182;</a>
               </div>
               <p>Load our URL on the page.</p>
 
@@ -5126,11 +5160,11 @@ Some versions of IE tend to fire off multiple success events.</p>
         </li>
         
         
-        <li id="section-310">
+        <li id="section-312">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-310">&#182;</a>
+                <a class="pilcrow" href="#section-312">&#182;</a>
               </div>
               <p>@todo document it</p>
 
@@ -5152,11 +5186,11 @@ Some versions of IE tend to fire off multiple success events.</p>
         </li>
         
         
-        <li id="section-311">
+        <li id="section-313">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-311">&#182;</a>
+                <a class="pilcrow" href="#section-313">&#182;</a>
               </div>
               <p>By default just return true, as this function was hit from a success callback.</p>
 
@@ -5168,11 +5202,11 @@ Some versions of IE tend to fire off multiple success events.</p>
         </li>
         
         
-        <li id="section-312">
+        <li id="section-314">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-312">&#182;</a>
+                <a class="pilcrow" href="#section-314">&#182;</a>
               </div>
               <p>This function will check for the instance of our library based on the exports given. If the instance of our library
 exists it’ll be returned, otherwise this function will return <code>null</code>.</p>
@@ -5189,11 +5223,11 @@ exists it’ll be returned, otherwise this function will return <code>null</code
         </li>
         
         
-        <li id="section-313">
+        <li id="section-315">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-313">&#182;</a>
+                <a class="pilcrow" href="#section-315">&#182;</a>
               </div>
               <p>Loop through each of our exports variable, until we find a match.</p>
 
@@ -5204,11 +5238,11 @@ exists it’ll be returned, otherwise this function will return <code>null</code
         </li>
         
         
-        <li id="section-314">
+        <li id="section-316">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-314">&#182;</a>
+                <a class="pilcrow" href="#section-316">&#182;</a>
               </div>
               <p>We have to explicity use <code>eval</code> because variables will come in many forms. In particular sometimes they will come
 in the form of being a child of an object. For example <code>jQuery UI</code> loads under the window variable <code>jQuery.ui</code>. In
@@ -5226,11 +5260,11 @@ order for us to get to this programtically we have to use <code>eval</code>.</p>
         </li>
         
         
-        <li id="section-315">
+        <li id="section-317">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-315">&#182;</a>
+                <a class="pilcrow" href="#section-317">&#182;</a>
               </div>
               <p>Force our variable back to a <code>null</code>.</p>
 
@@ -5251,11 +5285,11 @@ order for us to get to this programtically we have to use <code>eval</code>.</p>
         </li>
         
         
-        <li id="section-316">
+        <li id="section-318">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-316">&#182;</a>
+                <a class="pilcrow" href="#section-318">&#182;</a>
               </div>
               <p>Fetch an already existant module from our definitions. If the module in question doesn’t exist then we’ll
 automatically generate it unless we explicity set the <code>generate</code> parameter to false.</p>
@@ -5267,11 +5301,11 @@ automatically generate it unless we explicity set the <code>generate</code> para
         </li>
         
         
-        <li id="section-317">
+        <li id="section-319">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-317">&#182;</a>
+                <a class="pilcrow" href="#section-319">&#182;</a>
               </div>
               <p>Fetch our real module name, in the case that we’re passed an alias.</p>
 
@@ -5282,11 +5316,11 @@ automatically generate it unless we explicity set the <code>generate</code> para
         </li>
         
         
-        <li id="section-318">
+        <li id="section-320">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-318">&#182;</a>
+                <a class="pilcrow" href="#section-320">&#182;</a>
               </div>
               <p>If the module already exists, then return it.</p>
 
@@ -5299,11 +5333,11 @@ automatically generate it unless we explicity set the <code>generate</code> para
         </li>
         
         
-        <li id="section-319">
+        <li id="section-321">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-319">&#182;</a>
+                <a class="pilcrow" href="#section-321">&#182;</a>
               </div>
               <p>If we explicity stated not to generate our module, then stop here.</p>
 
@@ -5316,11 +5350,11 @@ automatically generate it unless we explicity set the <code>generate</code> para
         </li>
         
         
-        <li id="section-320">
+        <li id="section-322">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-320">&#182;</a>
+                <a class="pilcrow" href="#section-322">&#182;</a>
               </div>
               <p>Generate and return our newly generated module.</p>
 
@@ -5332,11 +5366,11 @@ automatically generate it unless we explicity set the <code>generate</code> para
         </li>
         
         
-        <li id="section-321">
+        <li id="section-323">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-321">&#182;</a>
+                <a class="pilcrow" href="#section-323">&#182;</a>
               </div>
               <p>Store our aliases in a mapped <code>Object</code> that way it can be referenced easily to figure out the module.</p>
 
@@ -5347,11 +5381,11 @@ automatically generate it unless we explicity set the <code>generate</code> para
         </li>
         
         
-        <li id="section-322">
+        <li id="section-324">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-322">&#182;</a>
+                <a class="pilcrow" href="#section-324">&#182;</a>
               </div>
               <p>Store the actual module name as an alias of itself.</p>
 
@@ -5362,11 +5396,11 @@ automatically generate it unless we explicity set the <code>generate</code> para
         </li>
         
         
-        <li id="section-323">
+        <li id="section-325">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-323">&#182;</a>
+                <a class="pilcrow" href="#section-325">&#182;</a>
               </div>
               <p>Normalize our incoming aliases.</p>
 
@@ -5377,11 +5411,11 @@ automatically generate it unless we explicity set the <code>generate</code> para
         </li>
         
         
-        <li id="section-324">
+        <li id="section-326">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-324">&#182;</a>
+                <a class="pilcrow" href="#section-326">&#182;</a>
               </div>
               <p>If no alias were passed in, then halt our function.</p>
 
@@ -5394,11 +5428,11 @@ automatically generate it unless we explicity set the <code>generate</code> para
         </li>
         
         
-        <li id="section-325">
+        <li id="section-327">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-325">&#182;</a>
+                <a class="pilcrow" href="#section-327">&#182;</a>
               </div>
               <p>Fetch our module so we can add our aliases to it.</p>
 
@@ -5409,11 +5443,11 @@ automatically generate it unless we explicity set the <code>generate</code> para
         </li>
         
         
-        <li id="section-326">
+        <li id="section-328">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-326">&#182;</a>
+                <a class="pilcrow" href="#section-328">&#182;</a>
               </div>
               <p>Loop through each of our aliases and store them.</p>
 
@@ -5424,11 +5458,11 @@ automatically generate it unless we explicity set the <code>generate</code> para
         </li>
         
         
-        <li id="section-327">
+        <li id="section-329">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-327">&#182;</a>
+                <a class="pilcrow" href="#section-329">&#182;</a>
               </div>
               <p>If the alias already exists, notify the end user before overwriting it.</p>
 
@@ -5441,11 +5475,11 @@ automatically generate it unless we explicity set the <code>generate</code> para
         </li>
         
         
-        <li id="section-328">
+        <li id="section-330">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-328">&#182;</a>
+                <a class="pilcrow" href="#section-330">&#182;</a>
               </div>
               <p>Reference our alias.</p>
 
@@ -5456,11 +5490,11 @@ automatically generate it unless we explicity set the <code>generate</code> para
         </li>
         
         
-        <li id="section-329">
+        <li id="section-331">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-329">&#182;</a>
+                <a class="pilcrow" href="#section-331">&#182;</a>
               </div>
               <p>If we don’t aleady have an alias stored in our modules aliases, then add it.</p>
 
@@ -5475,11 +5509,11 @@ automatically generate it unless we explicity set the <code>generate</code> para
         </li>
         
         
-        <li id="section-330">
+        <li id="section-332">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-330">&#182;</a>
+                <a class="pilcrow" href="#section-332">&#182;</a>
               </div>
               <p>An <code>Object</code> of aliases mappings where the key is the alias and the value is the module that the alias is for.</p>
 
@@ -5490,11 +5524,11 @@ automatically generate it unless we explicity set the <code>generate</code> para
         </li>
         
         
-        <li id="section-331">
+        <li id="section-333">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-331">&#182;</a>
+                <a class="pilcrow" href="#section-333">&#182;</a>
               </div>
               <p>Fetch the base URL for the current identity being passed in.</p>
 
@@ -5505,11 +5539,11 @@ automatically generate it unless we explicity set the <code>generate</code> para
         </li>
         
         
-        <li id="section-332">
+        <li id="section-334">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-332">&#182;</a>
+                <a class="pilcrow" href="#section-334">&#182;</a>
               </div>
               <p>If our <code>base</code> variable is null/empty, return null.</p>
 
@@ -5522,11 +5556,11 @@ automatically generate it unless we explicity set the <code>generate</code> para
         </li>
         
         
-        <li id="section-333">
+        <li id="section-335">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-333">&#182;</a>
+                <a class="pilcrow" href="#section-335">&#182;</a>
               </div>
               <p>If our <code>base</code> variable is a string, then return it.</p>
 
@@ -5539,11 +5573,11 @@ automatically generate it unless we explicity set the <code>generate</code> para
         </li>
         
         
-        <li id="section-334">
+        <li id="section-336">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-334">&#182;</a>
+                <a class="pilcrow" href="#section-336">&#182;</a>
               </div>
               <p>If no identity was passed in use our fallback.</p>
 
@@ -5563,11 +5597,11 @@ automatically generate it unless we explicity set the <code>generate</code> para
         </li>
         
         
-        <li id="section-335">
+        <li id="section-337">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-335">&#182;</a>
+                <a class="pilcrow" href="#section-337">&#182;</a>
               </div>
               <p>Define a new module and normalize the input. This functoin will override a module if it already exists with the same
 name unless the <code>noOverride</code> variable is explicity set to <code>true</code>.</p>
@@ -5583,11 +5617,11 @@ name unless the <code>noOverride</code> variable is explicity set to <code>true<
         </li>
         
         
-        <li id="section-336">
+        <li id="section-338">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-336">&#182;</a>
+                <a class="pilcrow" href="#section-338">&#182;</a>
               </div>
               <p>If we explicity state not to override an existing module, then halt the function.</p>
 
@@ -5601,11 +5635,11 @@ name unless the <code>noOverride</code> variable is explicity set to <code>true<
         </li>
         
         
-        <li id="section-337">
+        <li id="section-339">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-337">&#182;</a>
+                <a class="pilcrow" href="#section-339">&#182;</a>
               </div>
               <p>Force our input to an <code>Object</code>.</p>
 
@@ -5618,11 +5652,11 @@ name unless the <code>noOverride</code> variable is explicity set to <code>true<
         </li>
         
         
-        <li id="section-338">
+        <li id="section-340">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-338">&#182;</a>
+                <a class="pilcrow" href="#section-340">&#182;</a>
               </div>
               <p>The following are our defaults that we’ll use to normalize our <code>input</code> parameter. The values of this <code>Object</code> are
 <code>Array</code> based. The first parameter of the <code>Array</code> is the function that we’ll use to normalize the value, the 2nd
@@ -5638,11 +5672,11 @@ loop.</p>
         </li>
         
         
-        <li id="section-339">
+        <li id="section-341">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-339">&#182;</a>
+                <a class="pilcrow" href="#section-341">&#182;</a>
               </div>
               <p>Aliases for the module.</p>
 
@@ -5653,11 +5687,11 @@ loop.</p>
         </li>
         
         
-        <li id="section-340">
+        <li id="section-342">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-340">&#182;</a>
+                <a class="pilcrow" href="#section-342">&#182;</a>
               </div>
               <p>We store our callbacks here for processing after our library has finished loading.</p>
 
@@ -5668,11 +5702,11 @@ loop.</p>
         </li>
         
         
-        <li id="section-341">
+        <li id="section-343">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-341">&#182;</a>
+                <a class="pilcrow" href="#section-343">&#182;</a>
               </div>
               <p>Custom check function to determine whether or not our library has loaded properly.</p>
 
@@ -5683,11 +5717,11 @@ loop.</p>
         </li>
         
         
-        <li id="section-342">
+        <li id="section-344">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-342">&#182;</a>
+                <a class="pilcrow" href="#section-344">&#182;</a>
               </div>
               <p>Dependencies for the module.</p>
 
@@ -5698,11 +5732,11 @@ loop.</p>
         </li>
         
         
-        <li id="section-343">
+        <li id="section-345">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-343">&#182;</a>
+                <a class="pilcrow" href="#section-345">&#182;</a>
               </div>
               <p>Exports for the module that we’ll check the global scope for to see if the module loaded properly.</p>
 
@@ -5713,11 +5747,11 @@ loop.</p>
         </li>
         
         
-        <li id="section-344">
+        <li id="section-346">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-344">&#182;</a>
+                <a class="pilcrow" href="#section-346">&#182;</a>
               </div>
               <p>The identity of the module, for example: <code>css</code>, <code>img</code>, or <code>js</code>.</p>
 
@@ -5728,11 +5762,11 @@ loop.</p>
         </li>
         
         
-        <li id="section-345">
+        <li id="section-347">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-345">&#182;</a>
+                <a class="pilcrow" href="#section-347">&#182;</a>
               </div>
               <p>If the factory of the module is a function, it’ll be invoked upon it’s first require then that state will be
 saved. This flags whether or not the factory was invoked and saved.</p>
@@ -5744,11 +5778,11 @@ saved. This flags whether or not the factory was invoked and saved.</p>
         </li>
         
         
-        <li id="section-346">
+        <li id="section-348">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-346">&#182;</a>
+                <a class="pilcrow" href="#section-348">&#182;</a>
               </div>
               <p>The value of our module. It’s value can be anything, example: <code>Array</code>, <code>Function</code>, <code>HTMLElement</code>, <code>Object</code>,
 <code>String</code>, etc.</p>
@@ -5760,11 +5794,11 @@ saved. This flags whether or not the factory was invoked and saved.</p>
         </li>
         
         
-        <li id="section-347">
+        <li id="section-349">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-347">&#182;</a>
+                <a class="pilcrow" href="#section-349">&#182;</a>
               </div>
               <p>Must be either <code>null</code> or a <code>Function</code>. As soon as module is first used/referenced, this <code>Function</code> will
 immediately be called upon if present.</p>
@@ -5776,11 +5810,11 @@ immediately be called upon if present.</p>
         </li>
         
         
-        <li id="section-348">
+        <li id="section-350">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-348">&#182;</a>
+                <a class="pilcrow" href="#section-350">&#182;</a>
               </div>
               <p>Any loader data for the module will be stored here.</p>
 
@@ -5791,11 +5825,11 @@ immediately be called upon if present.</p>
         </li>
         
         
-        <li id="section-349">
+        <li id="section-351">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-349">&#182;</a>
+                <a class="pilcrow" href="#section-351">&#182;</a>
               </div>
               <p>Any URLs that failed to load will be stored here.</p>
 
@@ -5806,11 +5840,11 @@ immediately be called upon if present.</p>
         </li>
         
         
-        <li id="section-350">
+        <li id="section-352">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-350">&#182;</a>
+                <a class="pilcrow" href="#section-352">&#182;</a>
               </div>
               <p>Whether or not we actually attempted to load this module.</p>
 
@@ -5821,11 +5855,11 @@ immediately be called upon if present.</p>
         </li>
         
         
-        <li id="section-351">
+        <li id="section-353">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-351">&#182;</a>
+                <a class="pilcrow" href="#section-353">&#182;</a>
               </div>
               <p>If a URL loaded sucecssfully, it will be stored here.</p>
 
@@ -5836,11 +5870,11 @@ immediately be called upon if present.</p>
         </li>
         
         
-        <li id="section-352">
+        <li id="section-354">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-352">&#182;</a>
+                <a class="pilcrow" href="#section-354">&#182;</a>
               </div>
               <p>The time that a module finished loading.</p>
 
@@ -5851,11 +5885,11 @@ immediately be called upon if present.</p>
         </li>
         
         
-        <li id="section-353">
+        <li id="section-355">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-353">&#182;</a>
+                <a class="pilcrow" href="#section-355">&#182;</a>
               </div>
               <p>The time that a module initiated it’s load sequence. This includes all loading for the module in question. For
 example if a library had 3 fallback URLs, and the first 2 failed due to timeouts, and the 3rd was successful,
@@ -5868,11 +5902,11 @@ this variable would reflect the current time prior to the first 2 URLs failing.<
         </li>
         
         
-        <li id="section-354">
+        <li id="section-356">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-354">&#182;</a>
+                <a class="pilcrow" href="#section-356">&#182;</a>
               </div>
               <p>Flags whether or not the module is currently in the process of loading.</p>
 
@@ -5884,11 +5918,11 @@ this variable would reflect the current time prior to the first 2 URLs failing.<
         </li>
         
         
-        <li id="section-355">
+        <li id="section-357">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-355">&#182;</a>
+                <a class="pilcrow" href="#section-357">&#182;</a>
               </div>
               <p>Where all the URLs are stored for our module.</p>
 
@@ -5912,11 +5946,11 @@ this variable would reflect the current time prior to the first 2 URLs failing.<
         </li>
         
         
-        <li id="section-356">
+        <li id="section-358">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-356">&#182;</a>
+                <a class="pilcrow" href="#section-358">&#182;</a>
               </div>
               <p>By default set the value to whatever was passed in to our function.</p>
 
@@ -5927,11 +5961,11 @@ this variable would reflect the current time prior to the first 2 URLs failing.<
         </li>
         
         
-        <li id="section-357">
+        <li id="section-359">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-357">&#182;</a>
+                <a class="pilcrow" href="#section-359">&#182;</a>
               </div>
               <p>If our <code>values</code> is an <code>Array</code>, the run our normalization function on the input value.</p>
 
@@ -5953,11 +5987,11 @@ this variable would reflect the current time prior to the first 2 URLs failing.<
         </li>
         
         
-        <li id="section-358">
+        <li id="section-360">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-358">&#182;</a>
+                <a class="pilcrow" href="#section-360">&#182;</a>
               </div>
               <p>@todo move all this shit out</p>
 
@@ -5974,11 +6008,11 @@ this variable would reflect the current time prior to the first 2 URLs failing.<
         </li>
         
         
-        <li id="section-359">
+        <li id="section-361">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-359">&#182;</a>
+                <a class="pilcrow" href="#section-361">&#182;</a>
               </div>
               <p>Import our module aliases.</p>
 
@@ -5992,11 +6026,11 @@ this variable would reflect the current time prior to the first 2 URLs failing.<
         </li>
         
         
-        <li id="section-360">
+        <li id="section-362">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-360">&#182;</a>
+                <a class="pilcrow" href="#section-362">&#182;</a>
               </div>
               <p>All our module definitions will be stored and refeerence through this <code>Object</code>. The keys of this object correlate to
 the modules name.</p>
@@ -6008,11 +6042,11 @@ the modules name.</p>
         </li>
         
         
-        <li id="section-361">
+        <li id="section-363">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-361">&#182;</a>
+                <a class="pilcrow" href="#section-363">&#182;</a>
               </div>
               <p>Process all of our callbacks for a specific module.</p>
 
@@ -6024,11 +6058,11 @@ the modules name.</p>
         </li>
         
         
-        <li id="section-362">
+        <li id="section-364">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-362">&#182;</a>
+                <a class="pilcrow" href="#section-364">&#182;</a>
               </div>
               <p>If are callbacks are empty, then end of the function.</p>
 
@@ -6047,11 +6081,11 @@ the modules name.</p>
         </li>
         
         
-        <li id="section-363">
+        <li id="section-365">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-363">&#182;</a>
+                <a class="pilcrow" href="#section-365">&#182;</a>
               </div>
               <p>Check whether or not a module already exists.</p>
 
@@ -6068,11 +6102,11 @@ the modules name.</p>
         </li>
         
         
-        <li id="section-364">
+        <li id="section-366">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-364">&#182;</a>
+                <a class="pilcrow" href="#section-366">&#182;</a>
               </div>
               <p>Identify the type of module that we have.</p>
 
@@ -6097,11 +6131,11 @@ the modules name.</p>
         </li>
         
         
-        <li id="section-365">
+        <li id="section-367">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-365">&#182;</a>
+                <a class="pilcrow" href="#section-367">&#182;</a>
               </div>
               <p>The identifier to fallback on if we cannot find a match.</p>
 
@@ -6112,11 +6146,11 @@ the modules name.</p>
         </li>
         
         
-        <li id="section-366">
+        <li id="section-368">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-366">&#182;</a>
+                <a class="pilcrow" href="#section-368">&#182;</a>
               </div>
               <p>The character to split our module names on to derive it’s identity.</p>
 
@@ -6127,11 +6161,11 @@ the modules name.</p>
         </li>
         
         
-        <li id="section-367">
+        <li id="section-369">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-367">&#182;</a>
+                <a class="pilcrow" href="#section-369">&#182;</a>
               </div>
               <p>The support identifier types.</p>
 
@@ -6142,11 +6176,11 @@ the modules name.</p>
         </li>
         
         
-        <li id="section-368">
+        <li id="section-370">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-368">&#182;</a>
+                <a class="pilcrow" href="#section-370">&#182;</a>
               </div>
               <p>Fetch the name of a module, if a module alias is passed in, this will go and fetch the modules real name.</p>
 
@@ -6157,11 +6191,11 @@ the modules name.</p>
         </li>
         
         
-        <li id="section-369">
+        <li id="section-371">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-369">&#182;</a>
+                <a class="pilcrow" href="#section-371">&#182;</a>
               </div>
               <p>Fetch our real module name, in the case that we’re passed an alias.</p>
 
@@ -6177,11 +6211,11 @@ the modules name.</p>
         </li>
         
         
-        <li id="section-370">
+        <li id="section-372">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-370">&#182;</a>
+                <a class="pilcrow" href="#section-372">&#182;</a>
               </div>
               <p>Normalize all of the URLs for our modules. This function will automatically prepend our base URLs and store them.
 This has a few benefits: we don’t have to worry about processing the URLs later. We’re able to store a snapshot
@@ -6224,11 +6258,11 @@ and use a different set of base URLs with other modules.</p>
         </li>
         
         
-        <li id="section-371">
+        <li id="section-373">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-371">&#182;</a>
+                <a class="pilcrow" href="#section-373">&#182;</a>
               </div>
               <p>URL prefixes to specifically ignore from prepending with our base URL.</p>
 
@@ -6241,11 +6275,11 @@ and use a different set of base URLs with other modules.</p>
         </li>
         
         
-        <li id="section-372">
+        <li id="section-374">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-372">&#182;</a>
+                <a class="pilcrow" href="#section-374">&#182;</a>
               </div>
               <p>Load up and invoke our modules along with all of their dependencies. This function will first find all dependencies
 for our modules and them in reverse order. After loading them it’ll then invoke them in reverse order. This needs to
@@ -6259,11 +6293,11 @@ won’t know about until it’s actually been loaded.</p>
         </li>
         
         
-        <li id="section-373">
+        <li id="section-375">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-373">&#182;</a>
+                <a class="pilcrow" href="#section-375">&#182;</a>
               </div>
               <p>Fetch and normalize the argument that were passed in.</p>
 
@@ -6274,11 +6308,11 @@ won’t know about until it’s actually been loaded.</p>
         </li>
         
         
-        <li id="section-374">
+        <li id="section-376">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-374">&#182;</a>
+                <a class="pilcrow" href="#section-376">&#182;</a>
               </div>
               <p>Boot up our dependencies.</p>
 
@@ -6289,11 +6323,11 @@ won’t know about until it’s actually been loaded.</p>
         </li>
         
         
-        <li id="section-375">
+        <li id="section-377">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-375">&#182;</a>
+                <a class="pilcrow" href="#section-377">&#182;</a>
               </div>
               <p>At this point all of our dependencies have loaded, now we need to go ahead and invoke all of our dependencies in a
 reverse order, that way our initial modules that invoked the <code>require</code> can be executed.</p>
@@ -6305,11 +6339,11 @@ reverse order, that way our initial modules that invoked the <code>require</code
         </li>
         
         
-        <li id="section-376">
+        <li id="section-378">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-376">&#182;</a>
+                <a class="pilcrow" href="#section-378">&#182;</a>
               </div>
               <p>Only attempt to invoke the <code>factory</code> if it’s a <code>Function</code>.</p>
 
@@ -6321,11 +6355,11 @@ reverse order, that way our initial modules that invoked the <code>require</code
         </li>
         
         
-        <li id="section-377">
+        <li id="section-379">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-377">&#182;</a>
+                <a class="pilcrow" href="#section-379">&#182;</a>
               </div>
               <p>me.require.apply(args.deps, args.factory); @todo</p>
 
@@ -6338,11 +6372,11 @@ reverse order, that way our initial modules that invoked the <code>require</code
         </li>
         
         
-        <li id="section-378">
+        <li id="section-380">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-378">&#182;</a>
+                <a class="pilcrow" href="#section-380">&#182;</a>
               </div>
               <p>Fetch and normalize the arguments that are passed into our <code>require</code> function. The arguments for our <code>require</code>
 function can be sent in a number of different forms such as:
@@ -6359,11 +6393,11 @@ function can be sent in a number of different forms such as:
         </li>
         
         
-        <li id="section-379">
+        <li id="section-381">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-379">&#182;</a>
+                <a class="pilcrow" href="#section-381">&#182;</a>
               </div>
               <p>Convert our <code>arguments</code> into an <code>Array</code>.</p>
 
@@ -6374,11 +6408,11 @@ function can be sent in a number of different forms such as:
         </li>
         
         
-        <li id="section-380">
+        <li id="section-382">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-380">&#182;</a>
+                <a class="pilcrow" href="#section-382">&#182;</a>
               </div>
               <p>We’ll fill up these variables based on the arguments.</p>
 
@@ -6392,11 +6426,11 @@ function can be sent in a number of different forms such as:
         </li>
         
         
-        <li id="section-381">
+        <li id="section-383">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-381">&#182;</a>
+                <a class="pilcrow" href="#section-383">&#182;</a>
               </div>
               <p>If we only have a single argument, and it’s a function, derive our dependencies from it.</p>
 
@@ -6412,11 +6446,11 @@ function can be sent in a number of different forms such as:
         </li>
         
         
-        <li id="section-382">
+        <li id="section-384">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-382">&#182;</a>
+                <a class="pilcrow" href="#section-384">&#182;</a>
               </div>
               <p>If we made it this far, treat the first argument has our dependecies, and the 2nd has is our factory.</p>
 
@@ -6427,11 +6461,11 @@ function can be sent in a number of different forms such as:
         </li>
         
         
-        <li id="section-383">
+        <li id="section-385">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-383">&#182;</a>
+                <a class="pilcrow" href="#section-385">&#182;</a>
               </div>
               <p>If a 2nd argument is defined, treat it as our factory.</p>
 
@@ -6444,11 +6478,11 @@ function can be sent in a number of different forms such as:
         </li>
         
         
-        <li id="section-384">
+        <li id="section-386">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-384">&#182;</a>
+                <a class="pilcrow" href="#section-386">&#182;</a>
               </div>
               <p>Return back our normalized arguments.</p>
 
@@ -6460,11 +6494,11 @@ function can be sent in a number of different forms such as:
         </li>
         
         
-        <li id="section-385">
+        <li id="section-387">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-385">&#182;</a>
+                <a class="pilcrow" href="#section-387">&#182;</a>
               </div>
               <p>@todo at this point we know all deps have loaded, we just need to invoke them now! :D</p>
 
@@ -6488,11 +6522,11 @@ me.require.invoke.module = <span class="hljs-function"><span class="hljs-keyword
         </li>
         
         
-        <li id="section-386">
+        <li id="section-388">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-386">&#182;</a>
+                <a class="pilcrow" href="#section-388">&#182;</a>
               </div>
               <p>@todo throw an exception to user</p>
 
@@ -6529,11 +6563,11 @@ me.require.invoke.references = <span class="hljs-function"><span class="hljs-key
         </li>
         
         
-        <li id="section-387">
+        <li id="section-389">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-387">&#182;</a>
+                <a class="pilcrow" href="#section-389">&#182;</a>
               </div>
               <p>Load up all of our dependencies, along with any nested dependencies in reverse order.</p>
 
@@ -6544,11 +6578,11 @@ me.require.invoke.references = <span class="hljs-function"><span class="hljs-key
         </li>
         
         
-        <li id="section-388">
+        <li id="section-390">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-388">&#182;</a>
+                <a class="pilcrow" href="#section-390">&#182;</a>
               </div>
               <p>If our <code>deps</code> argument was malformed or empty, invoke our callback and halt the function.</p>
 
@@ -6562,11 +6596,11 @@ me.require.invoke.references = <span class="hljs-function"><span class="hljs-key
         </li>
         
         
-        <li id="section-389">
+        <li id="section-391">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-389">&#182;</a>
+                <a class="pilcrow" href="#section-391">&#182;</a>
               </div>
               <p>Boot up our anonymous modules first. If we’re booting, halt the function and we’ll loop back around.</p>
 
@@ -6585,11 +6619,11 @@ me.require.boot.dependencies = <span class="hljs-function"><span class="hljs-key
         </li>
         
         
-        <li id="section-390">
+        <li id="section-392">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-390">&#182;</a>
+                <a class="pilcrow" href="#section-392">&#182;</a>
               </div>
               <p>Loop around until we find the start of our dependency tree.</p>
 
@@ -6609,11 +6643,11 @@ me.require.boot.dependencies = <span class="hljs-function"><span class="hljs-key
         </li>
         
         
-        <li id="section-391">
+        <li id="section-393">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-391">&#182;</a>
+                <a class="pilcrow" href="#section-393">&#182;</a>
               </div>
               
             </div>
@@ -6626,11 +6660,11 @@ me.require.boot.dependencies = <span class="hljs-function"><span class="hljs-key
         </li>
         
         
-        <li id="section-392">
+        <li id="section-394">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-392">&#182;</a>
+                <a class="pilcrow" href="#section-394">&#182;</a>
               </div>
               <p>Load the start of our dependency tree.</p>
 
@@ -6645,11 +6679,11 @@ me.require.boot.anonymous = <span class="hljs-function"><span class="hljs-keywor
         </li>
         
         
-        <li id="section-393">
+        <li id="section-395">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-393">&#182;</a>
+                <a class="pilcrow" href="#section-395">&#182;</a>
               </div>
               <p>Store our anonymous modules that we need to load.</p>
 
@@ -6660,11 +6694,11 @@ me.require.boot.anonymous = <span class="hljs-function"><span class="hljs-keywor
         </li>
         
         
-        <li id="section-394">
+        <li id="section-396">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-394">&#182;</a>
+                <a class="pilcrow" href="#section-396">&#182;</a>
               </div>
               <p>If we have anonymous modules that we need to load, do it now, then loop back around.</p>
 
@@ -6682,11 +6716,11 @@ me.require.boot.anonymous = <span class="hljs-function"><span class="hljs-keywor
         </li>
         
         
-        <li id="section-395">
+        <li id="section-397">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-395">&#182;</a>
+                <a class="pilcrow" href="#section-397">&#182;</a>
               </div>
               <p>Load up a queue of modules, then invoke the <code>me.require.deps</code> function again with the same parameters.</p>
 
@@ -6701,11 +6735,11 @@ me.require.boot.anonymous = <span class="hljs-function"><span class="hljs-keywor
         </li>
         
         
-        <li id="section-396">
+        <li id="section-398">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-396">&#182;</a>
+                <a class="pilcrow" href="#section-398">&#182;</a>
               </div>
               <p>Configure an anonymous module with a path and definition.</p>
 
@@ -6716,11 +6750,11 @@ me.require.boot.anonymous = <span class="hljs-function"><span class="hljs-keywor
         </li>
         
         
-        <li id="section-397">
+        <li id="section-399">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-397">&#182;</a>
+                <a class="pilcrow" href="#section-399">&#182;</a>
               </div>
               <p>If we don’t have a <code>moduleName</code>, then the invocation was malformed. Halt the function.</p>
 
@@ -6733,11 +6767,11 @@ me.require.boot.anonymous = <span class="hljs-function"><span class="hljs-keywor
         </li>
         
         
-        <li id="section-398">
+        <li id="section-400">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-398">&#182;</a>
+                <a class="pilcrow" href="#section-400">&#182;</a>
               </div>
               <p>Create our <code>Object</code> that we’ll pass to our configuration <code>Function</code>.</p>
 
@@ -6750,11 +6784,11 @@ me.require.boot.anonymous = <span class="hljs-function"><span class="hljs-keywor
         </li>
         
         
-        <li id="section-399">
+        <li id="section-401">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-399">&#182;</a>
+                <a class="pilcrow" href="#section-401">&#182;</a>
               </div>
               <p>Set our URL to be relative to our configurations <code>base</code> variable.</p>
 
@@ -6765,11 +6799,11 @@ me.require.boot.anonymous = <span class="hljs-function"><span class="hljs-keywor
         </li>
         
         
-        <li id="section-400">
+        <li id="section-402">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-400">&#182;</a>
+                <a class="pilcrow" href="#section-402">&#182;</a>
               </div>
               <p>Pass the anonymous module over to our configuration to generate the module and URLs.</p>
 
@@ -6781,11 +6815,11 @@ me.require.boot.anonymous = <span class="hljs-function"><span class="hljs-keywor
         </li>
         
         
-        <li id="section-401">
+        <li id="section-403">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-401">&#182;</a>
+                <a class="pilcrow" href="#section-403">&#182;</a>
               </div>
               <p>Load up an <code>Array</code> of modules simultaneously.</p>
 
@@ -6796,11 +6830,11 @@ me.require.boot.anonymous = <span class="hljs-function"><span class="hljs-keywor
         </li>
         
         
-        <li id="section-402">
+        <li id="section-404">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-402">&#182;</a>
+                <a class="pilcrow" href="#section-404">&#182;</a>
               </div>
               <p>If we have no <code>modules</code>, then invoke our callback and halt the function.</p>
 
@@ -6814,11 +6848,11 @@ me.require.boot.anonymous = <span class="hljs-function"><span class="hljs-keywor
         </li>
         
         
-        <li id="section-403">
+        <li id="section-405">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-403">&#182;</a>
+                <a class="pilcrow" href="#section-405">&#182;</a>
               </div>
               <p>Store an <code>Array</code> of functions that we’ll run simultaneously.</p>
 
@@ -6829,11 +6863,11 @@ me.require.boot.anonymous = <span class="hljs-function"><span class="hljs-keywor
         </li>
         
         
-        <li id="section-404">
+        <li id="section-406">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-404">&#182;</a>
+                <a class="pilcrow" href="#section-406">&#182;</a>
               </div>
               <p>Loop and queue each of our modules.</p>
 
@@ -6845,11 +6879,11 @@ me.require.boot.anonymous = <span class="hljs-function"><span class="hljs-keywor
         </li>
         
         
-        <li id="section-405">
+        <li id="section-407">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-405">&#182;</a>
+                <a class="pilcrow" href="#section-407">&#182;</a>
               </div>
               <p>Load the module onto the page.</p>
 
@@ -6862,11 +6896,11 @@ me.require.boot.anonymous = <span class="hljs-function"><span class="hljs-keywor
         </li>
         
         
-        <li id="section-406">
+        <li id="section-408">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-406">&#182;</a>
+                <a class="pilcrow" href="#section-408">&#182;</a>
               </div>
               <p>Invoke the queue.</p>
 
@@ -6882,11 +6916,11 @@ me.require.anonymous = <span class="hljs-function"><span class="hljs-keyword">fu
         </li>
         
         
-        <li id="section-407">
+        <li id="section-409">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-407">&#182;</a>
+                <a class="pilcrow" href="#section-409">&#182;</a>
               </div>
               <p>Store our queue of anonymous modules.</p>
 
@@ -6897,11 +6931,11 @@ me.require.anonymous = <span class="hljs-function"><span class="hljs-keyword">fu
         </li>
         
         
-        <li id="section-408">
+        <li id="section-410">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-408">&#182;</a>
+                <a class="pilcrow" href="#section-410">&#182;</a>
               </div>
               <p>Loop through and fetch our dependencies.</p>
 
@@ -6912,11 +6946,11 @@ me.require.anonymous = <span class="hljs-function"><span class="hljs-keyword">fu
         </li>
         
         
-        <li id="section-409">
+        <li id="section-411">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-409">&#182;</a>
+                <a class="pilcrow" href="#section-411">&#182;</a>
               </div>
               <p>Reference our module definition.</p>
 
@@ -6927,11 +6961,11 @@ me.require.anonymous = <span class="hljs-function"><span class="hljs-keyword">fu
         </li>
         
         
-        <li id="section-410">
+        <li id="section-412">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-410">&#182;</a>
+                <a class="pilcrow" href="#section-412">&#182;</a>
               </div>
               <p>If our module doesn’t exist, then it’s a anonymous module that we need to load up first to find out what
 dependencies are actually required for it.</p>
@@ -6943,11 +6977,11 @@ dependencies are actually required for it.</p>
         </li>
         
         
-        <li id="section-411">
+        <li id="section-413">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-411">&#182;</a>
+                <a class="pilcrow" href="#section-413">&#182;</a>
               </div>
               <p>Setup the configuration for our anonymous module.</p>
 
@@ -6958,11 +6992,11 @@ dependencies are actually required for it.</p>
         </li>
         
         
-        <li id="section-412">
+        <li id="section-414">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-412">&#182;</a>
+                <a class="pilcrow" href="#section-414">&#182;</a>
               </div>
               <p>Push the module off to our queue.</p>
 
@@ -6973,11 +7007,11 @@ dependencies are actually required for it.</p>
         </li>
         
         
-        <li id="section-413">
+        <li id="section-415">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-413">&#182;</a>
+                <a class="pilcrow" href="#section-415">&#182;</a>
               </div>
               <p>Don’t pass this point, as we can’t figure out the dependencies for our module yet.</p>
 
@@ -6989,11 +7023,11 @@ dependencies are actually required for it.</p>
         </li>
         
         
-        <li id="section-414">
+        <li id="section-416">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-414">&#182;</a>
+                <a class="pilcrow" href="#section-416">&#182;</a>
               </div>
               <p>Add any dependencies that are anonymous modules to our queue as well.</p>
 
@@ -7005,11 +7039,11 @@ dependencies are actually required for it.</p>
         </li>
         
         
-        <li id="section-415">
+        <li id="section-417">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-415">&#182;</a>
+                <a class="pilcrow" href="#section-417">&#182;</a>
               </div>
               <p>Return all of our queued anonymous modules.</p>
 
@@ -7023,11 +7057,11 @@ me.require.dependencies = <span class="hljs-function"><span class="hljs-keyword"
         </li>
         
         
-        <li id="section-416">
+        <li id="section-418">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-416">&#182;</a>
+                <a class="pilcrow" href="#section-418">&#182;</a>
               </div>
               <p>Store our queue of dependency modules.</p>
 
@@ -7038,11 +7072,11 @@ me.require.dependencies = <span class="hljs-function"><span class="hljs-keyword"
         </li>
         
         
-        <li id="section-417">
+        <li id="section-419">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-417">&#182;</a>
+                <a class="pilcrow" href="#section-419">&#182;</a>
               </div>
               <p>Loop through and fetch our dependencies.</p>
 
@@ -7053,11 +7087,11 @@ me.require.dependencies = <span class="hljs-function"><span class="hljs-keyword"
         </li>
         
         
-        <li id="section-418">
+        <li id="section-420">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-418">&#182;</a>
+                <a class="pilcrow" href="#section-420">&#182;</a>
               </div>
               <p>Reference our module definition.</p>
 
@@ -7068,11 +7102,11 @@ me.require.dependencies = <span class="hljs-function"><span class="hljs-keyword"
         </li>
         
         
-        <li id="section-419">
+        <li id="section-421">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-419">&#182;</a>
+                <a class="pilcrow" href="#section-421">&#182;</a>
               </div>
               <p>If the module doesn’t exist, or there aren’t any dependencies, skip the iteration.</p>
 
@@ -7085,11 +7119,11 @@ me.require.dependencies = <span class="hljs-function"><span class="hljs-keyword"
         </li>
         
         
-        <li id="section-420">
+        <li id="section-422">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-420">&#182;</a>
+                <a class="pilcrow" href="#section-422">&#182;</a>
               </div>
               <p>Queue our dependencies.</p>
 
@@ -7100,11 +7134,11 @@ me.require.dependencies = <span class="hljs-function"><span class="hljs-keyword"
         </li>
         
         
-        <li id="section-421">
+        <li id="section-423">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-421">&#182;</a>
+                <a class="pilcrow" href="#section-423">&#182;</a>
               </div>
               <p>If we explicity want a loop of all our dependencies, then we’ll trace through them here.</p>
 
@@ -7118,11 +7152,11 @@ me.require.dependencies = <span class="hljs-function"><span class="hljs-keyword"
         </li>
         
         
-        <li id="section-422">
+        <li id="section-424">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-422">&#182;</a>
+                <a class="pilcrow" href="#section-424">&#182;</a>
               </div>
               <p>Return all of our queued dependency modules.</p>
 
