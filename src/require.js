@@ -31,7 +31,7 @@ me.require = function() {
 // (dependencies, factory) - Where `dependencies` is a `Array` and `factory` is a `Function`.
 me.require.args = function() {
 	// Convert our `arguments` into an `Array`.
-	var args = me.toArray(arguments);
+	var args = me.arrayClone(arguments);
 
 	// We'll fill up these variables based on the arguments.
 	var payload = {

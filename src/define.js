@@ -117,7 +117,7 @@ me.define.anonymous.save = function(args) {
 // passed to the `Function`. This `Function` will determine what those parameters should be defined as.
 me.define.args = function() {
 	// Convert our `arguments` into an `Array`.
-	var args = me.toArray(arguments);
+	var args = me.arrayClone(arguments);
 
 	// We'll fill up these variables based on the arguments.
 	var payload = {

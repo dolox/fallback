@@ -167,7 +167,7 @@ me.args = function(reference) {
 // Clone an array. `Array.prototype.slice` appears to be the most efficient way of doing this.
 // @reference http://jsperf.com/new-array-vs-splice-vs-slice/19
 me.arrayClone = function(input) {
-	return input.slice();
+	return Array.prototype.slice.call(input);
 };
 
 // Remove all duplicates from an array.
@@ -338,7 +338,7 @@ me.error = me.log = me.warn = me.info = function() {
 		return;
 	}
 
-	var args = me.toArray(arguments);
+	var args = me.arrayClone(arguments);
 
 	window.console.warn('%cFallbackJS: %c' + args.shift() + ': %c' + args.join(), 'font-weight: bold; color: #da542c', 'font-weight: bold; color: #000', 'color: #999');
 };
@@ -539,8 +539,8 @@ me.stats = function() {
 
 // A function which simply pads a `String` with whatever `String` is supplied.
 me.stringPad = function(input, pad, left) {
-	if (!me.isDefined(input)) {
-		return pad;
+	if (!me.isDefined(pad)) {
+		return input;
 	}
 
 	if (left) {
@@ -548,11 +548,6 @@ me.stringPad = function(input, pad, left) {
 	}
 
 	return (input + pad).substr(0, pad.length);
-};
-
-// Convert any `input` to an `Array`.
-me.toArray = function(input) {
-	return Array.prototype.slice.call(input);
 };
 
 // Automatically generate utility functions for our library. This library will generate the following functions:
