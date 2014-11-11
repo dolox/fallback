@@ -379,9 +379,9 @@ me.normalizeSeries = function(input, type, fallback, strip) {
 		// Normalize our value.
 		value = me.normalize(value, type, fallback);
 
-		// If strip is not explicity set in, and the `value` is falsey, it'll be removed from the normalized results. Falsey
-		// translate to: `null`, `0`, `false`, `undefined`.
-		if (strip !== false && !value) {
+		// If strip is not explicity set in, and the `value` is `undefined` or `null`, it'll be removed from the normalized
+		// result set.
+		if (strip !== false && !me.isDefined(value) || value === null) {
 			return;
 		}
 

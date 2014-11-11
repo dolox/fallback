@@ -1640,12 +1640,12 @@ it expects to receive of an <code>Array</code> series of data sets.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-101">&#182;</a>
               </div>
-              <p>If strip is not explicity set in, and the <code>value</code> is falsey, it’ll be removed from the normalized results. Falsey
-translate to: <code>null</code>, <code>0</code>, <code>false</code>, <code>undefined</code>.</p>
+              <p>If strip is not explicity set in, and the <code>value</code> is <code>undefined</code> or <code>null</code>, it’ll be removed from the normalized
+result set.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> (strip !== <span class="hljs-literal">false</span> &amp;&amp; !value) {
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> (strip !== <span class="hljs-literal">false</span> &amp;&amp; !me.isDefined(value) || value === <span class="hljs-literal">null</span>) {
 			<span class="hljs-keyword">return</span>;
 		}</pre></div></div>
             
