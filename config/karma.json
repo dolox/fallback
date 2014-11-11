@@ -1,0 +1,35 @@
+{
+	"autoWatch": true,
+	"captureTimeout": 60000,
+	"colors": true,
+
+	"files": [
+		"dist/fallback.js",
+		"test/**/*.js",
+		"test/**/**/*.js"
+	],
+
+	"frameworks": [
+		"expect",
+		"mocha"
+	],
+
+
+	"logLevel": "INFO",
+	"port": 9876,
+
+	"reporters": [
+		"progress",
+		"saucelabs"
+	],
+
+	"saurceLabs": {
+		"testName": "Fallback JS - Karma Unit Test"
+	},
+
+	"singleRun": true,
+
+	"client": {
+		"useIframe": false
+	}
+}

@@ -19,6 +19,8 @@ unit tests
 	[ ] loaderStylesheet
 	[ ] module
 	[ ] require
+	
+	run tests sequentially: https://github.com/karma-runner/karma-sauce-launcher/issues/8
 
 @todo
 	allow config to pass in logging levels for debug: 'warn', 'info', 'error', or false

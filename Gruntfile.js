@@ -59,6 +59,7 @@ me.config = {
 };
 
 me.config.uri = {
+	config: me.path.join(__dirname, '/config/'),
 	dist: me.path.join(__dirname, '/dist/'),
 	distTmp: me.path.join(__dirname, '/dist/tmp/'),
 	nodeModules: me.path.join(__dirname, '/node_modules/'),
