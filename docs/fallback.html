@@ -525,7 +525,7 @@ less code for the library and achieves the same objective.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			me.utility(input[index]);
+            <div class="content"><div class='highlight'><pre>			me.utility(me, input[index]);
 		}
 	}
 };</pre></div></div>
@@ -2300,7 +2300,7 @@ the value is for <code>fallback</code> as it’s value.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>me.utility = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(type)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>me.utility = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(object, type)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -2315,7 +2315,7 @@ the value is for <code>fallback</code> as it’s value.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	me[<span class="hljs-string">'is'</span> + type] = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(variable)</span> </span>{
+            <div class="content"><div class='highlight'><pre>	object[<span class="hljs-string">'is'</span> + type] = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(variable)</span> </span>{
 		<span class="hljs-keyword">return</span> me.isType(variable, type);
 	};</pre></div></div>
             
@@ -2349,7 +2349,7 @@ the value is for <code>fallback</code> as it’s value.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	me[<span class="hljs-string">'normalize'</span> + type] = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(input, fallback)</span> </span>{
+            <div class="content"><div class='highlight'><pre>	object[<span class="hljs-string">'normalize'</span> + type] = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(input, fallback)</span> </span>{
 		<span class="hljs-keyword">return</span> me.normalize(input, type, me.isDefined(fallback) ? fallback : <span class="hljs-literal">null</span>);
 	};</pre></div></div>
             
@@ -2366,7 +2366,7 @@ the value is for <code>fallback</code> as it’s value.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	me[<span class="hljs-string">'normalize'</span> + type + <span class="hljs-string">'Series'</span>] = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(input, fallback, strip)</span> </span>{
+            <div class="content"><div class='highlight'><pre>	object[<span class="hljs-string">'normalize'</span> + type + <span class="hljs-string">'Series'</span>] = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(input, fallback, strip)</span> </span>{
 		<span class="hljs-keyword">return</span> me.normalizeSeries(input, type, me.isDefined(fallback) ? fallback : [], strip);
 	};
 };</pre></div></div>

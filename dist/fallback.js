@@ -109,7 +109,7 @@ me.init.utilities = function(input) {
 		// Make sure it's not empty.
 		if (input[index]) {
 			// Spawn the utility function for the library.
-			me.utility(input[index]);
+			me.utility(me, input[index]);
 		}
 	}
 };
@@ -567,9 +567,9 @@ me.toArray = function(input) {
 // - isNumber, normalizeNumber, normalizeNumberSeries
 // - isObject, normalizeObject, normalizeObjectSeries
 // - isString, normalizeString, normalizeStringSeries
-me.utility = function(type) {
+me.utility = function(object, type) {
 	// Adding a function prefixed with `is` to check if a variable is actually the type that's being passed in.
-	me['is' + type] = function(variable) {
+	object['is' + type] = function(variable) {
 		return me.isType(variable, type);
 	};
 
@@ -579,12 +579,12 @@ me.utility = function(type) {
 	}
 
 	// Our normalization function.
-	me['normalize' + type] = function(input, fallback) {
+	object['normalize' + type] = function(input, fallback) {
 		return me.normalize(input, type, me.isDefined(fallback) ? fallback : null);
 	};
 
 	// Our normalization series function.
-	me['normalize' + type + 'Series'] = function(input, fallback, strip) {
+	object['normalize' + type + 'Series'] = function(input, fallback, strip) {
 		return me.normalizeSeries(input, type, me.isDefined(fallback) ? fallback : [], strip);
 	};
 };
