@@ -17,9 +17,14 @@ module.exports = function(config) {
 		colors: true,
 		files: ['dist/fallback.js', 'test/**/*.js', 'test/**/**/*.js'],
 		frameworks: ['mocha', 'expect'],
+
+		htmlReporter: {
+			outputDir: 'tests/'
+		},
+
 		logLevel: 'INFO',
 		port: 9876,
-		reporters: ['progress', 'saucelabs'],
+		reporters: ['progress', 'html', 'saucelabs'],
 
 		saurceLabs: {
 			testName: 'Fallback JS - Karma Unit Test'

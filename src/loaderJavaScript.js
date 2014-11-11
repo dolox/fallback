@@ -1,19 +1,19 @@
 /* global me */
 
-// @todo remove the auto adding of exports, if exports aren't present then just rely on the native browser callbacks
-// @todo critical for css files^^^^^ debating...
-
+// JavaScript loader which is responsible for loading any scripts for the library.
 me.loader.js = {};
 
+// Attempt to load a script onto the page.
 me.loader.js.boot = function(module, url, callbackSuccess, callbackFailed) {
-	// If the library is already defined on the page, don't attempt to reload it.
+	// If the library is already loaded on the page, don't attempt to reload it.
 	var factory = me.loader.js.check(module);
-
+	//console.log(module);
 	// @todo we need to check if its already on the page*#@$%()
-//	if (factory) {
-//		return callbackSuccess(module, url, 'predefined', factory);
-//	}
+	//if (factory) {
+	//	return callbackSuccess(module, url, 'predefined', factory);
+	//}
 
+// @todo make these their own functions and use .apply on them
 	// If our library failed to load, we'll call upon this function.
 	var failed = function() {
 		return callbackFailed(module, url, 'failed');
@@ -63,12 +63,13 @@ me.loader.js.boot = function(module, url, callbackSuccess, callbackFailed) {
 };
 
 // @todo document it
+// @todo if there are no exports, simply rely on the callbacks
 me.loader.js.check = function(module) {
 	if (module.loader.loaded === true) {
 		return true;
 	}
 
-	if (module.check) {
+	if (me.isFunction(module.check)) {
 		return module.check();
 	}
 

@@ -10,6 +10,8 @@ code documentation
 	[ ] require
 
 @todo
+	update the bower json ignore list for the docs, tests, configs from travis. simply include the dist, readme, bower file
+	allow ability to stick version #s on the libraries combines w/ FBK CLI
 	fetch url of out of combiner, so fallback.url it comes out of from package.json
 	add loader delimiter to the config file.
 	grep for `indexOf` and use `me.indexOf`
@@ -50,3 +52,5 @@ deploy to git v2 branch
 ---
 
 fallback CLI utility where it automatically adds your libraries to a JSON file and installs via bower
+	Programmatic API --- http://bower.io/docs/api/#programmatic-api
+	real easy, fallback install bang, same commands hopefully

@@ -8,20 +8,17 @@ me.require = function() {
 	// Fetch and normalize the argument that were passed in.
 	var args = me.require.args.apply(null, arguments);
 
-	// @todo rename the function plz thx
 	// Boot up our dependencies.
 	me.require.boot(args.deps, function() {
-		// we're stuck here, everything else works fine, this is the problem.
-		// need to invoke in our reverse ordering
+		// At this point all of our dependencies have loaded, now we need to go ahead and invoke all of our dependencies in a
+		// reverse order, that way our initial modules that invoked the `require` can be executed.
 		me.require.invoke(args.deps);
 
+		// Only attempt to invoke the `factory` if it's a `Function`.
 		if (me.isFunction(args.factory)) {
 			args.factory.apply(null, me.require.invoke.references(args.deps));
+			//me.require.apply(args.deps, args.factory); @todo
 		}
-
-
-		// After all our dependencies have loaded, execute our factory.
-		//me.require.apply(args.deps, args.factory);
 	});
 };
 
@@ -61,6 +58,16 @@ me.require.args = function() {
 	// Return back our normalized arguments.
 	return payload;
 };
+
+
+
+
+
+
+
+
+
+
 
 
 // @todo at this point we know all deps have loaded, we just need to invoke them now! :D

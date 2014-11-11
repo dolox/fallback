@@ -299,7 +299,7 @@ me.indexOf = function(input, value) {
 	var index = -1;
 
 	// If our `input` is not an `Array`, or our `value is not a `String` or `Number`, halt the `Function`.
-	if (!me.isArray(input) && !me.isString(value) && me.isNumber(value)) {
+	if (!me.isArray(input) || !me.isString(value) && !me.isNumber(value)) {
 		return index;
 	}
 
@@ -321,19 +321,21 @@ me.indexOf = function(input, value) {
 
 // Check whether or not a variable is defined.
 me.isDefined = function(variable) {
-	// By default return `false`.
-	var defined = false;
-
-	// Wrap our check in a `try catch`, as some browsers get extra sensitive when checking `undefined` variables.
-	try {
-		defined = typeof variable !== 'undefined';
-	} catch (exception) {}
-
-	// Return whether our not our `variable` was defined.
-	return defined;
+	return variable !== void 0;
 };
 
-// Logging function for when debugging is turned on. @todo
+// Check to see if a variable is an HTMLCollection or NodeList.
+// @reference https://developer.mozilla.org/en-US/docs/Web/API/HTMLCollection
+me.isHTMLCollection = function(variable) {
+	return me.isType(variable, 'HTMLCollection') || me.isType(variable, 'NodeList');
+};
+
+// Check if a variable is a specific type.
+me.isType = function(variable, type) {
+	return Object.prototype.toString.call(variable) === '[object ' + type + ']';
+};
+
+// Logging function for when debugging is turned on. @todo use levels, instead of diff function names
 me.error = me.log = me.warn = me.info = function() {
 	// Make sure that both debugging is enable and what `window.console` exists.
 	if (!me.debug || !window.console) {
@@ -350,7 +352,15 @@ me.error = me.log = me.warn = me.info = function() {
 // normalize any data that's passed into them. If you try to pass an `Array` to `normalizeString`, the function would
 // then return the `fallback` value that is specified; if no `fallback` value is specified it would then return `null`.
 me.normalize = function(input, type, fallback) {
-	return me['is' + type](input) ? input : fallback;
+	// Declare our function name;
+	var functionName = 'is' + type;
+
+	// If an invalid `type` is passed in to our function, return our `fallback` or `null`.
+	if (!me.isFunction(me[functionName])) {
+		return fallback ? fallback : null;
+	}
+
+	return me[functionName](input) ? input : fallback;
 };
 
 // Perform normalization on a series of data types. It provides the same functionality as the `normalize` function but
@@ -365,9 +375,9 @@ me.normalizeSeries = function(input, type, fallback, strip) {
 	}
 
 	// Loop through eaach of our values.
-	me.each(input, function(value, key) {
+	me.each(input, function(value) {
 		// Normalize our value.
-		value = me['normalize' + type](value, fallback);
+		value = me.normalize(value, type, fallback);
 
 		// If strip is not explicity set in, and the `value` is falsey, it'll be removed from the normalized results. Falsey
 		// translate to: `null`, `0`, `false`, `undefined`.
@@ -376,7 +386,7 @@ me.normalizeSeries = function(input, type, fallback, strip) {
 		}
 
 		// Set our normalized value.
-		normalized[key] = value;
+		normalized.push(value);
 	});
 
 	// Return our normalized series.
@@ -390,9 +400,13 @@ me.objectConstrain = function(input, whitelist, reference) {
 
 	// Loop through our `Object`.
 	me.each(input, function(value, key) {
-		// Throw a warning to the user that we've discarded the `key` in question.
+		// If the `key` is not defined in the `whitelist`, then discard it.
 		if (whitelist.indexOf(key) === -1) {
-			me.warn('core', 'objectConstrain', 'The key `' + key + '` is not allowed in `' + reference + '`, discarding.', input);
+			// Throw a warning to the user that we've discarded the `key` in question.
+			if (reference) {
+				me.warn('core', 'objectConstrain', 'The key `' + key + '` is not allowed in `' + reference + '`, discarding.', input);
+			}
+
 			return;
 		}
 
@@ -556,11 +570,11 @@ me.toArray = function(input) {
 me.utility = function(type) {
 	// Adding a function prefixed with `is` to check if a variable is actually the type that's being passed in.
 	me['is' + type] = function(variable) {
-		return Object.prototype.toString.call(variable) === '[object ' + type + ']';
+		return me.isType(variable, type);
 	};
 
 	// We cannot generate normalize functions for the following types, so skip them.
-	if (type === 'HTMLCollection' || type === 'HTMLScriptElement') {
+	if (type === 'HTMLScriptElement') {
 		return;
 	}
 
@@ -570,13 +584,13 @@ me.utility = function(type) {
 	};
 
 	// Our normalization series function.
-	me['normalize' + type + 'Series'] = function(input, fallback) {
-		return me.normalizeSeries(input, type, me.isDefined(fallback) ? fallback : null);
+	me['normalize' + type + 'Series'] = function(input, fallback, strip) {
+		return me.normalizeSeries(input, type, me.isDefined(fallback) ? fallback : [], strip);
 	};
 };
 
 // The different utility types that we want to generate functions for.
-me.utility.types = ['Array', 'Boolean', 'Function', 'HTMLCollection', 'HTMLScriptElement', 'Number', 'Object', 'String'];
+me.utility.types = ['Array', 'Boolean', 'Function', 'HTMLScriptElement', 'Number', 'Object', 'String'];
 
 /* global me */
 
@@ -1092,7 +1106,7 @@ me.loader.urls.success = function(module, url, status, factory) {
 
 /* global me */
 
-// Image loader module which is responsible for loading any images for the library.
+// Image loader which is responsible for loading any images for the library.
 me.loader.img = {};
 
 // The image loader is pretty straight forward as legacy browser support goes way back, we don't need to perform any
@@ -1128,20 +1142,20 @@ me.loader.img.boot = function(module, url, callbackSuccess, callbackFailed) {
 
 /* global me */
 
-// @todo remove the auto adding of exports, if exports aren't present then just rely on the native browser callbacks
-// @todo critical for css files^^^^^ debating...
-
+// JavaScript loader which is responsible for loading any scripts for the library.
 me.loader.js = {};
 
+// Attempt to load a script onto the page.
 me.loader.js.boot = function(module, url, callbackSuccess, callbackFailed) {
-	// If the library is already defined on the page, don't attempt to reload it.
+	// If the library is already loaded on the page, don't attempt to reload it.
 	var factory = me.loader.js.check(module);
-
+	//console.log(module);
 	// @todo we need to check if its already on the page*#@$%()
-//	if (factory) {
-//		return callbackSuccess(module, url, 'predefined', factory);
-//	}
+	//if (factory) {
+	//	return callbackSuccess(module, url, 'predefined', factory);
+	//}
 
+// @todo make these their own functions and use .apply on them
 	// If our library failed to load, we'll call upon this function.
 	var failed = function() {
 		return callbackFailed(module, url, 'failed');
@@ -1191,12 +1205,13 @@ me.loader.js.boot = function(module, url, callbackSuccess, callbackFailed) {
 };
 
 // @todo document it
+// @todo if there are no exports, simply rely on the callbacks
 me.loader.js.check = function(module) {
 	if (module.loader.loaded === true) {
 		return true;
 	}
 
-	if (module.check) {
+	if (me.isFunction(module.check)) {
 		return module.check();
 	}
 
@@ -1670,20 +1685,17 @@ me.require = function() {
 	// Fetch and normalize the argument that were passed in.
 	var args = me.require.args.apply(null, arguments);
 
-	// @todo rename the function plz thx
 	// Boot up our dependencies.
 	me.require.boot(args.deps, function() {
-		// we're stuck here, everything else works fine, this is the problem.
-		// need to invoke in our reverse ordering
+		// At this point all of our dependencies have loaded, now we need to go ahead and invoke all of our dependencies in a
+		// reverse order, that way our initial modules that invoked the `require` can be executed.
 		me.require.invoke(args.deps);
 
+		// Only attempt to invoke the `factory` if it's a `Function`.
 		if (me.isFunction(args.factory)) {
 			args.factory.apply(null, me.require.invoke.references(args.deps));
+			//me.require.apply(args.deps, args.factory); @todo
 		}
-
-
-		// After all our dependencies have loaded, execute our factory.
-		//me.require.apply(args.deps, args.factory);
 	});
 };
 
@@ -1723,6 +1735,16 @@ me.require.args = function() {
 	// Return back our normalized arguments.
 	return payload;
 };
+
+
+
+
+
+
+
+
+
+
 
 
 // @todo at this point we know all deps have loaded, we just need to invoke them now! :D

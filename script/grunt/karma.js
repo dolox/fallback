@@ -5,8 +5,10 @@ module.exports = function(grunt, tasks) {
 		configFile: grunt.app.config.uri.root + 'karma.conf.js'
 	};
 
+	tasks.karma.dist = {};
+
 	tasks.karma.dev = {
-		//browsers: ['Chrome']
+		browsers: ['PhantomJS']
 	};
 
 	return tasks;

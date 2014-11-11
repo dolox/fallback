@@ -1,6 +1,6 @@
 /* global me */
 
-// Image loader module which is responsible for loading any images for the library.
+// Image loader which is responsible for loading any images for the library.
 me.loader.img = {};
 
 // The image loader is pretty straight forward as legacy browser support goes way back, we don't need to perform any
