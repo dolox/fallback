@@ -1,6 +1,6 @@
 code documentation
 	[x] config
-	[x] core					-- couple @todo's fix them
+	[x] core					-- change the logger to have levels
 	[x] define
 	[x] loader
 	[x] loaderImage
@@ -10,10 +10,10 @@ code documentation
 	[ ] require
 
 @todo
+	allow config to pass in logging levels for debug: 'warn', 'info', 'error', or false
 	fix broken saucelabs image in the README
 	update the bower json ignore list for the docs, tests, configs from travis. simply include the dist, readme, bower file
 	allow ability to stick version #s on the libraries combines w/ FBK CLI
-	fetch url of out of combiner, so fallback.url it comes out of from package.json
 	add loader delimiter to the config file.
 	grep for `indexOf` and use `me.indexOf`
 	integrate and test `define.amd = {};`

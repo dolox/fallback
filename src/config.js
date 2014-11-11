@@ -38,7 +38,7 @@ me.config.base = function(input) {
 
 	// If we have a `String`, generate an object with out whitelist of keys, and use the `String` as the value.
 	if (me.isString(input)) {
-		return me.objectMerge(input, me.config.base.whitelist, input);
+		return input;
 	}
 
 	// If we received an `Object`, then merge in our defaults with a `null` value if they weren't specified.
@@ -88,7 +88,7 @@ me.config.libs = function(input) {
 
 		// If our value is not an `Object` then the value is malformed, discard it and throw a warning to the end user.
 		if (!me.isObject(value)) {
-			me.warning('config', 'libs', 'value', 'The `urls` in your `config` was malformed for `' + key + '`, discarding.', value);
+			me.log(2, 'config', 'libs', 'value', 'The `urls` in your `config` was malformed for `' + key + '`, discarding.', value);
 			return;
 		}
 

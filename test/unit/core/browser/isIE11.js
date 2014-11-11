@@ -6,6 +6,4 @@ describe('fallback.browser.isIE11', function() {
 	it('should be a Boolean', function() {
 		expect(typeof result).to.equal('boolean');
 	});
-
-	// @todo we need to validate the value
 });

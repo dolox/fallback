@@ -1,4 +1,4 @@
-/* fallback.js v2.0.0 | http://fallbackjs.com/ | Salvatore Garbesi <sal@dolox.com> | (c) 2014 Dolox, Inc. */
+/* fallback.js v2.0.0 | http://fallback.io/ | Salvatore Garbesi <sal@dolox.com> | (c) 2014 Dolox, Inc. */
 
 (function(window) {
 
@@ -56,7 +56,7 @@ me.init.aliases = function(input) {
 		me.each(aliases, function(alias) {
 			// If the alias is currently defined in the `global` object, skip it and throw a warning to the end user.
 			if (me.isDefined(window[alias])) {
-				me.warn('core', 'init', 'aliases', 'The variable global["' + alias + '"] already exists.');
+				me.log('core', 'init', 'aliases', 'The variable global["' + alias + '"] already exists.');
 				return;
 			}
 
@@ -335,16 +335,61 @@ me.isType = function(variable, type) {
 	return Object.prototype.toString.call(variable) === '[object ' + type + ']';
 };
 
-// Logging function for when debugging is turned on. @todo use levels, instead of diff function names
-me.error = me.log = me.warn = me.info = function() {
+// Logging function for when debugging is turned on.
+me.log = function() {
 	// Make sure that both debugging is enable and what `window.console` exists.
 	if (!me.debug || !window.console) {
-		return;
+		return false;
 	}
 
+	// Convert our `Arguments` into an `Array`.
 	var args = me.arrayClone(arguments);
 
-	window.console.warn('%cFallbackJS: %c' + args.shift() + ': %c' + args.join(), 'font-weight: bold; color: #da542c', 'font-weight: bold; color: #000', 'color: #999');
+	// If we have no arguments, then halt the function.
+	if (!args.length) {
+		return false;
+	}
+
+	var first = args.shift();
+	var level = me.log.levels[3];
+
+	// If our first argument was a number, then it's our level to log at.
+	if (me.isNumber(first)) {
+		if (me.log.levels[first]) {
+			level = me.log.levels[first];
+		}
+
+		first = args.shift();
+	}
+
+	// The prefixes before our actual message.
+	var prefixes = [first];
+
+	// Loop through each arguments, til we find the first item that's not a space, or a string not containing a space.
+	me.each(args, function(item) {
+		if (!me.isString(item) || item.indexOf(' ') !== -1) {
+			return false;
+		}
+
+		prefixes.push(args.shift());
+	});
+
+	// Make a reference to our function, if the our level function doesn't exist natively in the browser.
+	var logger = window.console.log;
+
+	if (me.isFunction(window.console[level])) {
+		logger = window.console[level];
+	}
+
+	// Log our message to the console.
+	return logger('%cFallbackJS: %c' + level.toUpperCase() + ': ' + prefixes.join(': ') + ': %c' + args.join(), 'font-weight: bold; color: #da542c', 'font-weight: bold; color: #000', 'color: #777');
+};
+
+// The various levels for our `log` function.
+me.log.levels = {
+	1: 'error',
+	2: 'warning',
+	3: 'info'
 };
 
 // Generate a normalization function based on the type that is passed in. For example if a type of `String` was passed
@@ -395,11 +440,6 @@ me.normalizeSeries = function(input, type, fallback, strip) {
 
 // Constrain an object to only contain a specific set of keys. All other keys are discarded, and a warning is thrown.
 me.objectConstrain = function(input, whitelist, reference) {
-	// If we don't have a `whitelist` or if it's not an `Array`, return our `input`.
-	if (!me.isArray(whitelist)) {
-		return input;
-	}
-
 	// Store our normalized `Object`.
 	var normalized = {};
 
@@ -408,13 +448,18 @@ me.objectConstrain = function(input, whitelist, reference) {
 		return normalized;
 	}
 
+	// If we don't have a `whitelist` or if it's not an `Array`, return our `input`.
+	if (!me.isArray(whitelist)) {
+		return input;
+	}
+
 	// Loop through our `Object`.
 	me.each(input, function(value, key) {
 		// If the `key` is not defined in the `whitelist`, then discard it.
 		if (whitelist.indexOf(key) === -1) {
 			// Throw a warning to the user that we've discarded the `key` in question.
 			if (reference) {
-				me.warn('core', 'objectConstrain', 'The key `' + key + '` is not allowed in `' + reference + '`, discarding.', input);
+				me.log(2, 'core', 'objectConstrain', 'The key `' + key + '` is not allowed in `' + reference + '`, discarding.', input);
 			}
 
 			return;
@@ -431,16 +476,26 @@ me.objectConstrain = function(input, whitelist, reference) {
 // Merge an `Object` with a set of default values. If the `defaults` parameter is an `Array`, it will treat whatever
 // the value is for `fallback` as it's value.
 me.objectMerge = function(input, defaults, fallback) {
-	// Our merge `Object`.
+	// Our normalized/merged `Object`.
 	var normalized = {};
 
+	// If our `input` is not an `Object` return an empty `Object`.
+	if (!me.isObject(input)) {
+		return normalized;
+	}
+
 	// The defaults to merge with.
-	var defaultsIArray = me.isArray(defaults);
+	var defaultsIsArray = me.isArray(defaults);
+
+	// If our defaults isn't an Array or Object, then return our `input`.
+	if (!me.isObject(defaults) && !defaultsIsArray) {
+		return input;
+	}
 
 	// Loop through our defaults.
 	me.each(defaults, function(value, key) {
 		// If our `defaults` is an `Array` we need to swap out the key/values.
-		if (defaultsIArray === true) {
+		if (defaultsIsArray === true) {
 			key = value;
 			value = fallback;
 		}
@@ -526,16 +581,20 @@ me.parallel.generate = function(length) {
 // Container `Object` for all of the currently running parallel jobs.
 me.parallel.queue = {};
 
-// Output the configured libraries, their load times and other useful statistics for the end user. @todo
+// Output the configured libraries, their load times and other useful statistics for the end user.
 me.stats = function() {
+	// Padding strings that we'll use for our output string.
 	var separator = '\n' + Array(250).join('-') + '\n';
 	var padding30 = Array(30).join(' ');
 	var padding60 = Array(60).join(' ');
 
+	// Add our banner to the output string.
 	var output = '\n' + me.banner;
 	output += '\n' + me.stringPad('v' + me.version, padding60, true) + '\n';
-	output += '\n' + me.stringPad('http://fallback.io', padding60, true) + '\n';
+	output += '\n' + me.stringPad(me.homepage, padding60, true) + '\n';
 	output += separator;
+
+	// The table header.
 	output += me.stringPad('Library', padding60);
 	output += me.stringPad('Type', padding30);
 	output += me.stringPad('Time', padding30);
@@ -545,6 +604,7 @@ me.stats = function() {
 	output += 'Success';
 	output += separator;
 
+	// The body of our table.
 	me.each(me.module.definitions, function(value, key) {
 		var time = (value.loader.timeEnd - value.loader.timeStart) / 1000;
 		time = time || time === 0 ? time + 's' : 'N/A';
@@ -648,7 +708,7 @@ me.config.base = function(input) {
 
 	// If we have a `String`, generate an object with out whitelist of keys, and use the `String` as the value.
 	if (me.isString(input)) {
-		return me.objectMerge(input, me.config.base.whitelist, input);
+		return input;
 	}
 
 	// If we received an `Object`, then merge in our defaults with a `null` value if they weren't specified.
@@ -698,7 +758,7 @@ me.config.libs = function(input) {
 
 		// If our value is not an `Object` then the value is malformed, discard it and throw a warning to the end user.
 		if (!me.isObject(value)) {
-			me.warning('config', 'libs', 'value', 'The `urls` in your `config` was malformed for `' + key + '`, discarding.', value);
+			me.log(2, 'config', 'libs', 'value', 'The `urls` in your `config` was malformed for `' + key + '`, discarding.', value);
 			return;
 		}
 
@@ -792,7 +852,7 @@ me.define = function() {
 
 	// If a name and factory weren't passed in, throw a notice to the end user and halt our function.
 	if (!args.name && !args.factory) {
-		me.warn('define', 'No `name` or `factory` sent to the `define` function! Halting!', args);
+		me.log(2, 'define', 'No `name` or `factory` sent to the `define` function! Halting!', args);
 		return;
 	}
 
@@ -806,7 +866,7 @@ me.define = function() {
 	// essentially be overwriting our previous anonymous module. If this happens we'll simply halt the function and a
 	// throw a notice to our end user.
 	if (!args.name && me.define.anonymous.factory) {
-		me.warn('define', 'Multiple Anonymous modules defined in the same file! Halting!', args);
+		me.log(2, 'define', 'Multiple Anonymous modules defined in the same file! Halting!', args);
 		return;
 	}
 
@@ -851,7 +911,7 @@ me.define.anonymous = function(moduleName) {
 
 	// If we couldn't find our module, then something went wrong. Let the end user know and halt the `Function`.
 	if (!module) {
-		me.warn('define', 'anonymous', 'Anonymous module not found for `' + moduleName + '`! Halting definition!');
+		me.log(2, 'define', 'anonymous', 'Anonymous module not found for `' + moduleName + '`! Halting definition!');
 		return;
 	}
 
@@ -1973,6 +2033,8 @@ me.require.dependencies = function(modules, loop) {
 	// Return all of our queued dependency modules.
 	return queue;
 };
+
+me.homepage = 'http://fallback.io/';
 
 me.version = '2.0.0';
 

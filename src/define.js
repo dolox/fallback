@@ -8,7 +8,7 @@ me.define = function() {
 
 	// If a name and factory weren't passed in, throw a notice to the end user and halt our function.
 	if (!args.name && !args.factory) {
-		me.warn('define', 'No `name` or `factory` sent to the `define` function! Halting!', args);
+		me.log(2, 'define', 'No `name` or `factory` sent to the `define` function! Halting!', args);
 		return;
 	}
 
@@ -22,7 +22,7 @@ me.define = function() {
 	// essentially be overwriting our previous anonymous module. If this happens we'll simply halt the function and a
 	// throw a notice to our end user.
 	if (!args.name && me.define.anonymous.factory) {
-		me.warn('define', 'Multiple Anonymous modules defined in the same file! Halting!', args);
+		me.log(2, 'define', 'Multiple Anonymous modules defined in the same file! Halting!', args);
 		return;
 	}
 
@@ -67,7 +67,7 @@ me.define.anonymous = function(moduleName) {
 
 	// If we couldn't find our module, then something went wrong. Let the end user know and halt the `Function`.
 	if (!module) {
-		me.warn('define', 'anonymous', 'Anonymous module not found for `' + moduleName + '`! Halting definition!');
+		me.log(2, 'define', 'anonymous', 'Anonymous module not found for `' + moduleName + '`! Halting definition!');
 		return;
 	}
 
