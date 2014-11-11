@@ -457,17 +457,11 @@ me.parallel = function(references, callback) {
 		return;
 	}
 
-	// Generate a unique identifier for our parallel instance to avoid collisions.
-	var guid = me.guid();
+	// Normalize our references.
+	references = me.normalizeFunctionSeries(references, null, true);
 
-	// Add the our `references` to our parallel queue.
-	me.parallel.queue[guid] = {
-		// The number of callbacks that were invoked.
-		interval: 0,
-
-		// The total number of callbacks to run in parralel.
-		length: references.length
-	};
+	// Generate a new queue instance.
+	var guid = me.parallel.generate(references.length);
 
 	// Loop through all of our refernces and execute them.
 	me.each(references, function(reference) {
@@ -502,6 +496,23 @@ me.parallel.anonymous = function(reference, guid, callback) {
 	});
 };
 
+// Generate a new parallel instance into our queue.
+me.parallel.generate = function(length) {
+	// Generate a unique identifier for our parallel instance to avoid collisions.
+	var guid = me.guid();
+
+	// Add the our `references` to our parallel queue.
+	me.parallel.queue[guid] = {
+		// The number of callbacks that were invoked.
+		interval: 0,
+
+		// The total number of callbacks to run in parralel.
+		length: length
+	};
+
+	return guid;
+};
+
 // Container `Object` for all of the currently running parallel jobs.
 me.parallel.queue = {};
 
@@ -513,7 +524,7 @@ me.stats = function() {
 
 	var output = '\n' + me.banner;
 	output += '\n' + me.stringPad('v' + me.version, padding60, true) + '\n';
-	output += '\n' + me.stringPad('http://fallbackjs.com', padding60, true) + '\n';
+	output += '\n' + me.stringPad('http://fallback.io', padding60, true) + '\n';
 	output += separator;
 	output += me.stringPad('Library', padding60);
 	output += me.stringPad('Type', padding30);

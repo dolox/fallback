@@ -9,7 +9,7 @@ module.exports = function(grunt, tasks) {
 
 	me.options = {};
 
-	var banner = '/* fallback.js v' + grunt.file.readJSON(uri.root + 'package.json').version + ' | http://fallbackjs.com/ | Salvatore Garbesi <sal@dolox.com> | (c) ' + new Date().getFullYear() + ' Dolox, Inc. */\n\n';
+	var banner = '/* fallback.js v' + grunt.file.readJSON(uri.root + 'package.json').version + ' | http://fallback.io/ | Salvatore Garbesi <sal@dolox.com> | (c) ' + new Date().getFullYear() + ' Dolox, Inc. */\n\n';
 
 	me.options.wrapper = [
 		banner + '(function(window) {\n',

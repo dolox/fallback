@@ -251,7 +251,7 @@ cfg({
 		"css$bootstrap": "//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min",
 
 		// This will load our logo image. Useful if we're attempting to preload parts of our website.
-		"img$logo": "http://fallbackjs.com/img/logo.png",
+		"img$logo": "http://fallback.io/img/logo.png",
 
 		// You don't have to specify `js$`, but default we'll automatically treat files as JavaScript files.
 		"js$angular": "//ajax.googleapis.com/ajax/libs/angularjs/1.2.20/angular.min"

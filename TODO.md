@@ -10,6 +10,7 @@ code documentation
 	[ ] require
 
 @todo
+	fix broken saucelabs image in the README
 	update the bower json ignore list for the docs, tests, configs from travis. simply include the dist, readme, bower file
 	allow ability to stick version #s on the libraries combines w/ FBK CLI
 	fetch url of out of combiner, so fallback.url it comes out of from package.json
@@ -32,16 +33,11 @@ tests
 	- http://stackoverflow.com/questions/4904096/whats-the-difference-between-unit-functional-acceptance-and-integration-test
 	- cleanup the example and code document them better for people.
 
-	- Add SauceLabs: https://saucelabs.com/account?new=1
-	- Add Travic CI: https://travis-ci.org/
-	[x] Add David DM: https://david-dm.org/
-
 contributing
 	- Follow https://github.com/rwaldron/idiomatic.js/
 		- Style Guidlines: Real Tabs, Single Quotes, No padding spaces in parenthesis: if ( a )
 	- update sample code on the website and file size
-	- get fallbackjs.com pointing to github and fallback.io to 301
-	- replace all fallback.io references
+	- 301 fallbackjs.com to fallback.io
 
 ---
 
