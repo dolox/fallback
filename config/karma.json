@@ -14,8 +14,8 @@
 		"mocha"
 	],
 
-
 	"logLevel": "INFO",
+
 	"port": 9876,
 
 	"reporters": [
@@ -24,7 +24,7 @@
 	],
 
 	"saurceLabs": {
-		"testName": "Fallback JS - Karma Unit Test"
+		"testName": "Fallback JS"
 	},
 
 	"singleRun": true,

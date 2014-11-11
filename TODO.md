@@ -42,10 +42,7 @@ readme documentation
 	- change README.md to README.hbs and automatically generate it with the current version # and file sizes of the dists.
 	- make links from the root of the project to fallback.min.js in the dist folder.
 	- cleanup in the examples folder and code document them better for people.
-
-contributing
-	- Follow https://github.com/rwaldron/idiomatic.js/
-		- Style Guidlines: Real Tabs, Single Quotes, No padding spaces in parenthesis: if ( a )
+	- make a large note at the top about contributing.md
 	- update sample code on the website and file size
 	- 301 fallbackjs.com to fallback.io
 

@@ -10,5 +10,5 @@ before_script: grunt build
 env:
   global:
     - SAUCE_USERNAME: fallback
-    - secure: rz2hQG/IyRJUM7wPMtE5KfIru/kk2bUd8jPovwSR1JF7mtVRYRmgdmFDeMRqETWXfFUGmQ/q+5jU0YxXynJCjWTkyv8uK44Aj7ZhAR0TwwvSi5+oXlY8l5QeNTabLLqnKkK2isJCRnoGJeYiAJxuHBwN59IRPWwmPJs0hcMPy2Q=
-    - secure: WZfc/XmC6Ha4QQWaE4sLBWwtpjvmeaFtF3/XzjvbzpcJje7rdpphCYGNxYePC0hf0AScf5aCkUmy68gYHiBDUTtILbfDQrPSXBk4ZMQ/pMOScH4oC176y2Ygy6spC4+KmT4o1qeHFg8yr7JWDw8k0waobJ4zAX1LVllDAjovimQ=
+    - secure: bMg5ZjbvSbTZTw4DDGprSPgHOJrbJalObe3CsSt6aZXFyuF7a8UC8X4Fs3LBkpIHE9n71IOgyELRcAC6BQLlz2V+8Xs0UmFBnle2oR+mwH++jtrr8pHwUTlHjVn8Vm5i33BIqFtDCYnZWZCs9q7qSrslX6BSp9v7H7BwPuB1CWo=
+    - secure: ZRMLvd697YokRIbByPm8cjAZsZcvc+ivWsc9NCZ01W+NLJvYFJWMLJMIJL3D69bhpCmYZZ4y7NInS5bV25IL/KrOtbSJFXVAuzQXNhciKyJ47Dz3J1o6roCqw/S7dLlacp6QqCtKfskb5LOK+PB8UFmktdOxBqJENsSNXWpUGaA=
