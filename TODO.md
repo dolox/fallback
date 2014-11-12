@@ -23,21 +23,32 @@ unit tests
 	run tests sequentially: https://github.com/karma-runner/karma-sauce-launcher/issues/8
 
 @todo
+	make sure that `global` is actually being referenced everywhere and not window
+	the exports check needs to use the global variable! if global is set to null, dont do the exports check!
+	fallback.config -> input -> global --- double check this documentation
+
 	allow config to pass in logging levels for debug: 'warn', 'info', 'error', or false
+
 	fix broken saucelabs image in the README
+
 	update the bower json ignore list for the docs, tests, configs from travis. simply include the dist, readme, bower file
+
 	allow ability to stick version #s on the libraries combines w/ FBK CLI
+
 	add loader delimiter to the config file.
+
 	grep for `indexOf` and use `me.indexOf`
+
 	integrate and test `define.amd = {};`
+
 	dont automatically import aliases as exports, fix that shit
+
 	strip all me.logs(), me.banner, me.log and me.stats function from minification version
+
 	automatically rename the docs fallback.html to index.html after it's generated.
 
 readme documentation
-	- fallback.version
 	- document the debugger levels
-	- delimiter is changeable.
 	- add `init` and `check` functions for libs.
 	- redocument the `global` attribute in config.
 	- change README.md to README.hbs and automatically generate it with the current version # and file sizes of the dists.

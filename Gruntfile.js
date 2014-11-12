@@ -113,7 +113,9 @@ me.tasks.devHup = function() {
 
 me.tasks.docs = function() {
 	me.grunt.registerTask('docs', [
-		'docco'
+		'docco',
+		'copy:docs',
+		'clean:docsCopy'
 	]);
 };
 

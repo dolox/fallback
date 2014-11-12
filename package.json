@@ -19,6 +19,7 @@
     "grunt-contrib-concat": "^0.5.0",
     "grunt-contrib-connect": "^0.8.0",
     "grunt-contrib-watch": "^0.6.1",
+    "grunt-copy": "^0.1.0",
     "grunt-docco": "^0.3.3",
     "grunt-eslint": "^2.0.0",
     "grunt-newer": "^0.8.0",

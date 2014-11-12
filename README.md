@@ -1,4 +1,4 @@
-<p align="center"><img alt="Fallback JS" height="128" src="http://fallback.io/img/logo.png" /></p>
+<p align="center"><a href="http://fallback.io/" target="_blank"><img alt="Fallback JS" height="128" src="http://fallback.io/img/logo.png" /></a></p>
 <h1 align="center">Fallback JS</h1>
 
 [<img src="https://travis-ci.org/dolox/fallback.svg?style=flat" />](https://travis-ci.org/dolox/fallback)
@@ -122,11 +122,11 @@ req(function($, css$bootstrap, jqueryui) {
 
 If you happen to stumble upon any helpful open source examples which aren't listed here, please let us know and we'll add them to the list!
 
-Link | Description
-------------- | -------------
-[Examples](https://github.com/dolox/fallback/tree/master/examples) | A number of examples included in the project which illustrate how you can use the Fallback JS library.
-[AngularJS Lazy Loading](http://plnkr.co/Q1mPmY) | This example illustrates how you can lazy load controllers, directives, modules and services in AngularJS.
-[#fallbackjs on Plunker](http://plnkr.co/tags/fallbackjs) | Look on Plunker under the tag `#fallbackjs` to see a number of examples that've been posted by users.
+| Link | Description |
+| ---- | ----------- |
+| [Examples](https://github.com/dolox/fallback/tree/master/examples) | A number of examples included in the project which illustrate how you can use the Fallback JS library.
+| [AngularJS Lazy Loading](http://plnkr.co/Q1mPmY)                   | This example illustrates how you can lazy load controllers, directives, modules and services in AngularJS.
+| [#fallbackjs on Plunker](http://plnkr.co/tags/fallbackjs)          | Look on Plunker under the tag `#fallbackjs` to see a number of examples that've been posted by users.
 
 ---
 
@@ -136,254 +136,525 @@ A technical overview and in depth explanations of the libraries functions.
 
 ### Overview
 
-Function | Aliases | Description
-------------- | ------------- | -------------
-[config](#fallbackconfiginput) |`cfg`, `conf`, `config`, `fallback.cfg`, `fallback.conf`, `fallback.config`, `fbk.cfg`, `fbk.conf`, `fbk.config` | Configures Fallback JS to let it know what files need to be lazy loaded for your project.
-[define](#fallbackdefinename-dependencies-function) | `def`, `define`, `fallback.def`, `fallback.define`, `fbk.def`, `fbk.define` | Allows you to define your JavaScript files in a way that they can be easily loaded and referenced at a later time.
-[require](#fallbackrequiredependencies-function) | `fallback.req`, `fallback.require`, `fbk.req`, `fbk.require`, `req`, `require` | Loads your libraries asynchronously the page.
-[stats](#fallbackstats) | `fallback.stats`, `fbk.stats` | Exports statistics for any libraries that were loaded with Fallback JS.
-[version](#fallbackversion) | `fallback.version`, `fbk.version` | Returns the current version number of Fallback JS that's loaded on the page.
+| Function                                            | Aliases                                                                                                         | Description   |
+| --------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- | ------------- |
+| [config](#fallbackconfiginput)                      |`cfg`, `conf`, `config`, `fallback.cfg`, `fallback.conf`, `fallback.config`, `fbk.cfg`, `fbk.conf`, `fbk.config` | Configures Fallback JS to let it know what files need to be lazy loaded for your project. |
+| [define](#fallbackdefinename-dependencies-function) | `def`, `define`, `fallback.def`, `fallback.define`, `fbk.def`, `fbk.define`                                     | Allows you to define your JavaScript files in a way that they can be easily loaded and referenced at a later time. |
+| [require](#fallbackrequiredependencies-function)    | `fallback.req`, `fallback.require`, `fbk.req`, `fbk.require`, `req`, `require`                                  | Loads your libraries asynchronously the page. |
+| [stats](#fallbackstats)                             | `fallback.stats`, `fbk.stats`                                                                                   | Exports statistics for any libraries that were loaded with Fallback JS. |
+| [version](#fallbackversion)                         | `fallback.version`, `fbk.version`                                                                               | Returns the current version number of Fallback JS that's loaded on the page. |
 
-=====
+===
 
 ### **fallback.config(`input`)**
 
 ***Aliases:*** `cfg`, `conf`, `config`, `fallback.cfg`, `fallback.conf`, `fallback.config`, `fbk.cfg`, `fbk.conf`, `fbk.config`
 
-This function allows you to configure the defaults for your project along with the URLs for your libraries. It only takes a single parameter, and expects it to be an `Object`.
+This function allows you to configure the defaults for your project along with the libraries that you want Fallback JS to load.
 
-Parameter | Type | Default | Required | Description
-------------- | ------------- | ------------- | ------------- | -------------
-*input* | Object | *null* | Yes | Key/Value pair object that contains the configuration for the Fallback JS library.
+- [Parameters](#parameters)
+	- [input](#fallbackconfig---input)
+		- [amd](#fallbackconfig---input---base)
+		- [base](#fallbackconfig---input---base)
+		- [debug](#fallbackconfig---input---base)
+		- [delimiter](#fallbackconfig---input---base)
+		- [global](#fallbackconfig---input---base)
+		- [libs](#fallbackconfig---input---libs)
+			- [alias](#fallbackconfig---input---libs)
+			- [check](#fallbackconfig---input---libs)
+			- [deps](#fallbackconfig---input---libs)
+			- [exports](#fallbackconfig---input---libs)
+			- [init](#fallbackconfig---input---libs)
+			- [urls](#fallbackconfig---input---libs)
+- [Return Values](#return-values)
 
-=====
+===
 
-@todo left off here
+<h4 align="center">Parameters</h4>
 
-**<p align="center">INPUT</p>**
+| Parameter | Type   | Default | Required | Description |
+| --------- | ------ | ------- | -------- | ----------- |
+| *input*   | Object | *null*  | Yes      | Key/Value pair object that contains the configuration for the Fallback JS library. [See more details here.](#fallbackconfig---input) |
 
-Parameter | Type | Default | Required | Description
-------------- | ------------- | ------------- | ------------- | -------------
-amd | Boolean | false | No | Whether or not to allow your libraries to be accessible via global scope. If this value is set to `true` you won't be able to access your libraries directly through the browsers `window` object for libraries that support using AMD. [See more details here.](#q-what-is-the-amd-parameter-in-the-configuration-for)
-base | Object/String | null | No | Accepts an Object/String to be used as the prefix for all of your URLs. See the `input.base` table below for further details.
-debug | Boolean | false | No | Toggle debugging mode. If turned on, helpful messages will show up in the console.
-delimiter | String | $ | No | The string to dictate loading non-JavaScript files. For example to load css files you'd use: `css$my_css_file`.
-globals | Boolean | true | No | Whether or not to check the global scope before attemping to load your libaries. This way if a library has already been loaded, `Fallback` won't attempt to load it again.
-urls | Object | null | No | Expects an object containing the configuration for each of your libraries. See the `input.urls` table below for further details.
+===
 
-**Example**
+<h4 align="center">fallback.config -> input</h4>
 
-```json
-{
+| Type   | Default | Required |
+| ------ | ------- | -------- |
+| Object | null    | Yes      |
+
+The following parameters are allowed for the first level of our `input` `Object`. The `Object` itself has multiple levels which are listed further down in this document.
+
+| Parameter                                        | Type          | Default  | Required | Description   |
+| ------------------------------------------------ | ------------- | -------- | -------- | ------------- |
+| [amd](#fallbackconfig---input---amd)             | Boolean       | false    | No       | Where or not to enforce AMD on the page. |
+| [base](#fallbackconfig---input---amd)            | Object/String | null     | No       | Object/String to be used as the prefix for all URLs with. |
+| [debug](#fallbackconfig---input---amd)           | Boolean       | false    | No       | Toggle debugging mode. |
+| [delimiter](#fallbackconfig---input---delimiter) | String        | $        | No       | The delimiter string to be specified when loading non-JavaScript files. |
+| [global](#fallbackconfig---input---global)       | Object        | *window* | No       | Object to use when searching for our exports to check if a library has loaded. |
+| [libs](#fallbackconfig---input---libs)           | Object        | null     | No       | An object containing the configuration for each of your libraries. |
+
+**Example:**
+
+```javascript
+fallback.config({
 	"amd": false,
 	"base": "./js/",
 	"debug": true,
-	"delimiter": "_",
-	"globals": true,
+	"delimiter": "$",
+	"global": window,
 
-	"urls": {
-		"css_bootstrapCSS": "//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min",
-		"img_imgPreloader": "http://fallback.io/img/logo.png",
-		"jquery": "//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min"
+	"libs": {
+		"angular": "//ajax.googleapis.com/ajax/libs/angularjs/1.3.2/angular.min",
+		"css$bootstrap": "//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min",
+		"img$logo": "http://fallback.io/img/logo.png"
 	}
-}
+});
 ```
 
-=====
+===
 
-##### fallback.config(`input.base`)
+<h4 align="center">fallback.config -> input -> amd</h4>
 
-If the `input.base` value is a `String`, all of your URLs will be prefixed with this path, as long as the path in question doesn't start with `/`, `data:`, `http://` or `https://`. The following table below reflects the acceptable parameters when the value of `input.base` is an `Object`.
+| Type    | Default | Required |
+| ------- | ------- | -------- |
+| Boolean | false   | No       |
 
-Parameter | Type | Default | Required | Description
-------------- | ------------- | ------------- | ------------- | -------------
-css | String | *null* | No | The path to prefix all of your CSS files with.
-img | String | *null* | No | The path to prefix all of your images with.
-js | String | *null* | No | The path to prefix all of your JS files with.
+This configuration parameter allows you to enforce [AMD (Asynchronous Module Definitions)](https://github.com/amdjs/amdjs-api/blob/master/AMD.md) for the Fallback JS library.
 
-**Example**
+AMD for the library is enabled, but it's not enforced by default. In other words, if a library that supports AMD attempts to load, it won't be used as a module, it instead will be retained in the global scope of the page, untethered by the Fallback JS library.
 
-```json
-{
+By enabling AMD, any JavaScript libaries that support it will no longer be available in the global scope (the `window` object) of your page. The reasoning behind this is to encapsulate JavaScript libraries so that they're contained and not dirtying up the global scope.
+
+This can be useful on an advanced level, but in practice the level of complexitiy and time required to invest just to make this work properly isn't practical for most, which is why this feature is `disabled` by default. Use this feature at your own discretion.
+
+**Example:**
+
+```javascript
+// Enable AMD.
+fallback.config({
+	"amd": true
+});
+```
+
+===
+
+<h4 align="center">fallback.config -> input -> base</h4>
+
+| Type          | Default | Required |
+| ------------- | ------- | -------- |
+| Object/String | null    | No       |
+
+If the `base` value is a `String`, all of your URLs will be prefixed with this path regardless of the type of file. If you specify an `Object` for the value, you can explicity set different paths to prefix for your URLs per each file type. Any URL that starts with `/`, `data:`, `http://` or `https://` will not be prefixed with the `base` value.
+
+The following table below reflects acceptable parameters when the value of `base` is an `Object`.
+
+| Parameter | Type   | Default | Required | Description |
+| --------- | ------ | ------- | -------- | ----------- |
+| css       | String | *null*  | No       | The path to prefix all of your CSS files with. |
+| img       | String | *null*  | No       | The path to prefix all of your images with. |
+| js        | String | *null*  | No       | The path to prefix all of your JS files with. |
+
+**Example:**
+
+```javascript
+// Set base URLs for all of our file types.
+fallback.config({
+	"base": "./js/"
+});
+```
+
+```javascript
+// Set different base URLs for each of our file types.
+fallback.config({
 	"base": {
 		"css": "./css/",
 		"img": "./img/",
 		"js": "./js/"
 	}
-}
+});
 ```
 
-=====
+===
 
-**<p align="center">INPUT.URLS</p>**
+<h4 align="center">fallback.config -> input -> debug</h4>
 
-The `keys` of this object will correlate to the variables you'll use to load the library in question.
+| Type    | Default | Required |
+| ------- | ------- | -------- |
+| Boolean | false   | No       |
 
-If the `value` of our `key` is a...
+This configuration parameter allows you toggle debugging for the library. If turned on, this feature will log useful debugging information to the console, if the browser supports `window.console`.
 
-- `String`, it will be treated as the URL for the library.
+This feature is only available in the non-minified version of the library. For better compression, all logging messages have been stripped out of the minified version.
 
-- `Array`, it will be treated as the URLs for the library.
-
-- `Object`, it may have it's own specific configuration set. See below.
-
-Parameter | Type | Default | Required | Description
-------------- | ------------- | ------------- | ------------- | -------------
-*key* | String | *null* | Yes | The subkeys of our objects correlate to the names of our libraries. *Example: 'jQuery'*
-*value* | Array/Object/String | *null* | Yes | Either a `String`, or `Array` of `Strings` which represent the URLs for the library. If the `value` is an `Object` then please see the `INPUT.URLS (VALUES AS OBJECTS)` section below for a list of acceptable parameters.
-
-**Example**
+**Example:**
 
 ```javascript
-cfg({
-	"urls": {
-		"angular": '//ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min'
+// Turn debugging on.
+fallback.config({
+	"debug": true
+});
+```
+
+===
+
+<h4 align="center">fallback.config -> input -> delimiter</h4>
+
+| Type   | Default | Required |
+| ------ | ------- | -------- |
+| String | $       | No       |
+
+
+This configuration parameter allows you to change the string that's used to specify different file types for the Fallback JS library to load. By default the value is a `$`, and if you want to load a CSS file you would need to prefix your library with `css$` that way Fallback JS would know to load it as a CSS file and not a JavaScript file.
+
+*See [fallback.config -> input -> libs -> keys](#fallbackconfig---input---libs---keys) for a list of prefixes you can use.*
+
+**Example:**
+
+```javascript
+// This example uses our default.
+fallback.config({
+	"libs": {
+		"css$bootstrap": "//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min"
 	}
 });
 
-cfg({
-	"urls": {
-		"jquery": [
-			'//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery.min',
-			'//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min'
-		]
+// Load up our CSS file.
+fallback.require(function(css$bootstrap) {
+	// Execute my code here...
+});
+```
+
+```javascript
+// This example explicity sets the delimiter value.
+fallback.config({
+	"delimiter": "_",
+
+	"libs": {
+		"css_bootstrap": "//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min"
 	}
 });
 
-cfg({
-	"urls": {
-		"jqueryUI": {
-			"deps": ["jquery"],
-			"files": "//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min"
+// Load up our CSS file.
+fallback.require(function(css_bootstrap) {
+	// Execute my code here...
+});
+```
+
+===
+
+<h4 align="center">fallback.config -> input -> global</h4>
+
+| Type   | Default  | Required |
+| ------ | -------- | -------- |
+| Object | *window* | No       |
+
+This configuration parameter allows you to set what you want the `global` to be for the page. By default this is set to `window` but can be changed to whatever you prefer.
+
+**This variable directly affects how libraries are loaded by the Fallback JS library.**
+
+Whatever `exports` are specified for a library are searched upon in this `global` `Object` when we attempt to load our libraries. Let's take `jQuery` as an example. When you load `jQuery` on a page, `window.jQuery` holds a reference to the library. If we were to change our `global` value to say `app`, when Fallback JS attempts to load the `jQuery` library it will check if `app.jQuery` exists to determine whether or not the library actually loaded successfully or not. If `app.jQuery` doesn't exist, then it would assume that the library failed to load, and attempt the next URL for the `jQuery` library if it has one.
+
+**Warning: If you set the value of `global` to `null`, the library will fallback to relying on the browsers native callbacks to know whether or not a library has successfully loaded.** This is problematic with legacy browsers, and not recommended if you wish to support them. You'll also forfeit the functionality within Fallback JS that checks if a library has already loaded by some other means on the page other than by Fallback JS when a library is requested to be loaded.
+
+**Example:**
+
+```javascript
+// Define our `app` reference.
+var app = {};
+
+// Set `app.homepage` to a non-falsey value.
+app.homepage = true;
+
+// Configure the Fallback JS library.
+fallback.config({
+	// Use the `app` reference as our global.
+	"globals": app,
+
+	"libs": {
+		"homepage": {
+			// If `app.homepage` already exists, don't attempt to lazy load the file.
+			"exports": "homepage",
+
+			// The path of our JavaScript file that doesn't use the `define` function.
+			"urls": "homepage"
 		}
 	}
 });
 
-req(function(angular, jquery, jqueryUI) {
-	$("body").html("Angular JS, jQuery and jQuery UI Loaded!");
+// This won't attempt to load `homepage.js` since `app.homepage` already exists.
+fallback.require(function(homepage) function() {
+	// Execute my code here...
 });
 ```
 
-=====
+===
 
-**<p align="center">INPUT.URLS (KEYS)</p>**
+<h4 align="center">fallback.config -> input -> libs</h4>
 
-Any `keys` which have a specific prefix (listed in the table below) followed by our delimiter (which can be set via the configuration function) will be handled in their own special way.
+| Type   | Default | Required |
+| ------ | ------- | -------- |
+| Object | null    | No       |
 
-Prefix | Description
-------------- | ------------- | -------------
-css | All files listed for the library in question would be loaded as Cascading Style Sheets (CSS).
-img | All files listed for the library in question would be loaded as images.
-js | All files listed for the library in question would be loaded as JavaScript files.
+This configuration parameter allows you to set the libraries that want Fallback JS to load.
+
+===
+
+<h4 align="center">fallback.config -> input -> libs -> keys</h4>
+
+| Type   | Default | Required |
+| ------ | ------- | -------- |
+| String | null    | Yes      |
+
+The `keys` of this `Object` are what you'll use to reference the library in question. For example if we added a key `test`, when we use the [require](@todo) function, we would specify `test` to load that library even though it may differ from the name of the actual library itself. Another example would be `jQuery`, but instead we want to use `jquery` so we don't have to capitalize the `Q`.
+
+Any `keys` of the `libs` `Object` which have any of the following prefixes (listed in the table below) followed by the libraries [delimiter](#fallbackconfig---input---delimiter) will be handled in their own special way.
+
+| Prefix | Description   |
+| ------ | ------------- |
+| css    | All files listed for the library in question would be loaded as Cascading Style Sheets. |
+| img    | All files listed for the library in question would be loaded as images. |
+| js     | All files listed for the library in question would be loaded as JavaScript files. |
 
 **Example**
 
 ```javascript
-// The following example illustrates how we'd load CSS, Image and JavaScript files, with the delimiter in our libraries configuration being to set to a `$`.
-cfg({
+// The following example illustrates how we'd load CSS, image and JavaScript files.
+fallback.config({
 	"libs": {
 		// Load this file as a stylesheet.
 		"css$bootstrap": "//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min",
 
-		// This will load our logo image. Useful if we're attempting to preload parts of our website.
+		// This will load our logo image.
 		"img$logo": "http://fallback.io/img/logo.png",
 
-		// You don't have to specify `js$`, but default we'll automatically treat files as JavaScript files.
+		// You don't have to specify `js$`, it's prefixed by default.
 		"js$angular": "//ajax.googleapis.com/ajax/libs/angularjs/1.2.20/angular.min"
 	}
 });
 
-req(function(css$bootstrap, img$logo, js$angular) {
-	window.console.log("Loaded Bootsrap CSS, Logo Image, and Angular JS!");
+// Load our stylesheet, image and JavaScript files.
+fallback.require(function(css$bootstrap, img$logo, js$angular) {
+	// Execute my code here...
 });
 ```
 
-=====
+===
 
-**<p align="center">INPUT.URLS (VALUES AS OBJECTS)</p>**
+<h4 align="center">fallback.config -> input -> libs -> key - > values</h4>
 
-Parameter | Type | Default | Required | Description
-------------- | ------------- | ------------- | ------------- | -------------
-alias | Array/String | *null* | No | Aliases you want to use for your library. For example you might name your key `jquery` for the jQuery library, but instead of using the variable `jquery` you may want to use `$` to reference it. In that case you would set `$` as an alias for the library.
-deps | Array/String | *null* | No | An `Array` or `String` of dependcies that are required to load prior to the library in question. The `Array` of `Strings` or `String` should represent either the `key` of the library, or one of it's `aliases`.
-exports | String | *null* | No | The `window` variable that represents the library. For example Angular JS would be `angular`, jQuery would be `jQuery` and jQuery UI would be `jQuery.ui`.
-files | Array/String | *null* | No | The list of paths/URLs for our library. You can add as many fallbacks as you want in this `Array`.
-init | Function | *null* | No | If present, this function will be immediately executed as a soon as the library in question has finished loading successfully.
+| Type                | Default | Required |
+| ------------------- | ------- | -------- |
+| Array/Object/String | null    | Yes      |
 
-@todo left off here
+The `values` of our `keys` are acceptable in the following forms:
 
-**Example**
+- `String` - it will be treated as the [URL](#fallbackconfig---input---libs---key----values---urls) for the library.
+- `Array` - it will be treated as the [URLs](#fallbackconfig---input---libs---key----values---urls) for the library.
+- `Object` - it may have it's own specific configuration set. See below.
 
-```json
-{
-	"urls": {
-		"angular": "//ajax.googleapis.com/ajax/libs/angularjs/1.2.20/angular.min",
+If the `value` of our `key` is an `Object`, then the following parameters are acceptable:
 
-		"angularUIBootstrap": {
-			"deps": [
-				"angular",
-				"bootstrapCSS"
-			],
+| Parameter                                                           | Type         | Default | Required | Description |
+| ------------------------------------------------------------------- | ------------ | ------- | -------- | ----------- |
+| [alias](#fallbackconfig---input---libs---key----values---alias)     | Array/String | *null*  | No       | Aliases to be used to directly reference the library in question. |
+| [check](#fallbackconfig---input---libs---key----values---check)     | Function     | *null*  | No       | A function to check whether or not a library is loaded on the page. |
+| [deps](#fallbackconfig---input---libs---key----values---deps)       | Array/String | *null*  | No       | Dependencies that are required to load prior to the library in question loading. |
+| [exports](#fallbackconfig---input---libs---key----values---exports) | String       | *null*  | No       | The global variable(s) that reference the library. |
+| [init](#fallbackconfig---input---libs---key----values---init)       | Function     | *null*  | No       | A function to invoke immediately after a library has loaded for the first time. |
+| [urls](#fallbackconfig---input---libs---key----values---urls)       | Array/String | *null*  | No       | URLs that will load the library. |
 
-			"exports": "angular.module('ui.bootstrap')",
+**Examples:**
 
-			"files": "//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.10.0/ui-bootstrap-tpls.min"
-		},
-
-		"css!bootstrapCSS": "//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min",
-
-		"jquery": {
-			"alias": "$",
-			"files": "//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min"
-		},
-
-		"jqueryUI": {
-			"deps": [
-				"jquery",
-				"jqueryUICSS"
-			],
-
-			"files": [
-				"//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min",
-				"//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min"
-			]
-		},
-
-		"jqueryUICSS": {
-			"exports": ".ui-helper-hidden",
-
-			"files": {
-				"//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui"
-			}
-		}
+```javascript
+// An example where our libraries value is an `String`.
+fallback.config({
+	"libs": {
+		"jquery": "//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery.min"
 	}
-}
+});
+
+// Load jQuery!
+fallback.require(function(jquery) {
+	// Execute my code here...
+});
 ```
 
-=====
+```javascript
+// An example where our libraries value is an `Array`.
+fallback.config({
+	"libs": {
+		"jquery": [
+			"//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery.min",
+			"//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min"
+		]
+	}
+});
 
-**<p align="center">RETURN VALUES</p>**
+// Load jQuery!
+fallback.require(function(jquery) {
+	// Execute my code here...
+});
+```
 
-Value | Type | Description
-------------- | ------------- | -------------
-false | Boolean | The config wasn't imported due to being malformed. Turn debugging on and check console for helper messages.
-true | Boolean | The config was imported properly.
+```javascript
+// An example where our libraries value is an `Object`.
+fallback.config({
+	"libs": {
+		"jquery": {
+			"exports": "jQuery",
+
+			"urls": [
+				"//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery.min",
+				"//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min"
+			]
+		}
+	}
+});
+
+// Load jQuery!
+fallback.require(function(jquery) {
+	// Execute my code here...
+});
+```
+
+===
+
+<h4 align="center">fallback.config -> input -> libs -> key - > values -> alias</h4>
+
+This configuration parameter allows you to set ..... @todo
+
+===
+
+<h4 align="center">fallback.config -> input -> libs -> key - > values -> check</h4>
+
+@todo
+
+===
+
+<h4 align="center">fallback.config -> input -> libs -> key - > values -> deps</h4>
+
+@todo
+
+===
+
+<h4 align="center">fallback.config -> input -> libs -> key - > values -> exports</h4>
+
+@todo
+
+===
+
+<h4 align="center">fallback.config -> input -> libs -> key - > values -> init</h4>
+
+@todo
+
+===
+
+<h4 align="center">fallback.config -> input -> libs -> key - > values -> urls</h4>
+
+@todo
+
+===
+
+<h4 align="center">Return Values</h4>
+
+| Value | Type    | Description |
+| ----- | ----    | ----------- |
+| true  | Boolean | The config was imported properly. |
+| false | Boolean | The config wasn't imported due to being malformed. Turn debugging on and check console for helper messages. |
 
 -----
 
-### **fallback.define(`name`, `dependencies`, `function`)**
+### **fallback.define(`name`, `dependencies`, `factory`)**
 
 ***Aliases:*** `def`, `define`, `fallback.def`, `fallback.define`, `fbk.def`, `fbk.define`
 
-The parameters in this function will fallback on one another. So for example, if you only pass in 2 parameters to the function `fallback.define(a, b)`, `a` will be treated as the `dependencies` and `b` will be treated as the `function`. If you only pass in a single parameter, that parameter will be treated as the `function`.
+This function allows you to define your JavaScript files in a definition like manner. This has proven to be beneficial when working on larger projects where you want to compartmentalize sections of a project.
 
-Parameter | Type | Required | Default | Description
-------------- | ------------- | ------------- | ------------- | -------------
-name | String | No | null | If a name is not passed in, the URL that was used to load the file in question will be used as the name for this definition. Please note that you can't have multiple nameless/anonymous definitions in the same file.
-dependencies | Array/String | No | null | A string/array of dependencies that we expected to be loaded before executing our function.
-function | Function | Yes | null | If dependencies are specified, then they will be sent to this function as their arguments. However, if you don't specify the dependencies, whatever arguments are within this function will be correlated as the dependencies for this function. See below for further details along with an example.
+Let's say you have a website with a 3-4 pages that used `jQuery`, while the rest of your website was solely using `Angular JS`. After tracking your user load times, you've found that having to load `jQuery` was having a significant impact on your pages load time and decided to drop `jQuery` from being loaded on every page, and instead just have it lazy load on the few pages that actually needed it. If you had used the `define` `Function`, explicitly stating which parts of the code required `jQuery`, then removing `jQuery` from loading on every page would work seemlessly. If you didn't, you'd have to go back and re-work those areas that did.
 
-**Example**
+- [Parameters](#parameters-1)
+	- [name](#fallbackconfig---input)
+	- [dependencies](#fallbackconfig---input---base)
+	- [factory](#fallbackconfig---input---base)
+- [Return Values](#return-values)
+
+===
+
+<h4 align="center">Parameters</h4>
+
+| Parameter    | Type         | Required | Default | Description |
+| ------------ | ------------ | -------- | ------- | ----------- |
+| name         | String       | No       | null    | If a name is not set, the URL that was used to load the file will be used as the name. |
+| dependencies | Array/String | No       | null    | Dependencies that we expect to be load prior to invoking our `factory` `Function`. |
+| factory      | N/A          | Yes      | null    | A factory can be anything. An `Array`, `Boolean`, `Element`, `Number`, `Object`, `String`, etc. |
+
+The parameters in this function will fallback on one another in the following manner:
+
+- If only 1 parameter is passed in, it'll be treated as the `factory`.
+- If only 2 parameters are passed in, they'll be treated as:
+	 - The `dependencies` and `factory` if the first parameter is **NOT** a `String`.
+	 - The `name` and `factory` if the first parameter is a `String`.
+- If all 3 parameters are passed in, they'll be treated as the `name`, `dependencies` and `factory`.
+
+If no dependencies are passed in and the `factory` is a `Function`, then whatever parameters the `factory` has will become the dependencies. For example if you were to write `fallback.define(function(angular, jquery)) {}` then both `angular` and `jquery` would become the dependencies, and would load prior to invoking the `Function`.
+
+**Examples:**
+
+```javascript
+// Load jQuery before executing the factory.
+fallback.define(function(jquery) {
+	// Execute my code here...
+});
+```
+
+```javascript
+// Load jQuery before executing the factory.
+fallback.define(['jquery'], function(jquery) {
+	// Execute my code here...
+});
+```
+
+```javascript
+// Load jQuery before executing the factory.
+fallback.define('test', function(jquery) {
+	// Execute my code here...
+});
+```
+
+```javascript
+// Load jQuery before executing the factory.
+fallback.define('test', ['jquery'], function(jquery) {
+	// Execute my code here...
+});
+```
+
+===
+
+
+
+
+
+
+
+@todo @todo @todo @todo
+
+
+
+
+
+===
+
+<h4 align="center">Parameters</h4>
+
+| Parameter    | Type         | Required | Default | Description |
+| ------------ | ------------ | -------- | ------- | ----------- |
+| name         | String       | No       | null    | If a name is not passed in, the URL that was used to load the file in question will be used as the name for this definition. Please note that you can't have multiple nameless/anonymous definitions in the same file. |
+| dependencies | Array/String | No       | null    | A string/array of dependencies that we expected to be loaded before executing our function. |
+| factory      | Function     | Yes      | null    | If dependencies are specified, then they will be sent to this function as their arguments. However, if you don't specify the dependencies, whatever arguments are within this function will be correlated as the dependencies for this function. See below for further details along with an example. |
+
+**Example:**
 
 Each of following examples below will achieve the same goal. We're simply illustrating how you can use the library, and why you may use one method over another.
 
@@ -463,7 +734,7 @@ function | Function | Yes | null | If dependencies are specified, then they will
 
 -----
 
-## FAQ
+# FAQ
 
 ##### Q: What dependencies does Fallback JS have?
 
@@ -497,29 +768,11 @@ A: Yes, please see the example at the top of the `README.md` file.
 
 ##### Q: Can I run the `config` function more than once?
 
-A: Yes.
+A: Yes. @todo
 
 -
 
 ##### Q: Why can't I call the `define` function more than once without a name in the same file?
-
-A: @todo
-
--
-
-##### Q: What is the `amd` parameter in the configuration for?
-
-A: @todo
-
--
-
-##### Q: What is the `globals` parameter in the configuration for?
-
-A: @todo
-
--
-
-#####  Q: What is the `delimiter` parameter in the configuration for?
 
 A: @todo
 

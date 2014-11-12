@@ -1,6 +1,7 @@
 /* globals fallback */
 
 // Globals
+var fallback =
 fallback.config =
 fallback.define =
 fallback.require =
