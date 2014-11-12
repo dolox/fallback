@@ -21,7 +21,7 @@ Following these guidelines helps to communicate that you respect the time of the
 
 The [issue tracker](https://github.com/dolox/fallback/issues) is the preferred channel for [bug reports](#bug-reports), [features requests](#feature-requests) and submitting [pull requests](#pull-requests), but please respect the following restrictions:
 
-- **Please do not** use the issue tracker for personal support requests. [StackOverflow (#fallbackjs)](http://stackoverflow.com/questions/tagged/fallbackjs) is a better place to get help.
+- **Please do not** use the issue tracker for personal support requests without first doing your homework. Search the [issue tracker](https://github.com/dolox/fallback/issues) and [StackOverflow (#fallbackjs)](http://stackoverflow.com/questions/tagged/fallbackjs) first to see if answers to questions you have, may've already been answered prior to opening a new issue.
 
 - **Please do not** derail or troll issues. Keep the discussion on topic and respect the opinions of others.
 

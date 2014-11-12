@@ -443,7 +443,7 @@ less code for the library and achieves the same objective.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	config: [<span class="hljs-string">'cfg'</span>, <span class="hljs-string">'conf'</span>, <span class="hljs-string">'config'</span>],</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-string">'config'</span>: [<span class="hljs-string">'cfg'</span>, <span class="hljs-string">'conf'</span>, <span class="hljs-string">'config'</span>],</pre></div></div>
             
         </li>
         
@@ -458,7 +458,7 @@ less code for the library and achieves the same objective.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	define: [<span class="hljs-string">'def'</span>, <span class="hljs-string">'define'</span>],</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-string">'define'</span>: [<span class="hljs-string">'def'</span>, <span class="hljs-string">'define'</span>],</pre></div></div>
             
         </li>
         
@@ -473,7 +473,7 @@ less code for the library and achieves the same objective.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	me: [<span class="hljs-string">'fallback'</span>, <span class="hljs-string">'fbk'</span>],</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-string">'me'</span>: [<span class="hljs-string">'fallback'</span>, <span class="hljs-string">'fbk'</span>],</pre></div></div>
             
         </li>
         
@@ -488,7 +488,7 @@ less code for the library and achieves the same objective.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-built_in">require</span>: [<span class="hljs-string">'req'</span>, <span class="hljs-string">'require'</span>]
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-string">'require'</span>: [<span class="hljs-string">'req'</span>, <span class="hljs-string">'require'</span>]
 };</pre></div></div>
             
         </li>
@@ -5941,7 +5941,7 @@ loop.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		alias: [me.normalizeStringSeries, <span class="hljs-literal">null</span>],</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-string">'alias'</span>: [me.normalizeStringSeries, <span class="hljs-literal">null</span>],</pre></div></div>
             
         </li>
         
@@ -5956,7 +5956,7 @@ loop.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		callbacks: [me.normalizeFunctionSeries, <span class="hljs-literal">null</span>],</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-string">'callbacks'</span>: [me.normalizeFunctionSeries, <span class="hljs-literal">null</span>],</pre></div></div>
             
         </li>
         
@@ -5971,7 +5971,7 @@ loop.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		check: [me.normalizeFunction, <span class="hljs-literal">null</span>],</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-string">'check'</span>: [me.normalizeFunction, <span class="hljs-literal">null</span>],</pre></div></div>
             
         </li>
         
@@ -5986,7 +5986,7 @@ loop.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		deps: [me.normalizeStringSeries, <span class="hljs-literal">null</span>],</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-string">'deps'</span>: [me.normalizeStringSeries, <span class="hljs-literal">null</span>],</pre></div></div>
             
         </li>
         
@@ -6001,7 +6001,7 @@ loop.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		exports: [me.normalizeStringSeries, <span class="hljs-literal">null</span>],</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-string">'exports'</span>: [me.normalizeStringSeries, <span class="hljs-literal">null</span>],</pre></div></div>
             
         </li>
         
@@ -6016,7 +6016,7 @@ loop.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		identitiy: [me.normalizeString, <span class="hljs-literal">null</span>],</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-string">'identitiy'</span>: [me.normalizeString, <span class="hljs-literal">null</span>],</pre></div></div>
             
         </li>
         
@@ -6032,7 +6032,7 @@ saved. This flags whether or not the factory was invoked and saved.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		invoked: [me.normalizeBoolean, <span class="hljs-literal">false</span>],</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-string">'invoked'</span>: [me.normalizeBoolean, <span class="hljs-literal">false</span>],</pre></div></div>
             
         </li>
         
@@ -6048,7 +6048,7 @@ saved. This flags whether or not the factory was invoked and saved.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		factory: <span class="hljs-literal">null</span>,</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-string">'factory'</span>: <span class="hljs-literal">null</span>,</pre></div></div>
             
         </li>
         
@@ -6064,7 +6064,7 @@ immediately be called upon if present.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		init: [me.normalizeFunction, <span class="hljs-literal">null</span>],</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-string">'init'</span>: [me.normalizeFunction, <span class="hljs-literal">null</span>],</pre></div></div>
             
         </li>
         
@@ -6079,7 +6079,7 @@ immediately be called upon if present.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		loader: {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-string">'loader'</span>: {</pre></div></div>
             
         </li>
         
@@ -6094,7 +6094,7 @@ immediately be called upon if present.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			failed: [me.normalizeStringSeries, <span class="hljs-literal">null</span>],</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-string">'failed'</span>: [me.normalizeStringSeries, <span class="hljs-literal">null</span>],</pre></div></div>
             
         </li>
         
@@ -6109,7 +6109,7 @@ immediately be called upon if present.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			loaded: [me.normalizeBoolean, <span class="hljs-literal">false</span>],</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-string">'loaded'</span>: [me.normalizeBoolean, <span class="hljs-literal">false</span>],</pre></div></div>
             
         </li>
         
@@ -6124,7 +6124,7 @@ immediately be called upon if present.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			success: [me.normalizeString, <span class="hljs-literal">null</span>],</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-string">'success'</span>: [me.normalizeString, <span class="hljs-literal">null</span>],</pre></div></div>
             
         </li>
         
@@ -6139,7 +6139,7 @@ immediately be called upon if present.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			timeEnd: [me.normalizeNumber, <span class="hljs-literal">null</span>],</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-string">'timeEnd'</span>: [me.normalizeNumber, <span class="hljs-literal">null</span>],</pre></div></div>
             
         </li>
         
@@ -6156,7 +6156,7 @@ this variable would reflect the current time prior to the first 2 URLs failing.<
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			timeStart: [me.normalizeNumber, <span class="hljs-literal">null</span>],</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-string">'timeStart'</span>: [me.normalizeNumber, <span class="hljs-literal">null</span>],</pre></div></div>
             
         </li>
         
@@ -6171,7 +6171,7 @@ this variable would reflect the current time prior to the first 2 URLs failing.<
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			working: [me.normalizeBoolean, <span class="hljs-literal">false</span>]
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-string">'working'</span>: [me.normalizeBoolean, <span class="hljs-literal">false</span>]
 		},</pre></div></div>
             
         </li>
@@ -6187,7 +6187,7 @@ this variable would reflect the current time prior to the first 2 URLs failing.<
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		urls: [me.normalizeStringSeries, <span class="hljs-literal">null</span>]
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-string">'urls'</span>: [me.normalizeStringSeries, <span class="hljs-literal">null</span>]
 	};
 
 	<span class="hljs-keyword">var</span> normalized = {};

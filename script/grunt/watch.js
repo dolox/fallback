@@ -12,6 +12,7 @@ module.exports = function(grunt, tasks) {
 	me.files = [
 		config.uri.root + 'Gruntfile.js',
 		config.uri.src + '*',
+		config.uri.config + '*',
 		config.uri.root + 'examples/*',
 		config.uri.root + 'examples/**/*'
 	];

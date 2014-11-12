@@ -35,6 +35,7 @@ unit tests
 	automatically rename the docs fallback.html to index.html after it's generated.
 
 readme documentation
+	- fallback.version
 	- document the debugger levels
 	- delimiter is changeable.
 	- add `init` and `check` functions for libs.

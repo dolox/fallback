@@ -85,16 +85,16 @@ me.init.utilities = function(container, input) {
 // This is where we hold all of our functional aliases for the library.
 me.aliases = {
 	// Referenecs for our `config` function.
-	config: ['cfg', 'conf', 'config'],
+	'config': ['cfg', 'conf', 'config'],
 
 	// Referenecs for our `define` function.
-	define: ['def', 'define'],
+	'define': ['def', 'define'],
 
 	// Referenecs for the library.
-	me: ['fallback', 'fbk'],
+	'me': ['fallback', 'fbk'],
 
 	// Referenecs for our `require` function.
-	require: ['req', 'require']
+	'require': ['req', 'require']
 };
 
 // Fetch the parameters that are passed into a `Function` and return them in an `Array` `String` series. For example:

@@ -107,60 +107,60 @@ me.module.define = function(moduleName, input, noOverride) {
 	// loop.
 	var defaults = {
 		// Aliases for the module.
-		alias: [me.normalizeStringSeries, null],
+		'alias': [me.normalizeStringSeries, null],
 
 		// We store our callbacks here for processing after our library has finished loading.
-		callbacks: [me.normalizeFunctionSeries, null],
+		'callbacks': [me.normalizeFunctionSeries, null],
 
 		// Custom check function to determine whether or not our library has loaded properly.
-		check: [me.normalizeFunction, null],
+		'check': [me.normalizeFunction, null],
 
 		// Dependencies for the module.
-		deps: [me.normalizeStringSeries, null],
+		'deps': [me.normalizeStringSeries, null],
 
 		// Exports for the module that we'll check the global scope for to see if the module loaded properly.
-		exports: [me.normalizeStringSeries, null],
+		'exports': [me.normalizeStringSeries, null],
 
 		// The identity of the module, for example: `css`, `img`, or `js`.
-		identitiy: [me.normalizeString, null],
+		'identitiy': [me.normalizeString, null],
 
 		// If the factory of the module is a function, it'll be invoked upon it's first require then that state will be
 		// saved. This flags whether or not the factory was invoked and saved.
-		invoked: [me.normalizeBoolean, false],
+		'invoked': [me.normalizeBoolean, false],
 
 		// The value of our module. It's value can be anything, example: `Array`, `Function`, `HTMLElement`, `Object`,
 		// `String`, etc.
-		factory: null,
+		'factory': null,
 
 		// Must be either `null` or a `Function`. As soon as module is first used/referenced, this `Function` will
 		// immediately be called upon if present.
-		init: [me.normalizeFunction, null],
+		'init': [me.normalizeFunction, null],
 
 		// Any loader data for the module will be stored here.
-		loader: {
+		'loader': {
 			// Any URLs that failed to load will be stored here.
-			failed: [me.normalizeStringSeries, null],
+			'failed': [me.normalizeStringSeries, null],
 
 			// Whether or not we actually attempted to load this module.
-			loaded: [me.normalizeBoolean, false],
+			'loaded': [me.normalizeBoolean, false],
 
 			// If a URL loaded sucecssfully, it will be stored here.
-			success: [me.normalizeString, null],
+			'success': [me.normalizeString, null],
 
 			// The time that a module finished loading.
-			timeEnd: [me.normalizeNumber, null],
+			'timeEnd': [me.normalizeNumber, null],
 
 			// The time that a module initiated it's load sequence. This includes all loading for the module in question. For
 			// example if a library had 3 fallback URLs, and the first 2 failed due to timeouts, and the 3rd was successful,
 			// this variable would reflect the current time prior to the first 2 URLs failing.
-			timeStart: [me.normalizeNumber, null],
+			'timeStart': [me.normalizeNumber, null],
 
 			// Flags whether or not the module is currently in the process of loading.
-			working: [me.normalizeBoolean, false]
+			'working': [me.normalizeBoolean, false]
 		},
 
 		// Where all the URLs are stored for our module.
-		urls: [me.normalizeStringSeries, null]
+		'urls': [me.normalizeStringSeries, null]
 	};
 
 	var normalized = {};

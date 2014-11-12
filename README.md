@@ -6,15 +6,23 @@
 [![Bower version](https://badge.fury.io/bo/fallback.svg)](http://badge.fury.io/bo/fallback)
 [<img src="https://david-dm.org/dolox/fallback/status.svg?style=flat" />](https://david-dm.org/dolox/fallback)
 [<img src="https://david-dm.org/dolox/fallback/dev-status.svg?style=flat" />](https://david-dm.org/dolox/fallback#info=devDependencies)
-[<img src="https://saucelabs.com/browser-matrix/fallback.svg" />](https://saucelabs.com/u/fallback)
+
+[![Sauce Test Status](https://saucelabs.com/browser-matrix/fallback.svg)](https://saucelabs.com/u/fallback)
+
+- [Getting Started](#getting-started)
+- [Open Source Examples](#open-source-examples)
+- [API Documentation](#api-documentation)
+- [FAQ](#faq)
+- [About](#about)
+- [Support](#support)
 
 ---
 
-## Getting Started
+# Getting Started
 
-To let you dive right in, we're going to provide you with a sample of code below. You can view the full [API Documentation](#api-documentation) along with other complex examples listed further down the page.
+To let you dive right in, we're going to provide you with the sample of code below. You can view the full [API Documentation](#api-documentation) along with other complex examples listed further down the document.
 
-**HTML**
+**index.html**
 
 ```html
 <html>
@@ -23,10 +31,8 @@ To let you dive right in, we're going to provide you with a sample of code below
 	<script data-main="main" src="fallback.min.js" type="text/javascript"></script>
 </head>
 
-<body>
-	<div id="status">
-		<h1>Libraries Loaded</h1>
-	</div>
+<body class="text-center">
+	<h1>Libraries Loaded</h1>
 </body>
 </html>
 ```
@@ -34,44 +40,56 @@ To let you dive right in, we're going to provide you with a sample of code below
 **main.js**
 ```javascript
 cfg({
-	// Here we're setting the path where our local fallback files live.
-	// This way we don't have to retype it over and over again.
-	"base": "/js/",
+	// Here we're setting the path where our local files reside.
+	'base': '/js/',
 
-	"libs": {
-		// Here we're loading the Bootstrap CSS library.
-		// We explicity `css$` to the beginning of our key, so the library
-		// knows to load this file file as a stylesheet.
-		"css$bootstrap": "//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min",
+	// The list of libraries that we want to load for our project.
+	'libs': {
+		// Include Twitter Bootstrap.
+		// We explicity prefix `css$` to the beginning of our key so Fallback JS
+		// knows to load this library as a CSS file.
+		'css$bootstrap': {
+			// Fallback JS will check to see if this style currently exists on the
+			// page. If it does exist, the library will not attempt to load the file
+			// as it will assume it has already been loaded.
+			'exports': '.col-xs-12',
 
-		// Our jQuery library.
-		"jquery": {
-			// Here we're giving it an alias, so we can reference jquery as `$`
-			// instead of typing `jquery`.
-			"alias": "$",
+			// The URL for our CSS file.
+			'urls': '//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min'
+		},
 
-			// In order to load the `jQuery` library, we must first load our `JSON`
-			// library.
-			"deps": ["css$bootstrap"],
+		// Include jQuery.
+		'jquery': {
+			// Here we're giving jQuery an alias, so we can reference it as `$`
+			// instead of having to type `jquery` when we want to load it.
+			'alias': '$',
+
+			// The global vaiable that is exported by jQuery when it's loaded on
+			// the page.
+			'exports': 'jQuery',
 
 			// A list of all of the files for our jQuery library.
-			// If one fails, we'll try another, until 1 succeeds or they all fails.
-			"urls": [
-				"//.....some-bad-cdn...../.....FAIL-ON-PURPOSE.....",
-				"//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min",
-				"//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min"
+			// If one fails, we'll try another, until 1 succeeds or all have failed.
+			'urls': [
+				'//.....some-bad-cdn...../.....FAIL-ON-PURPOSE.....',
+				'//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min',
+				'//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min'
 			]
 		},
 
 		// Our jQuery UI library.
-		"jqueryUI": {
+		'jqueryui': {
+			// The global vaiable that is exported by jQuery UI when it's loaded on
+			// the page.
+			'exports': 'jQuery.ui',
+
 			// Load jQuery first before loading jQuery UI.
-			"deps": ["jquery"],
+			'deps': ['jquery'],
 
 			// A list of all of the files for our jQuery UI library.
-			"urls": [
-				"//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery.min",
-				"//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min"
+			'urls': [
+				'//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery.min',
+				'//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min'
 			]
 		}
 	}
@@ -79,37 +97,52 @@ cfg({
 
 // Load jQuery!
 req(function($) {
-	$("#test").append("<div>Loaded jQuery</div>");
+	$('body').append('<div class="alert-success">Loaded jQuery!</div>');
 });
 
-// Load Jquery UI!
-req(function(jqueryUI) {
-	$("#test").append("<div>Loaded jQuery UI</div>");
+// Load jQuery and Query UI!
+req(function(jqueryui) {
+	$('body').append('<div class="alert-success">Loaded jQuery and jQuery UI!</div>');
+});
+
+// Load jQuery and Twitter Bootstrap!
+req(function($, css$bootstrap) {
+	$('body').append('<div class="alert-success">Loaded jQuery and Twiiter Bootstrap!</div>');
+});
+
+// Load jQuery, jQuery UI and Twitter Bootstrap!
+req(function($, css$bootstrap, jqueryui) {
+	$('body').append('<div class="alert-success">Loaded jQuery, jQuery UI and Twiiter Bootstrap!</div>');
 });
 ```
 
 ---
 
-## Open Source Examples
+# Open Source Examples
+
+If you happen to stumble upon any helpful open source examples which aren't listed here, please let us know and we'll add them to the list!
 
 Link | Description
 ------------- | -------------
-[AngularJS Lazy Loading](http://plnkr.co/Q1mPmY) | This example illustrates how you can lazy load controllers, directives, modules and services in AngularJS using the FallbackJS library.
-
-[<p align="center">View more open source examples on Plunker under the tag #fallbackjs!</p>](http://plnkr.co/tags/fallbackjs)
+[Examples](https://github.com/dolox/fallback/tree/master/examples) | A number of examples included in the project which illustrate how you can use the Fallback JS library.
+[AngularJS Lazy Loading](http://plnkr.co/Q1mPmY) | This example illustrates how you can lazy load controllers, directives, modules and services in AngularJS.
+[#fallbackjs on Plunker](http://plnkr.co/tags/fallbackjs) | Look on Plunker under the tag `#fallbackjs` to see a number of examples that've been posted by users.
 
 ---
 
-## API Documentation
+# API Documentation
+
+A technical overview and in depth explanations of the libraries functions.
 
 ### Overview
 
 Function | Aliases | Description
 ------------- | ------------- | -------------
-[config](#fallbackconfiginput) |`cfg`, `conf`, `config`, `fallback.cfg`, `fallback.conf`, `fallback.config`, `fbk.cfg`, `fbk.conf`, `fbk.config` | How to configure Fallback with your libraries.
-[define](#fallbackdefinename-dependencies-function) | `def`, `define`, `fallback.def`, `fallback.define`, `fbk.def`, `fbk.define` | How to properly define your JavaScript files.
-[require](#fallbackrequiredependencies-function) | `fallback.req`, `fallback.require`, `fbk.req`, `fbk.require`, `req`, `require` | How to go about loading your JavaScript files.
-[stats](#fallbackrequiredependencies-function) | `fallback.stats`, `fbk.stats` | Exports statistics for libraries that were loaded in the console.
+[config](#fallbackconfiginput) |`cfg`, `conf`, `config`, `fallback.cfg`, `fallback.conf`, `fallback.config`, `fbk.cfg`, `fbk.conf`, `fbk.config` | Configures Fallback JS to let it know what files need to be lazy loaded for your project.
+[define](#fallbackdefinename-dependencies-function) | `def`, `define`, `fallback.def`, `fallback.define`, `fbk.def`, `fbk.define` | Allows you to define your JavaScript files in a way that they can be easily loaded and referenced at a later time.
+[require](#fallbackrequiredependencies-function) | `fallback.req`, `fallback.require`, `fbk.req`, `fbk.require`, `req`, `require` | Loads your libraries asynchronously the page.
+[stats](#fallbackstats) | `fallback.stats`, `fbk.stats` | Exports statistics for any libraries that were loaded with Fallback JS.
+[version](#fallbackversion) | `fallback.version`, `fbk.version` | Returns the current version number of Fallback JS that's loaded on the page.
 
 =====
 
@@ -117,20 +150,22 @@ Function | Aliases | Description
 
 ***Aliases:*** `cfg`, `conf`, `config`, `fallback.cfg`, `fallback.conf`, `fallback.config`, `fbk.cfg`, `fbk.conf`, `fbk.config`
 
-This function allows you to configure the defaults along with the URLs for your libraries. It only takes a single parameter, and expects it to be an `Object`.
+This function allows you to configure the defaults for your project along with the URLs for your libraries. It only takes a single parameter, and expects it to be an `Object`.
 
 Parameter | Type | Default | Required | Description
 ------------- | ------------- | ------------- | ------------- | -------------
-*input* | Object | *null* | Yes | Key/Value pair object that contains the configuration for the Fallback library.
+*input* | Object | *null* | Yes | Key/Value pair object that contains the configuration for the Fallback JS library.
 
 =====
+
+@todo left off here
 
 **<p align="center">INPUT</p>**
 
 Parameter | Type | Default | Required | Description
 ------------- | ------------- | ------------- | ------------- | -------------
-amd | Boolean | false | No | Whether or not to allow your libraries to be accessible via global scope. If this value is `false` you won't be able to access your libraries directly through the browsers `window` object.
-base | Object/String | null | No | Accepts an object/string to be used as the prefix for all of your URLs. See the `input.base` table below for further details.
+amd | Boolean | false | No | Whether or not to allow your libraries to be accessible via global scope. If this value is set to `true` you won't be able to access your libraries directly through the browsers `window` object for libraries that support using AMD. [See more details here.](#q-what-is-the-amd-parameter-in-the-configuration-for)
+base | Object/String | null | No | Accepts an Object/String to be used as the prefix for all of your URLs. See the `input.base` table below for further details.
 debug | Boolean | false | No | Toggle debugging mode. If turned on, helpful messages will show up in the console.
 delimiter | String | $ | No | The string to dictate loading non-JavaScript files. For example to load css files you'd use: `css$my_css_file`.
 globals | Boolean | true | No | Whether or not to check the global scope before attemping to load your libaries. This way if a library has already been loaded, `Fallback` won't attempt to load it again.
@@ -156,7 +191,7 @@ urls | Object | null | No | Expects an object containing the configuration for e
 
 =====
 
-**<p align="center">INPUT.BASE</p>**
+##### fallback.config(`input.base`)
 
 If the `input.base` value is a `String`, all of your URLs will be prefixed with this path, as long as the path in question doesn't start with `/`, `data:`, `http://` or `https://`. The following table below reflects the acceptable parameters when the value of `input.base` is an `Object`.
 
@@ -430,65 +465,77 @@ function | Function | Yes | null | If dependencies are specified, then they will
 
 ## FAQ
 
-**Q: What dependencies does Fallback JS have?**
+##### Q: What dependencies does Fallback JS have?
 
-A: None! Fallback JS is a standalone library.
-
--
-
-**Q: Can I provide multiple fallbacks for any given asset?**
-
-A: Yes! You can provide as many as you want, there is no limit.
+**A:** None! Fallback JS is a standalone library.
 
 -
 
-**Q: How should Fallback JS be loaded?**
+##### Q: What browser versions are supported?
 
-A: @todo
+**A:** Android 4.0+, Chrome (Latest), FireFox (Latest), IE 6+, iOS 5+, Safari (Latest)
 
 -
 
-**Q: Can I load up my CSS and JavaScript files in a single configuration block?**
+##### Q: Can I provide multiple fallbacks for any given asset?
+
+**A:** Yes! You can provide as many as you want, there's no limit.
+
+-
+
+##### Q: How should Fallback JS be loaded?
+
+**A:** @todo
+
+-
+
+##### Q: Can I load up my CSS and JavaScript files in a single configuration block?
 
 A: Yes, please see the example at the top of the `README.md` file.
 
 -
 
-**Q: Can I run the `config` function more than once?**
+##### Q: Can I run the `config` function more than once?
 
 A: Yes.
 
 -
 
-**Q: Why can't I call the `define` function more than once without a name in the same file?**
+##### Q: Why can't I call the `define` function more than once without a name in the same file?
 
 A: @todo
 
 -
 
-**Q: What is the `amd` parameter in the configuration for?**
+##### Q: What is the `amd` parameter in the configuration for?
 
 A: @todo
 
 -
 
-**Q: What is the `globals` parameter in the configuration for?**
+##### Q: What is the `globals` parameter in the configuration for?
 
 A: @todo
 
 -
 
-**Q: What is the `delimiter` parameter in the configuration for?**
+#####  Q: What is the `delimiter` parameter in the configuration for?
+
+A: @todo
+
+-
+
+##### Q: What happens if I set the `base` configuration parameter more than once?
 
 A: @todo
 
 -----
 
-## About
+# About
 
 ### Contributing
 
-Please read the [CONTRIBUTING.md](https://github.com/dolox/fallback/blob/master/CONTRIBUTING.md) file located in the root of this project to see how you can help contribute to this project. We encourage our users to test and report all/any problems they find with the library.
+Please read the [CONTRIBUTING.md](https://github.com/dolox/fallback/blob/master/CONTRIBUTING.md) document located in this project to see how you can help contribute. We encourage our users to test and report all/any problems they find with the library.
 
 ### License
 
@@ -496,11 +543,7 @@ Please read the [CONTRIBUTING.md](https://github.com/dolox/fallback/blob/master/
 
 -----
 
-## Support
-
-### Contributing
-
-@todo
+# Support
 
 ### Need help? We use GitHub!
 
@@ -508,4 +551,4 @@ Any questions, suggestions or bugs should all be submitted to the issues section
 
 ### Staying Alive
 
-Over the course of the life of this project, we've come to find out that 4-5x our star count on GitHub reflects the actual adoption rate of this project. We encourage our users to star the project, so that it can help us see how large the project is growing and how urgent the issues are.
+Over the course of this projects life span, we've come to find that 4-5x the star gazers on GitHub reflects the adoption rate of the project. We encourage our users to star the project, so that it can help us see how large the project is growing and how urgent issues become when they arise.
