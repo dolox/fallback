@@ -1,6 +1,6 @@
 <p align="center"><a href="http://fallback.io/" target="_blank"><img alt="Fallback JS" height="128" src="http://fallback.io/img/logo.png" /></a></p>
-<h1 align="center">Fallback JS v{{{package.version}}}</h1>
-<h6 align="center">{{{sizeOfFile 'dist/fallback.min.js'}}} KB Compressed / {{{sizeOfFile 'dist/fallback.js'}}} KB Uncompressed</h6>
+<h1 align="center">Fallback JS v2.0.0</h1>
+<h6 align="center">15.96 KB Compressed / 68.05 KB Uncompressed</h6>
 
 <p align="center">
 	<a href="https://travis-ci.org/dolox/fallback" target="_blank"><img src="https://travis-ci.org/dolox/fallback.svg?style=flat" /></a>
@@ -52,7 +52,7 @@ cfg({
 	// The list of libraries that we want to load for our project.
 	'libs': {
 		// Include Twitter Bootstrap.
-		// We explicity prefix `css$` to the beginning of our key so Fallback JS
+		// We explicity prefix `css to the beginning of our key so Fallback JS
 		// knows to load this library as a CSS file.
 		'css$bootstrap': {
 			// Fallback JS will check to see if this style currently exists on the
@@ -66,9 +66,9 @@ cfg({
 
 		// Include jQuery.
 		'jquery': {
-			// Here we're giving jQuery an alias, so we can reference it as `$`
+			// Here we're giving jQuery an alias, so we can reference it as `
 			// instead of having to type `jquery` when we want to load it.
-			'alias': '$',
+			'alias': ',
 
 			// The global vaiable that is exported by jQuery when it's loaded on
 			// the page.
@@ -312,7 +312,7 @@ fallback.config({
 | String | $       | No       |
 
 
-This configuration parameter allows you to change the string that's used to specify different file types for the Fallback JS library to load. By default the value is a `$`, and if you want to load a CSS file you would need to prefix your library with `css$` that way Fallback JS would know to load it as a CSS file and not a JavaScript file.
+This configuration parameter allows you to change the string that's used to specify different file types for the Fallback JS library to load. By default the value is a `, and if you want to load a CSS file you would need to prefix your library with `css that way Fallback JS would know to load it as a CSS file and not a JavaScript file.
 
 *See [fallback.config -> input -> libs -> keys](#fallbackconfig---input---libs---keys) for a list of prefixes you can use.*
 
@@ -435,7 +435,7 @@ fallback.config({
 		// This will load our logo image.
 		"img$logo": "http://fallback.io/img/logo.png",
 
-		// You don't have to specify `js$`, it's prefixed by default.
+		// You don't have to specify `js, it's prefixed by default.
 		"js$angular": "//ajax.googleapis.com/ajax/libs/angularjs/1.2.20/angular.min"
 	}
 });

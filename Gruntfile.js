@@ -29,6 +29,8 @@ me.boot.gruntTasks = function(directory, tasks) {
 me.boot.nodeModules = function() {
 	var files = me.glob.sync(me.config.uri.nodeModules + 'grunt-*');
 
+	files.push('assemble');
+
 	files.forEach(function(file) {
 		var nodeModule = file.substr(file.lastIndexOf('/') + 1);
 
@@ -81,7 +83,8 @@ me.tasks.build = function() {
 		'wrap',
 		'closureCompiler',
 		'docs',
-		'clean:distTmp'
+		'clean:distTmp',
+		'assemble'
 	]);
 };
 
@@ -108,7 +111,8 @@ me.tasks.devHup = function() {
 		'newer:closureCompiler',
 		'newer:clean:distTmp',
 
-		'docs'
+		'docs',
+		'assemble'
 	]);
 };
 
