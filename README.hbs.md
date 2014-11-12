@@ -9,6 +9,13 @@
 
 [![Sauce Test Status](https://saucelabs.com/browser-matrix/fallback.svg)](https://saucelabs.com/u/fallback)
 
+[Download Stable]() (v1.1.6) Compressed {{fileSizeCompressed}} KB
+[Download Development]() (v1.1.6) Uncompressed {{fileSizeUncompressed}} KB
+
+```cli
+bower install fallback --save;
+```
+
 - [Getting Started](#getting-started)
 - [Open Source Examples](#open-source-examples)
 - [API Documentation](#api-documentation)

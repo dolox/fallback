@@ -80,7 +80,7 @@ me.tasks.build = function() {
 		'concat',
 		'wrap',
 		'closureCompiler',
-		'docco',
+		'docs',
 		'clean:distTmp'
 	]);
 };
@@ -106,8 +106,9 @@ me.tasks.devHup = function() {
 		'newer:concat',
 		'newer:wrap',
 		'newer:closureCompiler',
-		'newer:docco',
-		'newer:clean:distTmp'
+		'newer:clean:distTmp',
+
+		'docs'
 	]);
 };
 

@@ -31,8 +31,6 @@ unit tests
 
 	fix broken saucelabs image in the README
 
-	update the bower json ignore list for the docs, tests, configs from travis. simply include the dist, readme, bower file
-
 	allow ability to stick version #s on the libraries combines w/ FBK CLI
 
 	add loader delimiter to the config file.
@@ -45,12 +43,8 @@ unit tests
 
 	strip all me.logs(), me.banner, me.log and me.stats function from minification version
 
-	automatically rename the docs fallback.html to index.html after it's generated.
-
 readme documentation
 	- document the debugger levels
-	- add `init` and `check` functions for libs.
-	- redocument the `global` attribute in config.
 	- change README.md to README.hbs and automatically generate it with the current version # and file sizes of the dists.
 	- make links from the root of the project to fallback.min.js in the dist folder.
 	- cleanup in the examples folder and code document them better for people.
