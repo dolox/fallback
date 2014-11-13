@@ -126,7 +126,7 @@ me.tasks.docs = function() {
 
 me.tasks.test = function() {
 	me.grunt.registerTask('test', [
-		'karma:dist'
+		'karma'
 	]);
 };
 

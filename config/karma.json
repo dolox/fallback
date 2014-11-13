@@ -1,5 +1,6 @@
 {
 	"autoWatch": true,
+	"browserNoActivityTimeout": 120000,
 	"captureTimeout": 300000,
 	"colors": true,
 

@@ -1,15 +1,13 @@
 module.exports = function(grunt, tasks) {
-	tasks.karma = {};
+	var me = {};
+	var uri = grunt.app.config.uri;
 
-	tasks.karma.options = {
-		configFile: grunt.app.config.uri.root + 'karma.js'
-	};
+	me.options = grunt.file.readJSON(uri.config + 'karma.json');
+	me.options.customLaunchers = grunt.file.readJSON(uri.config + 'saucelabs.json');
 
-	tasks.karma.dist = {};
+	tasks.karma = me;
 
-	tasks.karma.dev = {
-		browsers: ['PhantomJS']
-	};
+	grunt.app.boot.gruntTasks('karma/', tasks);
 
 	return tasks;
 };
