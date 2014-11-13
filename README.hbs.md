@@ -234,9 +234,9 @@ This configuration parameter allows you to enforce [AMD (Asynchronous Module Def
 
 AMD for the library is enabled, but it's not enforced by default. In other words, if a library that supports AMD attempts to load, it won't be used as a module, it instead will be retained in the global scope of the page, untethered by the Fallback JS library.
 
-By enabling AMD, any JavaScript libaries that support it will no longer be available in the global scope (the `window` object) of your page. The reasoning behind this is to encapsulate JavaScript libraries so that they're contained and not dirtying up the global scope.
+By enabling AMD, any JavaScript libraries that support it will no longer be available in the global scope (the `window` object) of your page. The reasoning behind this is to encapsulate JavaScript libraries so that they're contained and not dirtying up the global scope.
 
-This can be useful on an advanced level, but in practice the level of complexitiy and time required to invest just to make this work properly isn't practical for most, which is why this feature is `disabled` by default. Use this feature at your own discretion.
+This can be useful when used at an advanced level. In practice the level of complexitiy and time required to invest just to make this work properly isn't practical for most projects seeking a simply solution. Therefore this feature is `disabled` by default. Use this feature at your own discretion.
 
 **Example:**
 
