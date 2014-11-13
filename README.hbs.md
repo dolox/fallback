@@ -10,8 +10,11 @@
 	<a href="https://david-dm.org/dolox/fallback#info=devDependencies" target="_blank"><img src="https://david-dm.org/dolox/fallback/dev-status.svg?style=flat" /></a>
 
 	<br />
+	<br />
 
 	<a href="https://saucelabs.com/u/fallback" target="_blank"><img src="https://saucelabs.com/browser-matrix/fallback.svg" /></a>
+
+	<br />
 </p>
 
 - [Getting Started](#getting-started)
