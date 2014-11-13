@@ -1,6 +1,6 @@
 {
 	"autoWatch": true,
-	"captureTimeout": 60000,
+	"captureTimeout": 300000,
 	"colors": true,
 
 	"files": [

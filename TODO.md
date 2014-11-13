@@ -20,7 +20,7 @@ unit tests
 	[ ] module
 	[ ] require
 	
-	run tests sequentially: https://github.com/karma-runner/karma-sauce-launcher/issues/8
+run tests sequentially: https://github.com/karma-runner/karma-sauce-launcher/issues/8
 
 @todo
 	make sure that `global` is actually being referenced everywhere and not window
@@ -28,8 +28,6 @@ unit tests
 	fallback.config -> input -> global --- double check this documentation
 
 	allow config to pass in logging levels for debug: 'warn', 'info', 'error', or false
-
-	fix broken saucelabs image in the README
 
 	allow ability to stick version #s on the libraries combines w/ FBK CLI
 
