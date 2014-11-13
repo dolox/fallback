@@ -1,4 +1,4 @@
-<p align="center"><img alt="Fallback JS" height="128" src="http://fallback.io/img/logo.png" /></p>
+<p align="center"><a href="http://fallback.io/" target="_blank"><img alt="Fallback JS" height="128" src="http://fallback.io/img/logo.png" /></a></p>
 <h1 align="center">Contributing to Fallback JS</h1>
 
 ---
