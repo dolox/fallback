@@ -19,6 +19,8 @@
 
 	"port": 9876,
 
+	"record-screenshots": false,
+
 	"reporters": [
 		"progress",
 		"saucelabs"

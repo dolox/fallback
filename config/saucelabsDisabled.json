@@ -1,0 +1,36 @@
+{
+	"android40": {
+		"base": "SauceLabs",
+		"browserName": "android",
+		"platform": "Linux",
+		"version": "4.0"
+	},
+
+	"android44": {
+		"base": "SauceLabs",
+		"browserName": "android",
+		"platform": "Linux",
+		"version": "4.4"
+	},
+
+	"iOS6": {
+		"base": "SauceLabs",
+		"browserName": "iphone",
+		"platform": "OS X 10.8",
+		"version": "6.0"
+	},
+
+	"iOS7": {
+		"base": "SauceLabs",
+		"browserName": "iphone",
+		"platform": "OS X 10.9",
+		"version": "7.0"
+	},
+
+	"iOS8": {
+		"base": "SauceLabs",
+		"browserName": "iphone",
+		"platform": "OS X 10.9",
+		"version": "8.0"
+	}
+}
