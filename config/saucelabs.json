@@ -46,12 +46,6 @@
 		"platform": "OS X 10.10"
 	},
 
-	"osXOpera": {
-		"base": "SauceLabs",
-		"browserName": "opera",
-		"platform": "OS X 10.10"
-	},
-
 	"osXSafari": {
 		"base": "SauceLabs",
 		"browserName": "safari",
