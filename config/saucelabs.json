@@ -34,6 +34,24 @@
 		"version": "8.0"
 	},
 
+	"linuxChrome": {
+		"base": "SauceLabs",
+		"browserName": "chrome",
+		"platform": "Linux"
+	},
+
+	"linuxFirefox": {
+		"base": "SauceLabs",
+		"browserName": "firefox",
+		"platform": "Linux"
+	},
+
+	"linuxOpera": {
+		"base": "SauceLabs",
+		"browserName": "opera",
+		"platform": "Linux"
+	},
+
 	"osXChrome": {
 		"base": "SauceLabs",
 		"browserName": "chrome",
