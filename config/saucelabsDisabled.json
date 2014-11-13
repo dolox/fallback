@@ -40,6 +40,12 @@
 		"platform": "Linux"
 	},
 
+	"osXChrome": {
+		"base": "SauceLabs",
+		"browserName": "chrome",
+		"platform": "OS X 10.10"
+	},
+
 	"win7Opera": {
 		"base": "SauceLabs",
 		"browserName": "opera",

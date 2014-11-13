@@ -11,12 +11,6 @@
 		"platform": "Linux"
 	},
 
-	"osXChrome": {
-		"base": "SauceLabs",
-		"browserName": "chrome",
-		"platform": "OS X 10.10"
-	},
-
 	"osXFirefox": {
 		"base": "SauceLabs",
 		"browserName": "firefox",
