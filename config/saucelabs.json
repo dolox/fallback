@@ -1,12 +1,12 @@
 {
-	"Android40": {
+	"android40": {
 		"base": "SauceLabs",
 		"browserName": "android",
 		"platform": "Linux",
 		"version": "4.0"
 	},
 
-	"Android44": {
+	"android44": {
 		"base": "SauceLabs",
 		"browserName": "android",
 		"platform": "Linux",
