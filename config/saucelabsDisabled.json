@@ -32,5 +32,17 @@
 		"browserName": "iphone",
 		"platform": "OS X 10.9",
 		"version": "8.0"
+	},
+
+	"linuxOpera": {
+		"base": "SauceLabs",
+		"browserName": "opera",
+		"platform": "Linux"
+	},
+
+	"win7Opera": {
+		"base": "SauceLabs",
+		"browserName": "opera",
+		"platform": "Windows 7"
 	}
 }
