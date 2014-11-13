@@ -34,6 +34,24 @@
 		"version": "8.0"
 	},
 
+	"osXChrome": {
+		"base": "SauceLabs",
+		"browserName": "chrome",
+		"platform": "OS X 10.10"
+	},
+
+	"osXFirefox": {
+		"base": "SauceLabs",
+		"browserName": "firefox",
+		"platform": "OS X 10.10"
+	},
+
+	"osXSafari": {
+		"base": "SauceLabs",
+		"browserName": "safari",
+		"platform": "OS X 10.10"
+	},
+
 	"win7IE9": {
 		"base": "SauceLabs",
 		"browserName": "internet explorer",
@@ -76,8 +94,7 @@
 	"win7Safari": {
 		"base": "SauceLabs",
 		"browserName": "safari",
-		"platform": "OS X 10.10",
-		"version": "8"
+		"platform": "Windows 7"
 	},
 
 	"winXPIE6": {

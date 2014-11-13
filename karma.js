@@ -10,7 +10,19 @@ module.exports = function(config) {
 	var saucelabs = JSON.parse(fs.readFileSync(path.join(__dirname, 'config', 'saucelabs.json')).toString());
 
 	// Object.keys(saucelabs);
-	karma.browsers = ['android40', 'android44', 'win7Chrome', 'win7Firefox', 'win7Opera', 'win7Safari'];
+	karma.browsers = [
+		'android40',
+		'android44',
+		'iOS6',
+		'iOS7',
+		'iOS8',
+		'osXSChrome',,
+		'osXSFirefox',
+		'osXSafari',
+		'win7Chrome',
+		'win7Firefox',
+		'win7Safari'
+	];
 
 	karma.customLaunchers = saucelabs;
 
