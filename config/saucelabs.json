@@ -1,14 +1,8 @@
 {
-	"linuxChrome": {
+	"osXChrome": {
 		"base": "SauceLabs",
 		"browserName": "chrome",
-		"platform": "Linux"
-	},
-
-	"linuxFirefox": {
-		"base": "SauceLabs",
-		"browserName": "firefox",
-		"platform": "Linux"
+		"platform": "OS X 10.10"
 	},
 
 	"osXFirefox": {
@@ -54,6 +48,12 @@
 		"browserName": "internet explorer",
 		"platform": "Windows 7",
 		"version": "11"
+	},
+
+	"win7Opera": {
+		"base": "SauceLabs",
+		"browserName": "opera",
+		"platform": "Windows 7"
 	},
 
 	"win7Safari": {
