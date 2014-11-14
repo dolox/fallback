@@ -4647,7 +4647,7 @@ extra checking or manipulation.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> factory = me.loader.js.check(<span class="hljs-built_in">module</span>);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> factory = me.loader.js.check(<span class="hljs-built_in">module</span>, <span class="hljs-literal">false</span>);</pre></div></div>
             
         </li>
         
@@ -4658,13 +4658,13 @@ extra checking or manipulation.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-283">&#182;</a>
               </div>
-              <p>console.log(module);
-@todo we need to check if its already on the page*#@$%()
-if (factory) {
-return callbackSuccess(module, url, ‘predefined’, factory);
-}</p>
+              <p>Check if our module has already been loaded.</p>
 
             </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (factory) {
+		<span class="hljs-keyword">return</span> callbackSuccess(<span class="hljs-built_in">module</span>, url, <span class="hljs-string">'predefined'</span>, factory);
+	}</pre></div></div>
             
         </li>
         
@@ -4675,8 +4675,7 @@ return callbackSuccess(module, url, ‘predefined’, factory);
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-284">&#182;</a>
               </div>
-              <p>@todo make these their own functions and use .apply on them
-If our library failed to load, we’ll call upon this function.</p>
+              <p>If our library failed to load, we’ll call upon this function.</p>
 
             </div>
             
@@ -4698,15 +4697,7 @@ We need to manually check to make sure that our libraries were loaded properly.<
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> check = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
-		factory = me.loader.js.check(<span class="hljs-built_in">module</span>);
-
-		<span class="hljs-keyword">if</span> (!factory) {
-			<span class="hljs-keyword">return</span> failed();
-		}
-
-		<span class="hljs-keyword">return</span> callbackSuccess(<span class="hljs-built_in">module</span>, url, <span class="hljs-string">'success'</span>, factory);
-	};</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> check = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{</pre></div></div>
             
         </li>
         
@@ -4717,11 +4708,11 @@ We need to manually check to make sure that our libraries were loaded properly.<
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-286">&#182;</a>
               </div>
-              <p>Create a new script element instance.</p>
+              <p>Attempt to fetch the factory for our module.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> element = global.document.createElement(<span class="hljs-string">'script'</span>);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		factory = me.loader.js.check(<span class="hljs-built_in">module</span>);</pre></div></div>
             
         </li>
         
@@ -4732,11 +4723,13 @@ We need to manually check to make sure that our libraries were loaded properly.<
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-287">&#182;</a>
               </div>
-              <p>Set the actual URL that we’re going to request to load for our library.</p>
+              <p>If the factory is empty, then it failed to load! Invoke the failure callback.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	element.src = url;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> (!factory) {
+			<span class="hljs-keyword">return</span> failed();
+		}</pre></div></div>
             
         </li>
         
@@ -4747,11 +4740,12 @@ We need to manually check to make sure that our libraries were loaded properly.<
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-288">&#182;</a>
               </div>
-              <p>Set the type, some legacy browsers require this attribute be present.</p>
+              <p>We passed the checks, invoke the success callback.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	element.type = <span class="hljs-string">'text/javascript'</span>;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">return</span> callbackSuccess(<span class="hljs-built_in">module</span>, url, <span class="hljs-string">'success'</span>, factory);
+	};</pre></div></div>
             
         </li>
         
@@ -4762,11 +4756,12 @@ We need to manually check to make sure that our libraries were loaded properly.<
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-289">&#182;</a>
               </div>
-              <p>If we get an error callback, bypass any checking and just fail.</p>
+              <p>Spawn a new element on the page contained our URL with our callbacks.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	element.onerror = failed;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">return</span> me.loader.js.element(url, check, failed);
+};</pre></div></div>
             
         </li>
         
@@ -4776,86 +4771,6 @@ We need to manually check to make sure that our libraries were loaded properly.<
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-290">&#182;</a>
-              </div>
-              <p>Do our checks and throw our callback.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>	element.onload = check;</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-291">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-291">&#182;</a>
-              </div>
-              <p>Special event handler for certain versions of IE. @ie</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>	element.onreadystatechange = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
-		<span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.readyState || <span class="hljs-keyword">this</span>.readyState === <span class="hljs-string">'loaded'</span> || <span class="hljs-keyword">this</span>.readyState === <span class="hljs-string">'complete'</span>) {</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-292">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-292">&#182;</a>
-              </div>
-              <p>Explicity remove the callback after we receive it.
-Some versions of IE tend to fire off multiple success events.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">this</span>.onreadystatechange = <span class="hljs-literal">null</span>;</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-293">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-293">&#182;</a>
-              </div>
-              <p>Do our checks and throw our callback.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>			check();
-		}
-	};</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-294">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-294">&#182;</a>
-              </div>
-              <p>Load our URL on the page.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">return</span> me.head.appendChild(element);
-};</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-295">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-295">&#182;</a>
               </div>
               <p>Sift through the script elements on the page and attempt to derive the values from <code>attribute</code> that is passed in to
 the <code>Function</code>. Along with checking the <code>attribute</code> that is passed in, this <code>Function</code> will also prefix the
@@ -4869,11 +4784,11 @@ given <code>attribute</code> with <code>data-</code> and check for that attribut
         </li>
         
         
-        <li id="section-296">
+        <li id="section-291">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-296">&#182;</a>
+                <a class="pilcrow" href="#section-291">&#182;</a>
               </div>
               <p>The <code>Array</code> to store our <code>attribute</code> values.</p>
 
@@ -4884,11 +4799,11 @@ given <code>attribute</code> with <code>data-</code> and check for that attribut
         </li>
         
         
-        <li id="section-297">
+        <li id="section-292">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-297">&#182;</a>
+                <a class="pilcrow" href="#section-292">&#182;</a>
               </div>
               <p>If the <code>attribute</code> is not a string, halt the <code>Function</code>.</p>
 
@@ -4901,11 +4816,11 @@ given <code>attribute</code> with <code>data-</code> and check for that attribut
         </li>
         
         
-        <li id="section-298">
+        <li id="section-293">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-298">&#182;</a>
+                <a class="pilcrow" href="#section-293">&#182;</a>
               </div>
               <p>Fetch all script tags that are on the page.</p>
 
@@ -4916,11 +4831,11 @@ given <code>attribute</code> with <code>data-</code> and check for that attribut
         </li>
         
         
-        <li id="section-299">
+        <li id="section-294">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-299">&#182;</a>
+                <a class="pilcrow" href="#section-294">&#182;</a>
               </div>
               <p>Check to make sure that we retrieved a <code>HTMLCollection</code>, otherwise halt the <code>Function</code>.</p>
 
@@ -4933,11 +4848,11 @@ given <code>attribute</code> with <code>data-</code> and check for that attribut
         </li>
         
         
-        <li id="section-300">
+        <li id="section-295">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-300">&#182;</a>
+                <a class="pilcrow" href="#section-295">&#182;</a>
               </div>
               <p>Loop through each of our scripts.</p>
 
@@ -4948,11 +4863,11 @@ given <code>attribute</code> with <code>data-</code> and check for that attribut
         </li>
         
         
-        <li id="section-301">
+        <li id="section-296">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-301">&#182;</a>
+                <a class="pilcrow" href="#section-296">&#182;</a>
               </div>
               <p>If our script instance isn’t an <code>HTMLScriptElement</code>, then skip the iteration.</p>
 
@@ -4965,11 +4880,11 @@ given <code>attribute</code> with <code>data-</code> and check for that attribut
         </li>
         
         
-        <li id="section-302">
+        <li id="section-297">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-302">&#182;</a>
+                <a class="pilcrow" href="#section-297">&#182;</a>
               </div>
               <p>Check to see if our <code>attribute</code> exists along with the prefix <code>data-</code> for the <code>attribute</code> in questino.</p>
 
@@ -4980,11 +4895,11 @@ given <code>attribute</code> with <code>data-</code> and check for that attribut
         </li>
         
         
-        <li id="section-303">
+        <li id="section-298">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-303">&#182;</a>
+                <a class="pilcrow" href="#section-298">&#182;</a>
               </div>
               <p>Fetch the value for the attribute.</p>
 
@@ -4995,11 +4910,11 @@ given <code>attribute</code> with <code>data-</code> and check for that attribut
         </li>
         
         
-        <li id="section-304">
+        <li id="section-299">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-304">&#182;</a>
+                <a class="pilcrow" href="#section-299">&#182;</a>
               </div>
               <p>If the value exists then use it.</p>
 
@@ -5010,11 +4925,11 @@ given <code>attribute</code> with <code>data-</code> and check for that attribut
         </li>
         
         
-        <li id="section-305">
+        <li id="section-300">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-305">&#182;</a>
+                <a class="pilcrow" href="#section-300">&#182;</a>
               </div>
               <p>Split our value on <code>,</code> that way we can pass in multiple values.</p>
 
@@ -5025,11 +4940,11 @@ given <code>attribute</code> with <code>data-</code> and check for that attribut
         </li>
         
         
-        <li id="section-306">
+        <li id="section-301">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-306">&#182;</a>
+                <a class="pilcrow" href="#section-301">&#182;</a>
               </div>
               <p>Merge our values.</p>
 
@@ -5043,11 +4958,11 @@ given <code>attribute</code> with <code>data-</code> and check for that attribut
         </li>
         
         
-        <li id="section-307">
+        <li id="section-302">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-307">&#182;</a>
+                <a class="pilcrow" href="#section-302">&#182;</a>
               </div>
               <p>Return the values for attributes.</p>
 
@@ -5059,29 +4974,102 @@ given <code>attribute</code> with <code>data-</code> and check for that attribut
         </li>
         
         
+        <li id="section-303">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-303">&#182;</a>
+              </div>
+              <p>Check to see if a module has already been loaded on the page. This <code>Function</code> will return <code>Boolean</code>, <code>true</code> being
+that a module has already been loaded and <code>false</code> being that it hasn’t.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>me.loader.js.check = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(module, fallback)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-304">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-304">&#182;</a>
+              </div>
+              <p>See if the module itself has been flagged as loaded.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (<span class="hljs-built_in">module</span>.loader.loaded === <span class="hljs-literal">true</span>) {
+		<span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-305">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-305">&#182;</a>
+              </div>
+              <p>If the user added their own custom checking function, invoke it now to preform the check.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (me.isFunction(<span class="hljs-built_in">module</span>.check)) {
+		<span class="hljs-keyword">return</span> <span class="hljs-built_in">module</span>.check();
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-306">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-306">&#182;</a>
+              </div>
+              <p>If globals are enabled, and we have exports for the module, check the <code>window</code> to see if they’re defined.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (me.globals === <span class="hljs-literal">true</span> &amp;&amp; <span class="hljs-built_in">module</span>.exports.length) {
+		<span class="hljs-keyword">return</span> me.loader.js.check.exports(<span class="hljs-built_in">module</span>.exports);
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-307">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-307">&#182;</a>
+              </div>
+              <p>By default just return true, as this function was hit from a success callback.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">return</span> me.isDefined(fallback) ? fallback : <span class="hljs-literal">true</span>;
+};</pre></div></div>
+            
+        </li>
+        
+        
         <li id="section-308">
             <div class="annotation">
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-308">&#182;</a>
               </div>
-              <p>@todo document it
-@todo if there are no exports, simply rely on the callbacks</p>
+              <p>Check for the instance of our library based on the exports given. If the instance of our library exists it’ll be
+returned, otherwise this function will return <code>null. The</code>Function<code>basically checks the</code>window` variable for a
+subkey which are the exports that are specified in the paramter.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>me.loader.js.check = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(module)</span> </span>{
-	<span class="hljs-keyword">if</span> (<span class="hljs-built_in">module</span>.loader.loaded === <span class="hljs-literal">true</span>) {
-		<span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
-	}
-
-	<span class="hljs-keyword">if</span> (me.isFunction(<span class="hljs-built_in">module</span>.check)) {
-		<span class="hljs-keyword">return</span> <span class="hljs-built_in">module</span>.check();
-	}
-
-	<span class="hljs-keyword">if</span> (<span class="hljs-built_in">module</span>.exports.length) {
-		<span class="hljs-keyword">return</span> me.loader.js.check.exports(<span class="hljs-built_in">module</span>.exports);
-	}</pre></div></div>
+            <div class="content"><div class='highlight'><pre>me.loader.js.check.exports = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(exports)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -5092,12 +5080,13 @@ given <code>attribute</code> with <code>data-</code> and check for that attribut
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-309">&#182;</a>
               </div>
-              <p>By default just return true, as this function was hit from a success callback.</p>
+              <p>If our <code>exports</code> parameter is not an <code>Array</code>, cast it to one.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
-};</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (!me.isArray(exports)) {
+		exports = [exports];
+	}</pre></div></div>
             
         </li>
         
@@ -5108,13 +5097,11 @@ given <code>attribute</code> with <code>data-</code> and check for that attribut
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-310">&#182;</a>
               </div>
-              <p>This function will check for the instance of our library based on the exports given. If the instance of our library
-exists it’ll be returned, otherwise this function will return <code>null</code>.</p>
+              <p>Storage for our factory value.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>me.loader.js.check.exports = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(exports)</span> </span>{
-	<span class="hljs-keyword">var</span> factory = <span class="hljs-literal">null</span>;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> factory = <span class="hljs-literal">null</span>;</pre></div></div>
             
         </li>
         
@@ -5125,11 +5112,13 @@ exists it’ll be returned, otherwise this function will return <code>null</code
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-311">&#182;</a>
               </div>
-              <p>Loop through each of our exports variable, until we find a match.</p>
+              <p>If we have no exports, return <code>null</code>.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	me.each(exports, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(variable)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (!exports.length) {
+		<span class="hljs-keyword">return</span> factory;
+	}</pre></div></div>
             
         </li>
         
@@ -5140,18 +5129,11 @@ exists it’ll be returned, otherwise this function will return <code>null</code
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-312">&#182;</a>
               </div>
-              <p>We have to explicity use <code>eval</code> because variables will come in many forms. In particular sometimes they will come
-in the form of being a child of an object. For example <code>jQuery UI</code> loads under the <code>glboal</code> variable <code>jQuery.ui</code>.
-In order for us to get to this programtically we have to use <code>eval</code>.</p>
+              <p>Loop through each of our exports variable, until we find a match.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>
-		<span class="hljs-comment">/*eslint-disable*/</span>
-		<span class="hljs-keyword">try</span> {
-			<span class="hljs-keyword">if</span> (factory = <span class="hljs-built_in">eval</span>(<span class="hljs-string">'window.'</span> + variable)) {
-				<span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
-			}</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	me.each(exports, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(variable)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -5162,21 +5144,16 @@ In order for us to get to this programtically we have to use <code>eval</code>.<
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-313">&#182;</a>
               </div>
-              <p>Force our variable back to a <code>null</code>.</p>
+              <p>We have to explicity use <code>eval</code> because variables will come in many forms. In particular sometimes they will come
+in the form of being a child of an object. For example <code>jQuery UI</code> loads under the <code>glboal</code> variable <code>jQuery.ui</code>.
+In order for us to get to this programtically we have to use <code>eval</code>.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			factory = <span class="hljs-literal">null</span>;
-		} <span class="hljs-keyword">catch</span> (exception) {
-			me.log(<span class="hljs-string">'loaderJavaScript'</span>, <span class="hljs-string">'`fallback.loader.js.factory.exports` threw an exception.'</span>, exception);
-		}
-		<span class="hljs-comment">/*eslint-enable*/</span>
-	});
-
-	<span class="hljs-keyword">return</span> factory;
-};
-
-<span class="hljs-comment">/* global me */</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">try</span> {
+			<span class="hljs-comment">/*eslint-disable*/</span>
+			factory = <span class="hljs-built_in">eval</span>(<span class="hljs-string">'window.'</span> + variable);
+			<span class="hljs-comment">/*eslint-enable*/</span></pre></div></div>
             
         </li>
         
@@ -5187,15 +5164,14 @@ In order for us to get to this programtically we have to use <code>eval</code>.<
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-314">&#182;</a>
               </div>
-              <p>@todo remove the auto adding of exports, if exports aren’t present then just rely on the native browser callbacks
-@todo critical for css files^^^^^ debating…</p>
+              <p>If our <code>factor</code>y is undefined, force the variable back to a <code>null</code>.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>
-me.loader.css = {};
-
-me.loader.css.boot = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(module, url, callbackSuccess, callbackFailed)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (!me.isDefined(factory)) {
+				factory = <span class="hljs-literal">null</span>;
+			}
+		} <span class="hljs-keyword">catch</span> (exception) {</pre></div></div>
             
         </li>
         
@@ -5206,11 +5182,13 @@ me.loader.css.boot = <span class="hljs-function"><span class="hljs-keyword">func
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-315">&#182;</a>
               </div>
-              <p>If the library is already defined on the page, don’t attempt to reload it.</p>
+              <p>Let the end user know that we hit an exception due to their malformed <code>exports</code> variable.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> factory = me.loader.css.check(<span class="hljs-built_in">module</span>);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			me.log(<span class="hljs-number">2</span>, <span class="hljs-string">'loaderJavaScript'</span>, <span class="hljs-string">'`fallback.loader.js.check.exports` threw an exception.'</span>, exception);
+		}
+	});</pre></div></div>
             
         </li>
         
@@ -5221,12 +5199,12 @@ me.loader.css.boot = <span class="hljs-function"><span class="hljs-keyword">func
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-316">&#182;</a>
               </div>
-              <p>@todo we need to check if its already on the page*#@$%()
-if (factory) {
-    return callbackSuccess(module, url, ‘predefined’, factory);
-}</p>
+              <p>Return the factory for our library.</p>
 
             </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">return</span> factory;
+};</pre></div></div>
             
         </li>
         
@@ -5237,13 +5215,11 @@ if (factory) {
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-317">&#182;</a>
               </div>
-              <p>If our library failed to load, we’ll call upon this function.</p>
+              <p>Spawn a new element on the page with our URL.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> failed = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
-		<span class="hljs-keyword">return</span> callbackFailed(<span class="hljs-built_in">module</span>, url, <span class="hljs-string">'failed'</span>);
-	};</pre></div></div>
+            <div class="content"><div class='highlight'><pre>me.loader.js.element = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(url, success, failed)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -5254,20 +5230,11 @@ if (factory) {
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-318">&#182;</a>
               </div>
-              <p>Whether a callback comes back as an error/success, they’re not always trustworthy.
-We need to manually check to make sure that our libraries were loaded properly.</p>
+              <p>Create a new script element instance.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> check = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
-		factory = me.loader.css.check(<span class="hljs-built_in">module</span>);
-
-		<span class="hljs-keyword">if</span> (!factory) {
-			<span class="hljs-keyword">return</span> failed();
-		}
-
-		<span class="hljs-keyword">return</span> callbackSuccess(<span class="hljs-built_in">module</span>, url, <span class="hljs-string">'success'</span>, factory);
-	};</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> element = global.document.createElement(<span class="hljs-string">'script'</span>);</pre></div></div>
             
         </li>
         
@@ -5278,11 +5245,11 @@ We need to manually check to make sure that our libraries were loaded properly.<
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-319">&#182;</a>
               </div>
-              <p>Create a new script element instance.</p>
+              <p>The browser supports it, enable crossorigin.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> element = global.document.createElement(<span class="hljs-string">'link'</span>);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	element.crossorigin = <span class="hljs-literal">true</span>;</pre></div></div>
             
         </li>
         
@@ -5293,11 +5260,11 @@ We need to manually check to make sure that our libraries were loaded properly.<
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-320">&#182;</a>
               </div>
-              <p>Set the actual URL that we’re going to request to load for our library.</p>
+              <p>If we get an error callback, bypass any checking and just fail.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	element.href = url;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	element.onerror = failed;</pre></div></div>
             
         </li>
         
@@ -5308,11 +5275,11 @@ We need to manually check to make sure that our libraries were loaded properly.<
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-321">&#182;</a>
               </div>
-              <p>Set the type, some legacy browsers require this attribute be present.</p>
+              <p>Do our checks and throw our callback.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	element.rel = <span class="hljs-string">'stylesheet'</span>;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	element.onload = success;</pre></div></div>
             
         </li>
         
@@ -5322,36 +5289,6 @@ We need to manually check to make sure that our libraries were loaded properly.<
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-322">&#182;</a>
-              </div>
-              <p>If we get an error callback, bypass any checking and just fail.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>	element.onerror = failed;</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-323">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-323">&#182;</a>
-              </div>
-              <p>Do our checks and throw our callback.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>	element.onload = check;</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-324">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-324">&#182;</a>
               </div>
               <p>Special event handler for certain versions of IE. @ie</p>
 
@@ -5363,18 +5300,50 @@ We need to manually check to make sure that our libraries were loaded properly.<
         </li>
         
         
+        <li id="section-323">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-323">&#182;</a>
+              </div>
+              <p>Explicity remove the callback after we receive it.
+Some versions of IE tend to fire off multiple success events. @ie</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">this</span>.onreadystatechange = <span class="hljs-literal">null</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-324">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-324">&#182;</a>
+              </div>
+              <p>Do our checks and throw our callback.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			success();
+		}
+	};</pre></div></div>
+            
+        </li>
+        
+        
         <li id="section-325">
             <div class="annotation">
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-325">&#182;</a>
               </div>
-              <p>Explicity remove the callback after we receive it.
-Some versions of IE tend to fire off multiple success events.</p>
+              <p>Set the actual URL that we’re going to request to load for our library.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">this</span>.onreadystatechange = <span class="hljs-literal">null</span>;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	element.src = url;</pre></div></div>
             
         </li>
         
@@ -5385,13 +5354,11 @@ Some versions of IE tend to fire off multiple success events.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-326">&#182;</a>
               </div>
-              <p>Do our checks and throw our callback.</p>
+              <p>Set the type, some legacy browsers require this attribute be present.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			check();
-		}
-	};</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	element.type = <span class="hljs-string">'text/javascript'</span>;</pre></div></div>
             
         </li>
         
@@ -5407,7 +5374,9 @@ Some versions of IE tend to fire off multiple success events.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">return</span> me.head.appendChild(element);
-};</pre></div></div>
+};
+
+<span class="hljs-comment">/* global me */</span></pre></div></div>
             
         </li>
         
@@ -5418,22 +5387,11 @@ Some versions of IE tend to fire off multiple success events.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-328">&#182;</a>
               </div>
-              <p>@todo document it</p>
+              <p>Cascading Stylesheet loader which is responsible for loading any CSS files for the library.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>me.loader.css.check = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(module)</span> </span>{
-	<span class="hljs-keyword">if</span> (<span class="hljs-built_in">module</span>.loader.loaded === <span class="hljs-literal">true</span>) {
-		<span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
-	}
-
-	<span class="hljs-keyword">if</span> (<span class="hljs-built_in">module</span>.check) {
-		<span class="hljs-keyword">return</span> <span class="hljs-built_in">module</span>.check();
-	}
-
-	<span class="hljs-keyword">if</span> (<span class="hljs-built_in">module</span>.exports.length) {
-		<span class="hljs-keyword">return</span> me.loader.css.check.exports(<span class="hljs-built_in">module</span>.exports);
-	}</pre></div></div>
+            <div class="content"><div class='highlight'><pre>me.loader.css = {};</pre></div></div>
             
         </li>
         
@@ -5444,12 +5402,11 @@ Some versions of IE tend to fire off multiple success events.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-329">&#182;</a>
               </div>
-              <p>By default just return true, as this function was hit from a success callback.</p>
+              <p>Attempt to load a stylesheet onto the page.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
-};</pre></div></div>
+            <div class="content"><div class='highlight'><pre>me.loader.css.boot = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(module, url, callbackSuccess, callbackFailed)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -5460,17 +5417,11 @@ Some versions of IE tend to fire off multiple success events.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-330">&#182;</a>
               </div>
-              <p>This function will check for the instance of our library based on the exports given. If the instance of our library
-exists it’ll be returned, otherwise this function will return <code>null</code>.</p>
+              <p>If the stylesheet is already loaded on the page, don’t attempt to reload it.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>me.loader.css.check.exports = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(exports)</span> </span>{
-	<span class="hljs-keyword">var</span> factory = <span class="hljs-literal">null</span>;
-
-	<span class="hljs-keyword">if</span> (!factory) {
-		<span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
-	}</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> factory = me.loader.css.check(<span class="hljs-built_in">module</span>, <span class="hljs-literal">false</span>);</pre></div></div>
             
         </li>
         
@@ -5481,11 +5432,13 @@ exists it’ll be returned, otherwise this function will return <code>null</code
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-331">&#182;</a>
               </div>
-              <p>Loop through each of our exports variable, until we find a match.</p>
+              <p>Check if our module has already been loaded.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	me.each(exports, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(variable)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (factory) {
+		<span class="hljs-keyword">return</span> callbackSuccess(<span class="hljs-built_in">module</span>, url, <span class="hljs-string">'predefined'</span>, factory);
+	}</pre></div></div>
             
         </li>
         
@@ -5496,18 +5449,13 @@ exists it’ll be returned, otherwise this function will return <code>null</code
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-332">&#182;</a>
               </div>
-              <p>We have to explicity use <code>eval</code> because variables will come in many forms. In particular sometimes they will come
-in the form of being a child of an object. For example <code>jQuery UI</code> loads under the <code>global</code> variable <code>jQuery.ui</code>.
-In order for us to get to this programtically we have to use <code>eval</code>.</p>
+              <p>If our library failed to load, we’ll call upon this function.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>
-		<span class="hljs-comment">/*eslint-disable*/</span>
-		<span class="hljs-keyword">try</span> {
-			<span class="hljs-keyword">if</span> (factory = <span class="hljs-built_in">eval</span>(<span class="hljs-string">'window.'</span> + variable)) {
-				<span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
-			}</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> failed = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+		<span class="hljs-keyword">return</span> callbackFailed(<span class="hljs-built_in">module</span>, url, <span class="hljs-string">'failed'</span>);
+	};</pre></div></div>
             
         </li>
         
@@ -5518,21 +5466,12 @@ In order for us to get to this programtically we have to use <code>eval</code>.<
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-333">&#182;</a>
               </div>
-              <p>Force our variable back to a <code>null</code>.</p>
+              <p>Whether a callback comes back as an error/success, they’re not always trustworthy.
+We need to manually check to make sure that our libraries were loaded properly.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			factory = <span class="hljs-literal">null</span>;
-		} <span class="hljs-keyword">catch</span> (exception) {
-			me.log(<span class="hljs-string">'loaderJavaScript'</span>, <span class="hljs-string">'`fallback.loader.css.factory.exports` threw an exception.'</span>, exception);
-		}
-		<span class="hljs-comment">/*eslint-enable*/</span>
-	});
-
-	<span class="hljs-keyword">return</span> factory;
-};
-
-<span class="hljs-comment">/* global me */</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> check = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{</pre></div></div>
             
         </li>
         
@@ -5542,6 +5481,652 @@ In order for us to get to this programtically we have to use <code>eval</code>.<
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-334">&#182;</a>
+              </div>
+              <p>Attempt to fetch the factory for our module.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		factory = me.loader.css.check(<span class="hljs-built_in">module</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-335">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-335">&#182;</a>
+              </div>
+              <p>If the factory is empty, then it failed to load! Invoke the failure callback.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> (!factory) {
+			<span class="hljs-keyword">return</span> failed();
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-336">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-336">&#182;</a>
+              </div>
+              <p>We passed the checks, invoke the success callback.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">return</span> callbackSuccess(<span class="hljs-built_in">module</span>, url, <span class="hljs-string">'success'</span>, factory);
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-337">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-337">&#182;</a>
+              </div>
+              <p>Spawn a new element on the page contained our URL with our callbacks.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">return</span> me.loader.css.element(url, check, failed);
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-338">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-338">&#182;</a>
+              </div>
+              <p>Check to see if a module has already been loaded on the page. This <code>Function</code> will return <code>Boolean</code>, <code>true</code> being
+that a module has already been loaded and <code>false</code> being that it hasn’t.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>me.loader.css.check = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(module, fallback)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-339">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-339">&#182;</a>
+              </div>
+              <p>See if the module itself has been flagged as loaded.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (<span class="hljs-built_in">module</span>.loader.loaded === <span class="hljs-literal">true</span>) {
+		<span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-340">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-340">&#182;</a>
+              </div>
+              <p>If the user added their own custom checking function, invoke it now to preform the check.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (me.isFunction(<span class="hljs-built_in">module</span>.check)) {
+		<span class="hljs-keyword">return</span> <span class="hljs-built_in">module</span>.check();
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-341">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-341">&#182;</a>
+              </div>
+              <p>If globals are enabled, and we have exports for the module, check the DOM to see if they’re defined.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (me.globals === <span class="hljs-literal">true</span> &amp;&amp; <span class="hljs-built_in">module</span>.exports.length) {
+		<span class="hljs-keyword">return</span> me.loader.css.check.exports(<span class="hljs-built_in">module</span>.exports);
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-342">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-342">&#182;</a>
+              </div>
+              <p>By default just return true, as this function was hit from a success callback.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">return</span> me.isDefined(fallback) ? fallback : <span class="hljs-literal">true</span>;
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-343">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-343">&#182;</a>
+              </div>
+              <p>Check for the instance of our library based on the exports given. If the instance of our library exists it’ll be
+returned, otherwise this function will return <code>null. The</code>Function<code>basically checks the</code>window` variable for a
+subkey which are the exports that are specified in the paramter.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>me.loader.css.check.exports = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(exports)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-344">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-344">&#182;</a>
+              </div>
+              <p>If our <code>exports</code> parameter is not an <code>Array</code>, cast it to one.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (!me.isArray(exports)) {
+		exports = [exports];
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-345">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-345">&#182;</a>
+              </div>
+              <p>Storage for our factory value.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> factory = <span class="hljs-literal">null</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-346">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-346">&#182;</a>
+              </div>
+              <p>If we have no exports, return <code>null</code>.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (!exports.length) {
+		<span class="hljs-keyword">return</span> factory;
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-347">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-347">&#182;</a>
+              </div>
+              <p>If the <code>global.document</code> doesn’t contain the key <code>styleSheets</code>, return <code>null</code>.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (!me.isDefined(global.document.styleSheets)) {
+		<span class="hljs-keyword">return</span> factory;
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-348">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-348">&#182;</a>
+              </div>
+              <p>Loop through each of the documents stylesheets.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	me.each(global.document.styleSheets, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(stylesheet)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-349">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-349">&#182;</a>
+              </div>
+              <p>If the stylesheet is <code>0</code>, skip it.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> (stylesheet === <span class="hljs-number">0</span>) {
+			<span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-350">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-350">&#182;</a>
+              </div>
+              <p>Loop through the following keys in <code>global.document.stylesheets</code>.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		me.each([<span class="hljs-string">'cssRules'</span>, <span class="hljs-string">'rules'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(key)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-351">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-351">&#182;</a>
+              </div>
+              <p>This has to be wrapped in a <code>try catch</code> due to some browsers throwing a CORS exception if the stylesheet is
+loaded via an external domain.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">try</span> {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-352">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-352">&#182;</a>
+              </div>
+              <p>If <code>stylesheet.rules</code> exists, scan it for our export.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span> (me.isDefined(stylesheet[key])) {
+					factory = me.loader.css.scan(stylesheet[key], exports);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-353">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-353">&#182;</a>
+              </div>
+              <p>If we found our rule, halt the loop.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">if</span> (factory) {
+						<span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+					}
+				}
+			} <span class="hljs-keyword">catch</span> (exception) {
+				me.log(<span class="hljs-number">2</span>, <span class="hljs-string">'loaderStylesheet'</span>, <span class="hljs-string">'`fallback.loader.css.check.exports` threw an exception.'</span>, exception);
+			}
+		});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-354">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-354">&#182;</a>
+              </div>
+              <p>If we found our selector, halt the loop!</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> (factory) {
+			<span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+		}
+	});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-355">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-355">&#182;</a>
+              </div>
+              <p>Return whether or not our stylesheet was loaded.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">return</span> factory;
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-356">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-356">&#182;</a>
+              </div>
+              <p>Spawn a new element on the page with our URL.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>me.loader.css.element = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(url, success, failed)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-357">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-357">&#182;</a>
+              </div>
+              <p>Create a new script element instance.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> element = global.document.createElement(<span class="hljs-string">'link'</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-358">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-358">&#182;</a>
+              </div>
+              <p>The browser supports it, enable crossorigin.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	element.crossorigin = <span class="hljs-literal">true</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-359">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-359">&#182;</a>
+              </div>
+              <p>Set the actual URL that we’re going to request to load for our library.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	element.href = url;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-360">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-360">&#182;</a>
+              </div>
+              <p>If we get an error callback, bypass any checking and just fail.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	element.onerror = failed;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-361">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-361">&#182;</a>
+              </div>
+              <p>Do our checks and throw our callback.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	element.onload = success;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-362">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-362">&#182;</a>
+              </div>
+              <p>Special event handler for certain versions of IE. @ie</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	element.onreadystatechange = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+		<span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.readyState || <span class="hljs-keyword">this</span>.readyState === <span class="hljs-string">'loaded'</span> || <span class="hljs-keyword">this</span>.readyState === <span class="hljs-string">'complete'</span>) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-363">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-363">&#182;</a>
+              </div>
+              <p>Explicity remove the callback after we receive it.
+Some versions of IE tend to fire off multiple success events. @ie</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">this</span>.onreadystatechange = <span class="hljs-literal">null</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-364">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-364">&#182;</a>
+              </div>
+              <p>Do our checks and throw our callback.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			success();
+		}
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-365">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-365">&#182;</a>
+              </div>
+              <p>Set the type, some legacy browsers require this attribute be present.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	element.rel = <span class="hljs-string">'stylesheet'</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-366">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-366">&#182;</a>
+              </div>
+              <p>Load our URL on the page.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">return</span> me.head.appendChild(element);
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-367">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-367">&#182;</a>
+              </div>
+              <p>Scan through the documents stylesheets searching for a specific selector.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>me.loader.css.scan = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(ruleset, selectors)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-368">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-368">&#182;</a>
+              </div>
+              <p>Store whether or not we found our selector.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> found = <span class="hljs-literal">false</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-369">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-369">&#182;</a>
+              </div>
+              <p>Loop through the rules.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> index <span class="hljs-keyword">in</span> ruleset) {
+		<span class="hljs-keyword">var</span> rule = ruleset[index];</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-370">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-370">&#182;</a>
+              </div>
+              <p>See if we find a match for one of our selectors.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> (me.indexOf(selectors, rule.selectorText) !== -<span class="hljs-number">1</span>) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-371">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-371">&#182;</a>
+              </div>
+              <p>Flag that we found our selector.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			found = <span class="hljs-literal">true</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-372">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-372">&#182;</a>
+              </div>
+              <p>Halt the loop.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">break</span>;
+		}
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-373">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-373">&#182;</a>
+              </div>
+              <p>Return our search status.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">return</span> found;
+};
+
+<span class="hljs-comment">/* global me */</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-374">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-374">&#182;</a>
               </div>
               <p>Fetch an already existant module from our definitions. If the module in question doesn’t exist then we’ll generate
 it automatically unless the <code>generate</code> parameter is explicitly set to <code>false</code>. If a <code>module</code> is defined, then it’s
@@ -5554,11 +6139,11 @@ defaults will come out of whatever is contained in the <code>input</code> parame
         </li>
         
         
-        <li id="section-335">
+        <li id="section-375">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-335">&#182;</a>
+                <a class="pilcrow" href="#section-375">&#182;</a>
               </div>
               <p>Fetch our real module name, in the case that we’re passed an alias.</p>
 
@@ -5569,11 +6154,11 @@ defaults will come out of whatever is contained in the <code>input</code> parame
         </li>
         
         
-        <li id="section-336">
+        <li id="section-376">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-336">&#182;</a>
+                <a class="pilcrow" href="#section-376">&#182;</a>
               </div>
               <p>If the module already exists, then return it.</p>
 
@@ -5586,11 +6171,11 @@ defaults will come out of whatever is contained in the <code>input</code> parame
         </li>
         
         
-        <li id="section-337">
+        <li id="section-377">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-337">&#182;</a>
+                <a class="pilcrow" href="#section-377">&#182;</a>
               </div>
               <p>If we explicity stated not to generate our module, then stop here.</p>
 
@@ -5603,11 +6188,11 @@ defaults will come out of whatever is contained in the <code>input</code> parame
         </li>
         
         
-        <li id="section-338">
+        <li id="section-378">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-338">&#182;</a>
+                <a class="pilcrow" href="#section-378">&#182;</a>
               </div>
               <p>Generate and return our newly generated module.</p>
 
@@ -5619,11 +6204,11 @@ defaults will come out of whatever is contained in the <code>input</code> parame
         </li>
         
         
-        <li id="section-339">
+        <li id="section-379">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-339">&#182;</a>
+                <a class="pilcrow" href="#section-379">&#182;</a>
               </div>
               <p>Store our aliases in a mapped <code>Object</code> that way it can be referenced easily.</p>
 
@@ -5634,11 +6219,11 @@ defaults will come out of whatever is contained in the <code>input</code> parame
         </li>
         
         
-        <li id="section-340">
+        <li id="section-380">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-340">&#182;</a>
+                <a class="pilcrow" href="#section-380">&#182;</a>
               </div>
               <p>Store the actual module name as an alias of itself.</p>
 
@@ -5649,11 +6234,11 @@ defaults will come out of whatever is contained in the <code>input</code> parame
         </li>
         
         
-        <li id="section-341">
+        <li id="section-381">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-341">&#182;</a>
+                <a class="pilcrow" href="#section-381">&#182;</a>
               </div>
               <p>Normalize our incoming aliases.</p>
 
@@ -5664,11 +6249,11 @@ defaults will come out of whatever is contained in the <code>input</code> parame
         </li>
         
         
-        <li id="section-342">
+        <li id="section-382">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-342">&#182;</a>
+                <a class="pilcrow" href="#section-382">&#182;</a>
               </div>
               <p>If no alias were passed in, then halt our function.</p>
 
@@ -5681,11 +6266,11 @@ defaults will come out of whatever is contained in the <code>input</code> parame
         </li>
         
         
-        <li id="section-343">
+        <li id="section-383">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-343">&#182;</a>
+                <a class="pilcrow" href="#section-383">&#182;</a>
               </div>
               <p>Fetch our module so we can add our aliases to it.</p>
 
@@ -5696,11 +6281,11 @@ defaults will come out of whatever is contained in the <code>input</code> parame
         </li>
         
         
-        <li id="section-344">
+        <li id="section-384">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-344">&#182;</a>
+                <a class="pilcrow" href="#section-384">&#182;</a>
               </div>
               <p>Loop through each of our aliases and store them.</p>
 
@@ -5711,11 +6296,11 @@ defaults will come out of whatever is contained in the <code>input</code> parame
         </li>
         
         
-        <li id="section-345">
+        <li id="section-385">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-345">&#182;</a>
+                <a class="pilcrow" href="#section-385">&#182;</a>
               </div>
               <p>If the alias already exists, notify the end user before overwriting it.</p>
 
@@ -5728,11 +6313,11 @@ defaults will come out of whatever is contained in the <code>input</code> parame
         </li>
         
         
-        <li id="section-346">
+        <li id="section-386">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-346">&#182;</a>
+                <a class="pilcrow" href="#section-386">&#182;</a>
               </div>
               <p>Reference our alias.</p>
 
@@ -5743,11 +6328,11 @@ defaults will come out of whatever is contained in the <code>input</code> parame
         </li>
         
         
-        <li id="section-347">
+        <li id="section-387">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-347">&#182;</a>
+                <a class="pilcrow" href="#section-387">&#182;</a>
               </div>
               <p>If we don’t aleady have an alias stored in our modules aliases, then add it.</p>
 
@@ -5762,11 +6347,11 @@ defaults will come out of whatever is contained in the <code>input</code> parame
         </li>
         
         
-        <li id="section-348">
+        <li id="section-388">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-348">&#182;</a>
+                <a class="pilcrow" href="#section-388">&#182;</a>
               </div>
               <p>An <code>Object</code> of aliases mappings where the <code>key</code> is the alias and the <code>value</code> is the <code>module</code> that the alias is for.</p>
 
@@ -5777,11 +6362,11 @@ defaults will come out of whatever is contained in the <code>input</code> parame
         </li>
         
         
-        <li id="section-349">
+        <li id="section-389">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-349">&#182;</a>
+                <a class="pilcrow" href="#section-389">&#182;</a>
               </div>
               <p>Fetch the base URL for the current identity being passed in.</p>
 
@@ -5792,11 +6377,11 @@ defaults will come out of whatever is contained in the <code>input</code> parame
         </li>
         
         
-        <li id="section-350">
+        <li id="section-390">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-350">&#182;</a>
+                <a class="pilcrow" href="#section-390">&#182;</a>
               </div>
               <p>If our <code>base</code> variable is null/empty, return null.</p>
 
@@ -5809,11 +6394,11 @@ defaults will come out of whatever is contained in the <code>input</code> parame
         </li>
         
         
-        <li id="section-351">
+        <li id="section-391">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-351">&#182;</a>
+                <a class="pilcrow" href="#section-391">&#182;</a>
               </div>
               <p>If our <code>base</code> variable is a string, then return it.</p>
 
@@ -5826,11 +6411,11 @@ defaults will come out of whatever is contained in the <code>input</code> parame
         </li>
         
         
-        <li id="section-352">
+        <li id="section-392">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-352">&#182;</a>
+                <a class="pilcrow" href="#section-392">&#182;</a>
               </div>
               <p>If no identity was given them revert to our fallback.</p>
 
@@ -5843,11 +6428,11 @@ defaults will come out of whatever is contained in the <code>input</code> parame
         </li>
         
         
-        <li id="section-353">
+        <li id="section-393">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-353">&#182;</a>
+                <a class="pilcrow" href="#section-393">&#182;</a>
               </div>
               <p>If a base URL exists for the identity, then return it.</p>
 
@@ -5860,11 +6445,11 @@ defaults will come out of whatever is contained in the <code>input</code> parame
         </li>
         
         
-        <li id="section-354">
+        <li id="section-394">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-354">&#182;</a>
+                <a class="pilcrow" href="#section-394">&#182;</a>
               </div>
               <p>No base URL was found.</p>
 
@@ -5876,11 +6461,11 @@ defaults will come out of whatever is contained in the <code>input</code> parame
         </li>
         
         
-        <li id="section-355">
+        <li id="section-395">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-355">&#182;</a>
+                <a class="pilcrow" href="#section-395">&#182;</a>
               </div>
               <p>Process all pending callbacks that are queued for a specific module.</p>
 
@@ -5891,11 +6476,11 @@ defaults will come out of whatever is contained in the <code>input</code> parame
         </li>
         
         
-        <li id="section-356">
+        <li id="section-396">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-356">&#182;</a>
+                <a class="pilcrow" href="#section-396">&#182;</a>
               </div>
               <p>Fetch the reference to our module.</p>
 
@@ -5906,11 +6491,11 @@ defaults will come out of whatever is contained in the <code>input</code> parame
         </li>
         
         
-        <li id="section-357">
+        <li id="section-397">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-357">&#182;</a>
+                <a class="pilcrow" href="#section-397">&#182;</a>
               </div>
               <p>If there are no callbacks, then halt the <code>Function</code>.</p>
 
@@ -5923,11 +6508,11 @@ defaults will come out of whatever is contained in the <code>input</code> parame
         </li>
         
         
-        <li id="section-358">
+        <li id="section-398">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-358">&#182;</a>
+                <a class="pilcrow" href="#section-398">&#182;</a>
               </div>
               <p>Loop through end invoke each of the callbacks.</p>
 
@@ -5938,11 +6523,11 @@ defaults will come out of whatever is contained in the <code>input</code> parame
         </li>
         
         
-        <li id="section-359">
+        <li id="section-399">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-359">&#182;</a>
+                <a class="pilcrow" href="#section-399">&#182;</a>
               </div>
               <p>Invoke the callback.</p>
 
@@ -5953,11 +6538,11 @@ defaults will come out of whatever is contained in the <code>input</code> parame
         </li>
         
         
-        <li id="section-360">
+        <li id="section-400">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-360">&#182;</a>
+                <a class="pilcrow" href="#section-400">&#182;</a>
               </div>
               <p>Remove the callback from the queue.</p>
 
@@ -5970,11 +6555,11 @@ defaults will come out of whatever is contained in the <code>input</code> parame
         </li>
         
         
-        <li id="section-361">
+        <li id="section-401">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-361">&#182;</a>
+                <a class="pilcrow" href="#section-401">&#182;</a>
               </div>
               <p>Define a new module and normalize the <code>input</code>. This <code>Function</code> will override a module if it already exists with the
  same name unless the <code>noOverride</code> parameter is explicity set to <code>true</code>.</p>
@@ -5986,11 +6571,11 @@ defaults will come out of whatever is contained in the <code>input</code> parame
         </li>
         
         
-        <li id="section-362">
+        <li id="section-402">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-362">&#182;</a>
+                <a class="pilcrow" href="#section-402">&#182;</a>
               </div>
               <p>If a module with the <code>moduleName</code> already exists, fetch the actual name of the module in case we have an alias.</p>
 
@@ -6001,11 +6586,11 @@ defaults will come out of whatever is contained in the <code>input</code> parame
         </li>
         
         
-        <li id="section-363">
+        <li id="section-403">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-363">&#182;</a>
+                <a class="pilcrow" href="#section-403">&#182;</a>
               </div>
               <p>If the module already exists, determine whether or not to override it.</p>
 
@@ -6016,11 +6601,11 @@ defaults will come out of whatever is contained in the <code>input</code> parame
         </li>
         
         
-        <li id="section-364">
+        <li id="section-404">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-364">&#182;</a>
+                <a class="pilcrow" href="#section-404">&#182;</a>
               </div>
               <p>If we explicity state not to override an existing module, then halt the function.</p>
 
@@ -6033,11 +6618,11 @@ defaults will come out of whatever is contained in the <code>input</code> parame
         </li>
         
         
-        <li id="section-365">
+        <li id="section-405">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-365">&#182;</a>
+                <a class="pilcrow" href="#section-405">&#182;</a>
               </div>
               <p>Let the end user know that we’re overriding a module.</p>
 
@@ -6049,11 +6634,11 @@ defaults will come out of whatever is contained in the <code>input</code> parame
         </li>
         
         
-        <li id="section-366">
+        <li id="section-406">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-366">&#182;</a>
+                <a class="pilcrow" href="#section-406">&#182;</a>
               </div>
               <p>Force our input to an <code>Object</code>.</p>
 
@@ -6066,11 +6651,11 @@ defaults will come out of whatever is contained in the <code>input</code> parame
         </li>
         
         
-        <li id="section-367">
+        <li id="section-407">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-367">&#182;</a>
+                <a class="pilcrow" href="#section-407">&#182;</a>
               </div>
               <p>Normalize our <code>input</code> parameter.</p>
 
@@ -6081,11 +6666,11 @@ defaults will come out of whatever is contained in the <code>input</code> parame
         </li>
         
         
-        <li id="section-368">
+        <li id="section-408">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-368">&#182;</a>
+                <a class="pilcrow" href="#section-408">&#182;</a>
               </div>
               <p>Store the definition reference of our module.</p>
 
@@ -6096,11 +6681,11 @@ defaults will come out of whatever is contained in the <code>input</code> parame
         </li>
         
         
-        <li id="section-369">
+        <li id="section-409">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-369">&#182;</a>
+                <a class="pilcrow" href="#section-409">&#182;</a>
               </div>
               <p>Import the aliases for our module.</p>
 
@@ -6111,11 +6696,11 @@ defaults will come out of whatever is contained in the <code>input</code> parame
         </li>
         
         
-        <li id="section-370">
+        <li id="section-410">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-370">&#182;</a>
+                <a class="pilcrow" href="#section-410">&#182;</a>
               </div>
               <p>Return our newly defined module.</p>
 
@@ -6127,11 +6712,11 @@ defaults will come out of whatever is contained in the <code>input</code> parame
         </li>
         
         
-        <li id="section-371">
+        <li id="section-411">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-371">&#182;</a>
+                <a class="pilcrow" href="#section-411">&#182;</a>
               </div>
               <p>Normalize the <code>input</code> data for a new module.</p>
 
@@ -6142,11 +6727,11 @@ defaults will come out of whatever is contained in the <code>input</code> parame
         </li>
         
         
-        <li id="section-372">
+        <li id="section-412">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-372">&#182;</a>
+                <a class="pilcrow" href="#section-412">&#182;</a>
               </div>
               <p>Fetch the defaults for a module.</p>
 
@@ -6157,11 +6742,11 @@ defaults will come out of whatever is contained in the <code>input</code> parame
         </li>
         
         
-        <li id="section-373">
+        <li id="section-413">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-373">&#182;</a>
+                <a class="pilcrow" href="#section-413">&#182;</a>
               </div>
               <p>Storage for <code>input</code> after it’s been normalized.</p>
 
@@ -6172,11 +6757,11 @@ defaults will come out of whatever is contained in the <code>input</code> parame
         </li>
         
         
-        <li id="section-374">
+        <li id="section-414">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-374">&#182;</a>
+                <a class="pilcrow" href="#section-414">&#182;</a>
               </div>
               <p>Loop through the top level and loader sublevels of our <code>input</code> and <code>defaults</code>.</p>
 
@@ -6187,11 +6772,11 @@ defaults will come out of whatever is contained in the <code>input</code> parame
         </li>
         
         
-        <li id="section-375">
+        <li id="section-415">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-375">&#182;</a>
+                <a class="pilcrow" href="#section-415">&#182;</a>
               </div>
               <p>The reference to the level of our defaults that we’re normalizing in this iteration.</p>
 
@@ -6202,11 +6787,11 @@ defaults will come out of whatever is contained in the <code>input</code> parame
         </li>
         
         
-        <li id="section-376">
+        <li id="section-416">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-376">&#182;</a>
+                <a class="pilcrow" href="#section-416">&#182;</a>
               </div>
               <p>If the <code>inputKey</code> isn’t empty, then we’re normalizing a sublevel. Adjust the payload’s reference.</p>
 
@@ -6220,11 +6805,11 @@ defaults will come out of whatever is contained in the <code>input</code> parame
         </li>
         
         
-        <li id="section-377">
+        <li id="section-417">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-377">&#182;</a>
+                <a class="pilcrow" href="#section-417">&#182;</a>
               </div>
               <p>Loop through our defaults.</p>
 
@@ -6235,11 +6820,11 @@ defaults will come out of whatever is contained in the <code>input</code> parame
         </li>
         
         
-        <li id="section-378">
+        <li id="section-418">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-378">&#182;</a>
+                <a class="pilcrow" href="#section-418">&#182;</a>
               </div>
               <p>By default set the value to whatever was passed in to our function.</p>
 
@@ -6250,11 +6835,11 @@ defaults will come out of whatever is contained in the <code>input</code> parame
         </li>
         
         
-        <li id="section-379">
+        <li id="section-419">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-379">&#182;</a>
+                <a class="pilcrow" href="#section-419">&#182;</a>
               </div>
               <p>If our <code>values</code> is an <code>Array</code>, then run the normalization function on the input value.</p>
 
@@ -6267,11 +6852,11 @@ defaults will come out of whatever is contained in the <code>input</code> parame
         </li>
         
         
-        <li id="section-380">
+        <li id="section-420">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-380">&#182;</a>
+                <a class="pilcrow" href="#section-420">&#182;</a>
               </div>
               <p>If the <code>inputKey</code> isn’t empty, store the <code>value</code> in our sublevel of our normalized <code>Object</code>.</p>
 
@@ -6285,11 +6870,11 @@ defaults will come out of whatever is contained in the <code>input</code> parame
         </li>
         
         
-        <li id="section-381">
+        <li id="section-421">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-381">&#182;</a>
+                <a class="pilcrow" href="#section-421">&#182;</a>
               </div>
               <p>Store the value at the top level of our normalized <code>Object</code>.</p>
 
@@ -6302,11 +6887,11 @@ defaults will come out of whatever is contained in the <code>input</code> parame
         </li>
         
         
-        <li id="section-382">
+        <li id="section-422">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-382">&#182;</a>
+                <a class="pilcrow" href="#section-422">&#182;</a>
               </div>
               <p>Forcefully set the module name within the <code>Object</code>.</p>
 
@@ -6317,11 +6902,11 @@ defaults will come out of whatever is contained in the <code>input</code> parame
         </li>
         
         
-        <li id="section-383">
+        <li id="section-423">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-383">&#182;</a>
+                <a class="pilcrow" href="#section-423">&#182;</a>
               </div>
               <p>Store the identity of our module now, so that we may reference it later.</p>
 
@@ -6332,11 +6917,11 @@ defaults will come out of whatever is contained in the <code>input</code> parame
         </li>
         
         
-        <li id="section-384">
+        <li id="section-424">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-384">&#182;</a>
+                <a class="pilcrow" href="#section-424">&#182;</a>
               </div>
               <p>Normalize all of the URLs for the module now and store them in a normalized state.</p>
 
@@ -6347,11 +6932,11 @@ defaults will come out of whatever is contained in the <code>input</code> parame
         </li>
         
         
-        <li id="section-385">
+        <li id="section-425">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-385">&#182;</a>
+                <a class="pilcrow" href="#section-425">&#182;</a>
               </div>
               <p>Return our normalized input.</p>
 
@@ -6363,11 +6948,11 @@ defaults will come out of whatever is contained in the <code>input</code> parame
         </li>
         
         
-        <li id="section-386">
+        <li id="section-426">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-386">&#182;</a>
+                <a class="pilcrow" href="#section-426">&#182;</a>
               </div>
               <p>The following are our defaults that we’ll use to normalize our data when defining a new module. The values of this
 <code>Object</code> are <code>Array</code> based. The first parameter of the <code>Array</code> is the <code>Function</code> that we’ll use to normalize the
@@ -6384,11 +6969,11 @@ normalization loop.</p>
         </li>
         
         
-        <li id="section-387">
+        <li id="section-427">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-387">&#182;</a>
+                <a class="pilcrow" href="#section-427">&#182;</a>
               </div>
               <p>Aliases for the module.</p>
 
@@ -6399,11 +6984,11 @@ normalization loop.</p>
         </li>
         
         
-        <li id="section-388">
+        <li id="section-428">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-388">&#182;</a>
+                <a class="pilcrow" href="#section-428">&#182;</a>
               </div>
               <p>We store our callbacks here for processing after our library has finished loading.</p>
 
@@ -6414,11 +6999,11 @@ normalization loop.</p>
         </li>
         
         
-        <li id="section-389">
+        <li id="section-429">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-389">&#182;</a>
+                <a class="pilcrow" href="#section-429">&#182;</a>
               </div>
               <p>Custom check function to determine whether or not our library has loaded properly.</p>
 
@@ -6429,11 +7014,11 @@ normalization loop.</p>
         </li>
         
         
-        <li id="section-390">
+        <li id="section-430">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-390">&#182;</a>
+                <a class="pilcrow" href="#section-430">&#182;</a>
               </div>
               <p>Dependencies for the module.</p>
 
@@ -6444,11 +7029,11 @@ normalization loop.</p>
         </li>
         
         
-        <li id="section-391">
+        <li id="section-431">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-391">&#182;</a>
+                <a class="pilcrow" href="#section-431">&#182;</a>
               </div>
               <p>Exports for the module that we’ll check the global scope for to see if the module loaded properly.</p>
 
@@ -6459,11 +7044,11 @@ normalization loop.</p>
         </li>
         
         
-        <li id="section-392">
+        <li id="section-432">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-392">&#182;</a>
+                <a class="pilcrow" href="#section-432">&#182;</a>
               </div>
               <p>The identity of the module, for example: <code>css</code>, <code>img</code>, or <code>js</code>.</p>
 
@@ -6474,11 +7059,11 @@ normalization loop.</p>
         </li>
         
         
-        <li id="section-393">
+        <li id="section-433">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-393">&#182;</a>
+                <a class="pilcrow" href="#section-433">&#182;</a>
               </div>
               <p>If the factory of the module is a function, it’ll be invoked upon it’s first require then that state will be
 saved. This flags whether or not the factory was invoked and saved.</p>
@@ -6490,11 +7075,11 @@ saved. This flags whether or not the factory was invoked and saved.</p>
         </li>
         
         
-        <li id="section-394">
+        <li id="section-434">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-394">&#182;</a>
+                <a class="pilcrow" href="#section-434">&#182;</a>
               </div>
               <p>The value of our module. It’s value can be anything, example: <code>Array</code>, <code>Function</code>, <code>HTMLElement</code>, <code>Object</code>,
 <code>String</code>, etc.</p>
@@ -6506,11 +7091,11 @@ saved. This flags whether or not the factory was invoked and saved.</p>
         </li>
         
         
-        <li id="section-395">
+        <li id="section-435">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-395">&#182;</a>
+                <a class="pilcrow" href="#section-435">&#182;</a>
               </div>
               <p>Must be either <code>null</code> or a <code>Function</code>. As soon as module is first used/referenced, this <code>Function</code> will
 immediately be called upon if present.</p>
@@ -6522,11 +7107,11 @@ immediately be called upon if present.</p>
         </li>
         
         
-        <li id="section-396">
+        <li id="section-436">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-396">&#182;</a>
+                <a class="pilcrow" href="#section-436">&#182;</a>
               </div>
               <p>Any loader data for the module will be stored here.</p>
 
@@ -6537,11 +7122,11 @@ immediately be called upon if present.</p>
         </li>
         
         
-        <li id="section-397">
+        <li id="section-437">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-397">&#182;</a>
+                <a class="pilcrow" href="#section-437">&#182;</a>
               </div>
               <p>Any URLs that failed to load will be stored here.</p>
 
@@ -6552,11 +7137,11 @@ immediately be called upon if present.</p>
         </li>
         
         
-        <li id="section-398">
+        <li id="section-438">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-398">&#182;</a>
+                <a class="pilcrow" href="#section-438">&#182;</a>
               </div>
               <p>Whether or not we actually attempted to load this module.</p>
 
@@ -6567,11 +7152,11 @@ immediately be called upon if present.</p>
         </li>
         
         
-        <li id="section-399">
+        <li id="section-439">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-399">&#182;</a>
+                <a class="pilcrow" href="#section-439">&#182;</a>
               </div>
               <p>If a URL loaded sucecssfully, it will be stored here.</p>
 
@@ -6582,11 +7167,11 @@ immediately be called upon if present.</p>
         </li>
         
         
-        <li id="section-400">
+        <li id="section-440">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-400">&#182;</a>
+                <a class="pilcrow" href="#section-440">&#182;</a>
               </div>
               <p>The time that a module finished loading.</p>
 
@@ -6597,11 +7182,11 @@ immediately be called upon if present.</p>
         </li>
         
         
-        <li id="section-401">
+        <li id="section-441">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-401">&#182;</a>
+                <a class="pilcrow" href="#section-441">&#182;</a>
               </div>
               <p>The time that a module initiated it’s load sequence. This includes all loading for the module in question. For
 example if a library had 3 fallback URLs, and the first 2 failed due to timeouts, and the 3rd was successful,
@@ -6614,11 +7199,11 @@ this variable would reflect the current time prior to the first 2 URLs failing.<
         </li>
         
         
-        <li id="section-402">
+        <li id="section-442">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-402">&#182;</a>
+                <a class="pilcrow" href="#section-442">&#182;</a>
               </div>
               <p>Flags whether or not the module is currently in the process of loading.</p>
 
@@ -6630,11 +7215,11 @@ this variable would reflect the current time prior to the first 2 URLs failing.<
         </li>
         
         
-        <li id="section-403">
+        <li id="section-443">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-403">&#182;</a>
+                <a class="pilcrow" href="#section-443">&#182;</a>
               </div>
               <p>Where all the URLs are stored for our module.</p>
 
@@ -6647,11 +7232,11 @@ this variable would reflect the current time prior to the first 2 URLs failing.<
         </li>
         
         
-        <li id="section-404">
+        <li id="section-444">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-404">&#182;</a>
+                <a class="pilcrow" href="#section-444">&#182;</a>
               </div>
               <p>All our module definitions will be stored and referenced through this <code>Object</code>. The keys of this <code>Object</code> correlate
 to the modules actual name.</p>
@@ -6663,11 +7248,11 @@ to the modules actual name.</p>
         </li>
         
         
-        <li id="section-405">
+        <li id="section-445">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-405">&#182;</a>
+                <a class="pilcrow" href="#section-445">&#182;</a>
               </div>
               <p>Fetch the dependencies for an <code>Array</code> of modules that passed in. If <code>findNestedDependencies</code> is explicitly set to
 <code>true</code>, then the <code>Function</code> will run a loop and fetch the full dependecy tree for all of the modules until all
@@ -6680,11 +7265,11 @@ dependencies have been exhausted and added to the queue.</p>
         </li>
         
         
-        <li id="section-406">
+        <li id="section-446">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-406">&#182;</a>
+                <a class="pilcrow" href="#section-446">&#182;</a>
               </div>
               <p>Store our queue of dependency modules.</p>
 
@@ -6695,11 +7280,11 @@ dependencies have been exhausted and added to the queue.</p>
         </li>
         
         
-        <li id="section-407">
+        <li id="section-447">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-407">&#182;</a>
+                <a class="pilcrow" href="#section-447">&#182;</a>
               </div>
               <p>Loop through and fetch our dependencies.</p>
 
@@ -6710,11 +7295,11 @@ dependencies have been exhausted and added to the queue.</p>
         </li>
         
         
-        <li id="section-408">
+        <li id="section-448">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-408">&#182;</a>
+                <a class="pilcrow" href="#section-448">&#182;</a>
               </div>
               <p>Reference our module definition.</p>
 
@@ -6725,11 +7310,11 @@ dependencies have been exhausted and added to the queue.</p>
         </li>
         
         
-        <li id="section-409">
+        <li id="section-449">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-409">&#182;</a>
+                <a class="pilcrow" href="#section-449">&#182;</a>
               </div>
               <p>If the module doesn’t exist, or there aren’t any dependencies, skip the iteration.</p>
 
@@ -6742,11 +7327,11 @@ dependencies have been exhausted and added to the queue.</p>
         </li>
         
         
-        <li id="section-410">
+        <li id="section-450">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-410">&#182;</a>
+                <a class="pilcrow" href="#section-450">&#182;</a>
               </div>
               <p>Queue our dependencies.</p>
 
@@ -6757,11 +7342,11 @@ dependencies have been exhausted and added to the queue.</p>
         </li>
         
         
-        <li id="section-411">
+        <li id="section-451">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-411">&#182;</a>
+                <a class="pilcrow" href="#section-451">&#182;</a>
               </div>
               <p>If we explicity want a loop of all our dependencies, then we’ll trace through them here.</p>
 
@@ -6775,11 +7360,11 @@ dependencies have been exhausted and added to the queue.</p>
         </li>
         
         
-        <li id="section-412">
+        <li id="section-452">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-412">&#182;</a>
+                <a class="pilcrow" href="#section-452">&#182;</a>
               </div>
               <p>Return all of our queued dependency modules.</p>
 
@@ -6791,11 +7376,11 @@ dependencies have been exhausted and added to the queue.</p>
         </li>
         
         
-        <li id="section-413">
+        <li id="section-453">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-413">&#182;</a>
+                <a class="pilcrow" href="#section-453">&#182;</a>
               </div>
               <p>Check to see whether a module exists by name.</p>
 
@@ -6806,11 +7391,11 @@ dependencies have been exhausted and added to the queue.</p>
         </li>
         
         
-        <li id="section-414">
+        <li id="section-454">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-414">&#182;</a>
+                <a class="pilcrow" href="#section-454">&#182;</a>
               </div>
               <p>Search the definitions <code>Object</code>.</p>
 
@@ -6823,11 +7408,11 @@ dependencies have been exhausted and added to the queue.</p>
         </li>
         
         
-        <li id="section-415">
+        <li id="section-455">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-415">&#182;</a>
+                <a class="pilcrow" href="#section-455">&#182;</a>
               </div>
               <p>No module found.</p>
 
@@ -6839,11 +7424,11 @@ dependencies have been exhausted and added to the queue.</p>
         </li>
         
         
-        <li id="section-416">
+        <li id="section-456">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-416">&#182;</a>
+                <a class="pilcrow" href="#section-456">&#182;</a>
               </div>
               <p>Identify the type of module that we have. Example: CSS, Image, JavaScript, etc.</p>
 
@@ -6854,11 +7439,11 @@ dependencies have been exhausted and added to the queue.</p>
         </li>
         
         
-        <li id="section-417">
+        <li id="section-457">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-417">&#182;</a>
+                <a class="pilcrow" href="#section-457">&#182;</a>
               </div>
               <p>If we can’t identify the module, use our fallback.</p>
 
@@ -6869,11 +7454,11 @@ dependencies have been exhausted and added to the queue.</p>
         </li>
         
         
-        <li id="section-418">
+        <li id="section-458">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-418">&#182;</a>
+                <a class="pilcrow" href="#section-458">&#182;</a>
               </div>
               <p>If no <code>moduleName</code> was passed in, return the fallback.</p>
 
@@ -6886,11 +7471,11 @@ dependencies have been exhausted and added to the queue.</p>
         </li>
         
         
-        <li id="section-419">
+        <li id="section-459">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-419">&#182;</a>
+                <a class="pilcrow" href="#section-459">&#182;</a>
               </div>
               <p>Split the <code>moduleName</code> on our <code>delimiter</code> which is derived from our configuration.</p>
 
@@ -6901,11 +7486,11 @@ dependencies have been exhausted and added to the queue.</p>
         </li>
         
         
-        <li id="section-420">
+        <li id="section-460">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-420">&#182;</a>
+                <a class="pilcrow" href="#section-460">&#182;</a>
               </div>
               <p>If we can’t find our delimiter, then return our fallback.</p>
 
@@ -6918,11 +7503,11 @@ dependencies have been exhausted and added to the queue.</p>
         </li>
         
         
-        <li id="section-421">
+        <li id="section-461">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-421">&#182;</a>
+                <a class="pilcrow" href="#section-461">&#182;</a>
               </div>
               <p>Return our modules identity.</p>
 
@@ -6934,11 +7519,11 @@ dependencies have been exhausted and added to the queue.</p>
         </li>
         
         
-        <li id="section-422">
+        <li id="section-462">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-422">&#182;</a>
+                <a class="pilcrow" href="#section-462">&#182;</a>
               </div>
               <p>The identifier to fallback on if we cannot find a match.</p>
 
@@ -6949,11 +7534,11 @@ dependencies have been exhausted and added to the queue.</p>
         </li>
         
         
-        <li id="section-423">
+        <li id="section-463">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-423">&#182;</a>
+                <a class="pilcrow" href="#section-463">&#182;</a>
               </div>
               <p>The support identifier types.</p>
 
@@ -6964,11 +7549,11 @@ dependencies have been exhausted and added to the queue.</p>
         </li>
         
         
-        <li id="section-424">
+        <li id="section-464">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-424">&#182;</a>
+                <a class="pilcrow" href="#section-464">&#182;</a>
               </div>
               <p>Invoke and return the invoked instance of the <code>factory</code> for our <code>module</code>, if the <code>factory</code> happens to be a
 <code>Function</code>. If the <code>factory</code> is not a <code>Function</code>, we’ll simply return whatever value is set for the `factory.</p>
@@ -6980,11 +7565,11 @@ dependencies have been exhausted and added to the queue.</p>
         </li>
         
         
-        <li id="section-425">
+        <li id="section-465">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-425">&#182;</a>
+                <a class="pilcrow" href="#section-465">&#182;</a>
               </div>
               <p>Fetch the instance of our <code>module</code>.</p>
 
@@ -6995,11 +7580,11 @@ dependencies have been exhausted and added to the queue.</p>
         </li>
         
         
-        <li id="section-426">
+        <li id="section-466">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-426">&#182;</a>
+                <a class="pilcrow" href="#section-466">&#182;</a>
               </div>
               <p>If we couldn’t fetch an instance of our <code>module</code>, something went wrong, relay a message to the end user.</p>
 
@@ -7013,11 +7598,11 @@ dependencies have been exhausted and added to the queue.</p>
         </li>
         
         
-        <li id="section-427">
+        <li id="section-467">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-427">&#182;</a>
+                <a class="pilcrow" href="#section-467">&#182;</a>
               </div>
               <p>If the module hasn’t already been invoked, then invoke it.</p>
 
@@ -7028,11 +7613,11 @@ dependencies have been exhausted and added to the queue.</p>
         </li>
         
         
-        <li id="section-428">
+        <li id="section-468">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-428">&#182;</a>
+                <a class="pilcrow" href="#section-468">&#182;</a>
               </div>
               <p>Flag the module as invoked, so we don’t run through this step again.</p>
 
@@ -7043,11 +7628,11 @@ dependencies have been exhausted and added to the queue.</p>
         </li>
         
         
-        <li id="section-429">
+        <li id="section-469">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-429">&#182;</a>
+                <a class="pilcrow" href="#section-469">&#182;</a>
               </div>
               <p>Reference the instance of our invoked <code>factory</code> as the <code>factory</code> value for the module.</p>
 
@@ -7059,11 +7644,11 @@ dependencies have been exhausted and added to the queue.</p>
         </li>
         
         
-        <li id="section-430">
+        <li id="section-470">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-430">&#182;</a>
+                <a class="pilcrow" href="#section-470">&#182;</a>
               </div>
               <p>Return the invoked <code>factory</code> instance of the module.</p>
 
@@ -7075,11 +7660,11 @@ dependencies have been exhausted and added to the queue.</p>
         </li>
         
         
-        <li id="section-431">
+        <li id="section-471">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-431">&#182;</a>
+                <a class="pilcrow" href="#section-471">&#182;</a>
               </div>
               <p>Invoke a <code>factory</code> with the arguments being the dependencies that are passed in via the <code>deps</code> parameter.</p>
 
@@ -7090,11 +7675,11 @@ dependencies have been exhausted and added to the queue.</p>
         </li>
         
         
-        <li id="section-432">
+        <li id="section-472">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-432">&#182;</a>
+                <a class="pilcrow" href="#section-472">&#182;</a>
               </div>
               <p>If the <code>factory</code> passed in is not a <code>Function</code>, then simply return it’s current value.</p>
 
@@ -7107,11 +7692,11 @@ dependencies have been exhausted and added to the queue.</p>
         </li>
         
         
-        <li id="section-433">
+        <li id="section-473">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-433">&#182;</a>
+                <a class="pilcrow" href="#section-473">&#182;</a>
               </div>
               <p>Invoke and return the invoked reference of our <code>factory</code>.</p>
 
@@ -7123,11 +7708,11 @@ dependencies have been exhausted and added to the queue.</p>
         </li>
         
         
-        <li id="section-434">
+        <li id="section-474">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-434">&#182;</a>
+                <a class="pilcrow" href="#section-474">&#182;</a>
               </div>
               <p>Fetch the actual name of a module. If a modules alias is passed in, this <code>Function</code> will fetch the modules name.</p>
 
@@ -7138,11 +7723,11 @@ dependencies have been exhausted and added to the queue.</p>
         </li>
         
         
-        <li id="section-435">
+        <li id="section-475">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-435">&#182;</a>
+                <a class="pilcrow" href="#section-475">&#182;</a>
               </div>
               <p>Fetch our actual module name, in the case that the <code>Function</code> was passed an alias.</p>
 
@@ -7155,11 +7740,11 @@ dependencies have been exhausted and added to the queue.</p>
         </li>
         
         
-        <li id="section-436">
+        <li id="section-476">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-436">&#182;</a>
+                <a class="pilcrow" href="#section-476">&#182;</a>
               </div>
               <p>Return the module name.</p>
 
@@ -7171,11 +7756,11 @@ dependencies have been exhausted and added to the queue.</p>
         </li>
         
         
-        <li id="section-437">
+        <li id="section-477">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-437">&#182;</a>
+                <a class="pilcrow" href="#section-477">&#182;</a>
               </div>
               <p>Invoke an <code>Array</code> of modules, and return each of their <code>factory</code> values in an <code>Array</code>.</p>
 
@@ -7186,11 +7771,11 @@ dependencies have been exhausted and added to the queue.</p>
         </li>
         
         
-        <li id="section-438">
+        <li id="section-478">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-438">&#182;</a>
+                <a class="pilcrow" href="#section-478">&#182;</a>
               </div>
               <p>Store a list of our <code>factory</code> references.</p>
 
@@ -7201,11 +7786,11 @@ dependencies have been exhausted and added to the queue.</p>
         </li>
         
         
-        <li id="section-439">
+        <li id="section-479">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-439">&#182;</a>
+                <a class="pilcrow" href="#section-479">&#182;</a>
               </div>
               <p>If no <code>modules</code> were passed into the <code>Function</code>, then simply return an empty <code>Array</code>.</p>
 
@@ -7218,11 +7803,11 @@ dependencies have been exhausted and added to the queue.</p>
         </li>
         
         
-        <li id="section-440">
+        <li id="section-480">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-440">&#182;</a>
+                <a class="pilcrow" href="#section-480">&#182;</a>
               </div>
               <p>Loop through and invoke each of our modules.</p>
 
@@ -7233,11 +7818,11 @@ dependencies have been exhausted and added to the queue.</p>
         </li>
         
         
-        <li id="section-441">
+        <li id="section-481">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-441">&#182;</a>
+                <a class="pilcrow" href="#section-481">&#182;</a>
               </div>
               <p>Push the <code>factory</code> off to our <code>references</code> <code>Array</code>.</p>
 
@@ -7249,11 +7834,11 @@ dependencies have been exhausted and added to the queue.</p>
         </li>
         
         
-        <li id="section-442">
+        <li id="section-482">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-442">&#182;</a>
+                <a class="pilcrow" href="#section-482">&#182;</a>
               </div>
               <p>Return our set of modules references.</p>
 
@@ -7265,11 +7850,11 @@ dependencies have been exhausted and added to the queue.</p>
         </li>
         
         
-        <li id="section-443">
+        <li id="section-483">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-443">&#182;</a>
+                <a class="pilcrow" href="#section-483">&#182;</a>
               </div>
               <p>Normalize all of the URLs for our modules. This function will automatically prepend our base URLs and store them.
 This has a few benefits: we don’t have to worry about processing the URLs later. We’re able to store a snapshot
@@ -7283,11 +7868,11 @@ and use a different set of base URLs with other modules.</p>
         </li>
         
         
-        <li id="section-444">
+        <li id="section-484">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-444">&#182;</a>
+                <a class="pilcrow" href="#section-484">&#182;</a>
               </div>
               <p>Fetch the base URL for our module.</p>
 
@@ -7298,11 +7883,11 @@ and use a different set of base URLs with other modules.</p>
         </li>
         
         
-        <li id="section-445">
+        <li id="section-485">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-445">&#182;</a>
+                <a class="pilcrow" href="#section-485">&#182;</a>
               </div>
               <p>Store our extension string.</p>
 
@@ -7313,11 +7898,11 @@ and use a different set of base URLs with other modules.</p>
         </li>
         
         
-        <li id="section-446">
+        <li id="section-486">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-446">&#182;</a>
+                <a class="pilcrow" href="#section-486">&#182;</a>
               </div>
               <p>Store our set of normalized URLs that we’ll reference.</p>
 
@@ -7328,11 +7913,11 @@ and use a different set of base URLs with other modules.</p>
         </li>
         
         
-        <li id="section-447">
+        <li id="section-487">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-447">&#182;</a>
+                <a class="pilcrow" href="#section-487">&#182;</a>
               </div>
               <p>Loop through each of the URLs.</p>
 
@@ -7343,11 +7928,11 @@ and use a different set of base URLs with other modules.</p>
         </li>
         
         
-        <li id="section-448">
+        <li id="section-488">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-448">&#182;</a>
+                <a class="pilcrow" href="#section-488">&#182;</a>
               </div>
               <p>If the URL we’re examining doesn’t have an extension then automatically add it. If the <code>identity</code> of the module
 happens to be an image, then the user must pass in an extension. We cannot assume the extension of image files
@@ -7362,11 +7947,11 @@ types, but we can for CSS and JavaScript files.</p>
         </li>
         
         
-        <li id="section-449">
+        <li id="section-489">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-449">&#182;</a>
+                <a class="pilcrow" href="#section-489">&#182;</a>
               </div>
               <p>If we have a <code>base</code> URL, then do the following.</p>
 
@@ -7377,11 +7962,11 @@ types, but we can for CSS and JavaScript files.</p>
         </li>
         
         
-        <li id="section-450">
+        <li id="section-490">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-450">&#182;</a>
+                <a class="pilcrow" href="#section-490">&#182;</a>
               </div>
               <p>Flag whether or not a URL should be ignore from being prepended with the base URL.</p>
 
@@ -7392,11 +7977,11 @@ types, but we can for CSS and JavaScript files.</p>
         </li>
         
         
-        <li id="section-451">
+        <li id="section-491">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-451">&#182;</a>
+                <a class="pilcrow" href="#section-491">&#182;</a>
               </div>
               <p>Loop through our ignore list.</p>
 
@@ -7407,11 +7992,11 @@ types, but we can for CSS and JavaScript files.</p>
         </li>
         
         
-        <li id="section-452">
+        <li id="section-492">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-452">&#182;</a>
+                <a class="pilcrow" href="#section-492">&#182;</a>
               </div>
               <p>Check to see if the prefix of our URL has a match in our ignore list.</p>
 
@@ -7422,11 +8007,11 @@ types, but we can for CSS and JavaScript files.</p>
         </li>
         
         
-        <li id="section-453">
+        <li id="section-493">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-453">&#182;</a>
+                <a class="pilcrow" href="#section-493">&#182;</a>
               </div>
               <p>Flag the URL as ignored.</p>
 
@@ -7437,11 +8022,11 @@ types, but we can for CSS and JavaScript files.</p>
         </li>
         
         
-        <li id="section-454">
+        <li id="section-494">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-454">&#182;</a>
+                <a class="pilcrow" href="#section-494">&#182;</a>
               </div>
               <p>Halt the loop.</p>
 
@@ -7454,11 +8039,11 @@ types, but we can for CSS and JavaScript files.</p>
         </li>
         
         
-        <li id="section-455">
+        <li id="section-495">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-455">&#182;</a>
+                <a class="pilcrow" href="#section-495">&#182;</a>
               </div>
               <p>If the URL isn’t prefixed with a match from our ignore list, then prepend the base URL.</p>
 
@@ -7472,11 +8057,11 @@ types, but we can for CSS and JavaScript files.</p>
         </li>
         
         
-        <li id="section-456">
+        <li id="section-496">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-456">&#182;</a>
+                <a class="pilcrow" href="#section-496">&#182;</a>
               </div>
               <p>Push the normalized URL off to our list.</p>
 
@@ -7488,11 +8073,11 @@ types, but we can for CSS and JavaScript files.</p>
         </li>
         
         
-        <li id="section-457">
+        <li id="section-497">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-457">&#182;</a>
+                <a class="pilcrow" href="#section-497">&#182;</a>
               </div>
               <p>Return the set of our normalized URLs.</p>
 
@@ -7504,11 +8089,11 @@ types, but we can for CSS and JavaScript files.</p>
         </li>
         
         
-        <li id="section-458">
+        <li id="section-498">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-458">&#182;</a>
+                <a class="pilcrow" href="#section-498">&#182;</a>
               </div>
               <p>URL prefixes to specifically ignore from prepending with our base URL.</p>
 
@@ -7521,11 +8106,11 @@ types, but we can for CSS and JavaScript files.</p>
         </li>
         
         
-        <li id="section-459">
+        <li id="section-499">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-459">&#182;</a>
+                <a class="pilcrow" href="#section-499">&#182;</a>
               </div>
               <p>Load up and invoke our modules along with all of their dependencies. This function will first find all dependencies
 for our modules and then attempt to load and invoke them from least to most dependent. This procedure needs to
@@ -7539,11 +8124,11 @@ don’t actually know about until after we’ve loaded it’s file.</p>
         </li>
         
         
-        <li id="section-460">
+        <li id="section-500">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-460">&#182;</a>
+                <a class="pilcrow" href="#section-500">&#182;</a>
               </div>
               <p>Fetch and normalize the argument that were passed in.</p>
 
@@ -7554,11 +8139,11 @@ don’t actually know about until after we’ve loaded it’s file.</p>
         </li>
         
         
-        <li id="section-461">
+        <li id="section-501">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-461">&#182;</a>
+                <a class="pilcrow" href="#section-501">&#182;</a>
               </div>
               <p>Boot up our dependencies.</p>
 
@@ -7569,11 +8154,11 @@ don’t actually know about until after we’ve loaded it’s file.</p>
         </li>
         
         
-        <li id="section-462">
+        <li id="section-502">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-462">&#182;</a>
+                <a class="pilcrow" href="#section-502">&#182;</a>
               </div>
               <p>At this point all of our dependencies have loaded, now we need to go ahead and invoke all of our dependencies in
 an order from least to most dependent, that way our initial <code>require</code> being requested can be invoked.</p>
@@ -7585,11 +8170,11 @@ an order from least to most dependent, that way our initial <code>require</code>
         </li>
         
         
-        <li id="section-463">
+        <li id="section-503">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-463">&#182;</a>
+                <a class="pilcrow" href="#section-503">&#182;</a>
               </div>
               <p>Invoke our <code>factory</code> function with it’s required dependency references.</p>
 
@@ -7602,11 +8187,480 @@ an order from least to most dependent, that way our initial <code>require</code>
         </li>
         
         
-        <li id="section-464">
+        <li id="section-504">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-464">&#182;</a>
+                <a class="pilcrow" href="#section-504">&#182;</a>
+              </div>
+              <p>Load up all of our dependencies, along with any nested dependencies in the order of least to most dependent.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>me.require.boot = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(modules, callback)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-505">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-505">&#182;</a>
+              </div>
+              <p>If our <code>deps</code> argument was malformed or empty, invoke our callback and halt the function.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (!me.isArray(modules) || !modules.length) {
+		callback();
+		<span class="hljs-keyword">return</span>;
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-506">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-506">&#182;</a>
+              </div>
+              <p>Boot up our anonymous modules first. If we’re booting, halt the function and we’ll loop back around.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (me.require.boot.anonymous(modules, callback)) {
+		<span class="hljs-keyword">return</span>;
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-507">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-507">&#182;</a>
+              </div>
+              <p>Boot our dependencies.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	me.require.boot.dependencies(modules, callback);
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-508">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-508">&#182;</a>
+              </div>
+              <p>Check to see if there’s any anonymous modules waiting to be loaded, if there is, then we’ll load them.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>me.require.boot.anonymous = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(modules, callback)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-509">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-509">&#182;</a>
+              </div>
+              <p>Store our anonymous module that we need to load.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> queue = me.require.boot.anonymous.queue(modules);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-510">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-510">&#182;</a>
+              </div>
+              <p>If we have any anonymous modules that we need to load, do it now, then loop back around.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (queue.length) {
+		me.require.loop(queue, modules, callback);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-511">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-511">&#182;</a>
+              </div>
+              <p>Explicitly return <code>true</code> so that we don’t halt the loop.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-512">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-512">&#182;</a>
+              </div>
+              <p>By returning <code>false</code> we’ll halt the anonymous module loop check.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-513">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-513">&#182;</a>
+              </div>
+              <p>Check to see if we have any dependencies which are anonymous modules that’ve yet to be loaded.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>me.require.boot.anonymous.queue = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(modules)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-514">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-514">&#182;</a>
+              </div>
+              <p>Store our queue of anonymous modules.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> queue = [];</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-515">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-515">&#182;</a>
+              </div>
+              <p>Loop through and fetch our dependencies.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	me.each(modules, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(moduleName)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-516">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-516">&#182;</a>
+              </div>
+              <p>Reference our module definition.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> <span class="hljs-built_in">module</span> = me.module(moduleName, <span class="hljs-literal">null</span>, <span class="hljs-literal">false</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-517">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-517">&#182;</a>
+              </div>
+              <p>If our module doesn’t exist, then it’s a anonymous module that we need to load up first to find out what
+dependencies are actually required for it.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> (!<span class="hljs-built_in">module</span>) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-518">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-518">&#182;</a>
+              </div>
+              <p>Setup the configuration for our anonymous module.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			me.require.config(moduleName);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-519">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-519">&#182;</a>
+              </div>
+              <p>Push the module off to our queue.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			queue.push(moduleName);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-520">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-520">&#182;</a>
+              </div>
+              <p>Don’t pass this point, as we can’t figure out the dependencies for our module yet.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">return</span>;
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-521">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-521">&#182;</a>
+              </div>
+              <p>Loop and find any dependencies that are anonymous modules as well and queue them.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		queue = queue.concat(me.require.boot.anonymous.queue(<span class="hljs-built_in">module</span>.deps));
+	});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-522">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-522">&#182;</a>
+              </div>
+              <p>Return all of our queued anonymous modules.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">return</span> queue;
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-523">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-523">&#182;</a>
+              </div>
+              <p>Load up all of the dependencies for the modules that are passed in.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>me.require.boot.dependencies = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(modules, callback)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-524">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-524">&#182;</a>
+              </div>
+              <p>Fetch all of the dependencies for our modules.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> dependencies = me.module.dependencies(modules);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-525">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-525">&#182;</a>
+              </div>
+              <p>Loop around until we find the start of our dependency tree.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (dependencies.length) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-526">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-526">&#182;</a>
+              </div>
+              <p>If we have dependencies, we’re not at the start of the tree, keep looping around.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">return</span> me.require.boot(dependencies, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-527">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-527">&#182;</a>
+              </div>
+              <p>Load the modules.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			me.require.module(modules, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-528">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-528">&#182;</a>
+              </div>
+              <p>Fetch the dependencies for our modules again.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">var</span> newDependencies = me.module.dependencies(modules);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-529">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-529">&#182;</a>
+              </div>
+              <p>Determine if there are any new dependencies, since we’ve loaded our set of modules.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span> (newDependencies.join() !== dependencies.join()) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-530">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-530">&#182;</a>
+              </div>
+              <p>Load up our new dependencies.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">return</span> me.require.boot(newDependencies, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-531">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-531">&#182;</a>
+              </div>
+              <p>Loop back around to see if any new dependencies have loaded from our set of newly loaded dependencies.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>						me.require.module(modules, callback);
+					});
+				}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-532">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-532">&#182;</a>
+              </div>
+              <p>If we didn’t have any new dependencies, then run our callback.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				callback();
+			});
+		});
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-533">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-533">&#182;</a>
+              </div>
+              <p>Load the start of our dependency tree.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	me.require.module(modules, callback);
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-534">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-534">&#182;</a>
               </div>
               <p>Fetch and normalize the arguments that are passed into our <code>require</code> function. The arguments for our <code>require</code>
 function can be sent in a number of different forms such as:
@@ -7623,11 +8677,11 @@ function can be sent in a number of different forms such as:
         </li>
         
         
-        <li id="section-465">
+        <li id="section-535">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-465">&#182;</a>
+                <a class="pilcrow" href="#section-535">&#182;</a>
               </div>
               <p>Convert our <code>arguments</code> into an <code>Array</code>.</p>
 
@@ -7638,11 +8692,11 @@ function can be sent in a number of different forms such as:
         </li>
         
         
-        <li id="section-466">
+        <li id="section-536">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-466">&#182;</a>
+                <a class="pilcrow" href="#section-536">&#182;</a>
               </div>
               <p>We’ll fill up these variables based on the arguments.</p>
 
@@ -7656,11 +8710,11 @@ function can be sent in a number of different forms such as:
         </li>
         
         
-        <li id="section-467">
+        <li id="section-537">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-467">&#182;</a>
+                <a class="pilcrow" href="#section-537">&#182;</a>
               </div>
               <p>If we only have a single argument, and it’s a function, derive our dependencies from it.</p>
 
@@ -7676,11 +8730,11 @@ function can be sent in a number of different forms such as:
         </li>
         
         
-        <li id="section-468">
+        <li id="section-538">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-468">&#182;</a>
+                <a class="pilcrow" href="#section-538">&#182;</a>
               </div>
               <p>If we made it this far, treat the first argument has our dependecies, and the 2nd has is our factory.</p>
 
@@ -7691,11 +8745,11 @@ function can be sent in a number of different forms such as:
         </li>
         
         
-        <li id="section-469">
+        <li id="section-539">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-469">&#182;</a>
+                <a class="pilcrow" href="#section-539">&#182;</a>
               </div>
               <p>If a 2nd argument is defined, treat it as our factory.</p>
 
@@ -7708,11 +8762,11 @@ function can be sent in a number of different forms such as:
         </li>
         
         
-        <li id="section-470">
+        <li id="section-540">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-470">&#182;</a>
+                <a class="pilcrow" href="#section-540">&#182;</a>
               </div>
               <p>Return back our normalized arguments.</p>
 
@@ -7724,480 +8778,11 @@ function can be sent in a number of different forms such as:
         </li>
         
         
-        <li id="section-471">
+        <li id="section-541">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-471">&#182;</a>
-              </div>
-              <p>Load up all of our dependencies, along with any nested dependencies in the order of least to most dependent.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>me.require.boot = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(modules, callback)</span> </span>{</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-472">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-472">&#182;</a>
-              </div>
-              <p>If our <code>deps</code> argument was malformed or empty, invoke our callback and halt the function.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (!me.isArray(modules) || !modules.length) {
-		callback();
-		<span class="hljs-keyword">return</span>;
-	}</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-473">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-473">&#182;</a>
-              </div>
-              <p>Boot up our anonymous modules first. If we’re booting, halt the function and we’ll loop back around.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (me.require.boot.anonymous(modules, callback)) {
-		<span class="hljs-keyword">return</span>;
-	}</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-474">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-474">&#182;</a>
-              </div>
-              <p>Boot our dependencies.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>	me.require.boot.dependencies(modules, callback);
-};</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-475">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-475">&#182;</a>
-              </div>
-              <p>Check to see if there’s any anonymous modules waiting to be loaded, if there is, then we’ll load them.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>me.require.boot.anonymous = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(modules, callback)</span> </span>{</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-476">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-476">&#182;</a>
-              </div>
-              <p>Store our anonymous module that we need to load.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> queue = me.require.boot.anonymous.queue(modules);</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-477">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-477">&#182;</a>
-              </div>
-              <p>If we have any anonymous modules that we need to load, do it now, then loop back around.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (queue.length) {
-		me.require.loop(queue, modules, callback);</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-478">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-478">&#182;</a>
-              </div>
-              <p>Explicitly return <code>true</code> so that we don’t halt the loop.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
-	}</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-479">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-479">&#182;</a>
-              </div>
-              <p>By returning <code>false</code> we’ll halt the anonymous module loop check.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
-};</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-480">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-480">&#182;</a>
-              </div>
-              <p>Check to see if we have any dependencies which are anonymous modules that’ve yet to be loaded.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>me.require.boot.anonymous.queue = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(modules)</span> </span>{</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-481">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-481">&#182;</a>
-              </div>
-              <p>Store our queue of anonymous modules.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> queue = [];</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-482">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-482">&#182;</a>
-              </div>
-              <p>Loop through and fetch our dependencies.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>	me.each(modules, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(moduleName)</span> </span>{</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-483">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-483">&#182;</a>
-              </div>
-              <p>Reference our module definition.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> <span class="hljs-built_in">module</span> = me.module(moduleName, <span class="hljs-literal">null</span>, <span class="hljs-literal">false</span>);</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-484">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-484">&#182;</a>
-              </div>
-              <p>If our module doesn’t exist, then it’s a anonymous module that we need to load up first to find out what
-dependencies are actually required for it.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> (!<span class="hljs-built_in">module</span>) {</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-485">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-485">&#182;</a>
-              </div>
-              <p>Setup the configuration for our anonymous module.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>			me.require.config(moduleName);</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-486">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-486">&#182;</a>
-              </div>
-              <p>Push the module off to our queue.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>			queue.push(moduleName);</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-487">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-487">&#182;</a>
-              </div>
-              <p>Don’t pass this point, as we can’t figure out the dependencies for our module yet.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">return</span>;
-		}</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-488">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-488">&#182;</a>
-              </div>
-              <p>Loop and find any dependencies that are anonymous modules as well and queue them.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>		queue = queue.concat(me.require.boot.anonymous.queue(<span class="hljs-built_in">module</span>.deps));
-	});</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-489">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-489">&#182;</a>
-              </div>
-              <p>Return all of our queued anonymous modules.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">return</span> queue;
-};</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-490">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-490">&#182;</a>
-              </div>
-              <p>Load up all of the dependencies for the modules that are passed in.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>me.require.boot.dependencies = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(modules, callback)</span> </span>{</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-491">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-491">&#182;</a>
-              </div>
-              <p>Fetch all of the dependencies for our modules.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> dependencies = me.module.dependencies(modules);</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-492">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-492">&#182;</a>
-              </div>
-              <p>Loop around until we find the start of our dependency tree.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (dependencies.length) {</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-493">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-493">&#182;</a>
-              </div>
-              <p>If we have dependencies, we’re not at the start of the tree, keep looping around.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">return</span> me.require.boot(dependencies, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-494">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-494">&#182;</a>
-              </div>
-              <p>Load the modules.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>			me.require.module(modules, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-495">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-495">&#182;</a>
-              </div>
-              <p>Fetch the dependencies for our modules again.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">var</span> newDependencies = me.module.dependencies(modules);</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-496">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-496">&#182;</a>
-              </div>
-              <p>Determine if there are any new dependencies, since we’ve loaded our set of modules.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span> (newDependencies.join() !== dependencies.join()) {</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-497">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-497">&#182;</a>
-              </div>
-              <p>Load up our new dependencies.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">return</span> me.require.boot(newDependencies, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-498">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-498">&#182;</a>
-              </div>
-              <p>Loop back around to see if any new dependencies have loaded from our set of newly loaded dependencies.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>						me.require.module(modules, callback);
-					});
-				}</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-499">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-499">&#182;</a>
-              </div>
-              <p>If we didn’t have any new dependencies, then run our callback.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>				callback();
-			});
-		});
-	}</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-500">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-500">&#182;</a>
-              </div>
-              <p>Load the start of our dependency tree.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>	me.require.module(modules, callback);
-};</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-501">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-501">&#182;</a>
+                <a class="pilcrow" href="#section-541">&#182;</a>
               </div>
               <p>Configure an anonymous module with a path and definition.</p>
 
@@ -8208,11 +8793,11 @@ dependencies are actually required for it.</p>
         </li>
         
         
-        <li id="section-502">
+        <li id="section-542">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-502">&#182;</a>
+                <a class="pilcrow" href="#section-542">&#182;</a>
               </div>
               <p>If we don’t have a <code>moduleName</code>, then the invocation was malformed. Halt the function.</p>
 
@@ -8225,11 +8810,11 @@ dependencies are actually required for it.</p>
         </li>
         
         
-        <li id="section-503">
+        <li id="section-543">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-503">&#182;</a>
+                <a class="pilcrow" href="#section-543">&#182;</a>
               </div>
               <p>Create our <code>Object</code> that we’ll pass to our configuration <code>Function</code>.</p>
 
@@ -8242,11 +8827,11 @@ dependencies are actually required for it.</p>
         </li>
         
         
-        <li id="section-504">
+        <li id="section-544">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-504">&#182;</a>
+                <a class="pilcrow" href="#section-544">&#182;</a>
               </div>
               <p>Set our URL to be relative to our configurations <code>base</code> variable.</p>
 
@@ -8257,11 +8842,11 @@ dependencies are actually required for it.</p>
         </li>
         
         
-        <li id="section-505">
+        <li id="section-545">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-505">&#182;</a>
+                <a class="pilcrow" href="#section-545">&#182;</a>
               </div>
               <p>Pass the anonymous module over to our configuration to generate the module and URLs.</p>
 
@@ -8273,11 +8858,11 @@ dependencies are actually required for it.</p>
         </li>
         
         
-        <li id="section-506">
+        <li id="section-546">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-506">&#182;</a>
+                <a class="pilcrow" href="#section-546">&#182;</a>
               </div>
               <p>Assumes that all depdendencies being passed into the <code>deps</code> parameter have already been loaded. The sole purpose of
 this <code>Function</code> is to simply invoke the factories for each of the dependencies if they haven’t already been invoked.</p>
@@ -8289,11 +8874,11 @@ this <code>Function</code> is to simply invoke the factories for each of the dep
         </li>
         
         
-        <li id="section-507">
+        <li id="section-547">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-507">&#182;</a>
+                <a class="pilcrow" href="#section-547">&#182;</a>
               </div>
               <p>Fetch any dependencies of our dependencies.</p>
 
@@ -8304,11 +8889,11 @@ this <code>Function</code> is to simply invoke the factories for each of the dep
         </li>
         
         
-        <li id="section-508">
+        <li id="section-548">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-508">&#182;</a>
+                <a class="pilcrow" href="#section-548">&#182;</a>
               </div>
               <p>Reverse our dependency list as our fetcher method loops through finding most to least dependent, we actually need
 to invoke each <code>factory</code> from least to most dependent.</p>
@@ -8320,11 +8905,11 @@ to invoke each <code>factory</code> from least to most dependent.</p>
         </li>
         
         
-        <li id="section-509">
+        <li id="section-549">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-509">&#182;</a>
+                <a class="pilcrow" href="#section-549">&#182;</a>
               </div>
               <p>Append our initial dependencies to the bottom of our list to be invoked last.</p>
 
@@ -8335,11 +8920,11 @@ to invoke each <code>factory</code> from least to most dependent.</p>
         </li>
         
         
-        <li id="section-510">
+        <li id="section-550">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-510">&#182;</a>
+                <a class="pilcrow" href="#section-550">&#182;</a>
               </div>
               <p>Loop through each of the dependencies in our list that we need to invoke.</p>
 
@@ -8350,11 +8935,11 @@ to invoke each <code>factory</code> from least to most dependent.</p>
         </li>
         
         
-        <li id="section-511">
+        <li id="section-551">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-511">&#182;</a>
+                <a class="pilcrow" href="#section-551">&#182;</a>
               </div>
               <p>Invoke our dependency.</p>
 
@@ -8367,11 +8952,11 @@ to invoke each <code>factory</code> from least to most dependent.</p>
         </li>
         
         
-        <li id="section-512">
+        <li id="section-552">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-512">&#182;</a>
+                <a class="pilcrow" href="#section-552">&#182;</a>
               </div>
               <p>Load up a queue of modules, then run <code>require.boot</code> to check and make sure all modules along with their dependencies
 have successfully loaded. This <code>Function</code> is being to used to exhaust all dependencies. In the case of anonymous
@@ -8385,11 +8970,11 @@ care of that.</p>
         </li>
         
         
-        <li id="section-513">
+        <li id="section-553">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-513">&#182;</a>
+                <a class="pilcrow" href="#section-553">&#182;</a>
               </div>
               <p>Load any modules in our queue.</p>
 
@@ -8400,11 +8985,11 @@ care of that.</p>
         </li>
         
         
-        <li id="section-514">
+        <li id="section-554">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-514">&#182;</a>
+                <a class="pilcrow" href="#section-554">&#182;</a>
               </div>
               <p>Run back to <code>require.boot</code> and attempt to boot up the modules originally requested.</p>
 
@@ -8417,11 +9002,11 @@ care of that.</p>
         </li>
         
         
-        <li id="section-515">
+        <li id="section-555">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-515">&#182;</a>
+                <a class="pilcrow" href="#section-555">&#182;</a>
               </div>
               <p>Load up an <code>Array</code> of modules simultaneously.</p>
 
@@ -8432,11 +9017,11 @@ care of that.</p>
         </li>
         
         
-        <li id="section-516">
+        <li id="section-556">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-516">&#182;</a>
+                <a class="pilcrow" href="#section-556">&#182;</a>
               </div>
               <p>If we have no <code>modules</code>, then invoke our callback and halt the function.</p>
 
@@ -8450,11 +9035,11 @@ care of that.</p>
         </li>
         
         
-        <li id="section-517">
+        <li id="section-557">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-517">&#182;</a>
+                <a class="pilcrow" href="#section-557">&#182;</a>
               </div>
               <p>Store an <code>Array</code> of functions that we’ll run simultaneously.</p>
 
@@ -8465,11 +9050,11 @@ care of that.</p>
         </li>
         
         
-        <li id="section-518">
+        <li id="section-558">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-518">&#182;</a>
+                <a class="pilcrow" href="#section-558">&#182;</a>
               </div>
               <p>Loop and queue each of our modules.</p>
 
@@ -8480,11 +9065,11 @@ care of that.</p>
         </li>
         
         
-        <li id="section-519">
+        <li id="section-559">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-519">&#182;</a>
+                <a class="pilcrow" href="#section-559">&#182;</a>
               </div>
               <p>Push our anonymous <code>Function</code> off to our parallel queue.</p>
 
@@ -8495,11 +9080,11 @@ care of that.</p>
         </li>
         
         
-        <li id="section-520">
+        <li id="section-560">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-520">&#182;</a>
+                <a class="pilcrow" href="#section-560">&#182;</a>
               </div>
               <p>Load the module onto the page.</p>
 
@@ -8512,11 +9097,11 @@ care of that.</p>
         </li>
         
         
-        <li id="section-521">
+        <li id="section-561">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-521">&#182;</a>
+                <a class="pilcrow" href="#section-561">&#182;</a>
               </div>
               <p>Invoke the queue.</p>
 

@@ -1,14 +1,3 @@
-code documentation
-	[x] config
-	[x] core
-	[x] define
-	[x] loader
-	[x] loaderImage
-	[ ] loaderJavaScript
-	[ ] loaderStylesheet
-	[x] module
-	[x] require
-
 unit tests
 	[ ] config
 	[x] core
@@ -21,8 +10,6 @@ unit tests
 	[ ] require
 
 @todo
-	make sure that `globals` is actually being referenced
-	the exports check needs to use the global variable! if global is set to false, dont do the globals exports check!
 	allow config to pass in logging levels for debug: 'warn', 'info', 'error', or false
 
 	allow ability to stick version #s on the libraries combines w/ FBK CLI

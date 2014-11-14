@@ -88,6 +88,8 @@ We're using [idiomatic.js](https://github.com/rwaldron/idiomatic.js/blob/master/
 - Comment your code, as if an amateur were reading it.
 - If changing/adding functionality add/update associated tests.
 
+**You're changes must pass the tests that are in place, otherwise they won't be accepted!**
+
 To check your coding style run `grunt lint` from the CLI.
 
 ---

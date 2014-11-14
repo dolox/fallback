@@ -19,43 +19,6 @@ me.require = function() {
 	});
 };
 
-// Fetch and normalize the arguments that are passed into our `require` function. The arguments for our `require`
-// function can be sent in a number of different forms such as:
-// (dependency) - Where `dependency` is a `String`.
-// (dependencies) - Where `dependency` is a `Array`.
-// (factory) - Where `factory` is a `Function`.
-// (dependency, factory) - Where `dependency` is a `String` and `factory` is a `Function`.
-// (dependencies, factory) - Where `dependencies` is a `Array` and `factory` is a `Function`.
-me.require.args = function() {
-	// Convert our `arguments` into an `Array`.
-	var args = me.arrayClone(arguments);
-
-	// We'll fill up these variables based on the arguments.
-	var payload = {
-		deps: null,
-		factory: null
-	};
-
-	// If we only have a single argument, and it's a function, derive our dependencies from it.
-	if (args.length === 1 && me.isFunction(args[0])) {
-		payload.deps = me.args(args[0]);
-		payload.factory = args[0];
-
-		return payload;
-	}
-
-	// If we made it this far, treat the first argument has our dependecies, and the 2nd has is our factory.
-	payload.deps = me.normalizeStringSeries(args[0]);
-
-	// If a 2nd argument is defined, treat it as our factory.
-	if (me.isDefined(args[1])) {
-		payload.factory = args[1];
-	}
-
-	// Return back our normalized arguments.
-	return payload;
-};
-
 // Load up all of our dependencies, along with any nested dependencies in the order of least to most dependent.
 me.require.boot = function(modules, callback) {
 	// If our `deps` argument was malformed or empty, invoke our callback and halt the function.
@@ -152,6 +115,43 @@ me.require.boot.dependencies = function(modules, callback) {
 
 	// Load the start of our dependency tree.
 	me.require.module(modules, callback);
+};
+
+// Fetch and normalize the arguments that are passed into our `require` function. The arguments for our `require`
+// function can be sent in a number of different forms such as:
+// (dependency) - Where `dependency` is a `String`.
+// (dependencies) - Where `dependency` is a `Array`.
+// (factory) - Where `factory` is a `Function`.
+// (dependency, factory) - Where `dependency` is a `String` and `factory` is a `Function`.
+// (dependencies, factory) - Where `dependencies` is a `Array` and `factory` is a `Function`.
+me.require.args = function() {
+	// Convert our `arguments` into an `Array`.
+	var args = me.arrayClone(arguments);
+
+	// We'll fill up these variables based on the arguments.
+	var payload = {
+		deps: null,
+		factory: null
+	};
+
+	// If we only have a single argument, and it's a function, derive our dependencies from it.
+	if (args.length === 1 && me.isFunction(args[0])) {
+		payload.deps = me.args(args[0]);
+		payload.factory = args[0];
+
+		return payload;
+	}
+
+	// If we made it this far, treat the first argument has our dependecies, and the 2nd has is our factory.
+	payload.deps = me.normalizeStringSeries(args[0]);
+
+	// If a 2nd argument is defined, treat it as our factory.
+	if (me.isDefined(args[1])) {
+		payload.factory = args[1];
+	}
+
+	// Return back our normalized arguments.
+	return payload;
 };
 
 // Configure an anonymous module with a path and definition.

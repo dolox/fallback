@@ -1175,14 +1175,13 @@ me.loader.js = {};
 // Attempt to load a script onto the page.
 me.loader.js.boot = function(module, url, callbackSuccess, callbackFailed) {
 	// If the library is already loaded on the page, don't attempt to reload it.
-	var factory = me.loader.js.check(module);
-	//console.log(module);
-	// @todo we need to check if its already on the page*#@$%()
-	//if (factory) {
-	//	return callbackSuccess(module, url, 'predefined', factory);
-	//}
+	var factory = me.loader.js.check(module, false);
 
-// @todo make these their own functions and use .apply on them
+	// Check if our module has already been loaded.
+	if (factory) {
+		return callbackSuccess(module, url, 'predefined', factory);
+	}
+
 	// If our library failed to load, we'll call upon this function.
 	var failed = function() {
 		return callbackFailed(module, url, 'failed');
@@ -1191,44 +1190,20 @@ me.loader.js.boot = function(module, url, callbackSuccess, callbackFailed) {
 	// Whether a callback comes back as an error/success, they're not always trustworthy.
 	// We need to manually check to make sure that our libraries were loaded properly.
 	var check = function() {
+		// Attempt to fetch the factory for our module.
 		factory = me.loader.js.check(module);
 
+		// If the factory is empty, then it failed to load! Invoke the failure callback.
 		if (!factory) {
 			return failed();
 		}
 
+		// We passed the checks, invoke the success callback.
 		return callbackSuccess(module, url, 'success', factory);
 	};
 
-	// Create a new script element instance.
-	var element = global.document.createElement('script');
-
-	// Set the actual URL that we're going to request to load for our library.
-	element.src = url;
-
-	// Set the type, some legacy browsers require this attribute be present.
-	element.type = 'text/javascript';
-
-	// If we get an error callback, bypass any checking and just fail.
-	element.onerror = failed;
-
-	// Do our checks and throw our callback.
-	element.onload = check;
-
-	// Special event handler for certain versions of IE. @ie
-	element.onreadystatechange = function() {
-		if (!this.readyState || this.readyState === 'loaded' || this.readyState === 'complete') {
-			// Explicity remove the callback after we receive it.
-			// Some versions of IE tend to fire off multiple success events.
-			this.onreadystatechange = null;
-
-			// Do our checks and throw our callback.
-			check();
-		}
-	};
-
-	// Load our URL on the page.
-	return me.head.appendChild(element);
+	// Spawn a new element on the page contained our URL with our callbacks.
+	return me.loader.js.element(url, check, failed);
 };
 
 // Sift through the script elements on the page and attempt to derive the values from `attribute` that is passed in to
@@ -1279,68 +1254,119 @@ me.loader.js.attributes = function(attribute) {
 	return values;
 };
 
-// @todo document it
-// @todo if there are no exports, simply rely on the callbacks
-me.loader.js.check = function(module) {
+// Check to see if a module has already been loaded on the page. This `Function` will return `Boolean`, `true` being
+// that a module has already been loaded and `false` being that it hasn't.
+me.loader.js.check = function(module, fallback) {
+	// See if the module itself has been flagged as loaded.
 	if (module.loader.loaded === true) {
 		return true;
 	}
 
+	// If the user added their own custom checking function, invoke it now to preform the check.
 	if (me.isFunction(module.check)) {
 		return module.check();
 	}
 
-	if (module.exports.length) {
+	// If globals are enabled, and we have exports for the module, check the `window` to see if they're defined.
+	if (me.globals === true && module.exports.length) {
 		return me.loader.js.check.exports(module.exports);
 	}
 
 	// By default just return true, as this function was hit from a success callback.
-	return true;
+	return me.isDefined(fallback) ? fallback : true;
 };
 
-// This function will check for the instance of our library based on the exports given. If the instance of our library
-// exists it'll be returned, otherwise this function will return `null`.
+// Check for the instance of our library based on the exports given. If the instance of our library exists it'll be
+// returned, otherwise this function will return `null. The `Function` basically checks the `window` variable for a
+// subkey which are the exports that are specified in the paramter.
 me.loader.js.check.exports = function(exports) {
+	// If our `exports` parameter is not an `Array`, cast it to one.
+	if (!me.isArray(exports)) {
+		exports = [exports];
+	}
+
+	// Storage for our factory value.
 	var factory = null;
+
+	// If we have no exports, return `null`.
+	if (!exports.length) {
+		return factory;
+	}
 
 	// Loop through each of our exports variable, until we find a match.
 	me.each(exports, function(variable) {
 		// We have to explicity use `eval` because variables will come in many forms. In particular sometimes they will come
 		// in the form of being a child of an object. For example `jQuery UI` loads under the `glboal` variable `jQuery.ui`.
 		// In order for us to get to this programtically we have to use `eval`.
-
-		/*eslint-disable*/
 		try {
-			if (factory = eval('window.' + variable)) {
-				return false;
-			}
+			/*eslint-disable*/
+			factory = eval('window.' + variable);
+			/*eslint-enable*/
 
-			// Force our variable back to a `null`.
-			factory = null;
+			// If our `factor`y is undefined, force the variable back to a `null`.
+			if (!me.isDefined(factory)) {
+				factory = null;
+			}
 		} catch (exception) {
-			me.log('loaderJavaScript', '`fallback.loader.js.factory.exports` threw an exception.', exception);
+			// Let the end user know that we hit an exception due to their malformed `exports` variable.
+			me.log(2, 'loaderJavaScript', '`fallback.loader.js.check.exports` threw an exception.', exception);
 		}
-		/*eslint-enable*/
 	});
 
+	// Return the factory for our library.
 	return factory;
+};
+
+// Spawn a new element on the page with our URL.
+me.loader.js.element = function(url, success, failed) {
+	// Create a new script element instance.
+	var element = global.document.createElement('script');
+
+	// The browser supports it, enable crossorigin.
+	element.crossorigin = true;
+
+	// If we get an error callback, bypass any checking and just fail.
+	element.onerror = failed;
+
+	// Do our checks and throw our callback.
+	element.onload = success;
+
+	// Special event handler for certain versions of IE. @ie
+	element.onreadystatechange = function() {
+		if (!this.readyState || this.readyState === 'loaded' || this.readyState === 'complete') {
+			// Explicity remove the callback after we receive it.
+			// Some versions of IE tend to fire off multiple success events. @ie
+			this.onreadystatechange = null;
+
+			// Do our checks and throw our callback.
+			success();
+		}
+	};
+
+	// Set the actual URL that we're going to request to load for our library.
+	element.src = url;
+
+	// Set the type, some legacy browsers require this attribute be present.
+	element.type = 'text/javascript';
+
+	// Load our URL on the page.
+	return me.head.appendChild(element);
 };
 
 /* global me */
 
-// @todo remove the auto adding of exports, if exports aren't present then just rely on the native browser callbacks
-// @todo critical for css files^^^^^ debating...
-
+// Cascading Stylesheet loader which is responsible for loading any CSS files for the library.
 me.loader.css = {};
 
+// Attempt to load a stylesheet onto the page.
 me.loader.css.boot = function(module, url, callbackSuccess, callbackFailed) {
-	// If the library is already defined on the page, don't attempt to reload it.
-	var factory = me.loader.css.check(module);
+	// If the stylesheet is already loaded on the page, don't attempt to reload it.
+	var factory = me.loader.css.check(module, false);
 
-	// @todo we need to check if its already on the page*#@$%()
-//	if (factory) {
-//		return callbackSuccess(module, url, 'predefined', factory);
-//	}
+	// Check if our module has already been loaded.
+	if (factory) {
+		return callbackSuccess(module, url, 'predefined', factory);
+	}
 
 	// If our library failed to load, we'll call upon this function.
 	var failed = function() {
@@ -1350,94 +1376,160 @@ me.loader.css.boot = function(module, url, callbackSuccess, callbackFailed) {
 	// Whether a callback comes back as an error/success, they're not always trustworthy.
 	// We need to manually check to make sure that our libraries were loaded properly.
 	var check = function() {
+		// Attempt to fetch the factory for our module.
 		factory = me.loader.css.check(module);
 
+		// If the factory is empty, then it failed to load! Invoke the failure callback.
 		if (!factory) {
 			return failed();
 		}
 
+		// We passed the checks, invoke the success callback.
 		return callbackSuccess(module, url, 'success', factory);
 	};
 
+	// Spawn a new element on the page contained our URL with our callbacks.
+	return me.loader.css.element(url, check, failed);
+};
+
+// Check to see if a module has already been loaded on the page. This `Function` will return `Boolean`, `true` being
+// that a module has already been loaded and `false` being that it hasn't.
+me.loader.css.check = function(module, fallback) {
+	// See if the module itself has been flagged as loaded.
+	if (module.loader.loaded === true) {
+		return true;
+	}
+
+	// If the user added their own custom checking function, invoke it now to preform the check.
+	if (me.isFunction(module.check)) {
+		return module.check();
+	}
+
+	// If globals are enabled, and we have exports for the module, check the DOM to see if they're defined.
+	if (me.globals === true && module.exports.length) {
+		return me.loader.css.check.exports(module.exports);
+	}
+
+	// By default just return true, as this function was hit from a success callback.
+	return me.isDefined(fallback) ? fallback : true;
+};
+
+// Check for the instance of our library based on the exports given. If the instance of our library exists it'll be
+// returned, otherwise this function will return `null. The `Function` basically checks the `window` variable for a
+// subkey which are the exports that are specified in the paramter.
+me.loader.css.check.exports = function(exports) {
+	// If our `exports` parameter is not an `Array`, cast it to one.
+	if (!me.isArray(exports)) {
+		exports = [exports];
+	}
+
+	// Storage for our factory value.
+	var factory = null;
+
+	// If we have no exports, return `null`.
+	if (!exports.length) {
+		return factory;
+	}
+
+	// If the `global.document` doesn't contain the key `styleSheets`, return `null`.
+	if (!me.isDefined(global.document.styleSheets)) {
+		return factory;
+	}
+
+	// Loop through each of the documents stylesheets.
+	me.each(global.document.styleSheets, function(stylesheet) {
+		// If the stylesheet is `0`, skip it.
+		if (stylesheet === 0) {
+			return true;
+		}
+
+		// Loop through the following keys in `global.document.stylesheets`.
+		me.each(['cssRules', 'rules'], function(key) {
+
+			// This has to be wrapped in a `try catch` due to some browsers throwing a CORS exception if the stylesheet is
+			//loaded via an external domain.
+			try {
+				// If `stylesheet.rules` exists, scan it for our export.
+				if (me.isDefined(stylesheet[key])) {
+					factory = me.loader.css.scan(stylesheet[key], exports);
+
+					// If we found our rule, halt the loop.
+					if (factory) {
+						return false;
+					}
+				}
+			} catch (exception) {
+				me.log(2, 'loaderStylesheet', '`fallback.loader.css.check.exports` threw an exception.', exception);
+			}
+		});
+
+		// If we found our selector, halt the loop!
+		if (factory) {
+			return false;
+		}
+	});
+
+	// Return whether or not our stylesheet was loaded.
+	return factory;
+};
+
+// Spawn a new element on the page with our URL.
+me.loader.css.element = function(url, success, failed) {
 	// Create a new script element instance.
 	var element = global.document.createElement('link');
 
+	// The browser supports it, enable crossorigin.
+	element.crossorigin = true;
+
 	// Set the actual URL that we're going to request to load for our library.
 	element.href = url;
-
-	// Set the type, some legacy browsers require this attribute be present.
-	element.rel = 'stylesheet';
 
 	// If we get an error callback, bypass any checking and just fail.
 	element.onerror = failed;
 
 	// Do our checks and throw our callback.
-	element.onload = check;
+	element.onload = success;
 
 	// Special event handler for certain versions of IE. @ie
 	element.onreadystatechange = function() {
 		if (!this.readyState || this.readyState === 'loaded' || this.readyState === 'complete') {
 			// Explicity remove the callback after we receive it.
-			// Some versions of IE tend to fire off multiple success events.
+			// Some versions of IE tend to fire off multiple success events. @ie
 			this.onreadystatechange = null;
 
 			// Do our checks and throw our callback.
-			check();
+			success();
 		}
 	};
+
+	// Set the type, some legacy browsers require this attribute be present.
+	element.rel = 'stylesheet';
 
 	// Load our URL on the page.
 	return me.head.appendChild(element);
 };
 
-// @todo document it
-me.loader.css.check = function(module) {
-	if (module.loader.loaded === true) {
-		return true;
-	}
+// Scan through the documents stylesheets searching for a specific selector.
+me.loader.css.scan = function(ruleset, selectors) {
+	// Store whether or not we found our selector.
+	var found = false;
 
-	if (module.check) {
-		return module.check();
-	}
+	// Loop through the rules.
+	for (var index in ruleset) {
+		var rule = ruleset[index];
 
-	if (module.exports.length) {
-		return me.loader.css.check.exports(module.exports);
-	}
+		// See if we find a match for one of our selectors.
+		if (me.indexOf(selectors, rule.selectorText) !== -1) {
+			// Flag that we found our selector.
+			found = true;
 
-	// By default just return true, as this function was hit from a success callback.
-	return true;
-};
-
-// This function will check for the instance of our library based on the exports given. If the instance of our library
-// exists it'll be returned, otherwise this function will return `null`.
-me.loader.css.check.exports = function(exports) {
-	var factory = null;
-
-	if (!factory) {
-		return true;
-	}
-
-	// Loop through each of our exports variable, until we find a match.
-	me.each(exports, function(variable) {
-		// We have to explicity use `eval` because variables will come in many forms. In particular sometimes they will come
-		// in the form of being a child of an object. For example `jQuery UI` loads under the `global` variable `jQuery.ui`.
-		// In order for us to get to this programtically we have to use `eval`.
-
-		/*eslint-disable*/
-		try {
-			if (factory = eval('window.' + variable)) {
-				return false;
-			}
-
-			// Force our variable back to a `null`.
-			factory = null;
-		} catch (exception) {
-			me.log('loaderJavaScript', '`fallback.loader.css.factory.exports` threw an exception.', exception);
+			// Halt the loop.
+			break;
 		}
-		/*eslint-enable*/
-	});
+	}
 
-	return factory;
+	// Return our search status.
+	return found;
 };
 
 /* global me */
@@ -1917,43 +2009,6 @@ me.require = function() {
 	});
 };
 
-// Fetch and normalize the arguments that are passed into our `require` function. The arguments for our `require`
-// function can be sent in a number of different forms such as:
-// (dependency) - Where `dependency` is a `String`.
-// (dependencies) - Where `dependency` is a `Array`.
-// (factory) - Where `factory` is a `Function`.
-// (dependency, factory) - Where `dependency` is a `String` and `factory` is a `Function`.
-// (dependencies, factory) - Where `dependencies` is a `Array` and `factory` is a `Function`.
-me.require.args = function() {
-	// Convert our `arguments` into an `Array`.
-	var args = me.arrayClone(arguments);
-
-	// We'll fill up these variables based on the arguments.
-	var payload = {
-		deps: null,
-		factory: null
-	};
-
-	// If we only have a single argument, and it's a function, derive our dependencies from it.
-	if (args.length === 1 && me.isFunction(args[0])) {
-		payload.deps = me.args(args[0]);
-		payload.factory = args[0];
-
-		return payload;
-	}
-
-	// If we made it this far, treat the first argument has our dependecies, and the 2nd has is our factory.
-	payload.deps = me.normalizeStringSeries(args[0]);
-
-	// If a 2nd argument is defined, treat it as our factory.
-	if (me.isDefined(args[1])) {
-		payload.factory = args[1];
-	}
-
-	// Return back our normalized arguments.
-	return payload;
-};
-
 // Load up all of our dependencies, along with any nested dependencies in the order of least to most dependent.
 me.require.boot = function(modules, callback) {
 	// If our `deps` argument was malformed or empty, invoke our callback and halt the function.
@@ -2050,6 +2105,43 @@ me.require.boot.dependencies = function(modules, callback) {
 
 	// Load the start of our dependency tree.
 	me.require.module(modules, callback);
+};
+
+// Fetch and normalize the arguments that are passed into our `require` function. The arguments for our `require`
+// function can be sent in a number of different forms such as:
+// (dependency) - Where `dependency` is a `String`.
+// (dependencies) - Where `dependency` is a `Array`.
+// (factory) - Where `factory` is a `Function`.
+// (dependency, factory) - Where `dependency` is a `String` and `factory` is a `Function`.
+// (dependencies, factory) - Where `dependencies` is a `Array` and `factory` is a `Function`.
+me.require.args = function() {
+	// Convert our `arguments` into an `Array`.
+	var args = me.arrayClone(arguments);
+
+	// We'll fill up these variables based on the arguments.
+	var payload = {
+		deps: null,
+		factory: null
+	};
+
+	// If we only have a single argument, and it's a function, derive our dependencies from it.
+	if (args.length === 1 && me.isFunction(args[0])) {
+		payload.deps = me.args(args[0]);
+		payload.factory = args[0];
+
+		return payload;
+	}
+
+	// If we made it this far, treat the first argument has our dependecies, and the 2nd has is our factory.
+	payload.deps = me.normalizeStringSeries(args[0]);
+
+	// If a 2nd argument is defined, treat it as our factory.
+	if (me.isDefined(args[1])) {
+		payload.factory = args[1];
+	}
+
+	// Return back our normalized arguments.
+	return payload;
 };
 
 // Configure an anonymous module with a path and definition.

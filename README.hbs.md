@@ -811,3 +811,7 @@ Any questions, suggestions or bugs should all be submitted to the issues section
 ### Staying Alive
 
 Over the course of this projects life span, we've come to find that 4-5x the star gazers on GitHub reflects the adoption rate of the project. We encourage our users to star the project, so that it can help us see how large the project is growing and how urgent issues become when they arise.
+
+### Staying Stable
+
+The project contains over 1000 tests that run daily for all of the supported browsers via SauceLabs which is trigger daily by Travis and Tron CI (http://tron-ci.herokuapp.com/). If a new bug were to be introduced for a supported browser which directly affects the library, we would know about it in 24 hours at the latest.
