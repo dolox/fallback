@@ -49,9 +49,6 @@ To let you dive right in, we're going to provide you with the sample of code bel
 **main.js**
 ```javascript
 cfg({
-	// Here we're setting the path where our local files reside.
-	'base': '/js/',
-
 	// The list of libraries that we want to load for our project.
 	'libs': {
 		// Include Twitter Bootstrap.
@@ -110,17 +107,17 @@ req(function($) {
 });
 
 // Load jQuery and Query UI!
-req(function(jqueryui) {
+req(function(jqueryui, $) {
 	$('body').append('<div class="alert-success">Loaded jQuery and jQuery UI!</div>');
 });
 
 // Load jQuery and Twitter Bootstrap!
-req(function($, css$bootstrap) {
+req(function(css$bootstrap, $) {
 	$('body').append('<div class="alert-success">Loaded jQuery and Twiiter Bootstrap!</div>');
 });
 
 // Load jQuery, jQuery UI and Twitter Bootstrap!
-req(function($, css$bootstrap, jqueryui) {
+req(function(css$bootstrap, jqueryui, $) {
 	$('body').append('<div class="alert-success">Loaded jQuery, jQuery UI and Twiiter Bootstrap!</div>');
 });
 ```

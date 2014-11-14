@@ -82,6 +82,8 @@ We're using [idiomatic.js](https://github.com/rwaldron/idiomatic.js/blob/master/
 - No padding parenthesis with spaces.
 - Single quotes.
 - Strict mode.
+- 120 character line limit for comments.
+- Use `//` for comments, not `/* */`.
 - Use descriptive variable names.
 - Comment your code, as if an amateur were reading it.
 - If changing/adding functionality add/update associated tests.

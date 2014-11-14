@@ -32,7 +32,7 @@ me.loader.js.boot = function(module, url, callbackSuccess, callbackFailed) {
 	};
 
 	// Create a new script element instance.
-	var element = window.document.createElement('script');
+	var element = global.document.createElement('script');
 
 	// Set the actual URL that we're going to request to load for our library.
 	element.src = url;
@@ -76,7 +76,7 @@ me.loader.js.attributes = function(attribute) {
 	}
 
 	// Fetch all script tags that are on the page.
-	var scripts = window.document.getElementsByTagName('script');
+	var scripts = global.document.getElementsByTagName('script');
 
 	// Check to make sure that we retrieved a `HTMLCollection`, otherwise halt the `Function`.
 	if (!me.isHTMLCollection(scripts)) {
@@ -137,8 +137,8 @@ me.loader.js.check.exports = function(exports) {
 	// Loop through each of our exports variable, until we find a match.
 	me.each(exports, function(variable) {
 		// We have to explicity use `eval` because variables will come in many forms. In particular sometimes they will come
-		// in the form of being a child of an object. For example `jQuery UI` loads under the window variable `jQuery.ui`. In
-		// order for us to get to this programtically we have to use `eval`.
+		// in the form of being a child of an object. For example `jQuery UI` loads under the `glboal` variable `jQuery.ui`.
+		// In order for us to get to this programtically we have to use `eval`.
 
 		/*eslint-disable*/
 		try {

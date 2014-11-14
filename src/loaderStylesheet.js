@@ -32,7 +32,7 @@ me.loader.css.boot = function(module, url, callbackSuccess, callbackFailed) {
 	};
 
 	// Create a new script element instance.
-	var element = window.document.createElement('link');
+	var element = global.document.createElement('link');
 
 	// Set the actual URL that we're going to request to load for our library.
 	element.href = url;
@@ -92,8 +92,8 @@ me.loader.css.check.exports = function(exports) {
 	// Loop through each of our exports variable, until we find a match.
 	me.each(exports, function(variable) {
 		// We have to explicity use `eval` because variables will come in many forms. In particular sometimes they will come
-		// in the form of being a child of an object. For example `jQuery UI` loads under the window variable `jQuery.ui`. In
-		// order for us to get to this programtically we have to use `eval`.
+		// in the form of being a child of an object. For example `jQuery UI` loads under the `global` variable `jQuery.ui`.
+		// In order for us to get to this programtically we have to use `eval`.
 
 		/*eslint-disable*/
 		try {

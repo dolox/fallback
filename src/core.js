@@ -5,7 +5,7 @@ var me = {};
 // Initialize our library. This function must be invoked before we start using the library.
 me.init = function() {
 	// Reference the `head` element of our document and store it into memory.
-	me.head = window.document.getElementsByTagName('head')[0];
+	me.head = global.document.getElementsByTagName('head')[0];
 
 	// Spawn our utility functions for the library.
 	me.init.utilities(me, me.utility.types);
@@ -54,7 +54,7 @@ me.init.aliases = function(input) {
 		// Map all of our aliases to our module.
 		me.each(aliases, function(alias) {
 			// If the alias is currently defined in the `global` object, skip it and throw a warning to the end user.
-			if (me.isDefined(me.global[alias])) {
+			if (me.isDefined(global[alias])) {
 				me.log('core', 'init', 'aliases', 'The variable global["' + alias + '"] already exists.');
 				return;
 			}
@@ -62,8 +62,8 @@ me.init.aliases = function(input) {
 			// Map the alias to our module.
 			me.module.alias(moduleName, alias);
 
-			// Reference the alias of our module within the `global` `Object`.
-			me.global[alias] = factory;
+			// Reference the alias of the module within the `global` reference.
+			global[alias] = factory;
 		});
 	});
 };
@@ -174,8 +174,11 @@ me.browser = {};
 
 // Detect whether or not the current browser is IE11.
 me.browser.isIE11 = function() {
-	return Object.hasOwnProperty.call(window, 'ActiveXObject') && !window.ActiveXObject;
+	return Object.hasOwnProperty.call(global, 'ActiveXObject') && !global.ActiveXObject;
 };
+
+// The character to split our module names on to derive it's identity.
+me.delimiter = '$';
 
 // Shorthand for a `for in` loop. Less code, easier readability. If `false` is returned, the loop will be halted.
 me.each = function(input, callback) {
@@ -196,9 +199,9 @@ me.each = function(input, callback) {
 	}
 };
 
-// This is the global variable that we'll use to check whether a library was loaded or not. This variable can be
-// overriden via the configuration `Function`.
-me.global = window;
+// Whether or not to use a reference to `window` to check if a library has already been loaded. This is also used when
+// loading libraries to determine if they loaded properly for legacy browsers.
+me.globals = true;
 
 // Generate a global unique idenifier.
 me.guid = function() {
@@ -257,8 +260,8 @@ me.isType = function(variable, type) {
 
 // Logging function for when debugging is turned on.
 me.log = function() {
-	// Make sure that both debugging is enable and what `window.console` exists.
-	if (!me.debug || !window.console) {
+	// Make sure that both debugging is enable and what `global.console` exists.
+	if (!me.debug || !global.console) {
 		return false;
 	}
 
@@ -295,10 +298,10 @@ me.log = function() {
 	});
 
 	// Make a reference to our function, if the our level function doesn't exist natively in the browser.
-	var logger = window.console.log;
+	var logger = global.console.log;
 
-	if (me.isFunction(window.console[level])) {
-		logger = window.console[level];
+	if (me.isFunction(global.console[level])) {
+		logger = global.console[level];
 	}
 
 	// Log our message to the console.
@@ -376,7 +379,7 @@ me.objectConstrain = function(input, whitelist, reference) {
 	// Loop through our `Object`.
 	me.each(input, function(value, key) {
 		// If the `key` is not defined in the `whitelist`, then discard it.
-		if (whitelist.indexOf(key) === -1) {
+		if (me.indexOf(whitelist, key) === -1) {
 			// Throw a warning to the user that we've discarded the `key` in question.
 			if (reference) {
 				me.log(2, 'core', 'objectConstrain', 'The key `' + key + '` is not allowed in `' + reference + '`, discarding.', input);

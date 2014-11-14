@@ -1,6 +1,6 @@
 /* fallback.js v2.0.0 | http://fallback.io/| Salvatore Garbesi <sal@dolox.com> | (c) 2014 Dolox, Inc. */
 
-(function(window) {
+(function(global) {
 
 // The container variable for our library instance. As you browse through the libraries code you'll see the `me`
 // variable referenced throughout, this is simply short-hand for the library.
@@ -9,7 +9,7 @@ var me = {};
 // Initialize our library. This function must be invoked before we start using the library.
 me.init = function() {
 	// Reference the `head` element of our document and store it into memory.
-	me.head = window.document.getElementsByTagName('head')[0];
+	me.head = global.document.getElementsByTagName('head')[0];
 
 	// Spawn our utility functions for the library.
 	me.init.utilities(me, me.utility.types);
@@ -58,7 +58,7 @@ me.init.aliases = function(input) {
 		// Map all of our aliases to our module.
 		me.each(aliases, function(alias) {
 			// If the alias is currently defined in the `global` object, skip it and throw a warning to the end user.
-			if (me.isDefined(me.global[alias])) {
+			if (me.isDefined(global[alias])) {
 				me.log('core', 'init', 'aliases', 'The variable global["' + alias + '"] already exists.');
 				return;
 			}
@@ -66,8 +66,8 @@ me.init.aliases = function(input) {
 			// Map the alias to our module.
 			me.module.alias(moduleName, alias);
 
-			// Reference the alias of our module within the `global` `Object`.
-			me.global[alias] = factory;
+			// Reference the alias of the module within the `global` reference.
+			global[alias] = factory;
 		});
 	});
 };
@@ -178,8 +178,11 @@ me.browser = {};
 
 // Detect whether or not the current browser is IE11.
 me.browser.isIE11 = function() {
-	return Object.hasOwnProperty.call(window, 'ActiveXObject') && !window.ActiveXObject;
+	return Object.hasOwnProperty.call(global, 'ActiveXObject') && !global.ActiveXObject;
 };
+
+// The character to split our module names on to derive it's identity.
+me.delimiter = '$';
 
 // Shorthand for a `for in` loop. Less code, easier readability. If `false` is returned, the loop will be halted.
 me.each = function(input, callback) {
@@ -200,9 +203,9 @@ me.each = function(input, callback) {
 	}
 };
 
-// This is the global variable that we'll use to check whether a library was loaded or not. This variable can be
-// overriden via the configuration `Function`.
-me.global = window;
+// Whether or not to use a reference to `window` to check if a library has already been loaded. This is also used when
+// loading libraries to determine if they loaded properly for legacy browsers.
+me.globals = true;
 
 // Generate a global unique idenifier.
 me.guid = function() {
@@ -261,8 +264,8 @@ me.isType = function(variable, type) {
 
 // Logging function for when debugging is turned on.
 me.log = function() {
-	// Make sure that both debugging is enable and what `window.console` exists.
-	if (!me.debug || !window.console) {
+	// Make sure that both debugging is enable and what `global.console` exists.
+	if (!me.debug || !global.console) {
 		return false;
 	}
 
@@ -299,10 +302,10 @@ me.log = function() {
 	});
 
 	// Make a reference to our function, if the our level function doesn't exist natively in the browser.
-	var logger = window.console.log;
+	var logger = global.console.log;
 
-	if (me.isFunction(window.console[level])) {
-		logger = window.console[level];
+	if (me.isFunction(global.console[level])) {
+		logger = global.console[level];
 	}
 
 	// Log our message to the console.
@@ -380,7 +383,7 @@ me.objectConstrain = function(input, whitelist, reference) {
 	// Loop through our `Object`.
 	me.each(input, function(value, key) {
 		// If the `key` is not defined in the `whitelist`, then discard it.
-		if (whitelist.indexOf(key) === -1) {
+		if (me.indexOf(whitelist, key) === -1) {
 			// Throw a warning to the user that we've discarded the `key` in question.
 			if (reference) {
 				me.log(2, 'core', 'objectConstrain', 'The key `' + key + '` is not allowed in `' + reference + '`, discarding.', input);
@@ -621,6 +624,14 @@ me.config = function(input) {
 	return input;
 };
 
+// Each of these functions expect to have values that's a `Boolean`. If this isn't the case, then a value of `false`
+// will be set as the value.
+me.config.amd =
+me.config.debug =
+me.config.globals = function(input) {
+	return me.normalizeBoolean(input, false);
+};
+
 // Normalize and import the configuration for our `base` parameter. If a `String` is passed in, then the value for the
 // `String` will be used for all of the loader types.
 me.config.base = function(input) {
@@ -642,27 +653,9 @@ me.config.base = function(input) {
 // The whitelist of acceptable keys for `base` parameter if it's an `Object`.
 me.config.base.whitelist = ['css', 'img', 'js'];
 
-// Normalize and import the `amd` parameters value. This'll determine whether or not to enforce the use of AMD when
-// using this library. By turning this on, when you include library they'll be unavailable in the glboal scope and
-// you'll only be able to access them through the library itself, unless they were previously loaded before the library
-// or if they don't support AMD. This value is turned off by default.
-// @reference http://en.wikipedia.org/wiki/Asynchronous_module_definition
-me.config.amd = function(input) {
-	return me.normalizeBoolean(input, false);
-};
-
-// Normalize and import the `debug` parameters value. This'll determine whether debugging will be turned on/off. By
-// default debugging is turned off.
-me.config.debug = function(input) {
-	return me.normalizeBoolean(input, false);
-};
-
-// Normalize and import the `global` parameter value. By default this value will be a reference to the `window` object.
-// The library will use this reference when attempting to load a library, to check whether or not the library has
-// already been loaded. For example if a website had already loaded `AngularJS` on the page, the library would detect
-// by seeing that `window.angular` already exists in the `window`.
-me.config.global = function(input) {
-	return me.normalizeObject(input, me.global);
+// The character to split our module names on to derive it's identity. The value must always be a `String`.
+me.config.delimiter = function(input) {
+	return me.normalizeString(input, '$');
 };
 
 // Normalize and import the `libs` parameter's series of `Objects`.
@@ -764,7 +757,7 @@ me.config.libs.init = function(input) {
 me.config.libs.whitelist = ['alias', 'check', 'deps', 'init', 'exports', 'urls'];
 
 // The whitelist of acceptable keys for the `config` functions input `Object`.
-me.config.whitelist = ['amd', 'base', 'debug', 'global', 'libs'];
+me.config.whitelist = ['amd', 'base', 'debug', 'delimiter', 'globals', 'libs'];
 
 /* global me */
 
@@ -1147,7 +1140,7 @@ me.loader.img = {};
 // extra checking or manipulation.
 me.loader.img.boot = function(module, url, callbackSuccess, callbackFailed) {
 	// Create a new `img` element.
-	var element = window.document.createElement('img');
+	var element = global.document.createElement('img');
 
 	// If we get an `onerror` callback, the image failed to load.
 	element.onerror = function() {
@@ -1208,7 +1201,7 @@ me.loader.js.boot = function(module, url, callbackSuccess, callbackFailed) {
 	};
 
 	// Create a new script element instance.
-	var element = window.document.createElement('script');
+	var element = global.document.createElement('script');
 
 	// Set the actual URL that we're going to request to load for our library.
 	element.src = url;
@@ -1252,7 +1245,7 @@ me.loader.js.attributes = function(attribute) {
 	}
 
 	// Fetch all script tags that are on the page.
-	var scripts = window.document.getElementsByTagName('script');
+	var scripts = global.document.getElementsByTagName('script');
 
 	// Check to make sure that we retrieved a `HTMLCollection`, otherwise halt the `Function`.
 	if (!me.isHTMLCollection(scripts)) {
@@ -1313,8 +1306,8 @@ me.loader.js.check.exports = function(exports) {
 	// Loop through each of our exports variable, until we find a match.
 	me.each(exports, function(variable) {
 		// We have to explicity use `eval` because variables will come in many forms. In particular sometimes they will come
-		// in the form of being a child of an object. For example `jQuery UI` loads under the window variable `jQuery.ui`. In
-		// order for us to get to this programtically we have to use `eval`.
+		// in the form of being a child of an object. For example `jQuery UI` loads under the `glboal` variable `jQuery.ui`.
+		// In order for us to get to this programtically we have to use `eval`.
 
 		/*eslint-disable*/
 		try {
@@ -1367,7 +1360,7 @@ me.loader.css.boot = function(module, url, callbackSuccess, callbackFailed) {
 	};
 
 	// Create a new script element instance.
-	var element = window.document.createElement('link');
+	var element = global.document.createElement('link');
 
 	// Set the actual URL that we're going to request to load for our library.
 	element.href = url;
@@ -1427,8 +1420,8 @@ me.loader.css.check.exports = function(exports) {
 	// Loop through each of our exports variable, until we find a match.
 	me.each(exports, function(variable) {
 		// We have to explicity use `eval` because variables will come in many forms. In particular sometimes they will come
-		// in the form of being a child of an object. For example `jQuery UI` loads under the window variable `jQuery.ui`. In
-		// order for us to get to this programtically we have to use `eval`.
+		// in the form of being a child of an object. For example `jQuery UI` loads under the `global` variable `jQuery.ui`.
+		// In order for us to get to this programtically we have to use `eval`.
 
 		/*eslint-disable*/
 		try {
@@ -1449,8 +1442,9 @@ me.loader.css.check.exports = function(exports) {
 
 /* global me */
 
-// Fetch an already existant module from our definitions. If the module in question doesn't exist then we'll
-// automatically generate it unless we explicity set the `generate` parameter to false.
+// Fetch an already existant module from our definitions. If the module in question doesn't exist then we'll generate
+// it automatically unless the `generate` parameter is explicitly set to `false`. If a `module` is defined, then it's
+// defaults will come out of whatever is contained in the `input` parameter.
 me.module = function(moduleName, input, generate) {
 	// Fetch our real module name, in the case that we're passed an alias.
 	moduleName = me.module.named(moduleName);
@@ -1469,7 +1463,7 @@ me.module = function(moduleName, input, generate) {
 	return me.module.define(moduleName, input);
 };
 
-// Store our aliases in a mapped `Object` that way it can be referenced easily to figure out the module.
+// Store our aliases in a mapped `Object` that way it can be referenced easily.
 me.module.alias = function(moduleName, aliases) {
 	// Store the actual module name as an alias of itself.
 	me.module.aliases[moduleName] = moduleName;
@@ -1502,7 +1496,7 @@ me.module.alias = function(moduleName, aliases) {
 	});
 };
 
-// An `Object` of aliases mappings where the key is the alias and the value is the module that the alias is for.
+// An `Object` of aliases mappings where the `key` is the alias and the `value` is the `module` that the alias is for.
 me.module.aliases = {};
 
 // Fetch the base URL for the current identity being passed in.
@@ -1517,30 +1511,55 @@ me.module.base = function(identity) {
 		return me.base;
 	}
 
-	// If no identity was passed in use our fallback.
+	// If no identity was given them revert to our fallback.
 	if (!identity) {
 		identity = me.module.identify.fallback;
 	}
 
+	// If a base URL exists for the identity, then return it.
 	if (me.isDefined(me.base[identity]) && me.base[identity]) {
 		return me.base[identity];
 	}
 
+	// No base URL was found.
 	return null;
 };
 
-// Define a new module and normalize the input. This functoin will override a module if it already exists with the same
-// name unless the `noOverride` variable is explicity set to `true`.
+// Process all pending callbacks that are queued for a specific module.
+me.module.callbacks = function(moduleName) {
+	// Fetch the reference to our module.
+	var module = me.module(moduleName, null, false);
+
+	// If there are no callbacks, then halt the `Function`.
+	if (!module.callbacks.length) {
+		return;
+	}
+
+	// Loop through end invoke each of the callbacks.
+	me.each(module.callbacks, function(callback, index) {
+		// Invoke the callback.
+		callback();
+
+		// Remove the callback from the queue.
+		delete module.callbacks[index];
+	});
+};
+
+// Define a new module and normalize the `input`. This `Function` will override a module if it already exists with the
+//  same name unless the `noOverride` parameter is explicity set to `true`.
 me.module.define = function(moduleName, input, noOverride) {
+	// If a module with the `moduleName` already exists, fetch the actual name of the module in case we have an alias.
 	moduleName = me.module.named(moduleName);
 
+	// If the module already exists, determine whether or not to override it.
 	if (me.module.exists(moduleName)) {
-		me.log('Module', 'Module `' + moduleName + '` already exists! Overwriting!');
-
 		// If we explicity state not to override an existing module, then halt the function.
 		if (noOverride === true) {
 			return null;
 		}
+
+		// Let the end user know that we're overriding a module.
+		me.log(3, 'Module', 'Module `' + moduleName + '` already exists! Overwriting!');
 	}
 
 	// Force our input to an `Object`.
@@ -1548,13 +1567,80 @@ me.module.define = function(moduleName, input, noOverride) {
 		input = {};
 	}
 
-	// The following are our defaults that we'll use to normalize our `input` parameter. The values of this `Object` are
-	// `Array` based. The first parameter of the `Array` is the function that we'll use to normalize the value, the 2nd
-	// parameter is the fallback value that we'll use. Example: `alias: [me.normalizeStringSeries, []]` will run the
-	// `me.normalizeStringSeries` on the value of `alias`, and if the value is malformed, the value will be set to `[]`.
-	// If the value in our `defaults` `Object` is not an `Array`, then it will be skipped/ignored from the normalization
-	// loop.
-	var defaults = {
+	// Normalize our `input` parameter.
+	var normalized = me.module.define.normalize(moduleName, input);
+
+	// Store the definition reference of our module.
+	var module = me.module.definitions[moduleName] = normalized;
+
+	// Import the aliases for our module.
+	me.module.alias(moduleName, normalized.alias);
+
+	// Return our newly defined module.
+	return module;
+};
+
+// Normalize the `input` data for a new module.
+me.module.define.normalize = function(moduleName, input) {
+	// Fetch the defaults for a module.
+	var defaults = me.module.define.defaults();
+
+	// Storage for `input` after it's been normalized.
+	var normalized = {};
+
+	// Loop through the top level and loader sublevels of our `input` and `defaults`.
+	me.each(['', 'loader'], function(inputKey) {
+		// The reference to the level of our defaults that we're normalizing in this iteration.
+		var payload = defaults;
+
+		// If the `inputKey` isn't empty, then we're normalizing a sublevel. Adjust the payload's reference.
+		if (inputKey) {
+			normalized[inputKey] = {};
+			payload = payload[inputKey];
+		}
+
+		// Loop through our defaults.
+		me.each(payload, function(values, key) {
+			// By default set the value to whatever was passed in to our function.
+			var value = input[key];
+
+			// If our `values` is an `Array`, then run the normalization function on the input value.
+			if (me.isArray(values)) {
+				value = values[0](value, values[1]);
+			}
+
+			// If the `inputKey` isn't empty, store the `value` in our sublevel of our normalized `Object`.
+			if (inputKey) {
+				normalized[inputKey][key] = value;
+				return;
+			}
+
+			// Store the value at the top level of our normalized `Object`.
+			normalized[key] = value;
+		});
+	});
+
+	// Forcefully set the module name within the `Object`.
+	normalized.name = moduleName;
+
+	// Store the identity of our module now, so that we may reference it later.
+	normalized.identity = me.module.identify(moduleName);
+
+	// Normalize all of the URLs for the module now and store them in a normalized state.
+	normalized.urls = me.module.urls(normalized.identity, normalized.urls);
+
+	// Return our normalized input.
+	return normalized;
+};
+
+// The following are our defaults that we'll use to normalize our data when defining a new module. The values of this
+// `Object` are `Array` based. The first parameter of the `Array` is the `Function` that we'll use to normalize the
+// value, the 2nd parameter is the fallback value that we'll use. For example: `alias: [me.normalizeStringSeries, []]`
+// will run the `me.normalizeStringSeries` on the value of `alias`, and if the value is malformed, the value will be
+// set to `[]`. If the value in our `defaults` `Object` is not an `Array`, then it will be skipped/ignored from the
+// normalization loop.
+me.module.define.defaults = function() {
+	return {
 		// Aliases for the module.
 		'alias': [me.normalizeStringSeries, null],
 
@@ -1611,112 +1697,146 @@ me.module.define = function(moduleName, input, noOverride) {
 		// Where all the URLs are stored for our module.
 		'urls': [me.normalizeStringSeries, null]
 	};
-
-	var normalized = {};
-
-	me.each(['', 'loader'], function(inputKey) {
-		var payload = defaults;
-
-		if (inputKey) {
-			normalized[inputKey] = {};
-			payload = payload[inputKey];
-		}
-
-		me.each(payload, function(values, key) {
-			// By default set the value to whatever was passed in to our function.
-			var value = input[key];
-
-			// If our `values` is an `Array`, the run our normalization function on the input value.
-			if (me.isArray(values)) {
-				value = values[0](value, values[1]);
-			}
-
-			if (inputKey) {
-				normalized[inputKey][key] = value;
-				return;
-			}
-
-			normalized[key] = value;
-		});
-	});
-
-	// @todo move all this shit out
-	normalized.name = moduleName;
-
-	normalized.identity = me.module.identify(moduleName);
-
-	normalized.urls = me.module.urls(normalized.identity, normalized.urls);
-
-	var module = me.module.definitions[moduleName] = normalized;
-
-	// Import our module aliases.
-	me.module.alias(moduleName, normalized.alias);
-
-	return module;
 };
 
-// All our module definitions will be stored and refeerence through this `Object`. The keys of this object correlate to
-// the modules name.
+// All our module definitions will be stored and referenced through this `Object`. The keys of this `Object` correlate
+// to the modules actual name.
 me.module.definitions = {};
 
-// Process all of our callbacks for a specific module.
-me.module.callbacks = function(moduleName) {
-	var module = me.module(moduleName, null, false);
+// Fetch the dependencies for an `Array` of modules that passed in. If `findNestedDependencies` is explicitly set to
+// `true`, then the `Function` will run a loop and fetch the full dependecy tree for all of the modules until all
+// dependencies have been exhausted and added to the queue.
+me.module.dependencies = function(modules, findNestedDependencies) {
+	// Store our queue of dependency modules.
+	var queue = [];
 
-	// If are callbacks are empty, then end of the function.
-	if (!module.callbacks.length) {
-		return;
-	}
+	// Loop through and fetch our dependencies.
+	me.each(modules, function(moduleName) {
+		// Reference our module definition.
+		var module = me.module(moduleName, null, false);
 
-	me.each(module.callbacks, function(callback, index) {
-		callback();
-		delete module.callbacks[index];
+		// If the module doesn't exist, or there aren't any dependencies, skip the iteration.
+		if (!module || !module.deps.length) {
+			return;
+		}
+
+		// Queue our dependencies.
+		queue = queue.concat(module.deps);
+
+		// If we explicity want a loop of all our dependencies, then we'll trace through them here.
+		if (findNestedDependencies === true) {
+			queue = queue.concat(me.module.dependencies(module.deps, findNestedDependencies));
+		}
 	});
+
+	// Return all of our queued dependency modules.
+	return queue;
 };
 
-// Check whether or not a module already exists.
+// Check to see whether a module exists by name.
 me.module.exists = function(moduleName) {
+	// Search the definitions `Object`.
 	if (me.isDefined(me.module.definitions[me.module.named(moduleName)])) {
 		return true;
 	}
 
+	// No module found.
 	return false;
 };
 
-// Identify the type of module that we have.
+// Identify the type of module that we have. Example: CSS, Image, JavaScript, etc.
 me.module.identify = function(moduleName) {
+	// If we can't identify the module, use our fallback.
 	var fallback = me.module.identify.fallback;
 
+	// If no `moduleName` was passed in, return the fallback.
 	if (!moduleName) {
 		return fallback;
 	}
 
-	var split = moduleName.split(me.module.identify.delimiter);
+	// Split the `moduleName` on our `delimiter` which is derived from our configuration.
+	var split = moduleName.split(me.delimiter);
 
-	if (split.length < 2 || me.module.identify.types.indexOf(split[0]) === -1) {
+	// If we can't find our delimiter, then return our fallback.
+	if (split.length < 2 || me.indexOf(me.module.identify.types, split[0]) === -1) {
 		return fallback;
 	}
 
+	// Return our modules identity.
 	return split[0];
 };
 
 // The identifier to fallback on if we cannot find a match.
 me.module.identify.fallback = 'js';
 
-// The character to split our module names on to derive it's identity.
-me.module.identify.delimiter = '$';
-
 // The support identifier types.
 me.module.identify.types = ['css', 'img', 'js'];
 
-// Fetch the name of a module, if a module alias is passed in, this will go and fetch the modules real name.
+// Invoke and return the invoked instance of the `factory` for our `module`, if the `factory` happens to be a
+// `Function`. If the `factory` is not a `Function`, we'll simply return whatever value is set for the `factory.
+me.module.invoke = function(moduleName) {
+	// Fetch the instance of our `module`.
+	var module = me.module(moduleName, null, false);
+
+	// If we couldn't fetch an instance of our `module`, something went wrong, relay a message to the end user.
+	if (!module) {
+		me.log(1, 'Module wasn\'t found!', moduleName);
+		return null;
+	}
+
+	// If the module hasn't already been invoked, then invoke it.
+	if (!module.invoked) {
+		// Flag the module as invoked, so we don't run through this step again.
+		module.invoked = true;
+
+		// Reference the instance of our invoked `factory` as the `factory` value for the module.
+		module.factory = me.module.invoke.factory(module.factory, module.deps);
+	}
+
+	// Return the invoked `factory` instance of the module.
+	return module.factory;
+};
+
+// Invoke a `factory` with the arguments being the dependencies that are passed in via the `deps` parameter.
+me.module.invoke.factory = function(factory, deps) {
+	// If the `factory` passed in is not a `Function`, then simply return it's current value.
+	if (!me.isFunction(factory)) {
+		return factory;
+	}
+
+	// Invoke and return the invoked reference of our `factory`.
+	return factory.apply(null, me.module.references(deps));
+};
+
+// Fetch the actual name of a module. If a modules alias is passed in, this `Function` will fetch the modules name.
 me.module.named = function(moduleName) {
-	// Fetch our real module name, in the case that we're passed an alias.
+	// Fetch our actual module name, in the case that the `Function` was passed an alias.
 	if (me.isDefined(me.module.aliases[moduleName])) {
 		moduleName = me.module.aliases[moduleName];
 	}
 
+	// Return the module name.
 	return moduleName;
+};
+
+// Invoke an `Array` of modules, and return each of their `factory` values in an `Array`.
+me.module.references = function(modules) {
+	// Store a list of our `factory` references.
+	var references = [];
+
+	// If no `modules` were passed into the `Function`, then simply return an empty `Array`.
+	if (!modules.length) {
+		return references;
+	}
+
+	// Loop through and invoke each of our modules.
+	me.each(modules, function(module) {
+		// Push the `factory` off to our `references` `Array`.
+		references.push(me.module.invoke(module));
+	});
+
+	// Return our set of modules references.
+	return references;
 };
 
 // Normalize all of the URLs for our modules. This function will automatically prepend our base URLs and store them.
@@ -1724,33 +1844,52 @@ me.module.named = function(moduleName) {
 // of the current base URLs for the module in question, this way we can change our base URLs later and still maintain
 // and use a different set of base URLs with other modules.
 me.module.urls = function(identity, urls) {
+	// Fetch the base URL for our module.
 	var base = me.module.base(identity);
+
+	// Store our extension string.
 	var extension = '.' + identity;
+
+	// Store our set of normalized URLs that we'll reference.
 	var normalizedUrls = [];
 
+	// Loop through each of the URLs.
 	me.each(urls, function(url) {
+		// If the URL we're examining doesn't have an extension then automatically add it. If the `identity` of the module
+		// happens to be an image, then the user must pass in an extension. We cannot assume the extension of image files
+		// types, but we can for CSS and JavaScript files.
 		if (identity !== 'img' && url.substr(-extension.length) !== extension) {
 			url += extension;
 		}
 
+		// If we have a `base` URL, then do the following.
 		if (base) {
+			// Flag whether or not a URL should be ignore from being prepended with the base URL.
 			var isIgnored = false;
 
+			// Loop through our ignore list.
 			me.each(me.module.urls.ignore, function(ignorer) {
+				// Check to see if the prefix of our URL has a match in our ignore list.
 				if (url.substr(0, ignorer.length) === ignorer) {
+					// Flag the URL as ignored.
 					isIgnored = true;
+
+					// Halt the loop.
 					return false;
 				}
 			});
 
+			// If the URL isn't prefixed with a match from our ignore list, then prepend the base URL.
 			if (!isIgnored) {
 				url = base + url;
 			}
 		}
 
+		// Push the normalized URL off to our list.
 		normalizedUrls.push(url);
 	});
 
+	// Return the set of our normalized URLs.
 	return normalizedUrls;
 };
 
@@ -1760,24 +1899,21 @@ me.module.urls.ignore = ['/', 'data:', 'http://', 'https://'];
 /* global me */
 
 // Load up and invoke our modules along with all of their dependencies. This function will first find all dependencies
-// for our modules and them in reverse order. After loading them it'll then invoke them in reverse order. This needs to
-// happen in 2 separate operation due to the possibility of anonymous modules having their own dependencies that we
-// won't know about until it's actually been loaded.
+// for our modules and then attempt to load and invoke them from least to most dependent. This procedure needs to
+// happen in 2 separate operations due to the possibility of anonymous modules having their own dependencies that we
+// don't actually know about until after we've loaded it's file.
 me.require = function() {
 	// Fetch and normalize the argument that were passed in.
 	var args = me.require.args.apply(null, arguments);
 
 	// Boot up our dependencies.
 	me.require.boot(args.deps, function() {
-		// At this point all of our dependencies have loaded, now we need to go ahead and invoke all of our dependencies in a
-		// reverse order, that way our initial modules that invoked the `require` can be executed.
+		// At this point all of our dependencies have loaded, now we need to go ahead and invoke all of our dependencies in
+		// an order from least to most dependent, that way our initial `require` being requested can be invoked.
 		me.require.invoke(args.deps);
 
-		// Only attempt to invoke the `factory` if it's a `Function`.
-		if (me.isFunction(args.factory)) {
-			args.factory.apply(null, me.require.invoke.references(args.deps));
-			//me.require.apply(args.deps, args.factory); @todo
-		}
+		// Invoke our `factory` function with it's required dependency references.
+		me.module.invoke.factory(args.factory, args.deps);
 	});
 };
 
@@ -1818,65 +1954,7 @@ me.require.args = function() {
 	return payload;
 };
 
-
-
-
-
-
-
-
-
-
-
-
-// @todo at this point we know all deps have loaded, we just need to invoke them now! :D
-me.require.invoke = function(deps) {
-	var dependencies = me.require.dependencies(deps, true);
-	dependencies.reverse();
-	dependencies = dependencies.concat(deps);
-
-	me.each(dependencies, function(dependency) {
-		me.require.invoke.module(dependency);
-	});
-};
-
-me.require.invoke.module = function(moduleName) {
-	var module = me.module(moduleName, null, false);
-
-	if (!module) {
-		// @todo throw an exception to user
-		return null;
-	}
-
-	if (!module.invoked) {
-		module.invoked = true;
-
-		if (me.isFunction(module.factory)) {
-			module.factory = module.factory.apply(null, me.require.invoke.references(module.deps));
-		}
-	}
-
-	return module.factory;
-};
-
-me.require.invoke.references = function(deps) {
-	var references = [];
-
-	if (!deps.length) {
-		return references;
-	}
-
-	me.each(deps, function(dependency) {
-		references.push(me.require.invoke.module(dependency));
-	});
-
-	return references;
-};
-
-
-
-
-// Load up all of our dependencies, along with any nested dependencies in reverse order.
+// Load up all of our dependencies, along with any nested dependencies in the order of least to most dependent.
 me.require.boot = function(modules, callback) {
 	// If our `deps` argument was malformed or empty, invoke our callback and halt the function.
 	if (!me.isArray(modules) || !modules.length) {
@@ -1889,101 +1967,29 @@ me.require.boot = function(modules, callback) {
 		return;
 	}
 
+	// Boot our dependencies.
 	me.require.boot.dependencies(modules, callback);
 };
 
-me.require.boot.dependencies = function(modules, callback) {
-	var dependencies = me.require.dependencies(modules);
-
-	// Loop around until we find the start of our dependency tree.
-	if (dependencies.length) {
-		return me.require.boot(dependencies, function() {
-			me.require.module(modules, function() {
-				var newDeps = me.require.dependencies(modules);
-
-				if (newDeps.join() !== dependencies.join()) {
-					return me.require.boot(newDeps, function() {
-						me.require.module(modules, callback);
-					});
-				}
-				//
-				callback();
-			});
-		});
-	}
-
-	// Load the start of our dependency tree.
-	me.require.module(modules, callback);
-};
-
-
+// Check to see if there's any anonymous modules waiting to be loaded, if there is, then we'll load them.
 me.require.boot.anonymous = function(modules, callback) {
-	// Store our anonymous modules that we need to load.
-	var queue = me.require.anonymous(modules);
+	// Store our anonymous module that we need to load.
+	var queue = me.require.boot.anonymous.queue(modules);
 
-	// If we have anonymous modules that we need to load, do it now, then loop back around.
+	// If we have any anonymous modules that we need to load, do it now, then loop back around.
 	if (queue.length) {
-		me.require.boot.loop(queue, modules, callback);
+		me.require.loop(queue, modules, callback);
 
+		// Explicitly return `true` so that we don't halt the loop.
 		return true;
 	}
 
+	// By returning `false` we'll halt the anonymous module loop check.
 	return false;
 };
 
-
-// Load up a queue of modules, then invoke the `me.require.deps` function again with the same parameters.
-me.require.boot.loop = function(queue, modules, callback) {
-	me.require.module(queue, function() {
-		me.require.boot(modules, callback);
-	});
-};
-
-// Configure an anonymous module with a path and definition.
-me.require.config = function(moduleName) {
-	// If we don't have a `moduleName`, then the invocation was malformed. Halt the function.
-	if (!moduleName) {
-		return false;
-	}
-
-	// Create our `Object` that we'll pass to our configuration `Function`.
-	var config = {
-		libs: {}
-	};
-
-	// Set our URL to be relative to our configurations `base` variable.
-	config.libs[moduleName] = moduleName;
-
-	// Pass the anonymous module over to our configuration to generate the module and URLs.
-	return me.config(config);
-};
-
-// Load up an `Array` of modules simultaneously.
-me.require.module = function(modules, callback) {
-	// If we have no `modules`, then invoke our callback and halt the function.
-	if (!me.isArray(modules) || !modules.length) {
-		callback();
-		return;
-	}
-
-	// Store an `Array` of functions that we'll run simultaneously.
-	var queue = [];
-
-	// Loop and queue each of our modules.
-	me.each(modules, function(moduleName) {
-		queue.push(function(callback) {
-			// Load the module onto the page.
-			me.loader.boot(moduleName, callback);
-		});
-	});
-
-	// Invoke the queue.
-	me.parallel(queue, callback);
-};
-
-
-
-me.require.anonymous = function(modules) {
+// Check to see if we have any dependencies which are anonymous modules that've yet to be loaded.
+me.require.boot.anonymous.queue = function(modules) {
 	// Store our queue of anonymous modules.
 	var queue = [];
 
@@ -2005,39 +2011,120 @@ me.require.anonymous = function(modules) {
 			return;
 		}
 
-		// Add any dependencies that are anonymous modules to our queue as well.
-		queue = queue.concat(me.require.anonymous(module.deps));
+		// Loop and find any dependencies that are anonymous modules as well and queue them.
+		queue = queue.concat(me.require.boot.anonymous.queue(module.deps));
 	});
 
 	// Return all of our queued anonymous modules.
 	return queue;
 };
 
-me.require.dependencies = function(modules, loop) {
-	// Store our queue of dependency modules.
+// Load up all of the dependencies for the modules that are passed in.
+me.require.boot.dependencies = function(modules, callback) {
+	// Fetch all of the dependencies for our modules.
+	var dependencies = me.module.dependencies(modules);
+
+	// Loop around until we find the start of our dependency tree.
+	if (dependencies.length) {
+		// If we have dependencies, we're not at the start of the tree, keep looping around.
+		return me.require.boot(dependencies, function() {
+			// Load the modules.
+			me.require.module(modules, function() {
+				// Fetch the dependencies for our modules again.
+				var newDependencies = me.module.dependencies(modules);
+
+				// Determine if there are any new dependencies, since we've loaded our set of modules.
+				if (newDependencies.join() !== dependencies.join()) {
+					// Load up our new dependencies.
+					return me.require.boot(newDependencies, function() {
+						// Loop back around to see if any new dependencies have loaded from our set of newly loaded dependencies.
+						me.require.module(modules, callback);
+					});
+				}
+
+				// If we didn't have any new dependencies, then run our callback.
+				callback();
+			});
+		});
+	}
+
+	// Load the start of our dependency tree.
+	me.require.module(modules, callback);
+};
+
+// Configure an anonymous module with a path and definition.
+me.require.config = function(moduleName) {
+	// If we don't have a `moduleName`, then the invocation was malformed. Halt the function.
+	if (!moduleName) {
+		return false;
+	}
+
+	// Create our `Object` that we'll pass to our configuration `Function`.
+	var config = {
+		libs: {}
+	};
+
+	// Set our URL to be relative to our configurations `base` variable.
+	config.libs[moduleName] = moduleName;
+
+	// Pass the anonymous module over to our configuration to generate the module and URLs.
+	return me.config(config);
+};
+
+// Assumes that all depdendencies being passed into the `deps` parameter have already been loaded. The sole purpose of
+// this `Function` is to simply invoke the factories for each of the dependencies if they haven't already been invoked.
+me.require.invoke = function(deps) {
+	// Fetch any dependencies of our dependencies.
+	var dependencies = me.module.dependencies(deps, true);
+
+	// Reverse our dependency list as our fetcher method loops through finding most to least dependent, we actually need
+	// to invoke each `factory` from least to most dependent.
+	dependencies.reverse();
+
+	// Append our initial dependencies to the bottom of our list to be invoked last.
+	dependencies = dependencies.concat(deps);
+
+	// Loop through each of the dependencies in our list that we need to invoke.
+	me.each(dependencies, function(dependency) {
+		// Invoke our dependency.
+		me.module.invoke(dependency);
+	});
+};
+
+// Load up a queue of modules, then run `require.boot` to check and make sure all modules along with their dependencies
+// have successfully loaded. This `Function` is being to used to exhaust all dependencies. In the case of anonymous
+// modules, we may load up a file and find out we have new dependencies that must be loaded, this `Function` is taking
+// care of that.
+me.require.loop = function(queue, modules, callback) {
+	// Load any modules in our queue.
+	me.require.module(queue, function() {
+		// Run back to `require.boot` and attempt to boot up the modules originally requested.
+		me.require.boot(modules, callback);
+	});
+};
+
+// Load up an `Array` of modules simultaneously.
+me.require.module = function(modules, callback) {
+	// If we have no `modules`, then invoke our callback and halt the function.
+	if (!me.isArray(modules) || !modules.length) {
+		callback();
+		return;
+	}
+
+	// Store an `Array` of functions that we'll run simultaneously.
 	var queue = [];
 
-	// Loop through and fetch our dependencies.
+	// Loop and queue each of our modules.
 	me.each(modules, function(moduleName) {
-		// Reference our module definition.
-		var module = me.module(moduleName, null, false);
-
-		// If the module doesn't exist, or there aren't any dependencies, skip the iteration.
-		if (!module || !module.deps.length) {
-			return;
-		}
-
-		// Queue our dependencies.
-		queue = queue.concat(module.deps);
-
-		// If we explicity want a loop of all our dependencies, then we'll trace through them here.
-		if (loop === true) {
-			queue = queue.concat(me.require.dependencies(module.deps, loop));
-		}
+		// Push our anonymous `Function` off to our parallel queue.
+		queue.push(function(callback) {
+			// Load the module onto the page.
+			me.loader.boot(moduleName, callback);
+		});
 	});
 
-	// Return all of our queued dependency modules.
-	return queue;
+	// Invoke the queue.
+	me.parallel(queue, callback);
 };
 
 me.homepage = 'http://fallback.io/';

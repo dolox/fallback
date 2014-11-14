@@ -7,7 +7,7 @@ me.loader.img = {};
 // extra checking or manipulation.
 me.loader.img.boot = function(module, url, callbackSuccess, callbackFailed) {
 	// Create a new `img` element.
-	var element = window.document.createElement('img');
+	var element = global.document.createElement('img');
 
 	// If we get an `onerror` callback, the image failed to load.
 	element.onerror = function() {

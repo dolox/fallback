@@ -27,6 +27,14 @@ me.config = function(input) {
 	return input;
 };
 
+// Each of these functions expect to have values that's a `Boolean`. If this isn't the case, then a value of `false`
+// will be set as the value.
+me.config.amd =
+me.config.debug =
+me.config.globals = function(input) {
+	return me.normalizeBoolean(input, false);
+};
+
 // Normalize and import the configuration for our `base` parameter. If a `String` is passed in, then the value for the
 // `String` will be used for all of the loader types.
 me.config.base = function(input) {
@@ -48,27 +56,9 @@ me.config.base = function(input) {
 // The whitelist of acceptable keys for `base` parameter if it's an `Object`.
 me.config.base.whitelist = ['css', 'img', 'js'];
 
-// Normalize and import the `amd` parameters value. This'll determine whether or not to enforce the use of AMD when
-// using this library. By turning this on, when you include library they'll be unavailable in the glboal scope and
-// you'll only be able to access them through the library itself, unless they were previously loaded before the library
-// or if they don't support AMD. This value is turned off by default.
-// @reference http://en.wikipedia.org/wiki/Asynchronous_module_definition
-me.config.amd = function(input) {
-	return me.normalizeBoolean(input, false);
-};
-
-// Normalize and import the `debug` parameters value. This'll determine whether debugging will be turned on/off. By
-// default debugging is turned off.
-me.config.debug = function(input) {
-	return me.normalizeBoolean(input, false);
-};
-
-// Normalize and import the `global` parameter value. By default this value will be a reference to the `window` object.
-// The library will use this reference when attempting to load a library, to check whether or not the library has
-// already been loaded. For example if a website had already loaded `AngularJS` on the page, the library would detect
-// by seeing that `window.angular` already exists in the `window`.
-me.config.global = function(input) {
-	return me.normalizeObject(input, me.global);
+// The character to split our module names on to derive it's identity. The value must always be a `String`.
+me.config.delimiter = function(input) {
+	return me.normalizeString(input, '$');
 };
 
 // Normalize and import the `libs` parameter's series of `Objects`.
@@ -170,4 +160,4 @@ me.config.libs.init = function(input) {
 me.config.libs.whitelist = ['alias', 'check', 'deps', 'init', 'exports', 'urls'];
 
 // The whitelist of acceptable keys for the `config` functions input `Object`.
-me.config.whitelist = ['amd', 'base', 'debug', 'global', 'libs'];
+me.config.whitelist = ['amd', 'base', 'debug', 'delimiter', 'globals', 'libs'];

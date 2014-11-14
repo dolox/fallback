@@ -1,6 +1,6 @@
 <p align="center"><a href="http://fallback.io/" target="_blank"><img alt="Fallback JS" height="128" src="http://fallback.io/img/logo.png" /></a></p>
 <h1 align="center">Fallback JS v2.0.0</h1>
-<h6 align="center">16.35 KB Compressed / 69.68 KB Uncompressed</h6>
+<h6 align="center">16.46 KB Compressed / 75.76 KB Uncompressed</h6>
 
 <p align="center">
 	<a href="https://travis-ci.org/dolox/fallback" target="_blank"><img src="https://travis-ci.org/dolox/fallback.svg?style=flat" /></a>
@@ -49,9 +49,6 @@ To let you dive right in, we're going to provide you with the sample of code bel
 **main.js**
 ```javascript
 cfg({
-	// Here we're setting the path where our local files reside.
-	'base': '/js/',
-
 	// The list of libraries that we want to load for our project.
 	'libs': {
 		// Include Twitter Bootstrap.
@@ -110,17 +107,17 @@ req(function($) {
 });
 
 // Load jQuery and Query UI!
-req(function(jqueryui) {
+req(function(jqueryui, $) {
 	$('body').append('<div class="alert-success">Loaded jQuery and jQuery UI!</div>');
 });
 
 // Load jQuery and Twitter Bootstrap!
-req(function($, css$bootstrap) {
+req(function(css$bootstrap, $) {
 	$('body').append('<div class="alert-success">Loaded jQuery and Twiiter Bootstrap!</div>');
 });
 
 // Load jQuery, jQuery UI and Twitter Bootstrap!
-req(function($, css$bootstrap, jqueryui) {
+req(function(css$bootstrap, jqueryui, $) {
 	$('body').append('<div class="alert-success">Loaded jQuery, jQuery UI and Twiiter Bootstrap!</div>');
 });
 ```

@@ -6,8 +6,8 @@ code documentation
 	[x] loaderImage
 	[ ] loaderJavaScript
 	[ ] loaderStylesheet
-	[ ] module
-	[ ] require
+	[x] module
+	[x] require
 
 unit tests
 	[ ] config
@@ -19,31 +19,19 @@ unit tests
 	[ ] loaderStylesheet
 	[ ] module
 	[ ] require
-	
-run tests sequentially: https://github.com/karma-runner/karma-sauce-launcher/issues/8
 
 @todo
-	make sure that `global` is actually being referenced everywhere and not window
-	the exports check needs to use the global variable! if global is set to null, dont do the exports check!
-	fallback.config -> input -> global --- double check this documentation
-
+	make sure that `globals` is actually being referenced
+	the exports check needs to use the global variable! if global is set to false, dont do the globals exports check!
 	allow config to pass in logging levels for debug: 'warn', 'info', 'error', or false
 
 	allow ability to stick version #s on the libraries combines w/ FBK CLI
 
-	add loader delimiter to the config file.
-
-	grep for `indexOf` and use `me.indexOf`
-
 	integrate and test `define.amd = {};`
 
-	dont automatically import aliases as exports, fix that shit
-
-	strip all me.logs(), me.banner, me.log and me.stats function from minification version
-
 readme documentation
+	- fallback.config -> input -> global --- fix the docs
 	- document the debugger levels
-	- make a large note at the top about contributing.md
 	- update sample code on the website and file size
 	- 301 fallbackjs.com to fallback.io
 

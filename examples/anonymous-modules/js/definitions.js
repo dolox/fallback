@@ -1,5 +1,5 @@
 define(function(app, constants, defineArray, defineFunction, defineName, defineNestedDependency, defineObject, defineString) {
-	// There modules come out of our `contants` file.
+	// There modules come out of our `constants` file.
 	require(function(AUTHOR, EMAIL, NAME, WEBSITE) {
 		app.row('AUTHOR', AUTHOR);
 		app.row('EMAIL', EMAIL);
