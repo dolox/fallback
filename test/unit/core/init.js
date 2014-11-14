@@ -15,8 +15,8 @@ describe('fallback.init', function() {
 		require: 'function',
 		define: 'function'
 	}, function(type, reference) {
-		it(reference + ' reference should exist in the global object', function() {
-			expect(fallback.global[reference]).to.be.an(type);
+		it(reference + ' reference should exist in the `window`', function() {
+			expect(window[reference]).to.be.an(type);
 		});
 	});
 

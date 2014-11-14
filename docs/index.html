@@ -108,7 +108,7 @@ variable referenced throughout, this is simply short-hand for the library.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	me.init.aliases(me.aliases);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	me.init.aliases(global, me.aliases);</pre></div></div>
             
         </li>
         
@@ -155,7 +155,7 @@ attempting to reference currently exists in our <code>global</code> <code>Object
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>me.init.aliases = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(input)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>me.init.aliases = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(container, input)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -308,12 +308,12 @@ advantage of it.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-19">&#182;</a>
               </div>
-              <p>If the alias is currently defined in the <code>global</code> object, skip it and throw a warning to the end user.</p>
+              <p>If the alias is currently defined in the <code>container</code> object, skip it and throw a warning to the end user.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (me.isDefined(global[alias])) {
-				me.log(<span class="hljs-string">'core'</span>, <span class="hljs-string">'init'</span>, <span class="hljs-string">'aliases'</span>, <span class="hljs-string">'The variable global["'</span> + alias + <span class="hljs-string">'"] already exists.'</span>);
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (me.isDefined(container[alias])) {
+				me.log(<span class="hljs-string">'core'</span>, <span class="hljs-string">'init'</span>, <span class="hljs-string">'aliases'</span>, <span class="hljs-string">'The variable container["'</span> + alias + <span class="hljs-string">'"] already exists.'</span>);
 				<span class="hljs-keyword">return</span>;
 			}</pre></div></div>
             
@@ -341,11 +341,11 @@ advantage of it.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
-              <p>Reference the alias of the module within the <code>global</code> reference.</p>
+              <p>Reference the alias of the module within the <code>container</code> reference.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			global[alias] = factory;
+            <div class="content"><div class='highlight'><pre>			container[alias] = factory;
 		});
 	});
 };</pre></div></div>

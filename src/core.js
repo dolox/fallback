@@ -11,7 +11,7 @@ me.init = function() {
 	me.init.utilities(me, me.utility.types);
 
 	// Reference aliases for the library into the `global` object for the user to directly access.
-	me.init.aliases(me.aliases);
+	me.init.aliases(global, me.aliases);
 
 	// Initialize our loader object.
 	me.loader.init();
@@ -22,7 +22,7 @@ me.init = function() {
 
 // Reference the library's aliases into the `global` `Object` for the user to directly access. If a alias that we're
 // attempting to reference currently exists in our `global` `Object`, then we won't override it.
-me.init.aliases = function(input) {
+me.init.aliases = function(container, input) {
 	// Loop through each of our aliases.
 	me.each(input, function(aliases, key) {
 		// Store the module name that we'll reference throughout our loop.
@@ -53,17 +53,17 @@ me.init.aliases = function(input) {
 
 		// Map all of our aliases to our module.
 		me.each(aliases, function(alias) {
-			// If the alias is currently defined in the `global` object, skip it and throw a warning to the end user.
-			if (me.isDefined(global[alias])) {
-				me.log('core', 'init', 'aliases', 'The variable global["' + alias + '"] already exists.');
+			// If the alias is currently defined in the `container` object, skip it and throw a warning to the end user.
+			if (me.isDefined(container[alias])) {
+				me.log('core', 'init', 'aliases', 'The variable container["' + alias + '"] already exists.');
 				return;
 			}
 
 			// Map the alias to our module.
 			me.module.alias(moduleName, alias);
 
-			// Reference the alias of the module within the `global` reference.
-			global[alias] = factory;
+			// Reference the alias of the module within the `container` reference.
+			container[alias] = factory;
 		});
 	});
 };

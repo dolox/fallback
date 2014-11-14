@@ -2,11 +2,7 @@
 
 describe('fallback.init.aliases', function() {
 	var test = {};
-	var oldGlobal = fallback.global;
-
-	fallback.global = test;
-
-	fallback.init.aliases(fallback.aliases);
+	fallback.init.aliases(test, fallback.aliases);
 
 	fallback.each({
 		fallback: 'object',
@@ -17,6 +13,4 @@ describe('fallback.init.aliases', function() {
 			expect(test[reference]).to.be.an(type);
 		});
 	});
-
-	fallback.global = oldGlobal;
 });
