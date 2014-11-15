@@ -54,7 +54,7 @@ describe('tests.unit.core.normalizeFunctionSeries', function() {
 		var result = fallback.normalizeFunctionSeries(test, null, true);
 
 		expect(result).to.be.an('array');
-		expect(result.join()).to.equal('function () {},function () {}');
+		expect(result.join().replace(/ /g, '')).to.equal('function(){},function(){}');
 	});
 
 	it('should use fallback values in series when fallback is set', function() {
@@ -62,6 +62,6 @@ describe('tests.unit.core.normalizeFunctionSeries', function() {
 		var result = fallback.normalizeFunctionSeries(test, 'test');
 
 		expect(result).to.be.an('array');
-		expect(result.join()).to.equal('test,test,test,test,function () {},function () {},test,test,test,test,test');
+		expect(result.join().replace(/ /g, '')).to.equal('test,test,test,test,function(){},function(){},test,test,test,test,test');
 	});
 });
