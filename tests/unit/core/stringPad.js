@@ -1,6 +1,6 @@
 /* global describe, expect, fallback, it */
 
-describe('fallback.stringPad', function() {
+describe('tests.unit.core.stringPad', function() {
 	it('should be at least 5 characters, padded on the right', function() {
 		var result = fallback.stringPad('test', '     ');
 		expect(result).to.equal('test ');

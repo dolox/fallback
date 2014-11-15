@@ -1,6 +1,6 @@
 /* global describe, expect, fallback, it */
 
-describe('fallback.banner', function() {
+describe('tests.unit.core.utility.types', function() {
 	var result = fallback.utility.types;
 
 	it('should be a Array', function() {

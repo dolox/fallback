@@ -1,6 +1,6 @@
 /* global describe, expect, fallback, it */
 
-describe('fallback.normalizeFunctionSeries', function() {
+describe('tests.unit.core.normalizeFunctionSeries', function() {
 	var tests = [
 		// Non series tests.
 		[],

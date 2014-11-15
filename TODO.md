@@ -3,8 +3,11 @@ bugs
 	[ ] anony null not defining properly
 	[ ] anon undefned not defining properly
 
+re-run through unit tests, and add type checking for the actual functions/vars at the top of each
+segregate the couple integration tests into the integration folder
+
 unit tests
-	[ ] config
+	[x] config
 	[x] core
 	[ ] define
 	[ ] loader

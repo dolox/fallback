@@ -1,6 +1,6 @@
 /* global describe, expect, fallback, it */
 
-describe('arrayUnique', function() {
+describe('tests.unit.core.arrayUnique', function() {
 	var tests = ['fallback', 'fallback', 'john', 'john', 'doe', 'doe'];
 	var result = fallback.arrayUnique(tests);
 

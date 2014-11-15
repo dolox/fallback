@@ -1,6 +1,6 @@
 /* global describe, expect, fallback, it */
 
-describe('fallback.normalizeArray', function() {
+describe('tests.unit.core.normalizeArray', function() {
 	var tests = [
 		false,
 		true,

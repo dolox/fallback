@@ -1,6 +1,6 @@
 /* global describe, expect, fallback, it */
 
-describe('fallback.browser', function() {
+describe('tests.unit.core.browser', function() {
 	var result = fallback.browser;
 
 	it('should be an Object', function() {

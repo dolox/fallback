@@ -1,6 +1,6 @@
 /* global describe, expect, fallback, it */
 
-describe('fallback.normalizeFunction', function() {
+describe('tests.unit.core.normalizeFunction', function() {
 	var tests = [
 		[],
 		false,

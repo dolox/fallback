@@ -1,6 +1,11 @@
 /* global describe, expect, fallback, it */
 
-describe('fallback.parallel.anonymous', function() {
+describe('tests.unit.core.parallel.anonymous', function() {
+	it('should be a Function', function() {
+		var test = fallback.parallel.anonymous;
+		expect(test).to.be.a('function');
+	});
+
 	it('should execute anonymous function and invoke the callback', function(done) {
 		var test = {
 			executed: false,

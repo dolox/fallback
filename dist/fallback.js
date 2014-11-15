@@ -647,7 +647,17 @@ me.config.base = function(input) {
 	}
 
 	// If we received an `Object`, then merge in our defaults with a `null` value if they weren't specified.
-	return me.objectMerge(input, me.config.base.whitelist, null);
+	var normalized = me.objectMerge(input, me.config.base.whitelist, null);
+
+	// If the values for the normalized `Object` aren't a `String`, then revert to `null`.
+	me.each(normalized, function(value, key) {
+		if (!me.isString(value)) {
+			normalized[key] = null;
+		}
+	});
+
+	// Return our normalized `Object`.
+	return normalized;
 };
 
 // The whitelist of acceptable keys for `base` parameter if it's an `Object`.
@@ -660,10 +670,10 @@ me.config.delimiter = function(input) {
 
 // Normalize and import the `libs` parameter's series of `Objects`.
 me.config.libs = function(input) {
-	// If the `libs` parameter is not an `Object`, discard it and throw a warning to the end user.
+	// If the `libs` parameter isn't an `Object`, discard it and throw a warning to the end user.
 	if (!me.isObject(input)) {
 		me.log('Config', 'The `libs` parameter in your `config` was malformed, discarding.', input);
-		return null;
+		return {};
 	}
 
 	var normalized = {};
@@ -691,6 +701,11 @@ me.config.libs = function(input) {
 
 // Normalize the `value` parameter and populate it within the `normalized` `Object`.
 me.config.libs.populate = function(normalized, key, value) {
+	// If the `normalized` parameter isn't an `Object`, or the `key` parameter isn't a string, then halt the function.
+	if (!me.isObject(normalized) || !me.isString(key)) {
+		return null;
+	}
+
 	// Reference our whitelist.
 	var whitelist = me.config.libs.whitelist;
 
@@ -702,6 +717,11 @@ me.config.libs.populate = function(normalized, key, value) {
 
 	// Loop through and normalize each of the values for our `Object`.
 	me.each(value, function(subValue, subKey) {
+		// If the `subKey` isn't a function, discard the normalization process for the iteration.
+		if (!me.isFunction(me.config.libs[subKey])) {
+			return;
+		}
+
 		value[subKey] = me.config.libs[subKey](subValue, key);
 	});
 
@@ -726,20 +746,26 @@ me.config.libs.value = function(value) {
 		};
 	}
 
+	// If we don't have an `Object` at this point, return an empty `Object`.
+	if (!me.isObject(value)) {
+		return {};
+	}
+
+	// Normalized the URL values as string series.
+	value.urls = me.normalizeStringSeries(value.urls, null, true);
+
 	// Return our normalized value.
 	return value;
 };
 
 // Each of these functions expect to have values that are either a `String` or series of strings. If neither is the
-// case, then a value of `null` will be returned. If any non-string values are apart of the series, they'll be dropped
+// case, then an empty `Array` will be returned. If any non-string values are apart of the series, they'll be dropped
 // from the series completely.
 me.config.libs.alias =
 me.config.libs.deps =
 me.config.libs.exports =
 me.config.libs.urls = function(input) {
-	var normalized = me.normalizeStringSeries(input);
-
-	return normalized.length ? normalized : null;
+	return me.normalizeStringSeries(input, null, true);
 };
 
 // If either `check` or `init is specified within the `libs` `Object`, then they must be a function or they'll be
@@ -804,7 +830,7 @@ me.define = function() {
 };
 
 // If a module is sitting in an anonymous state and waiting to be imported properly, this function will take the
-// `dependencies` and `factory from that anonymous module, import them in to our properly named module, and then
+// `dependencies` and `factory` from that anonymous module, import them in to our properly named module, and then
 // destroy the anonymous module sitting in a limbo state. Here's how this system of defining anonymous modules works:
 // If we attempt to load a module via our `require` function, and that module doesn't happen to exist in our
 // configuration, we'll automatically spawn a new anonymous module for it. Once the file for the module has loaded, if

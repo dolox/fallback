@@ -1,6 +1,6 @@
 /* global describe, expect, fallback, it */
 
-describe('fallback.args', function() {
+describe('tests.unit.core.args', function() {
 	/* eslint-disable */
 	var tests = [{
 		length: 9,

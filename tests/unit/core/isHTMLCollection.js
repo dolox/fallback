@@ -1,6 +1,6 @@
 /* global describe, expect, fallback, it */
 
-describe('fallback.isHTMLCollection', function() {
+describe('tests.unit.core.isHTMLCollection', function() {
 	it('HTMLCollection should return true.', function() {
 		expect(fallback.isHTMLCollection(window.document.getElementsByTagName('script'))).to.equal(true);
 	});

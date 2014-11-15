@@ -1,6 +1,6 @@
 /* global describe, expect, fallback, it */
 
-describe('fallback.parallel', function() {
+describe('tests.unit.core.parallel', function() {
 	it('functions should run in parallel and return a final callback when completed', function(done) {
 		var test = [];
 

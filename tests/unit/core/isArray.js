@@ -1,6 +1,6 @@
 /* global describe, expect, fallback, it */
 
-describe('fallback.isArray', function() {
+describe('tests.unit.core.isArray', function() {
 	it('null should return false.', function() {
 		expect(fallback.isArray(null)).to.equal(false);
 	});

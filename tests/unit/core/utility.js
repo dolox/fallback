@@ -1,6 +1,6 @@
 /* global describe, expect, fallback, it */
 
-describe('fallback.utility', function() {
+describe('tests.unit.core.utility', function() {
 	var test = {};
 
 	fallback.utility(test, 'Array');

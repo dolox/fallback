@@ -1,6 +1,6 @@
 /* global describe, expect, fallback, it */
 
-describe('fallback.parallel.queue', function() {
+describe('tests.unit.core.parallel.queue', function() {
 	it('should be an Object', function() {
 		expect(fallback.parallel.queue).to.be.an('object');
 	});

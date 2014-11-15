@@ -43,7 +43,7 @@ me.define = function() {
 };
 
 // If a module is sitting in an anonymous state and waiting to be imported properly, this function will take the
-// `dependencies` and `factory from that anonymous module, import them in to our properly named module, and then
+// `dependencies` and `factory` from that anonymous module, import them in to our properly named module, and then
 // destroy the anonymous module sitting in a limbo state. Here's how this system of defining anonymous modules works:
 // If we attempt to load a module via our `require` function, and that module doesn't happen to exist in our
 // configuration, we'll automatically spawn a new anonymous module for it. Once the file for the module has loaded, if

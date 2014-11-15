@@ -1,6 +1,6 @@
 /* global describe, expect, fallback, it */
 
-describe('fallback.objectMerge', function() {
+describe('tests.unit.core.objectMerge', function() {
 	var test = {
 		test1: undefined,
 		test2: undefined,

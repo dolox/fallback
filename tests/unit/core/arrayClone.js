@@ -1,6 +1,6 @@
 /* global describe, expect, fallback, it */
 
-describe('fallback.arrayClone', function() {
+describe('tests.unit.core.arrayClone', function() {
 	var tests = [1, 2, 3, 'fallback'];
 	var result = fallback.arrayClone(tests);
 

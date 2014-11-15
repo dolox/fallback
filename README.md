@@ -1,6 +1,6 @@
 <p align="center"><a href="http://fallback.io/" target="_blank"><img alt="Fallback JS" height="128" src="http://fallback.io/img/logo.png" /></a></p>
 <h1 align="center">Fallback JS v2.0.0</h1>
-<h6 align="center">17.16 KB Compressed / 79.82 KB Uncompressed</h6>
+<h6 align="center">17.38 KB Compressed / 80.61 KB Uncompressed</h6>
 
 <p align="center">
 	<a href="https://travis-ci.org/dolox/fallback" target="_blank"><img src="https://travis-ci.org/dolox/fallback.svg?style=flat" /></a>
@@ -814,4 +814,4 @@ Over the course of this projects life span, we've come to find that 4-5x the sta
 
 ### Staying Stable
 
-The project contains over 1000 tests that run daily for all of the supported browsers via SauceLabs which is trigger daily by Travis and Tron CI (http://tron-ci.herokuapp.com/). If a new bug were to be introduced for a supported browser which directly affects the library, we would know about it in 24 hours at the latest.
+The project contains over 1000 tests which run on a daily basis for all of the supported browsers. The tests are run on SauceLabs which is triggered by Travis and Tron CI (http://tron-ci.herokuapp.com/). If a new bug were to be introduced for a supported browser which directly affects the library, we would know about it in 24 hours at the latest.

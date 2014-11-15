@@ -1,6 +1,6 @@
 /* global describe, expect, fallback, it */
 
-describe('fallback.indexOf', function() {
+describe('tests.unit.core.indexOf', function() {
 	var test = [1, 2, 3, 'fallback'];
 
 	it('to return -1 when the parameters are malformed.', function() {

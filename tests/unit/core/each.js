@@ -1,6 +1,6 @@
 /* global describe, expect, fallback, it */
 
-describe('fallback.each', function() {
+describe('tests.unit.core.each', function() {
 	it('to always return undefined.', function() {
 		expect(fallback.each()).to.be(undefined);
 	});

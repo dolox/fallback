@@ -1,6 +1,6 @@
 /* global describe, expect, fallback, it */
 
-describe('fallback', function() {
+describe('tests.unit.core.fallback', function() {
 	it('should be an Object', function() {
 		expect(fallback).to.be.an('object');
 	});

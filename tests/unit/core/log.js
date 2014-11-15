@@ -1,6 +1,6 @@
 /*global describe, expect, fallback, it*/
 
-describe('fallback.log', function() {
+describe('tests.unit.core.log', function() {
 	it('should be a function', function() {
 		expect(fallback.log).to.be.a('function');
 	});

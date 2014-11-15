@@ -1,6 +1,6 @@
 /* global describe, expect, fallback, it */
 
-describe('fallback.normalizeArraySeries', function() {
+describe('tests.unit.core.normalizeArraySeries', function() {
 	var tests = [
 		// Non series tests.
 		false,

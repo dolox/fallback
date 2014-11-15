@@ -1,6 +1,6 @@
 /* global describe, expect, fallback, it */
 
-describe('fallback.banner', function() {
+describe('tests.unit.core.banner', function() {
 	var result = fallback.banner;
 
 	it('should be a String', function() {

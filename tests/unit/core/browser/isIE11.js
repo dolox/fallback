@@ -1,9 +1,13 @@
 /* global describe, expect, fallback, it */
 
-describe('fallback.browser.isIE11', function() {
-	var result = fallback.browser.isIE11();
+describe('tests.unit.core.browser.isIE11', function() {
+	it('should be a Function', function() {
+		var test = fallback.browser.isIE11;
+		expect(test).to.be.a('function');
+	});
 
 	it('should be a Boolean', function() {
-		expect(typeof result).to.equal('boolean');
+		var test = fallback.browser.isIE11();
+		expect(typeof test).to.equal('boolean');
 	});
 });

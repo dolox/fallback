@@ -1,6 +1,6 @@
 /*global describe, expect, fallback, it*/
 
-describe('fallback.isDefined', function() {
+describe('tests.unit.core.isDefined', function() {
 	it('undefined should return false', function() {
 		expect(fallback.isDefined(undefined)).to.equal(false);
 	});

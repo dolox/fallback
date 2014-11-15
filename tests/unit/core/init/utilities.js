@@ -1,6 +1,11 @@
 /* global describe, expect, fallback, it */
 
-describe('fallback.init.utilities', function() {
+describe('tests.unit.core.init.utilities', function() {
+	it('should be a Function', function() {
+		var test = fallback.init.utilities;
+		expect(test).to.be.a('function');
+	});
+
 	var test = {};
 
 	fallback.init.utilities(test, fallback.utility.types);

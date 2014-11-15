@@ -1,6 +1,6 @@
 /*global describe, expect, fallback, it*/
 
-describe('fallback.isObject', function() {
+describe('tests.unit.core.isObject', function() {
 	it('null should return false.', function() {
 		expect(fallback.isObject(null)).to.equal(false);
 	});

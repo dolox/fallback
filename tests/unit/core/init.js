@@ -1,6 +1,6 @@
 /* global describe, expect, fallback, it */
 
-describe('fallback.init', function() {
+describe('tests.unit.core.init', function() {
 	it('the library should be initialized', function() {
 		expect(fallback.inited).to.equal(true);
 	});

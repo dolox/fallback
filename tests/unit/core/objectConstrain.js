@@ -1,6 +1,6 @@
 /* global describe, expect, fallback, it */
 
-describe('fallback.objectConstrain', function() {
+describe('tests.unit.core.objectConstrain', function() {
 	var test = {
 		test1: true,
 		test2: true,

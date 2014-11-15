@@ -1,6 +1,6 @@
 /* global describe, expect, fallback, it */
 
-describe('fallback.delimiter', function() {
+describe('tests.unit.core.delimiter', function() {
 	it('should be an String', function() {
 		expect(fallback.delimiter).to.be.an('string');
 	});

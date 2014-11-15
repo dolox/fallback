@@ -1,6 +1,6 @@
 /*global describe, expect, fallback, it*/
 
-describe('fallback.isType', function() {
+describe('tests.unit.core.isType', function() {
 	it('Array should return true for type Array.', function() {
 		expect(fallback.isType([], 'Array')).to.equal(true);
 	});

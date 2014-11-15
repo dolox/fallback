@@ -1,6 +1,6 @@
 /* global describe, expect, fallback, it */
 
-describe('fallback.normalizeBoolean', function() {
+describe('tests.unit.core.normalizeBoolean', function() {
 	var tests = [
 		['test'],
 		function() {},
