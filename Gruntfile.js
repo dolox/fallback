@@ -102,6 +102,13 @@ me.tasks.dev = function() {
 	]);
 };
 
+me.tasks.dev = function() {
+	me.grunt.registerTask('devTest', [
+		'karma:dev',
+		'watch:test'
+	]);
+};
+
 me.tasks.devHup = function() {
 	me.grunt.registerTask('devHup', [
 		'newer:clean:dist',
