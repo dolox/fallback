@@ -132,9 +132,15 @@ me.tasks.docs = function() {
 };
 
 me.tasks.test = function() {
-	me.grunt.registerTask('test', [
-		'karma'
-	]);
+	me.grunt.registerTask('test', function() {
+		Object.keys(me.grunt.config.data.karma).forEach(function(key) {
+			if (key === 'dev' || key === 'options') {
+				return;
+			}
+
+			me.grunt.task.run('karma:' + key);
+		});
+	});
 };
 
 me.tasks.dist = function() {

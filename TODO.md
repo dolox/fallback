@@ -16,13 +16,15 @@ unit tests
 
 @todo
 
-	run through and set the log priorities
+	run through and set the log priorities and make sure logs are set properly
 
 	angular js example
 
 	allow config to pass in logging levels for debug: 'warn', 'info', 'error', or false
 
 	allow ability to stick version #s on the libraries combines w/ FBK CLI
+
+	add the modulename to script/image/etc tags that are stuck in the HTML
 
 	integrate and test `define.amd = {};`
 
