@@ -1,6 +1,6 @@
 /* global describe, expect, fallback, it */
 
-describe('fallback.guid', function() {
+describe('fallback.guid.block', function() {
 	it('should be a String', function() {
 		var test = fallback.guid.block();
 		expect(test).to.be.an('string');

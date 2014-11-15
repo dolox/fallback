@@ -1,12 +1,12 @@
 /* global describe, expect, fallback, it */
 
-describe('acceptance.cssPreloaded', function() {
+describe('acceptance.cssPreloaded - Make sure a CSS file is not loaded if it\'s already detected on the page.', function() {
 	it('should not lazy load the stylesheet since it\'s already been loaded', function(done) {
 		fallback.config({
 			libs: {
 				css$cssPreloaded: {
 					exports: '.cssPreloaded',
-					urls: 'http://localhost:9876/base/test/acceptance/css/cssPreloaded'
+					urls: '//localhost:9876/base/tests/acceptance/css/cssPreloaded'
 				}
 			}
 		});

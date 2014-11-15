@@ -1,8 +1,8 @@
 /* global describe, expect, fallback, it */
 
-describe('acceptance.cssLoader - Attempt to load a CSS file.', function() {
+describe('acceptance.cssLoader - Attempt to load a CSS file with the extension applied.', function() {
 	it('should lazy load the stylesheet', function(done) {
-		var test = '//localhost:9876/base/tests/acceptance/css/cssLoader';
+		var test = '//localhost:9876/base/tests/acceptance/css/cssLoader.css';
 
 		fallback.config({
 			libs: {
@@ -16,7 +16,7 @@ describe('acceptance.cssLoader - Attempt to load a CSS file.', function() {
 		fallback.require(function(css$cssLoader) {
 			expect(css$cssLoader).to.equal(true);
 			expect(fallback.module.definitions.css$cssLoader.loader.failed.length).to.equal(0);
-			expect(fallback.module.definitions.css$cssLoader.loader.success).to.equal(test + '.css');
+			expect(fallback.module.definitions.css$cssLoader.loader.success).to.equal(test);
 
 			done();
 		});
