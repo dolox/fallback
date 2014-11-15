@@ -1,4 +1,4 @@
-define(function(app, constants, defineArray, defineFunction, defineName, defineNestedDependency, defineObject, defineString) {
+define(function(app, constants, defineArray, defineFunction, defineName, defineNestedDependency, defineNull, defineObject, defineString) {
 	// There modules come out of our `constants` file.
 	require(function(AUTHOR, EMAIL, NAME, WEBSITE) {
 		app.row('AUTHOR', AUTHOR);
@@ -11,6 +11,7 @@ define(function(app, constants, defineArray, defineFunction, defineName, defineN
 	app.row('defineFunction', defineFunction, true);
 	app.row('defineName', defineName, true);
 	app.row('defineNestedDependency', defineNestedDependency, true);
+	app.row('defineNull', defineNull, true);
 	app.row('defineObject', defineObject, true);
 	app.row('defineString', defineString, true);
 });

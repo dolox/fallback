@@ -11,7 +11,7 @@ Following these guidelines helps to communicate that you respect the time of the
 - [Feature Requests](#feature-requests)
 - [Pull Requests](#pull-requests)
 - [Coding Guidelines](#coding-guidelines)
-- [Grunt Commands](#grunt-commands)
+- [Grunt](#grunt)
 
 ---
 
@@ -94,7 +94,7 @@ To check your coding style run `grunt lint` from the CLI.
 
 ---
 
-## Grunt Commands
+## Grunt
 
 The following commands can be used for the CLI. Before attempting to run any of these commands please make sure you've:
 
@@ -102,10 +102,11 @@ The following commands can be used for the CLI. Before attempting to run any of 
 - Installed `grunt-cli` (`npm install -g grunt-cli`)
 - Installed the library's dependencies (`npm install`)
 
-| Command | Description |
-| ----- | ------ |
-| grunt build | Build the project. This command will build the docs and the library. |
-| grunt dev | Build the project and run a local server instance to actively work on developing the project. This command is bundled with live reload, so when you save your code, it will automatically refresh your browser. |
-| grunt docs | Generate the documents located in the `docs/` folder. |
-| grunt lint | Run ESLint on the project to check for valid JavaScript syntax. |
-| grunt test | Run unit/acceptance tests that are included for the project. |
+| Command        | Description |
+| -------------- | ----------- |
+| grunt build    | Build the project. This command will build the docs and the library. |
+| grunt dev      | Build the project and run a local server instance to actively work on developing the project. This command is bundled with live reload, so when you save your code, it will automatically refresh your browser. |
+| grunt devTests | Runs the tests for the project with watch, so you may update the tests without having to restart the server every time. |
+| grunt docs     | Generate the documents located in the `docs/` folder. |
+| grunt lint     | Run ESLint on the project to check for valid JavaScript syntax. |
+| grunt tests    | Run tests that are included for the project. |

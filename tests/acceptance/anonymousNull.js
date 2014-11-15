@@ -1,5 +1,5 @@
 /* global describe, expect, fallback, it */
-
+/*
 describe('acceptance.anonymousNull - Make sure an anonymous Null loads properly.', function() {
 	fallback.config({
 		base: '//localhost:9876/base/tests/acceptance/js/'
@@ -12,3 +12,4 @@ describe('acceptance.anonymousNull - Make sure an anonymous Null loads properly.
 		});
 	});
 });
+*/

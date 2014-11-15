@@ -102,10 +102,10 @@ me.tasks.dev = function() {
 	]);
 };
 
-me.tasks.dev = function() {
-	me.grunt.registerTask('devTest', [
+me.tasks.devTest = function() {
+	me.grunt.registerTask('devTests', [
 		'karma:dev',
-		'watch:test'
+		'watch:tests'
 	]);
 };
 

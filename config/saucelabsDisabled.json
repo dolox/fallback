@@ -1,4 +1,44 @@
 {
+
+	"win7Opera": {
+		"base": "SauceLabs",
+		"browserName": "opera",
+		"platform": "Windows 7"
+	},
+
+	"win7Safari": {
+		"base": "SauceLabs",
+		"browserName": "safari",
+		"platform": "Windows 7"
+	},
+
+	"winXPIE6": {
+		"base": "SauceLabs",
+		"browserName": "internet explorer",
+		"platform": "Windows XP",
+		"version": "6"
+	},
+
+	"winXPIE7": {
+		"base": "SauceLabs",
+		"browserName": "internet explorer",
+		"platform": "Windows XP",
+		"version": "7"
+	},
+
+	"winXPIE8": {
+		"base": "SauceLabs",
+		"browserName": "internet explorer",
+		"platform": "Windows XP",
+		"version": "8"
+	},
+
+	"osXChrome": {
+		"base": "SauceLabs",
+		"browserName": "chrome",
+		"platform": "OS X 10.10"
+	},
+
 	"android40": {
 		"base": "SauceLabs",
 		"browserName": "android",

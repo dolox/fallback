@@ -19,8 +19,6 @@ module.exports = function(grunt, tasks) {
 
 	me.tasks = ['devHup'];
 
-	tasks.watch = {};
-
 	tasks.watch.dist = me;
 
 	return tasks;

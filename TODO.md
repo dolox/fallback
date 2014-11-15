@@ -1,3 +1,8 @@
+bugs
+	[ ] if you add a anon dependency, and if that dep loads with a differently defined name, you need to alias it off.
+	[ ] anony null not defining properly
+	[ ] anon undefned not defining properly
+
 unit tests
 	[ ] config
 	[x] core

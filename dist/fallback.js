@@ -782,7 +782,7 @@ me.define = function() {
 	// name should be assigned to which `define` instance that was called. If we did allow this to go through, we would
 	// essentially be overwriting our previous anonymous module. If this happens we'll simply halt the function and a
 	// throw a notice to our end user.
-	if (!args.name && me.define.anonymous.factory) {
+	if (!args.name && me.isDefined(me.define.anonymous.factory)) {
 		me.log(2, 'define', 'Multiple Anonymous modules defined in the same file! Halting!', args);
 		return;
 	}
@@ -848,18 +848,18 @@ me.define.anonymous = function(moduleName) {
 };
 
 // The dependencies for our anonymous `module` waiting to be properly defined.
-me.define.anonymous.deps = null;
+me.define.anonymous.deps = undefined;
 
 // The factory for our anonymous `module` waiting to be properly defined.
-me.define.anonymous.factory = null;
+me.define.anonymous.factory = undefined;
 
 // Clear out any saved anonymous `module` properties.
 me.define.anonymous.reset = function() {
 	// Clear the dependencies.
-	me.define.anonymous.deps = null;
+	me.define.anonymous.deps = undefined;
 
 	// Clear the factory.
-	me.define.anonymous.factory = null;
+	me.define.anonymous.factory = undefined;
 };
 
 // Store the anonymous module waiting to be defined.
