@@ -1431,6 +1431,16 @@ me.loader.css.check.exports = function(exports) {
 		return factory;
 	}
 
+	// Case all of our exports to lowercase as some browsers automatically change them.
+	var normalized = [];
+
+	me.each(exports, function(exportName) {
+		normalized.push(exportName.toLowerCase());
+	});
+
+	// Swap our exports `Array` out with out normalized lowercase `Array`.
+	exports = normalized;
+
 	// If the `global.document` doesn't contain the key `styleSheets`, return `null`.
 	if (!me.isDefined(global.document.styleSheets)) {
 		return factory;
@@ -1519,7 +1529,7 @@ me.loader.css.scan = function(ruleset, selectors) {
 		var rule = ruleset[index];
 
 		// See if we find a match for one of our selectors.
-		if (me.indexOf(selectors, rule.selectorText) !== -1) {
+		if (me.indexOf(selectors, String(rule.selectorText).toLowerCase()) !== -1) {
 			// Flag that we found our selector.
 			found = true;
 

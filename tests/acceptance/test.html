@@ -1,0 +1,36 @@
+<html>
+<head>
+	<link rel="stylesheet" href="failasddass.css" />
+	<script src="../../dist/fallback.js"></script>
+</head>
+<body>
+<script>
+// Manually add a CSS file and make sure that it doesn't load again.
+var element = window.document.createElement('link');
+
+element.href = '/base/test/acceptance/css/cssPreloaded.css?a=1&.css';
+
+setTimeout(function() {
+	console.log('wtf');
+
+	// Make sure the library doesn't load the CSS file.
+	fallback.config({
+		libs: {
+			css$anchorBlue: {
+				exports: '.cssPreloaded',
+				urls: '/base/test/acceptance/css/cssPreloaded.css?a=2'
+			}
+		}
+	});
+
+	fallback.require(function(css$anchorBlue) {
+		console.log(JSON.stringify(fallback.module.definitions.css$anchorBlue));
+	});
+}, 1000);
+
+element.rel = 'stylesheet';
+
+window.document.getElementsByTagName('head')[0].appendChild(element);
+</script>
+</body>
+</html>

@@ -1,0 +1,1 @@
+define('predefinedReference', window.document);

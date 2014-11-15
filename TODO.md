@@ -10,6 +10,11 @@ unit tests
 	[ ] require
 
 @todo
+
+	run through and set the log priorities
+
+	angular js example
+
 	allow config to pass in logging levels for debug: 'warn', 'info', 'error', or false
 
 	allow ability to stick version #s on the libraries combines w/ FBK CLI
@@ -17,6 +22,8 @@ unit tests
 	integrate and test `define.amd = {};`
 
 readme documentation
+	- document the directories and what their for
+	
 	- fallback.config -> input -> global --- fix the docs
 	- document the debugger levels
 	- update sample code on the website and file size

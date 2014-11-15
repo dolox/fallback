@@ -2,12 +2,32 @@
 	"autoWatch": true,
 	"browserNoActivityTimeout": 120000,
 	"captureTimeout": 300000,
+
+	"client": {
+		"mocha": {
+			"timeout": 15000
+		},
+
+		"useIframe": true
+	},
+
 	"colors": true,
 
-	"files": [
+	"files": [{
+		"included": true,
+		"pattern": "tests/acceptance/css/cssPreloaded.css",
+		"served": true,
+		"watched": false
+	}, {
+		"included": false,
+		"pattern": "tests/acceptance/css/*.css",
+		"served": true,
+		"watched": false
+	},
+
 		"dist/fallback.js",
-		"test/**/*.js",
-		"test/**/**/*.js"
+		"tests/**/*.js",
+		"tests/**/**/*.js"
 	],
 
 	"frameworks": [
@@ -30,9 +50,5 @@
 		"testName": "Fallback JS"
 	},
 
-	"singleRun": true,
-
-	"client": {
-		"useIframe": false
-	}
+	"singleRun": true
 }

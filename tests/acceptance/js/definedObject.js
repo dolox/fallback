@@ -1,0 +1,3 @@
+define('predefinedObject', {
+	predefinedObject: true
+});
