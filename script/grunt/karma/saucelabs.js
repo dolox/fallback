@@ -7,6 +7,7 @@ module.exports = function(grunt, tasks) {
 		tasks.karma[index].browsers = [index];
 		tasks.karma[index].options = {};
 		tasks.karma[index].options.files = tasks.karma.options.files;
+		tasks.karma[index].transports = ['jsonp-polling'];
 	}
 
 	return tasks;

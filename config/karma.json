@@ -1,7 +1,7 @@
 {
 	"autoWatch": true,
 	"browserNoActivityTimeout": 120000,
-	"captureTimeout": 300000,
+	"captureTimeout": 600000,
 
 	"client": {
 		"mocha": {

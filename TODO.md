@@ -1,5 +1,4 @@
 bugs
-	[ ] bug w/ snow
 	[ ] fix me.log to have no colors in legacy browsers
 	[ ] fix all log messages in project to be more helpful and leading
 	[ ] if there's no URLs it should use a anonymous module
@@ -19,11 +18,9 @@ unit tests
 	[ ] module
 	[ ] require
 
-[ ] run through emails in IE6-11, safari, firefox, chrome, makes sure it's working properly
+[ ] full run through in IE6-11, safari, firefox, chrome, makes sure it's working properly
 
 @todo
-
-	run through and set the log priorities and make sure logs are set properly
 
 	angular js example
 
