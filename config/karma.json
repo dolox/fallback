@@ -13,7 +13,12 @@
 
 	"colors": true,
 
-	"files": [{
+	"files": [
+		"bower_components/json/json2.js",
+		"dist/fallback.js",
+		"tests/**/*.js",
+		"tests/**/**/*.js",
+	{
 		"included": true,
 		"pattern": "tests/acceptance/css/cssPreloaded.css",
 		"served": true,
@@ -23,12 +28,7 @@
 		"pattern": "tests/acceptance/css/*.css",
 		"served": true,
 		"watched": false
-	},
-
-		"dist/fallback.js",
-		"tests/**/*.js",
-		"tests/**/**/*.js"
-	],
+	}],
 
 	"frameworks": [
 		"expect",

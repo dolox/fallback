@@ -107,7 +107,9 @@ The following commands can be used for the CLI. Before attempting to run any of 
 
 - Updated the project repository.
 - Installed `grunt-cli` (`npm install -g grunt-cli`)
-- Installed the library's dependencies (`npm install`)
+- Installed `bower` (`npm install -g bower`)
+- Installed the projects Node JS dependencies (`npm install`)
+- Installed the projects Bower dependencies (`bower install`)
 
 | Command        | Description |
 | -------------- | ----------- |
