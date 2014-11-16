@@ -883,7 +883,7 @@ me.define.anonymous = function(moduleName) {
 		// Reference the factory from the file that was loaded if the current factory is `undefined`.
 		if (anonymousIndex !== -1) {
 			// Remove the anonymous entry.
-			me.require.anonymous.slice(anonymousIndex, 1);
+			me.require.anonymous.splice(anonymousIndex, 1);
 
 			// Reference the factory.
 			module.factory = me.define.module.last.factory;
