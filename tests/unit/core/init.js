@@ -7,7 +7,6 @@ describe('tests.unit.core.init', function() {
 
 	it('fallback.head should be a reference to the documents head element', function() {
 		expect(fallback.head).to.be.an('object');
-		expect(fallback.isType(fallback.head, 'HTMLHeadElement')).to.equal(true);
 	});
 
 	fallback.each({

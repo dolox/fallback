@@ -16,7 +16,7 @@ describe('tests.unit.core.isDefined', function() {
 	it('variable should return true', function() {
 		window.isDefinedTestDefined = 1;
 		expect(fallback.isDefined(window.isDefinedTestDefined)).to.equal(true);
-		delete window.isDefinedTest;
+		window.isDefinedTest = undefined;
 	});
 
 	it('variable should return false', function() {

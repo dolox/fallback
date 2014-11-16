@@ -1,4 +1,5 @@
 bugs
+	[ ] bug w/ snow
 	[ ] ie6-8 run tests and fix errors
 	[ ] fix me.log to have no colors in legacy browsers
 	[ ] fix all log messages in project to be more helpful and leading

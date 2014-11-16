@@ -53,17 +53,15 @@ me.loader.js.attributes = function(attribute) {
 	// Fetch all script tags that are on the page.
 	var scripts = global.document.getElementsByTagName('script');
 
-	// Check to make sure that we retrieved a `HTMLCollection`, otherwise halt the `Function`.`isObject` check is for
-	// legacy browsers. @ie
-	if (!me.isHTMLCollection(scripts) && !me.isObject(scripts)) {
+	// Check to make sure that we retrieved a `HTMLCollection`, otherwise halt the `Function`.
+	if (!me.isType(scripts, 'HTMLCollection')) {
 		return values;
 	}
 
 	// Loop through each of our scripts.
 	me.each(scripts, function(script) {
-		// If our script instance isn't an `HTMLScriptElement`, then skip the iteration. `isObject` check is for legacy
-		// browsers. @ie
-		if (!me.isHTMLScriptElement(script) && !me.isObject(script)) {
+		// If our script instance isn't an `HTMLScriptElement`, then skip the iteration.
+		if (!me.isType(script, 'HTMLScriptElement')) {
 			return;
 		}
 

@@ -7,7 +7,7 @@ describe('tests.unit.core.utility.types', function() {
 		expect(result).to.be.an('array');
 	});
 
-	it('should contain 7 items', function() {
-		expect(result.length).to.equal(7);
+	it('should contain 6 items', function() {
+		expect(result.length).to.equal(6);
 	});
 });

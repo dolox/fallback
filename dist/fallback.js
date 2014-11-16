@@ -187,15 +187,18 @@ me.delimiter = '$';
 // Shorthand for a `for in` loop. Less code, easier readability. If `false` is returned, the loop will be halted.
 me.each = function(input, callback) {
 	// If anything other than an `Array` or `Object` was passed in, halt the `Function`.
-	if (!me.isArray(input) && !me.isObject(input) && typeof input !== 'object') {
+	if (!me.isArray(input) && !me.isObject(input)) {
 		return;
 	}
 
 	// Normalize our callback to a `Function`.
 	callback = me.normalizeFunction(callback);
 
+	// Pre-declare the index for our iteration.
+	var index = null;
+
 	// Run our loop.
-	for (var index in input) {
+	for (index in input) {
 		// If a `false` is returned during the loop, then halt the loo!.
 		if (callback(input[index], index) === false) {
 			break;
@@ -251,15 +254,30 @@ me.isDefined = function(variable) {
 	return variable !== void 0;
 };
 
-// Check to see if a variable is an HTMLCollection or NodeList.
-// @reference https://developer.mozilla.org/en-US/docs/Web/API/HTMLCollection
-me.isHTMLCollection = function(variable) {
-	return me.isType(variable, 'HTMLCollection') || me.isType(variable, 'NodeList');
-};
-
 // Check if a variable is a specific type.
 me.isType = function(variable, type) {
-	return Object.prototype.toString.call(variable) === '[object ' + type + ']';
+	// Special check for `null` for legacy browsers. @ie
+	if (type === 'Object' && variable === null) {
+		return false;
+	}
+
+	// Special check for `undefined` for legacy browsers. @ie
+	if (!me.isDefined(variable)) {
+		return false;
+	}
+
+	// Run our global check.
+	var valid = Object.prototype.toString.call(variable) === '[object ' + type + ']';
+
+	// Newer browsers give the proper types for these, whereas legacy browsers don't. Instead of writing separate
+	// functions and test for each, we can simply accept them all as being an object.
+	if (valid === false && (type === 'HTMLCollection' || type === 'HTMLHeadElement' || type === 'HTMLScriptElement')) {
+		// Fallback on an `Object` for legacy browsers.
+		valid = me.isType(variable, 'Object');
+	}
+
+	// Return whether or not our type is valid.
+	return valid;
 };
 
 // Logging function for when debugging is turned on.
@@ -329,7 +347,7 @@ me.normalize = function(input, type, fallback) {
 
 	// If an invalid `type` is passed in to our function, return our `fallback` or `null`.
 	if (!me.isFunction(me[functionName])) {
-		return fallback ? fallback : null;
+		return me.isDefined(fallback) ? fallback : null;
 	}
 
 	return me[functionName](input) ? input : fallback;
@@ -346,20 +364,21 @@ me.normalizeSeries = function(input, type, fallback, strip) {
 		input = [input];
 	}
 
-	// Loop through eaach of our values.
-	me.each(input, function(value) {
+	// Loop through eaach of our values. For legacy browsers, if `undefined` is part of an `Array` and you use a `for in`,
+	// the iteration for `undefined` won't show up in the loop! This is a fallback for those browsers! Wow! @ie
+	for (var index = 0; index < input.length; index++) {
 		// Normalize our value.
-		value = me.normalize(value, type, fallback);
+		var value = me.normalize(input[index], type, fallback);
 
 		// If strip is not explicity set in, and the `value` is `undefined` or `null`, it'll be removed from the normalized
 		// result set.
-		if (strip !== false && !me.isDefined(value) || value === null) {
-			return;
+		if (strip !== false && (!me.isDefined(value) || value === null)) {
+			continue;
 		}
 
 		// Set our normalized value.
 		normalized.push(value);
-	});
+	}
 
 	// Return our normalized series.
 	return normalized;
@@ -566,7 +585,6 @@ me.stringPad = function(input, pad, left) {
 // - isArray, normalizeArray, normalizeArraySeries
 // - iBoolean, normalizeBoolean, normalizeBooleanSeries
 // - isFunction, normalizeFunction, normalizeFunctionSeries
-// - isHTMLScriptElement
 // - isNumber, normalizeNumber, normalizeNumberSeries
 // - isObject, normalizeObject, normalizeObjectSeries
 // - isString, normalizeString, normalizeStringSeries
@@ -575,11 +593,6 @@ me.utility = function(container, type) {
 	container['is' + type] = function(variable) {
 		return me.isType(variable, type);
 	};
-
-	// We cannot generate normalize functions for the following types, so skip them.
-	if (type === 'HTMLScriptElement') {
-		return;
-	}
 
 	// Our normalization function.
 	container['normalize' + type] = function(input, fallback) {
@@ -593,7 +606,7 @@ me.utility = function(container, type) {
 };
 
 // The different utility types that we want to generate functions for.
-me.utility.types = ['Array', 'Boolean', 'Function', 'HTMLScriptElement', 'Number', 'Object', 'String'];
+me.utility.types = ['Array', 'Boolean', 'Function', 'Number', 'Object', 'String'];
 
 /* global me */
 
@@ -1282,17 +1295,15 @@ me.loader.js.attributes = function(attribute) {
 	// Fetch all script tags that are on the page.
 	var scripts = global.document.getElementsByTagName('script');
 
-	// Check to make sure that we retrieved a `HTMLCollection`, otherwise halt the `Function`.`isObject` check is for
-	// legacy browsers. @ie
-	if (!me.isHTMLCollection(scripts) && !me.isObject(scripts)) {
+	// Check to make sure that we retrieved a `HTMLCollection`, otherwise halt the `Function`.
+	if (!me.isType(scripts, 'HTMLCollection')) {
 		return values;
 	}
 
 	// Loop through each of our scripts.
 	me.each(scripts, function(script) {
-		// If our script instance isn't an `HTMLScriptElement`, then skip the iteration. `isObject` check is for legacy
-		// browsers. @ie
-		if (!me.isHTMLScriptElement(script) && !me.isObject(script)) {
+		// If our script instance isn't an `HTMLScriptElement`, then skip the iteration.
+		if (!me.isType(script, 'HTMLScriptElement')) {
 			return;
 		}
 

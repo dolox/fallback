@@ -1,6 +1,30 @@
 /*global describe, expect, fallback, it*/
 
 describe('tests.unit.core.isType', function() {
+	it('HTMLCollection should return true for type HTMLCollection.', function() {
+		expect(fallback.isType(window.document.getElementsByTagName('script'), 'HTMLCollection')).to.equal(true);
+	});
+
+	it('HTMLCollection should return false for type Array.', function() {
+		expect(fallback.isType([], 'HTMLCollection')).to.equal(false);
+	});
+
+	it('HTMLHeadElement should return true for type HTMLHeadElement.', function() {
+		expect(fallback.isType(window.document.getElementsByTagName('head')[0], 'HTMLHeadElement')).to.equal(true);
+	});
+
+	it('HTMLHeadElement should return false for type Array.', function() {
+		expect(fallback.isType([], 'HTMLHeadElement')).to.equal(false);
+	});
+
+	it('HTMLScriptElement should return true for type HTMLScriptElement.', function() {
+		expect(fallback.isType(window.document.getElementsByTagName('script')[0], 'HTMLScriptElement')).to.equal(true);
+	});
+
+	it('HTMLScriptElement should return false for type Array.', function() {
+		expect(fallback.isType([], 'HTMLScriptElement')).to.equal(false);
+	});
+
 	it('Array should return true for type Array.', function() {
 		expect(fallback.isType([], 'Array')).to.equal(true);
 	});
