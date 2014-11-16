@@ -5,7 +5,7 @@
 
 	"client": {
 		"mocha": {
-			"timeout": 15000
+			"timeout": 60000
 		},
 
 		"useIframe": true
