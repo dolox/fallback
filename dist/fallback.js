@@ -187,18 +187,15 @@ me.delimiter = '$';
 // Shorthand for a `for in` loop. Less code, easier readability. If `false` is returned, the loop will be halted.
 me.each = function(input, callback) {
 	// If anything other than an `Array` or `Object` was passed in, halt the `Function`.
-	if (!me.isArray(input) && !me.isObject(input)) {
+	if (!me.isArray(input) && !me.isObject(input) && typeof input !== 'object') {
 		return;
 	}
 
 	// Normalize our callback to a `Function`.
 	callback = me.normalizeFunction(callback);
 
-	// Pre-declare the index for our iteration.
-	var index = null;
-
 	// Run our loop.
-	for (index in input) {
+	for (var index in input) {
 		// If a `false` is returned during the loop, then halt the loo!.
 		if (callback(input[index], index) === false) {
 			break;
@@ -873,14 +870,24 @@ me.define.anonymous = function(moduleName) {
 	}
 
 	// If our module already exists and there's a module that's set as our last defined, then a file was loaded which the
-	// library assumed was anonymous, but wound up being explicitly define with a `name` in the `define` `Function`. In
+	// library assumed was anonymous, but wound up being explicitly calling define with a `name` in the `define`
+	// `Function`. In
 	// this particular case, we'll destroy the new definition and instead alias it with our anonymous module.
 	if (module && me.define.module.last) {
 		// Define the alias coming from the `define` function for the anonymous file that was loaded.
 		me.module.alias(module.name, [me.define.module.last.name]);
 
-		// Reference the factory from the file that was loaded.
-		module.factory = me.define.module.last.factory;
+		// Attempt to fetch the index of our anonymous module from our require library.
+		var anonymousIndex = me.indexOf(me.require.anonymous, moduleName);
+
+		// Reference the factory from the file that was loaded if the current factory is `undefined`.
+		if (anonymousIndex !== -1) {
+			// Remove the anonymous entry.
+			me.require.anonymous.slice(anonymousIndex, 1);
+
+			// Reference the factory.
+			module.factory = me.define.module.last.factory;
+		}
 
 		// Delete the actually module reference.
 		delete me.module.definitions[me.define.module.last.name];
@@ -2152,6 +2159,9 @@ me.require.boot.anonymous.queue = function(modules) {
 		// If our module doesn't exist, then it's a anonymous module that we need to load up first to find out what
 		// dependencies are actually required for it.
 		if (!module) {
+			// Push the module off to our anonymous list.
+			me.require.anonymous.push(moduleName);
+
 			// Setup the configuration for our anonymous module.
 			me.require.config(moduleName);
 
@@ -2239,6 +2249,9 @@ me.require.args = function() {
 	// Return back our normalized arguments.
 	return payload;
 };
+
+// List of anonymously required modules.
+me.require.anonymous = [];
 
 // Configure an anonymous module with a path and definition.
 me.require.config = function(moduleName) {

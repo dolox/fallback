@@ -73,14 +73,24 @@ me.define.anonymous = function(moduleName) {
 	}
 
 	// If our module already exists and there's a module that's set as our last defined, then a file was loaded which the
-	// library assumed was anonymous, but wound up being explicitly define with a `name` in the `define` `Function`. In
+	// library assumed was anonymous, but wound up being explicitly calling define with a `name` in the `define`
+	// `Function`. In
 	// this particular case, we'll destroy the new definition and instead alias it with our anonymous module.
 	if (module && me.define.module.last) {
 		// Define the alias coming from the `define` function for the anonymous file that was loaded.
 		me.module.alias(module.name, [me.define.module.last.name]);
 
-		// Reference the factory from the file that was loaded.
-		module.factory = me.define.module.last.factory;
+		// Attempt to fetch the index of our anonymous module from our require library.
+		var anonymousIndex = me.indexOf(me.require.anonymous, moduleName);
+
+		// Reference the factory from the file that was loaded if the current factory is `undefined`.
+		if (anonymousIndex !== -1) {
+			// Remove the anonymous entry.
+			me.require.anonymous.slice(anonymousIndex, 1);
+
+			// Reference the factory.
+			module.factory = me.define.module.last.factory;
+		}
 
 		// Delete the actually module reference.
 		delete me.module.definitions[me.define.module.last.name];

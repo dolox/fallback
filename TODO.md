@@ -1,6 +1,5 @@
 bugs
 	[ ] bug w/ snow
-	[ ] ie6-8 run tests and fix errors
 	[ ] fix me.log to have no colors in legacy browsers
 	[ ] fix all log messages in project to be more helpful and leading
 	[ ] if there's no URLs it should use a anonymous module
@@ -19,6 +18,8 @@ unit tests
 	[ ] loaderStylesheet
 	[ ] module
 	[ ] require
+
+[ ] run through emails in IE6-11, safari, firefox, chrome, makes sure it's working properly
 
 @todo
 

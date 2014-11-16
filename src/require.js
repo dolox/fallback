@@ -66,6 +66,9 @@ me.require.boot.anonymous.queue = function(modules) {
 		// If our module doesn't exist, then it's a anonymous module that we need to load up first to find out what
 		// dependencies are actually required for it.
 		if (!module) {
+			// Push the module off to our anonymous list.
+			me.require.anonymous.push(moduleName);
+
 			// Setup the configuration for our anonymous module.
 			me.require.config(moduleName);
 
@@ -153,6 +156,9 @@ me.require.args = function() {
 	// Return back our normalized arguments.
 	return payload;
 };
+
+// List of anonymously required modules.
+me.require.anonymous = [];
 
 // Configure an anonymous module with a path and definition.
 me.require.config = function(moduleName) {

@@ -183,18 +183,15 @@ me.delimiter = '$';
 // Shorthand for a `for in` loop. Less code, easier readability. If `false` is returned, the loop will be halted.
 me.each = function(input, callback) {
 	// If anything other than an `Array` or `Object` was passed in, halt the `Function`.
-	if (!me.isArray(input) && !me.isObject(input)) {
+	if (!me.isArray(input) && !me.isObject(input) && typeof input !== 'object') {
 		return;
 	}
 
 	// Normalize our callback to a `Function`.
 	callback = me.normalizeFunction(callback);
 
-	// Pre-declare the index for our iteration.
-	var index = null;
-
 	// Run our loop.
-	for (index in input) {
+	for (var index in input) {
 		// If a `false` is returned during the loop, then halt the loo!.
 		if (callback(input[index], index) === false) {
 			break;
