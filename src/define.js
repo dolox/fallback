@@ -7,7 +7,7 @@ me.define = function() {
 	var args = me.define.args.apply(null, arguments);
 
 	// If a name and factory weren't passed in, throw a notice to the end user and halt our function.
-	if (!args.name && !args.factory) {
+	if (!args.name && !me.isDefined(args.factory)) {
 		me.log(2, 'define', 'No `name` or `factory` sent to the `define` function! Halting!', args);
 		return;
 	}
@@ -21,14 +21,15 @@ me.define = function() {
 	// name should be assigned to which `define` instance that was called. If we did allow this to go through, we would
 	// essentially be overwriting our previous anonymous module. If this happens we'll simply halt the function and a
 	// throw a notice to our end user.
-	if (!args.name && me.isDefined(me.define.anonymous.factory)) {
-		me.log(2, 'define', 'Multiple Anonymous modules defined in the same file! Halting!', args);
-		return;
-	}
-
-	// If we don't have a name for our module, then we'll define it as an anonymous module. Our callback that loaded our
-	// file will see this and set the proper name once the callback executes, which will happen synchronously.
 	if (!args.name) {
+		// We cannot define multiple anonymous modules with the same name!
+		if (me.isDefined(me.define.anonymous.factory)) {
+			me.log(1, 'define', 'Multiple Anonymous modules defined in the same file! Halting!', args);
+			return;
+		}
+
+		// If we don't have a name for our module, then we'll define it as an anonymous module. Our callback that loaded our
+		// file will see this and set the proper name once the callback executes, which will happen synchronously.
 		me.define.anonymous.save(args);
 		return;
 	}
@@ -58,7 +59,7 @@ me.define.anonymous = function(moduleName) {
 	// If we don't have a anonymous module waiting to be defined, then halt the function. We should at the very least have
 	// either a `factory` or reference to the last defined module (which in this case would be our anonymous module
 	// without a name).
-	if (!me.define.anonymous.factory && !me.define.module.last) {
+	if (!me.isDefined(me.define.anonymous.factory) && !me.define.module.last) {
 		return;
 	}
 
@@ -71,16 +72,25 @@ me.define.anonymous = function(moduleName) {
 		return;
 	}
 
-	// If our module exists and there's module that's set as our last, then it's not anonymous. Halt the `Function`.
+	// If our module already exists and there's a module that's set as our last defined, then a file was loaded which the
+	// library assumed was anonymous, but wound up being explicitly define with a `name` in the `define` `Function`. In
+	// this particular case, we'll destroy the new definition and instead alias it with our anonymous module.
 	if (module && me.define.module.last) {
-		return;
+		// Define the alias coming from the `define` function for the anonymous file that was loaded.
+		me.module.alias(module.name, [me.define.module.last.name]);
+
+		// Reference the factory from the file that was loaded.
+		module.factory = me.define.module.last.factory;
+
+		// Delete the actually module reference.
+		delete me.module.definitions[me.define.module.last.name];
+	} else {
+		// Set the dependencies for our anonymous `module`.
+		module.deps = me.define.anonymous.deps;
+
+		// Set the factory for our anonymous `module`.
+		module.factory = me.define.anonymous.factory;
 	}
-
-	// Set the dependencies for our anonymous `module`.
-	module.deps = me.define.anonymous.deps;
-
-	// Set the factory for our anonymous `module`.
-	module.factory = me.define.anonymous.factory;
 
 	// Reset the pending anonymous values waiting to be populated.
 	me.define.anonymous.reset();

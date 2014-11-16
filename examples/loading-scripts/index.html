@@ -91,7 +91,7 @@
 		// Once all our scripts have loaded, set the snow color and display our stats.
 		require(libs, function() {
 			document.getElementsByClassName('container')[0].innerHTML += '<h1 class="text-center">Stats</h1>';
-			document.getElementsByClassName('container')[0].innerHTML += '<div id="stats">' + fallback.stats() + '</div>';
+			document.getElementsByClassName('container')[0].innerHTML += '<pre id="stats">' + fallback.stats() + '</pre>';
 		});
 	</script>
 </body>

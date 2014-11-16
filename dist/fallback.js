@@ -302,14 +302,14 @@ me.log = function() {
 	});
 
 	// Make a reference to our function, if the our level function doesn't exist natively in the browser.
-	var logger = global.console.log;
+	var method = 'log';
 
 	if (me.isFunction(global.console[level])) {
-		logger = global.console[level];
+		method = level;
 	}
 
-	// Log our message to the console.
-	return logger('%cFallbackJS: %c' + level.toUpperCase() + ': ' + prefixes.join(': ') + ': %c' + args.join(), 'font-weight: bold; color: #da542c', 'font-weight: bold; color: #000', 'color: #777');
+	// Log our message to the console. @todo need a non colorful message for legacy ie
+	return global.console[method]('%cFallbackJS: %c' + level.toUpperCase() + ': ' + prefixes.join(': ') + ': %c' + args.join(), 'font-weight: bold; color: #da542c', 'font-weight: bold; color: #000', 'color: #777');
 };
 
 // The various levels for our `log` function.
@@ -794,7 +794,7 @@ me.define = function() {
 	var args = me.define.args.apply(null, arguments);
 
 	// If a name and factory weren't passed in, throw a notice to the end user and halt our function.
-	if (!args.name && !args.factory) {
+	if (!args.name && !me.isDefined(args.factory)) {
 		me.log(2, 'define', 'No `name` or `factory` sent to the `define` function! Halting!', args);
 		return;
 	}
@@ -808,14 +808,15 @@ me.define = function() {
 	// name should be assigned to which `define` instance that was called. If we did allow this to go through, we would
 	// essentially be overwriting our previous anonymous module. If this happens we'll simply halt the function and a
 	// throw a notice to our end user.
-	if (!args.name && me.isDefined(me.define.anonymous.factory)) {
-		me.log(2, 'define', 'Multiple Anonymous modules defined in the same file! Halting!', args);
-		return;
-	}
-
-	// If we don't have a name for our module, then we'll define it as an anonymous module. Our callback that loaded our
-	// file will see this and set the proper name once the callback executes, which will happen synchronously.
 	if (!args.name) {
+		// We cannot define multiple anonymous modules with the same name!
+		if (me.isDefined(me.define.anonymous.factory)) {
+			me.log(1, 'define', 'Multiple Anonymous modules defined in the same file! Halting!', args);
+			return;
+		}
+
+		// If we don't have a name for our module, then we'll define it as an anonymous module. Our callback that loaded our
+		// file will see this and set the proper name once the callback executes, which will happen synchronously.
 		me.define.anonymous.save(args);
 		return;
 	}
@@ -845,7 +846,7 @@ me.define.anonymous = function(moduleName) {
 	// If we don't have a anonymous module waiting to be defined, then halt the function. We should at the very least have
 	// either a `factory` or reference to the last defined module (which in this case would be our anonymous module
 	// without a name).
-	if (!me.define.anonymous.factory && !me.define.module.last) {
+	if (!me.isDefined(me.define.anonymous.factory) && !me.define.module.last) {
 		return;
 	}
 
@@ -858,16 +859,25 @@ me.define.anonymous = function(moduleName) {
 		return;
 	}
 
-	// If our module exists and there's module that's set as our last, then it's not anonymous. Halt the `Function`.
+	// If our module already exists and there's a module that's set as our last defined, then a file was loaded which the
+	// library assumed was anonymous, but wound up being explicitly define with a `name` in the `define` `Function`. In
+	// this particular case, we'll destroy the new definition and instead alias it with our anonymous module.
 	if (module && me.define.module.last) {
-		return;
+		// Define the alias coming from the `define` function for the anonymous file that was loaded.
+		me.module.alias(module.name, [me.define.module.last.name]);
+
+		// Reference the factory from the file that was loaded.
+		module.factory = me.define.module.last.factory;
+
+		// Delete the actually module reference.
+		delete me.module.definitions[me.define.module.last.name];
+	} else {
+		// Set the dependencies for our anonymous `module`.
+		module.deps = me.define.anonymous.deps;
+
+		// Set the factory for our anonymous `module`.
+		module.factory = me.define.anonymous.factory;
 	}
-
-	// Set the dependencies for our anonymous `module`.
-	module.deps = me.define.anonymous.deps;
-
-	// Set the factory for our anonymous `module`.
-	module.factory = me.define.anonymous.factory;
 
 	// Reset the pending anonymous values waiting to be populated.
 	me.define.anonymous.reset();
@@ -1084,7 +1094,7 @@ me.loader.urls = function(module) {
 	var url = urls.shift();
 
 	// Throw a log message to the end user.
-	me.log('Loader', '`' + module.name + '` is attempting to load via ' + url);
+	me.log('Loader', 'Requesting to load `' + module.name + '` via `' + url + '`');
 
 	// Call upon our specific loader script to load our URL.
 	me.loader[module.identity].boot(module, url, me.loader.urls.success, me.loader.urls.failed);
@@ -1107,13 +1117,19 @@ me.loader.urls.completed = function(module) {
 
 // When a URL or module fails to load this function will be called.
 me.loader.urls.failed = function(module, url) {
+	// Legacy IE fires off the failed callback more than once, so we'll double check to see if we've already fired it. @ie
+	if (me.indexOf(module.loader.failed, url) !== -1) {
+		return;
+	}
+
 	// Setup our log message that we'll send to the end user.
 	var message = '`' + module.name + '` failed to load ';
 
 	// If there's no URL, then all URLs have been exhausted!
 	if (!url) {
 		me.loader.urls.completed(module);
-		return me.log('Loader', message + 'module.');
+		me.log('Loader', message + 'module.');
+		return;
 	}
 
 	// Reset the anonymous module name.
@@ -1131,7 +1147,7 @@ me.loader.urls.failed = function(module, url) {
 me.loader.urls.success = function(module, url, status, factory) {
 	// We're going to store the name of the module we're attempting to load here. This way if the file that's loaded
 	// happens to call the `define` function with an anonymous name, this is the name that we'll use for the definition.
-	me.define.anonymous(module.name, url);
+	me.define.anonymous(module.name);
 
 	// If our library was already loaded, we don't know what URL was successful, so we'll skip setting it.
 	if (status === 'predefined') {
@@ -1147,8 +1163,8 @@ me.loader.urls.success = function(module, url, status, factory) {
 	}
 
 	// If we don't have a factory for our module, then there was no definition. Regardless of what our value is we'll
-	//	reference it here.
-	if (!module.factory) {
+	// reference it here.
+	if (!me.isDefined(module.factory)) {
 		module.invoked = true;
 		module.factory = factory;
 	}
@@ -1171,16 +1187,16 @@ me.loader.img.boot = function(module, url, callbackSuccess, callbackFailed) {
 	// If we get an `onerror` callback, the image failed to load.
 	element.onerror = function() {
 		// Remove the element from the page.
-		element.remove();
+		me.loader.img.remove(element);
 
 		// Process our failed callback.
-		return callbackFailed(module, url, 'failed');
+		return callbackFailed(module, url);
 	};
 
 	// If we get an `onload` callback, the image loaded successfully.
 	element.onload = function() {
 		// Remove the element from the page.
-		element.remove();
+		me.loader.img.remove(element);
 
 		// In the case of images, the factory represents the URL.
 		return callbackSuccess(module, url, 'success', url);
@@ -1191,6 +1207,24 @@ me.loader.img.boot = function(module, url, callbackSuccess, callbackFailed) {
 
 	// Attempt to load the image on the page.
 	return me.head.appendChild(element);
+};
+
+// Remove a dynamically generated element from the page.
+me.loader.img.remove = function(element) {
+	// If `element.remove` exists, use it.
+	if (me.isFunction(element.remove)) {
+		element.remove();
+		return true;
+	}
+
+	// Legacy IE (IE < 9) doesn't have a `.remove` method. @ie
+	if (me.isObject(element.removeNode)) {
+		element.removeNode();
+		return true;
+	}
+
+	// Return `false` if we weren't able to remove the element.
+	return false;
 };
 
 /* global me */
@@ -1210,7 +1244,7 @@ me.loader.js.boot = function(module, url, callbackSuccess, callbackFailed) {
 
 	// If our library failed to load, we'll call upon this function.
 	var failed = function() {
-		return callbackFailed(module, url, 'failed');
+		return callbackFailed(module, url);
 	};
 
 	// Whether a callback comes back as an error/success, they're not always trustworthy.
@@ -1220,7 +1254,7 @@ me.loader.js.boot = function(module, url, callbackSuccess, callbackFailed) {
 		factory = me.loader.js.check(module);
 
 		// If the factory is empty, then it failed to load! Invoke the failure callback.
-		if (!factory) {
+		if (!me.isDefined(factory)) {
 			return failed();
 		}
 
@@ -1248,22 +1282,37 @@ me.loader.js.attributes = function(attribute) {
 	// Fetch all script tags that are on the page.
 	var scripts = global.document.getElementsByTagName('script');
 
-	// Check to make sure that we retrieved a `HTMLCollection`, otherwise halt the `Function`.
-	if (!me.isHTMLCollection(scripts)) {
+	// Check to make sure that we retrieved a `HTMLCollection`, otherwise halt the `Function`.`isObject` check is for
+	// legacy browsers. @ie
+	if (!me.isHTMLCollection(scripts) && !me.isObject(scripts)) {
 		return values;
 	}
 
 	// Loop through each of our scripts.
 	me.each(scripts, function(script) {
-		// If our script instance isn't an `HTMLScriptElement`, then skip the iteration.
-		if (!me.isHTMLScriptElement(script)) {
+		// If our script instance isn't an `HTMLScriptElement`, then skip the iteration. `isObject` check is for legacy
+		// browsers. @ie
+		if (!me.isHTMLScriptElement(script) && !me.isObject(script)) {
+			return;
+		}
+
+		// If `getAttribute` isn't a `Function`, then we're not looking at a HTML element, skip it. For legacy IE the
+		// `getAttribute` method is declared as `Object`.
+		if (!me.isObject(script.getAttribute) && !me.isFunction(script.getAttribute)) {
 			return;
 		}
 
 		// Check to see if our `attribute` exists along with the prefix `data-` for the `attribute` in questino.
 		me.each([attribute, 'data-' + attribute], function(attribute) {
+			// Store our attribute value.
+			var value = null;
+
+			// We need to wrap this in a try catch because we cannot properly detect the method in legacy browsers. @ie
 			// Fetch the value for the attribute.
-			var value = script.getAttribute(attribute);
+			try {
+				// Fetch our attribute.
+				value = script.getAttribute(attribute);
+			} catch (exception) {}
 
 			// If the value exists then use it.
 			if (value) {
@@ -1331,7 +1380,7 @@ me.loader.js.check.exports = function(exports) {
 
 			// If our `factor`y is undefined, force the variable back to a `null`.
 			if (!me.isDefined(factory)) {
-				factory = null;
+				factory = undefined;
 			}
 		} catch (exception) {
 			// Let the end user know that we hit an exception due to their malformed `exports` variable.
@@ -1396,7 +1445,7 @@ me.loader.css.boot = function(module, url, callbackSuccess, callbackFailed) {
 
 	// If our library failed to load, we'll call upon this function.
 	var failed = function() {
-		return callbackFailed(module, url, 'failed');
+		return callbackFailed(module, url);
 	};
 
 	// Whether a callback comes back as an error/success, they're not always trustworthy.
@@ -1659,7 +1708,7 @@ me.module.callbacks = function(moduleName) {
 	var module = me.module(moduleName, null, false);
 
 	// If there are no callbacks, then halt the `Function`.
-	if (!module.callbacks.length) {
+	if (!me.isArray(module.callbacks) || !module.callbacks.length) {
 		return;
 	}
 

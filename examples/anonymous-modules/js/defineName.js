@@ -1,3 +1,3 @@
 define('myNameIsDifferentFromMyFileName', function() {
-	return 'Hi, my name is diffrent from my file name!';
+	return 'Hi, my name is different from my file name!';
 });

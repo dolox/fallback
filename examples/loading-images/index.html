@@ -28,7 +28,7 @@
 
 		var load = function(lib) {
 			require([lib], function(reference) {
-				document.getElementsByClassName('container')[0].innerHTML += '<h3 class="alert-success"><img src="' + reference + '" /><br />`' + lib + '` loaded!</h3>';
+				document.getElementsByTagName('body')[0].innerHTML += '<h3 class="alert-success"><img src="' + reference + '" /><br />`' + lib + '` loaded!</h3>';
 			});
 		};
 
@@ -44,8 +44,8 @@
 
 		// Once all our scripts have loaded, set the snow color and display our stats.
 		require(libs, function() {
-			document.getElementsByClassName('container')[0].innerHTML += '<h1 class="text-center">Stats</h1>';
-			document.getElementsByClassName('container')[0].innerHTML += '<div id="stats">' + fallback.stats() + '</div>';
+			document.getElementsByTagName('body')[0].innerHTML += '<h1 class="text-center">Stats</h1>';
+			document.getElementsByTagName('body')[0].innerHTML += '<pre id="stats">' + fallback.stats() + '</pre>';
 		});
 	</script>
 </body>

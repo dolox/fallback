@@ -89,7 +89,7 @@ me.module.callbacks = function(moduleName) {
 	var module = me.module(moduleName, null, false);
 
 	// If there are no callbacks, then halt the `Function`.
-	if (!module.callbacks.length) {
+	if (!me.isArray(module.callbacks) || !module.callbacks.length) {
 		return;
 	}
 

@@ -15,7 +15,7 @@ me.loader.js.boot = function(module, url, callbackSuccess, callbackFailed) {
 
 	// If our library failed to load, we'll call upon this function.
 	var failed = function() {
-		return callbackFailed(module, url, 'failed');
+		return callbackFailed(module, url);
 	};
 
 	// Whether a callback comes back as an error/success, they're not always trustworthy.
@@ -25,7 +25,7 @@ me.loader.js.boot = function(module, url, callbackSuccess, callbackFailed) {
 		factory = me.loader.js.check(module);
 
 		// If the factory is empty, then it failed to load! Invoke the failure callback.
-		if (!factory) {
+		if (!me.isDefined(factory)) {
 			return failed();
 		}
 
@@ -53,22 +53,37 @@ me.loader.js.attributes = function(attribute) {
 	// Fetch all script tags that are on the page.
 	var scripts = global.document.getElementsByTagName('script');
 
-	// Check to make sure that we retrieved a `HTMLCollection`, otherwise halt the `Function`.
-	if (!me.isHTMLCollection(scripts)) {
+	// Check to make sure that we retrieved a `HTMLCollection`, otherwise halt the `Function`.`isObject` check is for
+	// legacy browsers. @ie
+	if (!me.isHTMLCollection(scripts) && !me.isObject(scripts)) {
 		return values;
 	}
 
 	// Loop through each of our scripts.
 	me.each(scripts, function(script) {
-		// If our script instance isn't an `HTMLScriptElement`, then skip the iteration.
-		if (!me.isHTMLScriptElement(script)) {
+		// If our script instance isn't an `HTMLScriptElement`, then skip the iteration. `isObject` check is for legacy
+		// browsers. @ie
+		if (!me.isHTMLScriptElement(script) && !me.isObject(script)) {
+			return;
+		}
+
+		// If `getAttribute` isn't a `Function`, then we're not looking at a HTML element, skip it. For legacy IE the
+		// `getAttribute` method is declared as `Object`.
+		if (!me.isObject(script.getAttribute) && !me.isFunction(script.getAttribute)) {
 			return;
 		}
 
 		// Check to see if our `attribute` exists along with the prefix `data-` for the `attribute` in questino.
 		me.each([attribute, 'data-' + attribute], function(attribute) {
+			// Store our attribute value.
+			var value = null;
+
+			// We need to wrap this in a try catch because we cannot properly detect the method in legacy browsers. @ie
 			// Fetch the value for the attribute.
-			var value = script.getAttribute(attribute);
+			try {
+				// Fetch our attribute.
+				value = script.getAttribute(attribute);
+			} catch (exception) {}
 
 			// If the value exists then use it.
 			if (value) {
@@ -136,7 +151,7 @@ me.loader.js.check.exports = function(exports) {
 
 			// If our `factor`y is undefined, force the variable back to a `null`.
 			if (!me.isDefined(factory)) {
-				factory = null;
+				factory = undefined;
 			}
 		} catch (exception) {
 			// Let the end user know that we hit an exception due to their malformed `exports` variable.

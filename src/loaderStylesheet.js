@@ -15,7 +15,7 @@ me.loader.css.boot = function(module, url, callbackSuccess, callbackFailed) {
 
 	// If our library failed to load, we'll call upon this function.
 	var failed = function() {
-		return callbackFailed(module, url, 'failed');
+		return callbackFailed(module, url);
 	};
 
 	// Whether a callback comes back as an error/success, they're not always trustworthy.

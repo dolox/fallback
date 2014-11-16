@@ -12,16 +12,16 @@ me.loader.img.boot = function(module, url, callbackSuccess, callbackFailed) {
 	// If we get an `onerror` callback, the image failed to load.
 	element.onerror = function() {
 		// Remove the element from the page.
-		element.remove();
+		me.loader.img.remove(element);
 
 		// Process our failed callback.
-		return callbackFailed(module, url, 'failed');
+		return callbackFailed(module, url);
 	};
 
 	// If we get an `onload` callback, the image loaded successfully.
 	element.onload = function() {
 		// Remove the element from the page.
-		element.remove();
+		me.loader.img.remove(element);
 
 		// In the case of images, the factory represents the URL.
 		return callbackSuccess(module, url, 'success', url);
@@ -32,4 +32,22 @@ me.loader.img.boot = function(module, url, callbackSuccess, callbackFailed) {
 
 	// Attempt to load the image on the page.
 	return me.head.appendChild(element);
+};
+
+// Remove a dynamically generated element from the page.
+me.loader.img.remove = function(element) {
+	// If `element.remove` exists, use it.
+	if (me.isFunction(element.remove)) {
+		element.remove();
+		return true;
+	}
+
+	// Legacy IE (IE < 9) doesn't have a `.remove` method. @ie
+	if (me.isObject(element.removeNode)) {
+		element.removeNode();
+		return true;
+	}
+
+	// Return `false` if we weren't able to remove the element.
+	return false;
 };

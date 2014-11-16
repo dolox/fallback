@@ -90,7 +90,7 @@ me.loader.urls = function(module) {
 	var url = urls.shift();
 
 	// Throw a log message to the end user.
-	me.log('Loader', '`' + module.name + '` is attempting to load via ' + url);
+	me.log('Loader', 'Requesting to load `' + module.name + '` via `' + url + '`');
 
 	// Call upon our specific loader script to load our URL.
 	me.loader[module.identity].boot(module, url, me.loader.urls.success, me.loader.urls.failed);
@@ -113,13 +113,19 @@ me.loader.urls.completed = function(module) {
 
 // When a URL or module fails to load this function will be called.
 me.loader.urls.failed = function(module, url) {
+	// Legacy IE fires off the failed callback more than once, so we'll double check to see if we've already fired it. @ie
+	if (me.indexOf(module.loader.failed, url) !== -1) {
+		return;
+	}
+
 	// Setup our log message that we'll send to the end user.
 	var message = '`' + module.name + '` failed to load ';
 
 	// If there's no URL, then all URLs have been exhausted!
 	if (!url) {
 		me.loader.urls.completed(module);
-		return me.log('Loader', message + 'module.');
+		me.log('Loader', message + 'module.');
+		return;
 	}
 
 	// Reset the anonymous module name.
@@ -137,7 +143,7 @@ me.loader.urls.failed = function(module, url) {
 me.loader.urls.success = function(module, url, status, factory) {
 	// We're going to store the name of the module we're attempting to load here. This way if the file that's loaded
 	// happens to call the `define` function with an anonymous name, this is the name that we'll use for the definition.
-	me.define.anonymous(module.name, url);
+	me.define.anonymous(module.name);
 
 	// If our library was already loaded, we don't know what URL was successful, so we'll skip setting it.
 	if (status === 'predefined') {
@@ -153,8 +159,8 @@ me.loader.urls.success = function(module, url, status, factory) {
 	}
 
 	// If we don't have a factory for our module, then there was no definition. Regardless of what our value is we'll
-	//	reference it here.
-	if (!module.factory) {
+	// reference it here.
+	if (!me.isDefined(module.factory)) {
 		module.invoked = true;
 		module.factory = factory;
 	}

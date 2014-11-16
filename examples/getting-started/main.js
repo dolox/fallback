@@ -33,8 +33,8 @@ cfg({
 			// If one fails, we'll try another, until 1 succeeds or all have failed.
 			'urls': [
 				'//.....some-bad-cdn...../.....FAIL-ON-PURPOSE.....',
-				'//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min',
-				'//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min'
+				'//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min',
+				'//cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.min'
 			]
 		},
 
@@ -76,5 +76,5 @@ req(function(css$bootstrap, jqueryui, $) {
 	$('.container').append('<h3 class="alert-success">Loaded jQuery, jQuery UI and Twiiter Bootstrap!</h3>');
 
 	$('.container').append('<h1 class="text-center">Stats</h1>');
-	$('.container').append('<div id="stats">' + fallback.stats() + '</div>');
+	$('.container').append('<pre id="stats">' + fallback.stats() + '</pre>');
 });

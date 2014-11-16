@@ -1,14 +1,16 @@
 bugs
-	[ ] if you add a anon dependency, and if that dep loads with a differently defined name, you need to alias it off.
-	[ ] anony null not defining properly
-	[ ] anon undefned not defining properly
+	[ ] ie6-8 run tests and fix errors
+	[ ] fix me.log to have no colors in legacy browsers
+	[ ] fix all log messages in project to be more helpful and leading
+	[ ] if there's no URLs it should use a anonymous module
+	[ ] change the gruntfile back to localhost from 10.0.1.2
 
 re-run through unit tests, and add type checking for the actual functions/vars at the top of each
 segregate the couple integration tests into the integration folder
 
 unit tests
-	[x] config
-	[x] core
+	[ ] config
+	[ ] core
 	[ ] define
 	[ ] loader
 	[ ] loaderImage

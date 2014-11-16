@@ -1,6 +1,6 @@
 <p align="center"><a href="http://fallback.io/" target="_blank"><img alt="Fallback JS" height="128" src="http://fallback.io/img/logo.png" /></a></p>
 <h1 align="center">Fallback JS v2.0.0</h1>
-<h6 align="center">17.38 KB Compressed / 80.61 KB Uncompressed</h6>
+<h6 align="center">17.82 KB Compressed / 82.66 KB Uncompressed</h6>
 
 <p align="center">
 	<a href="https://travis-ci.org/dolox/fallback" target="_blank"><img src="https://travis-ci.org/dolox/fallback.svg?style=flat" /></a>

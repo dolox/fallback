@@ -20,20 +20,7 @@ h1 {
 }
 
 .col-xs-12.text-right {
-	background: #db552e;
-	border-radius: 5px;
-	color: #fff !important;
-	display: inline-block;
-	float: none;
-	font-size: 14px;
-	font-weight: 700;
-	left: 100%;
-	margin-left: -200px;
-	margin-top: 30px;
-	padding: 5px;
-	position: relative;
-	text-align: center;
-	width: 200px;
+	margin-bottom: 30px;
 }
 
 p {
@@ -67,5 +54,7 @@ th {
 	font-size: 12px;
 	overflow-x: scroll;
 	margin-bottom: 60px;
+	overflow: auto;
 	white-space: pre;
+	word-wrap: normal;
 }

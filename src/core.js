@@ -298,14 +298,14 @@ me.log = function() {
 	});
 
 	// Make a reference to our function, if the our level function doesn't exist natively in the browser.
-	var logger = global.console.log;
+	var method = 'log';
 
 	if (me.isFunction(global.console[level])) {
-		logger = global.console[level];
+		method = level;
 	}
 
-	// Log our message to the console.
-	return logger('%cFallbackJS: %c' + level.toUpperCase() + ': ' + prefixes.join(': ') + ': %c' + args.join(), 'font-weight: bold; color: #da542c', 'font-weight: bold; color: #000', 'color: #777');
+	// Log our message to the console. @todo need a non colorful message for legacy ie
+	return global.console[method]('%cFallbackJS: %c' + level.toUpperCase() + ': ' + prefixes.join(': ') + ': %c' + args.join(), 'font-weight: bold; color: #da542c', 'font-weight: bold; color: #000', 'color: #777');
 };
 
 // The various levels for our `log` function.
