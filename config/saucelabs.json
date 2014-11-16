@@ -1,4 +1,10 @@
 {
+	"osXChrome": {
+		"base": "SauceLabs",
+		"browserName": "chrome",
+		"platform": "OS X 10.9"
+	},
+
 	"osXFirefox": {
 		"base": "SauceLabs",
 		"browserName": "firefox",
@@ -63,5 +69,11 @@
 		"browserName": "internet explorer",
 		"platform": "Windows XP",
 		"version": "6"
+	},
+
+	"win7Opera": {
+		"base": "SauceLabs",
+		"browserName": "opera",
+		"platform": "Windows 7"
 	}
 }

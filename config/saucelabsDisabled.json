@@ -5,18 +5,6 @@
 		"platform": "Windows 7"
 	},
 
-	"win7Opera": {
-		"base": "SauceLabs",
-		"browserName": "opera",
-		"platform": "Windows 7"
-	},
-
-	"osXChrome": {
-		"base": "SauceLabs",
-		"browserName": "chrome",
-		"platform": "OS X 10.10"
-	},
-
 	"android40": {
 		"base": "SauceLabs",
 		"browserName": "android",
