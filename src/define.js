@@ -73,9 +73,8 @@ me.define.anonymous = function(moduleName) {
 	}
 
 	// If our module already exists and there's a module that's set as our last defined, then a file was loaded which the
-	// library assumed was anonymous, but wound up being explicitly calling define with a `name` in the `define`
-	// `Function`. In
-	// this particular case, we'll destroy the new definition and instead alias it with our anonymous module.
+	// library assumed was anonymous, but wound up being explicitly calling the `define` `Function` with a `name`. In this
+	// particular case, we'll destroy the new definition and instead alias it with our anonymous module.
 	if (module && me.define.module.last) {
 		// Define the alias coming from the `define` function for the anonymous file that was loaded.
 		me.module.alias(module.name, [me.define.module.last.name]);

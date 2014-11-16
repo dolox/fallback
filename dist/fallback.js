@@ -269,8 +269,15 @@ me.isType = function(variable, type) {
 	// Newer browsers give the proper types for these, whereas legacy browsers don't. Instead of writing separate
 	// functions and test for each, we can simply accept them all as being an object.
 	if (valid === false && (type === 'HTMLCollection' || type === 'HTMLHeadElement' || type === 'HTMLScriptElement')) {
+		// Special patch for Safari. @safari
+		if (type === 'HTMLCollection') {
+			valid = me.isType(variable, 'NodeList');
+		}
+
 		// Fallback on an `Object` for legacy browsers.
-		valid = me.isType(variable, 'Object');
+		if (!valid) {
+			valid = me.isType(variable, 'Object');
+		}
 	}
 
 	// Return whether or not our type is valid.
@@ -870,9 +877,8 @@ me.define.anonymous = function(moduleName) {
 	}
 
 	// If our module already exists and there's a module that's set as our last defined, then a file was loaded which the
-	// library assumed was anonymous, but wound up being explicitly calling define with a `name` in the `define`
-	// `Function`. In
-	// this particular case, we'll destroy the new definition and instead alias it with our anonymous module.
+	// library assumed was anonymous, but wound up being explicitly calling the `define` `Function` with a `name`. In this
+	// particular case, we'll destroy the new definition and instead alias it with our anonymous module.
 	if (module && me.define.module.last) {
 		// Define the alias coming from the `define` function for the anonymous file that was loaded.
 		me.module.alias(module.name, [me.define.module.last.name]);

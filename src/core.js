@@ -265,8 +265,15 @@ me.isType = function(variable, type) {
 	// Newer browsers give the proper types for these, whereas legacy browsers don't. Instead of writing separate
 	// functions and test for each, we can simply accept them all as being an object.
 	if (valid === false && (type === 'HTMLCollection' || type === 'HTMLHeadElement' || type === 'HTMLScriptElement')) {
+		// Special patch for Safari. @safari
+		if (type === 'HTMLCollection') {
+			valid = me.isType(variable, 'NodeList');
+		}
+
 		// Fallback on an `Object` for legacy browsers.
-		valid = me.isType(variable, 'Object');
+		if (!valid) {
+			valid = me.isType(variable, 'Object');
+		}
 	}
 
 	// Return whether or not our type is valid.
