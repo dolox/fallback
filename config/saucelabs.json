@@ -9,8 +9,7 @@
 	"Chrome-OSX1010": {
 		"base": "SauceLabs",
 		"browserName": "chrome",
-		"platform": "OS X 10.10",
-		"version": "37"
+		"platform": "OS X 10.10"
 	},
 
 	"Chrome-OSX109": {
@@ -22,8 +21,7 @@
 	"Chrome-OSX108": {
 		"base": "SauceLabs",
 		"browserName": "chrome",
-		"platform": "OS X 10.8",
-		"version": "37"
+		"platform": "OS X 10.8"
 	},
 
 	"Chrome-Win7": {
