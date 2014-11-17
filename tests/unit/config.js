@@ -1,8 +1,8 @@
-/* global describe, expect, fallback, it */
+/* global config, describe, expect, fallback, it */
 
-describe('tests.unit.config.config', function() {
+describe('tests.unit.config', function() {
 	it('should be a Function', function() {
-		expect(fallback.config).to.be.a('function');
+		expect(config).to.be.a('function');
 	});
 
 	var tests = [
@@ -23,16 +23,18 @@ describe('tests.unit.config.config', function() {
 		}
 
 		it('should return an `false` if a non-object is passed in', function() {
-			expect(fallback.config(value)).to.equal(false);
+			expect(config(value)).to.equal(false);
 		});
 	});
 
 	it('should return an empty `Object` when an empty `Object` is passed in', function() {
-		var test = fallback.config({});
+		var test = config({});
 		expect(JSON.stringify(test)).to.equal('{}');
 	});
 
 	fallback.each(tests, function(value) {
+		var expectedValue;
+
 		// Skip undefined.
 		if (value === undefined) {
 			return;
@@ -55,7 +57,7 @@ describe('tests.unit.config.config', function() {
 				it('should return an Object with a value of `' + expectedValue + '` for the key `' + key + '`', function() {
 					var test = {};
 					test[key] = value;
-					test = fallback.config(test);
+					test = config(test);
 
 					expect(JSON.stringify(test)).to.equal('{"' + key + '":' + expectedValue + '}');
 				});
@@ -76,7 +78,7 @@ describe('tests.unit.config.config', function() {
 				it('should return an Object with a value of `' + expectedValue + '` for the key `' + key + '`', function() {
 					var test = {};
 					test[key] = value;
-					test = fallback.config(test);
+					test = config(test);
 
 					expect(JSON.stringify(test)).to.equal('{"' + key + '":"' + expectedValue + '"}');
 				});
@@ -101,7 +103,7 @@ describe('tests.unit.config.config', function() {
 				it('should return an Object with a value of `' + expectedValue + '` for the key `' + key + '`', function() {
 					var test = {};
 					test[key] = value;
-					test = fallback.config(test);
+					test = config(test);
 
 					expect(JSON.stringify(test)).to.equal('{"' + key + '":' + expectedValue + '}');
 				});
@@ -116,7 +118,7 @@ describe('tests.unit.config.config', function() {
 				it('should return an Object with a value of `' + expectedValue + '` for the key `' + key + '`', function() {
 					var test = {};
 					test[key] = value;
-					test = fallback.config(test);
+					test = config(test);
 
 					expect(JSON.stringify(test)).to.equal('{"' + key + '":' + expectedValue + '}');
 				});
@@ -157,7 +159,7 @@ describe('tests.unit.config.config', function() {
 
 					expectedValue = JSON.stringify(expectedValue);
 
-					test = fallback.config(test);
+					test = config(test);
 					expect(JSON.stringify(test)).to.equal(expectedValue);
 				});
 
@@ -192,7 +194,7 @@ describe('tests.unit.config.config', function() {
 
 					expectedValue = JSON.stringify(expectedValue);
 
-					test = fallback.config(test);
+					test = config(test);
 					expect(JSON.stringify(test)).to.equal(expectedValue);
 				});
 
@@ -202,7 +204,7 @@ describe('tests.unit.config.config', function() {
 	});
 
 	it('should contain the proper paths if `base` is an `Object`', function() {
-		var test = fallback.config({
+		var test = config({
 			base: {
 				css: 'a',
 				img: 'b',

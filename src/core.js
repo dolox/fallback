@@ -488,9 +488,20 @@ me.parallel = function(references, callback) {
 };
 
 // Our anonymous functions that we're executing in parallel.
-me.parallel.anonymous = function(reference, guid, callback) {
+me.parallel.anonymous = function(factory, guid, callback) {
+	// If our `factory` parameter isn't a `Function`, halt the `Function`.
+	if (!me.isFunction(factory)) {
+		return;
+	}
+
+	// Normalize our `guid` parameter.
+	guid = me.normalizeString(guid, me.guid(true));
+
+	// Normalize our `callback` paramter.
+	callback = me.normalizeFunction(callback);
+
 	// Invoke our queued function.
-	reference(function() {
+	factory(function() {
 		// Reference the instance of our parallel runner.
 		var parallel = me.parallel.queue[guid];
 

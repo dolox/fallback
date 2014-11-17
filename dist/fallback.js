@@ -492,9 +492,20 @@ me.parallel = function(references, callback) {
 };
 
 // Our anonymous functions that we're executing in parallel.
-me.parallel.anonymous = function(reference, guid, callback) {
+me.parallel.anonymous = function(factory, guid, callback) {
+	// If our `factory` parameter isn't a `Function`, halt the `Function`.
+	if (!me.isFunction(factory)) {
+		return;
+	}
+
+	// Normalize our `guid` parameter.
+	guid = me.normalizeString(guid, me.guid(true));
+
+	// Normalize our `callback` paramter.
+	callback = me.normalizeFunction(callback);
+
 	// Invoke our queued function.
-	reference(function() {
+	factory(function() {
 		// Reference the instance of our parallel runner.
 		var parallel = me.parallel.queue[guid];
 
@@ -935,11 +946,23 @@ me.define.anonymous.save = function(args) {
 	// Remove the reference for our last defined module.
 	me.define.module.last = null;
 
+	// Reset the previously saved values if present.
+	me.define.anonymous.reset();
+
+	// If the `args` parameter isn't an `Object`, halt the `Function`.
+	if (!me.isObject(args)) {
+		return;
+	}
+
 	// Set the dependencies for our anonymous module.
-	me.define.anonymous.deps = args.deps;
+	if (me.isDefined(args.deps)) {
+		me.define.anonymous.deps = args.deps;
+	}
 
 	// Set the factory for our anonymous module.
-	me.define.anonymous.factory = args.factory;
+	if (me.isDefined(args.factory)) {
+		me.define.anonymous.factory = args.factory;
+	}
 };
 
 // Handle the arguments for our define function in a special way. In certain cases only 1, 2 or 3 parameters may be

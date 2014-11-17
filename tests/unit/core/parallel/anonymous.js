@@ -6,6 +6,10 @@ describe('tests.unit.core.parallel.anonymous', function() {
 		expect(test).to.be.a('function');
 	});
 
+	it('to always return undefined', function() {
+		expect(fallback.parallel.anonymous()).to.be(undefined);
+	});
+
 	it('should invoke an anonymous Function and it\'s callback', function(done) {
 		var test = {
 			guid: fallback.parallel.generate(1),

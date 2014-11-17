@@ -125,11 +125,23 @@ me.define.anonymous.save = function(args) {
 	// Remove the reference for our last defined module.
 	me.define.module.last = null;
 
+	// Reset the previously saved values if present.
+	me.define.anonymous.reset();
+
+	// If the `args` parameter isn't an `Object`, halt the `Function`.
+	if (!me.isObject(args)) {
+		return;
+	}
+
 	// Set the dependencies for our anonymous module.
-	me.define.anonymous.deps = args.deps;
+	if (me.isDefined(args.deps)) {
+		me.define.anonymous.deps = args.deps;
+	}
 
 	// Set the factory for our anonymous module.
-	me.define.anonymous.factory = args.factory;
+	if (me.isDefined(args.factory)) {
+		me.define.anonymous.factory = args.factory;
+	}
 };
 
 // Handle the arguments for our define function in a special way. In certain cases only 1, 2 or 3 parameters may be

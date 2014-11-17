@@ -9,6 +9,7 @@
 	"Chrome-Android43": {
 		"base": "SauceLabs",
 		"browserName": "android",
+		"deviceName": "LG Nexus 4 Emulator",
 		"platform": "Linux",
 		"version": "4.3"
 	},
