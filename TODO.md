@@ -22,6 +22,8 @@ unit tests
 
 @todo
 
+	rip the logs out of the min file and prepend the banner
+
 	angular js example
 
 	allow config to pass in logging levels for debug: 'warn', 'info', 'error', or false

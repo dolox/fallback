@@ -1,113 +1,208 @@
 {
-	"android44": {
+	"Chrome-Android44": {
 		"base": "SauceLabs",
 		"browserName": "android",
 		"platform": "Linux",
 		"version": "4.4"
 	},
 
-	"iOS6": {
+	"Chrome-Android43": {
 		"base": "SauceLabs",
-		"browserName": "iphone",
-		"platform": "OS X 10.8",
-		"version": "6.0"
+		"browserName": "android",
+		"platform": "Linux",
+		"version": "4.3"
 	},
 
-	"iOS7": {
+	"Chrome-Android42": {
 		"base": "SauceLabs",
-		"browserName": "iphone",
-		"platform": "OS X 10.9",
-		"version": "7.0"
+		"browserName": "android",
+		"platform": "Linux",
+		"version": "4.2"
 	},
 
-	"iOS8": {
+	"Chrome-OSX1010": {
 		"base": "SauceLabs",
-		"browserName": "iphone",
-		"platform": "OS X 10.9",
-		"version": "8.0"
+		"browserName": "chrome",
+		"platform": "OS X 10.10"
 	},
 
-	"osXChrome": {
+	"Chrome-OSX109": {
 		"base": "SauceLabs",
 		"browserName": "chrome",
 		"platform": "OS X 10.9"
 	},
 
-	"osXFirefox": {
+	"Chrome-OSX108": {
 		"base": "SauceLabs",
-		"browserName": "firefox",
-		"platform": "OS X 10.10"
+		"browserName": "chrome",
+		"platform": "OS X 10.8"
 	},
 
-	"osXSafari": {
-		"base": "SauceLabs",
-		"browserName": "safari",
-		"platform": "OS X 10.10"
-	},
-
-	"win7Chrome": {
+	"Chrome-Win7": {
 		"base": "SauceLabs",
 		"browserName": "chrome",
 		"platform": "Windows 7"
 	},
 
-	"win7Firefox": {
+	"Chrome-Win8": {
+		"base": "SauceLabs",
+		"browserName": "chrome",
+		"platform": "Windows 8"
+	},
+
+	"Chrome-Win81": {
+		"base": "SauceLabs",
+		"browserName": "chrome",
+		"platform": "Windows 8.1"
+	},
+
+	"Chrome-WinXP": {
+		"base": "SauceLabs",
+		"browserName": "chrome",
+		"platform": "Windows XP"
+	},
+
+	"Firefox-OSX": {
+		"base": "SauceLabs",
+		"browserName": "firefox",
+		"platform": "OS X 10.10"
+	},
+
+	"Firefox-Win7": {
 		"base": "SauceLabs",
 		"browserName": "firefox",
 		"platform": "Windows 7"
 	},
 
-	"win7IE11": {
+	"Firefox-Win8": {
+		"base": "SauceLabs",
+		"browserName": "firefox",
+		"platform": "Windows 8"
+	},
+
+	"Firefox-Win81": {
+		"base": "SauceLabs",
+		"browserName": "firefox",
+		"platform": "Windows 8.1"
+	},
+
+	"Firefox-WinXP": {
+		"base": "SauceLabs",
+		"browserName": "firefox",
+		"platform": "Windows XP"
+	},
+
+	"IE11-Win81": {
+		"base": "SauceLabs",
+		"browserName": "internet explorer",
+		"platform": "Windows 8.1",
+		"version": "11"
+	},
+
+	"IE11-Win7": {
 		"base": "SauceLabs",
 		"browserName": "internet explorer",
 		"platform": "Windows 7",
 		"version": "11"
 	},
 
-	"win7IE10": {
+	"IE10-Win8": {
+		"base": "SauceLabs",
+		"browserName": "internet explorer",
+		"platform": "Windows 8",
+		"version": "10"
+	},
+
+	"IE10-Win7": {
 		"base": "SauceLabs",
 		"browserName": "internet explorer",
 		"platform": "Windows 7",
 		"version": "10"
 	},
 
-	"win7IE9": {
+	"IE9-Win7": {
 		"base": "SauceLabs",
 		"browserName": "internet explorer",
 		"platform": "Windows 7",
 		"version": "9"
 	},
 
-	"winXPIE8": {
+	"IE8-Win7": {
+		"base": "SauceLabs",
+		"browserName": "internet explorer",
+		"platform": "Windows 7",
+		"version": "8"
+	},
+
+	"IE8-WinXP": {
 		"base": "SauceLabs",
 		"browserName": "internet explorer",
 		"platform": "Windows XP",
 		"version": "8"
 	},
 
-	"winXPIE7": {
+	"IE7-WinXP": {
 		"base": "SauceLabs",
 		"browserName": "internet explorer",
 		"platform": "Windows XP",
 		"version": "7"
 	},
 
-	"winXPIE6": {
+	"IE6-WinXP": {
 		"base": "SauceLabs",
 		"browserName": "internet explorer",
 		"platform": "Windows XP",
 		"version": "6"
 	},
 
-	"win7Opera": {
+	"Opera-Win7": {
 		"base": "SauceLabs",
 		"browserName": "opera",
 		"platform": "Windows 7"
 	},
 
-	"win7Safari": {
+	"Opera-WinXP": {
+		"base": "SauceLabs",
+		"browserName": "opera",
+		"platform": "Windows XP"
+	},
+
+	"Safari-iOS6": {
+		"base": "SauceLabs",
+		"browserName": "iphone",
+		"platform": "OS X 10.8",
+		"version": "6.0"
+	},
+
+	"Safari-iOS7": {
+		"base": "SauceLabs",
+		"browserName": "iphone",
+		"platform": "OS X 10.8",
+		"version": "7.0"
+	},
+
+	"Safari-iOS8": {
+		"base": "SauceLabs",
+		"browserName": "iphone",
+		"platform": "OS X 10.9",
+		"version": "8.0"
+	},
+
+	"Safari-OSX1010": {
 		"base": "SauceLabs",
 		"browserName": "safari",
-		"platform": "Windows 7"
+		"platform": "OS X 10.10"
+	},
+
+	"Safari-OSX109": {
+		"base": "SauceLabs",
+		"browserName": "safari",
+		"platform": "OS X 10.9"
+	},
+
+	"Safari-OSX108": {
+		"base": "SauceLabs",
+		"browserName": "safari",
+		"platform": "OS X 10.8"
 	}
 }
