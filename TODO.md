@@ -1,5 +1,65 @@
-change grunt test to grunt tests
+@todo tests
+	unit
+		core
+			parallel.anonymous
+	integration
+		core
+			browser.IE11
+			...
 
+		define
+			define
+			define.anonymous
+			define.anonymous.*
+			define.module
+			define.module.last
+
+		loader
+			init
+			init.autoloader
+			boot
+			urls
+			completed
+			failed
+			success
+
+
+
+	acceptance
+		...
+
+
+	it('to always return undefined', function() {
+		expect(fallback.each()).to.be(undefined);
+	});
+
+
+	// fallback.init
+	
+	it('fallback.head should be a reference to the documents head element', function() {
+		expect(fallback.head).to.be.an('object');
+	});
+
+	fallback.each({
+		fallback: 'object',
+		require: 'function',
+		define: 'function'
+	}, function(type, reference) {
+		it(reference + ' reference should exist in the `window`', function() {
+			expect(window[reference]).to.be.an(type);
+		});
+	});
+
+	it('the loader module should be initialized', function() {
+		expect(fallback.loader.inited).to.equal(true);
+	});
+	
+	
+
+
+
+change grunt test to grunt tests
+automatically add the library key as exports, if exports arent specified like v1.0 did
 
 
 bugs
@@ -45,10 +105,6 @@ readme documentation
 	- document the debugger levels
 	- update sample code on the website and file size
 	- 301 fallbackjs.com to fallback.io
-
----
-
-- migration code from 1.0 to 2.0
 
 ---
 
