@@ -1,6 +1,11 @@
 /* global describe, expect, fallback, it */
 
 describe('tests.unit.core.parallel', function() {
+	it('should be a Function', function() {
+		var test = fallback.parallel;
+		expect(test).to.be.a('function');
+	});
+
 	it('functions should run in parallel and return a final callback when completed', function(done) {
 		var test = [];
 

@@ -1,10 +1,15 @@
 /* global describe, expect, fallback, it */
 
-// @todo change the function so that generate can maybe return something? that or it belongs in the integration tests
 describe('tests.unit.core.parallel.generate', function() {
-	it('should add a new item to our queue', function() {
-		var guid = fallback.parallel.generate(1);
-		expect(JSON.stringify(fallback.parallel.queue)).to.not.equal('');
-		delete fallback.parallel.queue[guid];
+	it('should be a Function', function() {
+		var test = fallback.parallel.generate;
+		expect(test).to.be.a('function');
+	});
+
+	it('should return a 36 character GUID', function() {
+		var test = fallback.parallel.generate(1);
+		expect(test).to.be.a('string');
+		expect(test.length).to.equal(36);
+		delete fallback.parallel.queue[test];
 	});
 });

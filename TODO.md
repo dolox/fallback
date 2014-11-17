@@ -1,3 +1,7 @@
+change grunt test to grunt tests
+
+
+
 bugs
 	[ ] fix me.log to have no colors in legacy browsers
 	[ ] fix all log messages in project to be more helpful and leading
@@ -36,7 +40,7 @@ unit tests
 
 readme documentation
 	- document the directories and what their for
-	
+	- need to document data-main and data-base attributes
 	- fallback.config -> input -> global --- fix the docs
 	- document the debugger levels
 	- update sample code on the website and file size

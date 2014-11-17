@@ -1,6 +1,11 @@
 /* global describe, expect, fallback, it */
 
 describe('tests.unit.core.normalizeArraySeries', function() {
+	it('should be a Function', function() {
+		var test = fallback.normalizeArraySeries;
+		expect(test).to.be.a('function');
+	});
+
 	var tests = [
 		// Non series tests.
 		false,

@@ -29,7 +29,7 @@
 
 # Getting Started
 
-To let you dive right in, we're going to provide you with the sample of code below. You can view the full [API Documentation](#api-documentation) along with other complex examples listed further down the document.
+To let you dive right in, we're going to provide you with the sample of code below. You can view the full [API Documentation](#api-documentation) along with other complex examples listed further down in this document.
 
 **index.html**
 

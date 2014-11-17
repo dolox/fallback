@@ -1,6 +1,6 @@
 <p align="center"><a href="http://fallback.io/" target="_blank"><img alt="Fallback JS" height="128" src="http://fallback.io/img/logo.png" /></a></p>
 <h1 align="center">Fallback JS v2.0.0</h1>
-<h6 align="center">18.01 KB Compressed / 83.69 KB Uncompressed</h6>
+<h6 align="center">18.06 KB Compressed / 83.9 KB Uncompressed</h6>
 
 <p align="center">
 	<a href="https://travis-ci.org/dolox/fallback" target="_blank"><img src="https://travis-ci.org/dolox/fallback.svg?style=flat" /></a>
@@ -29,7 +29,7 @@
 
 # Getting Started
 
-To let you dive right in, we're going to provide you with the sample of code below. You can view the full [API Documentation](#api-documentation) along with other complex examples listed further down the document.
+To let you dive right in, we're going to provide you with the sample of code below. You can view the full [API Documentation](#api-documentation) along with other complex examples listed further down in this document.
 
 **index.html**
 

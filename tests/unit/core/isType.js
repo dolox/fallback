@@ -1,6 +1,16 @@
 /*global describe, expect, fallback, it*/
 
 describe('tests.unit.core.isType', function() {
+	it('should be a Function', function() {
+		var test = fallback.isType;
+		expect(test).to.be.a('function');
+	});
+
+	it('to always return a Boolean', function() {
+		var test = fallback.isType();
+		expect(typeof test).to.equal('boolean');
+	});
+
 	it('HTMLCollection should return true for type HTMLCollection.', function() {
 		expect(fallback.isType(window.document.getElementsByTagName('script'), 'HTMLCollection')).to.equal(true);
 	});

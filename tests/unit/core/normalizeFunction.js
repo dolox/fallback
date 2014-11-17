@@ -1,6 +1,11 @@
 /* global describe, expect, fallback, it */
 
 describe('tests.unit.core.normalizeFunction', function() {
+	it('should be a Function', function() {
+		var test = fallback.normalizeFunction;
+		expect(test).to.be.a('function');
+	});
+
 	var tests = [
 		[],
 		false,

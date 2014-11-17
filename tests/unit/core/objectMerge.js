@@ -1,6 +1,11 @@
 /* global describe, expect, fallback, it */
 
 describe('tests.unit.core.objectMerge', function() {
+	it('should be a Function', function() {
+		var test = fallback.objectMerge;
+		expect(test).to.be.a('function');
+	});
+
 	var test = {
 		test1: undefined,
 		test2: undefined,

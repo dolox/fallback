@@ -1,6 +1,11 @@
 /* global describe, expect, fallback, it */
 
 describe('tests.unit.core.utility', function() {
+	it('should be a Function', function() {
+		var test = fallback.utility;
+		expect(test).to.be.a('function');
+	});
+
 	var test = {};
 
 	fallback.utility(test, 'Array');

@@ -1,28 +1,33 @@
 /* global describe, expect, fallback, it */
 
 describe('tests.unit.core.args', function() {
+	it('should be a Function', function() {
+		var test = fallback.args;
+		expect(test).to.be.a('function');
+	});
+
 	/* eslint-disable */
 	var tests = [{
-		length: 9,
-		reference: function(a, b,c,d,   e,		f,g ,H/* test */, i) {}
+		reference: function(a, b,c,d,   e,		f,g ,H/* test */, i) {},
+		result: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'H', 'i']
 	}, {
-		length: 3,
-		reference: function(/*ok*/ a,/*ok*/b	,	/*ok*/ c) {}
+		reference: function(/*ok*/ a,/*ok*/b	,	/*ok*/ c) {},
+		result: ['a', 'b', 'c']
 	}, {
-		length: 0,
-		reference: function() {}
+		reference: function() {},
+		result: []
 	}, {
-		length: 0,
-		reference: null
+		reference: null,
+		result: []
 	}, {
-		length: 0,
-		reference: undefined
+		reference: undefined,
+		result: []
 	}, {
-		length: 0,
-		reference: []
+		reference: [],
+		result: []
 	}, {
-		length: 0,
-		reference: {}
+		reference: {},
+		result: []
 	}];
 	/* eslint-enable */
 
@@ -33,8 +38,12 @@ describe('tests.unit.core.args', function() {
 			expect(result).to.be.an('array');
 		});
 
-		it('to return ' + test.length + ' for the length', function() {
-			expect(result.length).to.equal(test.length);
+		it('to return ' + test.result.length + ' for the length', function() {
+			expect(result.length).to.equal(test.result.length);
+		});
+
+		it('to return the proper values', function() {
+			expect(result.join()).to.equal(test.result.join());
 		});
 	});
 });

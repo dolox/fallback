@@ -1,6 +1,16 @@
 /* global describe, expect, fallback, it */
 
 describe('tests.unit.core.isArray', function() {
+	it('should be a Function', function() {
+		var test = fallback.isArray;
+		expect(test).to.be.a('function');
+	});
+
+	it('to always return a Boolean', function() {
+		var test = fallback.isArray();
+		expect(typeof test).to.equal('boolean');
+	});
+
 	it('null should return false.', function() {
 		expect(fallback.isArray(null)).to.equal(false);
 	});

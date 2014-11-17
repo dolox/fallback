@@ -1,6 +1,11 @@
 /* global describe, expect, fallback, it */
 
 describe('tests.unit.core.objectConstrain', function() {
+	it('should be a Function', function() {
+		var test = fallback.objectConstrain;
+		expect(test).to.be.a('function');
+	});
+
 	var test = {
 		test1: true,
 		test2: true,

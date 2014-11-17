@@ -143,6 +143,12 @@ me.args = function(reference) {
 // Clone an array. `Array.prototype.slice` appears to be the most efficient way of doing this.
 // @reference http://jsperf.com/new-array-vs-splice-vs-slice/19
 me.arrayClone = function(input) {
+	// If the `input` parameter is not an `Array` or `Object`, return an empty `Array`.
+	if (!me.isArray(input) && !me.isObject(input) && typeof input !== 'object') {
+		return [];
+	}
+
+	// Clone the Array.
 	return Array.prototype.slice.call(input);
 };
 
@@ -514,7 +520,7 @@ me.parallel.anonymous = function(reference, guid, callback) {
 // Generate a new parallel instance into our queue.
 me.parallel.generate = function(length) {
 	// Generate a unique identifier for our parallel instance to avoid collisions.
-	var guid = me.guid();
+	var guid = me.guid(true);
 
 	// Add the our `references` to our parallel queue.
 	me.parallel.queue[guid] = {
@@ -587,7 +593,7 @@ me.stringPad = function(input, pad, left) {
 
 // Automatically generate utility functions for our library. This library will generate the following functions:
 // - isArray, normalizeArray, normalizeArraySeries
-// - iBoolean, normalizeBoolean, normalizeBooleanSeries
+// - isBoolean, normalizeBoolean, normalizeBooleanSeries
 // - isFunction, normalizeFunction, normalizeFunctionSeries
 // - isNumber, normalizeNumber, normalizeNumberSeries
 // - isObject, normalizeObject, normalizeObjectSeries

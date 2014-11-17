@@ -6,18 +6,22 @@ describe('tests.unit.core.parallel.anonymous', function() {
 		expect(test).to.be.a('function');
 	});
 
-	it('should execute anonymous function and invoke the callback', function(done) {
+	it('should invoke an anonymous Function and it\'s callback', function(done) {
 		var test = {
-			executed: false,
-			guid: fallback.parallel.generate(1)
+			guid: fallback.parallel.generate(1),
+			invoked: false
 		};
 
-		fallback.parallel.anonymous(function(callback) {
-			test.executed = true;
+		var result = fallback.parallel.anonymous(function(callback) {
+			test.invoked = true;
 			callback();
 		}, test.guid, function() {
-			expect(test.executed).to.equal(true);
+			expect(test.invoked).to.equal(true);
 			done();
+		});
+
+		it('to always return undefined', function() {
+			expect(result).to.be(undefined);
 		});
 	});
 });

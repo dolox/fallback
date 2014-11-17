@@ -1,6 +1,16 @@
 /* global describe, expect, fallback, it */
 
 describe('tests.unit.core.isNumber', function() {
+	it('should be a Function', function() {
+		var test = fallback.isNumber;
+		expect(test).to.be.a('function');
+	});
+
+	it('to always return a Boolean', function() {
+		var test = fallback.isNumber();
+		expect(typeof test).to.equal('boolean');
+	});
+
 	it('null should return false.', function() {
 		expect(fallback.isNumber(null)).to.equal(false);
 	});

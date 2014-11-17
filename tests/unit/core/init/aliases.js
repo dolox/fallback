@@ -7,15 +7,19 @@ describe('tests.unit.core.init.aliases', function() {
 	});
 
 	var test = {};
-	fallback.init.aliases(test, fallback.aliases);
+	var result = fallback.init.aliases(test, fallback.aliases);
+
+	it('to always return undefined', function() {
+		expect(result).to.be(undefined);
+	});
 
 	fallback.each({
 		fallback: 'object',
 		require: 'function',
 		define: 'function'
-	}, function(type, reference) {
-		it(reference + ' reference should exist in test object', function() {
-			expect(test[reference]).to.be.an(type);
+	}, function(type, index) {
+		it('Object key `' + index + '` should exist in `test` Object', function() {
+			expect(test[index]).to.be.an(type);
 		});
 	});
 });

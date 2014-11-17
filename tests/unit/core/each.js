@@ -1,13 +1,17 @@
 /* global describe, expect, fallback, it */
 
 describe('tests.unit.core.each', function() {
-	it('to always return undefined.', function() {
+	it('should be a Function', function() {
+		var test = fallback.each;
+		expect(test).to.be.a('function');
+	});
+
+	it('to always return undefined', function() {
 		expect(fallback.each()).to.be(undefined);
 	});
 
 	it('to iterate an Array properly', function() {
 		var test = ['a', 'b', 'c'];
-
 		var result = {};
 
 		result.indexes = [];

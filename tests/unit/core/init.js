@@ -1,25 +1,17 @@
 /* global describe, expect, fallback, it */
 
 describe('tests.unit.core.init', function() {
-	it('the library should be initialized', function() {
+	it('should be a Function', function() {
+		var test = fallback.init;
+		expect(test).to.be.a('function');
+	});
+
+	it('to always return `true`', function() {
+		var test = fallback.init();
+		expect(test).to.equal(true);
+	});
+
+	it('should always be initialized', function() {
 		expect(fallback.inited).to.equal(true);
-	});
-
-	it('fallback.head should be a reference to the documents head element', function() {
-		expect(fallback.head).to.be.an('object');
-	});
-
-	fallback.each({
-		fallback: 'object',
-		require: 'function',
-		define: 'function'
-	}, function(type, reference) {
-		it(reference + ' reference should exist in the `window`', function() {
-			expect(window[reference]).to.be.an(type);
-		});
-	});
-
-	it('the loader module should be initialized', function() {
-		expect(fallback.loader.inited).to.equal(true);
 	});
 });

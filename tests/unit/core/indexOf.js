@@ -1,6 +1,16 @@
 /* global describe, expect, fallback, it */
 
 describe('tests.unit.core.indexOf', function() {
+	it('should be a Function', function() {
+		var test = fallback.indexOf;
+		expect(test).to.be.a('function');
+	});
+
+	it('to always return an Number', function() {
+		var test = fallback.indexOf();
+		expect(test).to.be.a('number');
+	});
+
 	var test = [1, 2, 3, 'fallback'];
 
 	it('to return -1 when the parameters are malformed.', function() {

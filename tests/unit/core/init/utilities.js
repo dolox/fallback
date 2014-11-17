@@ -7,16 +7,39 @@ describe('tests.unit.core.init.utilities', function() {
 	});
 
 	var test = {};
+	var result = fallback.init.utilities(test, fallback.utility.types);
 
-	fallback.init.utilities(test, fallback.utility.types);
+	it('to always return undefined', function() {
+		expect(result).to.be(undefined);
+	});
 
 	fallback.each({
 		isArray: 'function',
 		normalizeArray: 'function',
-		normalizeArraySeries: 'function'
-	}, function(type, reference) {
-		it(reference + ' reference should exist in test object', function() {
-			expect(test[reference]).to.be.an(type);
+		normalizeArraySeries: 'function',
+
+		isBoolean: 'function',
+		normalizeBoolean: 'function',
+		normalizeBooleanSeries: 'function',
+
+		isFunction: 'function',
+		normalizeFunction: 'function',
+		normalizeFunctionSeries: 'function',
+
+		isNumber: 'function',
+		normalizeNumber: 'function',
+		normalizeNumberSeries: 'function',
+
+		isObject: 'function',
+		normalizeObject: 'function',
+		normalizeObjectSeries: 'function',
+
+		isString: 'function',
+		normalizeString: 'function',
+		normalizeStringSeries: 'function'
+	}, function(type, index) {
+		it('Object key `' + index + '` should exist in `test` Object', function() {
+			expect(test[index]).to.be.an(type);
 		});
 	});
 });
