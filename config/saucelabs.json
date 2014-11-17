@@ -6,21 +6,6 @@
 		"version": "4.4"
 	},
 
-	"Chrome-Android43": {
-		"base": "SauceLabs",
-		"browserName": "android",
-		"deviceName": "LG Nexus 4 Emulator",
-		"platform": "Linux",
-		"version": "4.3"
-	},
-
-	"Chrome-Android42": {
-		"base": "SauceLabs",
-		"browserName": "android",
-		"platform": "Linux",
-		"version": "4.2"
-	},
-
 	"Chrome-OSX1010": {
 		"base": "SauceLabs",
 		"browserName": "chrome",

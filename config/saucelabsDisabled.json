@@ -1,0 +1,16 @@
+{
+	"Chrome-Android43": {
+		"base": "SauceLabs",
+		"browserName": "android",
+		"deviceName": "Google Nexus 7C Emulator",
+		"platform": "Linux",
+		"version": "4.3"
+	},
+
+	"Chrome-Android42": {
+		"base": "SauceLabs",
+		"browserName": "android",
+		"platform": "Linux",
+		"version": "4.2"
+	}
+}
