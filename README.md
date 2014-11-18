@@ -136,11 +136,16 @@ req(function(css$bootstrap, jqueryui, $) {
 
 If you happen to stumble upon any helpful open source examples which aren't listed here, please let us know and we'll add them to the list!
 
-| Link | Description |
-| ---- | ----------- |
-| [Examples](https://github.com/dolox/fallback/tree/master/examples) | A number of examples included in the project which illustrate how you can use the Fallback JS library.
-| [AngularJS Lazy Loading](http://plnkr.co/Q1mPmY)                   | This example illustrates how you can lazy load controllers, directives, modules and services in AngularJS.
-| [#fallbackjs on Plunker](http://plnkr.co/tags/fallbackjs)          | Look on Plunker under the tag `#fallbackjs` to see a number of examples that've been posted by users.
+- [Examples](https://github.com/dolox/fallback/tree/master/examples)
+A number of examples included in the project which illustrate how you can use the Fallback JS library.
+
+- [AngularJS Lazy Loading](http://plnkr.co/Q1mPmY)
+This example illustrates how you can lazy load controllers, directives, modules and services in AngularJS.
+
+- [#fallbackjs on Plunker](http://plnkr.co/tags/fallbackjs)
+Look on Plunker under the tag `#fallbackjs` to see a number of examples that've been posted by users.
+
+*Have a good example that you think belongs here? [Let us know!](https://github.com/dolox/fallback/issues)*
 
 ---
 
