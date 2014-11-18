@@ -160,7 +160,6 @@ me.tasks.tests = function() {
 
 					if (code !== 0) {
 						success = false;
-						return callback(task + ' failed!');
 					}
 
 					callback();

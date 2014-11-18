@@ -1,10 +1,4 @@
 {
-	"Chrome-Android44": {
-		"base": "SauceLabs",
-		"browserName": "android",
-		"platform": "Linux",
-		"version": "4.4"
-	},
 
 	"Chrome-Android43": {
 		"base": "SauceLabs",
