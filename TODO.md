@@ -60,8 +60,6 @@ fix migration polyfills --- .importer
 	
 
 
-
-change grunt test to grunt tests
 automatically add the library key as exports, if exports arent specified like v1.0 did
 
 
@@ -71,8 +69,6 @@ bugs
 	[ ] if there's no URLs it should use a anonymous module
 	[ ] change the gruntfile back to localhost from 10.0.1.2
 
-re-run through unit tests, and add type checking for the actual functions/vars at the top of each
-segregate the couple integration tests into the integration folder
 
 unit tests
 	[ ] config

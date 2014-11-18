@@ -42,7 +42,6 @@
 	"record-screenshots": false,
 
 	"reporters": [
-		"progress",
 		"saucelabs"
 	],
 

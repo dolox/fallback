@@ -160,6 +160,7 @@ me.tasks.tests = function() {
 
 					if (code !== 0) {
 						success = false;
+						return callback(task + ' failed!');
 					}
 
 					callback();
@@ -167,7 +168,7 @@ me.tasks.tests = function() {
 			});
 		});
 
-		me.async.parallelLimit(series, 1, function() {
+		me.async.parallelLimit(series, 2, function() {
 			done(success);
 		});
 	});
