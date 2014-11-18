@@ -68,7 +68,8 @@ bugs
 	[ ] fix all log messages in project to be more helpful and leading
 	[ ] if there's no URLs it should use a anonymous module
 	[ ] change the gruntfile back to localhost from 10.0.1.2
-
+	[ ] add the log levels to config and fix the unit tests boolean/string
+	[ ] 
 
 unit tests
 	[ ] config
