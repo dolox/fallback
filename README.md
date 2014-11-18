@@ -3,8 +3,8 @@
 <h6 align="center">18.26 KB Compressed / 84.45 KB Uncompressed</h6>
 
 <p align="center">
-	<a href="https://raw.githubusercontent.com/dolox/fallback/master/dist/fallback.min.js"><img src="https://img.shields.io/badge/production-18.26KB-brightgreen.svg" /></a>
-	<a href="https://raw.githubusercontent.com/dolox/fallback/master/dist/fallback.js"><img src="https://img.shields.io/badge/development-84.45KB-brightgreen.svg" /></a>
+	<a href="https://raw.githubusercontent.com/dolox/fallback/v2.0.0/dist/fallback.min.js"><img src="https://img.shields.io/badge/production-18.26KB-brightgreen.svg" /></a>
+	<a href="https://raw.githubusercontent.com/dolox/fallback/v2.0.0/dist/fallback.js"><img src="https://img.shields.io/badge/development-84.45KB-brightgreen.svg" /></a>
 	<a href="http://badge.fury.io/gh/dolox%2Ffallback" target="_blank"><img src="https://badge.fury.io/gh/dolox%2Ffallback.svg" /></a>
 	<a href="http://badge.fury.io/bo/fallback" target="_blank"><img src="https://badge.fury.io/bo/fallback.svg" /></a>
 	<a href="https://github.com/dolox/fallback/blob/master/LICENSE.txt"><img src="https://img.shields.io/badge/license-MIT-brightgreen.svg" /></a>
@@ -44,7 +44,7 @@ To let you dive right in, we're going to provide you with the sample of code bel
 ```html
 <html>
 <head>
-	<!-- By specifying `data-main` the library will automatically load `main.js` -->
+	<!-- The `data-main` attribute tells the library to load `main.js` -->
 	<script data-main="main" src="fallback.min.js" type="text/javascript"></script>
 </head>
 
@@ -57,53 +57,52 @@ To let you dive right in, we're going to provide you with the sample of code bel
 **main.js**
 ```javascript
 cfg({
-	// The list of libraries that we want to load for our project.
-	'libs': {
-		// Include Twitter Bootstrap.
+	// The list of libraries that we want use for our project.
+	"libs": {
+		// Include `Twitter Bootstrap`.
 		// We explicity prefix `css to the beginning of our key so Fallback JS
-		// knows to load this library as a CSS file.
-		'css$bootstrap': {
+		// knows to load this library as a Cascading Stylesheet (CSS).
+		"css$bootstrap": {
 			// Fallback JS will check to see if this style currently exists on the
 			// page. If it does exist, the library will not attempt to load the file
-			// as it will assume it has already been loaded.
-			'exports': '.col-xs-12',
+			// as it will assume it's already been loaded on the page.
+			"exports": ".col-xs-12",
 
-			// The URL for our CSS file.
-			'urls': '//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min'
+			// The URLs to load `Twitter Bootstrap`.
+			"urls": "//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min"
 		},
 
-		// Include jQuery.
-		'jquery': {
-			// Here we're giving jQuery an alias, so we can reference it as `
+		// Include `jQuery`.
+		"jquery": {
+			// Here we're giving `jQuery` an alias, so we can reference it as `
 			// instead of having to type `jquery` when we want to load it.
-			'alias': ',
+			"alias": "$",
 
-			// The global vaiable that is exported by jQuery when it's loaded on
-			// the page.
-			'exports': 'jQuery',
+			// The global vaiable that is set by `jQuery` when it's loaded on the
+			// page. If this variable is defined we won't attempt to load it.
+			"exports": "jQuery",
 
-			// A list of all of the files for our jQuery library.
-			// If one fails, we'll try another, until 1 succeeds or all have failed.
-			'urls': [
-				'//.....some-bad-cdn...../.....FAIL-ON-PURPOSE.....',
-				'//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min',
-				'//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min'
+			// The URLs to load `jQuery`.
+			"urls": [
+				"//.....some-bad-cdn...../.....FAIL-ON-PURPOSE.....",
+				"//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min",
+				"//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min"
 			]
 		},
 
-		// Our jQuery UI library.
-		'jqueryui': {
-			// The global vaiable that is exported by jQuery UI when it's loaded on
-			// the page.
-			'exports': 'jQuery.ui',
+		// Include `jQuery UI`.
+		"jqueryui": {
+			// The global vaiable that is set by `jQuery UI` when it's loaded on the
+			// page. If this variable is defined we won't attempt to load it.
+			"exports": "jQuery.ui",
 
-			// Load jQuery first before loading jQuery UI.
-			'deps': ['jquery'],
+			// Load `jQuery` first before loading `jQuery UI`.
+			"deps": "jquery",
 
-			// A list of all of the files for our jQuery UI library.
-			'urls': [
-				'//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery.min',
-				'//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min'
+			// The URLs to load `jQuery UI`.
+			"urls": [
+				"//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery.min",
+				"//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min"
 			]
 		}
 	}
@@ -111,22 +110,22 @@ cfg({
 
 // Load jQuery!
 req(function($) {
-	$('body').append('<div class="alert-success">Loaded jQuery!</div>');
+	$("body").append("<div class='alert-success'>Loaded jQuery!</div>");
 });
 
-// Load jQuery and Query UI!
+// Load jQuery UI!
 req(function(jqueryui, $) {
-	$('body').append('<div class="alert-success">Loaded jQuery and jQuery UI!</div>');
+	$("body").append("<div class='alert-success'>Loaded jQuery UI!</div>");
 });
 
-// Load jQuery and Twitter Bootstrap!
+// Load Twitter Bootstrap!
 req(function(css$bootstrap, $) {
-	$('body').append('<div class="alert-success">Loaded jQuery and Twiiter Bootstrap!</div>');
+	$("body").append("<div class='alert-success'>Loaded Twiiter Bootstrap!</div>");
 });
 
-// Load jQuery, jQuery UI and Twitter Bootstrap!
+// Load All!
 req(function(css$bootstrap, jqueryui, $) {
-	$('body').append('<div class="alert-success">Loaded jQuery, jQuery UI and Twiiter Bootstrap!</div>');
+	$("body").append("<div class='alert-success'>Loaded All!</div>");
 });
 ```
 
@@ -134,7 +133,7 @@ req(function(css$bootstrap, jqueryui, $) {
 
 # Open Source Examples
 
-If you happen to stumble upon any helpful open source examples which aren't listed here, please let us know and we'll add them to the list!
+If you happen to stumble upon any helpful open source examples which aren't listed here, please let us know and we'll add them to the list! **[Let us know here!](https://github.com/dolox/fallback/issues)**
 
 - [Examples](https://github.com/dolox/fallback/tree/master/examples)
 *A number of examples included in the project which illustrate how you can use the Fallback JS library.*
@@ -145,23 +144,21 @@ If you happen to stumble upon any helpful open source examples which aren't list
 - [#fallbackjs on Plunker](http://plnkr.co/tags/fallbackjs)
 *Look on Plunker under the tag `#fallbackjs` to see a number of examples that've been posted by users.*
 
-**Know a good example that you think belongs here? [Let us know!](https://github.com/dolox/fallback/issues)**
-
 ---
 
 # API Documentation
 
-A technical overview and in depth explanations of the libraries functions.
+A technical overview with in depth explanations of the libraries functionality.
 
 ### Overview
 
-| Function                                            | Aliases                                                                                                         | Description   |
-| --------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- | ------------- |
-| [config](#fallbackconfiginput)                      |`cfg`, `conf`, `config`, `fallback.cfg`, `fallback.conf`, `fallback.config`, `fbk.cfg`, `fbk.conf`, `fbk.config` | Configures Fallback JS to let it know what files need to be lazy loaded for your project. |
-| [define](#fallbackdefinename-dependencies-function) | `def`, `define`, `fallback.def`, `fallback.define`, `fbk.def`, `fbk.define`                                     | Allows you to define your JavaScript files in a way that they can be easily loaded and referenced at a later time. |
-| [require](#fallbackrequiredependencies-function)    | `fallback.req`, `fallback.require`, `fbk.req`, `fbk.require`, `req`, `require`                                  | Loads your libraries asynchronously the page. |
-| [stats](#fallbackstats)                             | `fallback.stats`, `fbk.stats`                                                                                   | Exports statistics for any libraries that were loaded with Fallback JS. |
-| [version](#fallbackversion)                         | `fallback.version`, `fbk.version`                                                                               | Returns the current version number of Fallback JS that's loaded on the page. |
+| Function                                            | Aliases                                                                                                          | Description   |
+| --------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ------------- |
+| [config](#fallbackconfiginput)                      | `cfg`, `conf`, `config`, `fallback.cfg`, `fallback.conf`, `fallback.config`, `fbk.cfg`, `fbk.conf`, `fbk.config` | Configures the libraries you want to load for your project. |
+| [define](#fallbackdefinename-dependencies-function) | `def`, `define`, `fallback.def`, `fallback.define`, `fbk.def`, `fbk.define`                                      | Define your JavaScript files so they can be easily loaded and referenced. |
+| [require](#fallbackrequiredependencies-function)    | `fallback.req`, `fallback.require`, `fbk.req`, `fbk.require`, `req`, `require`                                   | Loads your libraries asynchronously the page. |
+| [stats](#fallbackstats)                             | `fallback.stats`, `fbk.stats`                                                                                    | Exports statistics for any libraries that were loaded. |
+| [version](#fallbackversion)                         | `fallback.version`, `fbk.version`                                                                                | Get the current version number of Fallback JS. |
 
 ===
 
@@ -169,31 +166,31 @@ A technical overview and in depth explanations of the libraries functions.
 
 ***Aliases:*** `cfg`, `conf`, `config`, `fallback.cfg`, `fallback.conf`, `fallback.config`, `fbk.cfg`, `fbk.conf`, `fbk.config`
 
-This function allows you to configure the defaults for your project along with the libraries that you want Fallback JS to load.
+This function allows you to configure the defaults for your project along with the libraries that you want to load with Fallback JS.
 
 - [Parameters](#parameters)
 	- [input](#fallbackconfig---input)
-		- [amd](#fallbackconfig---input---base)
+		- [amd](#fallbackconfig---input---amd)
 		- [base](#fallbackconfig---input---base)
-		- [debug](#fallbackconfig---input---base)
-		- [delimiter](#fallbackconfig---input---base)
-		- [global](#fallbackconfig---input---base)
+		- [debug](#fallbackconfig---input---debug)
+		- [delimiter](#fallbackconfig---input---delimiter)
+		- [globals](#fallbackconfig---input---globals)
 		- [libs](#fallbackconfig---input---libs)
-			- [alias](#fallbackconfig---input---libs)
-			- [check](#fallbackconfig---input---libs)
-			- [deps](#fallbackconfig---input---libs)
-			- [exports](#fallbackconfig---input---libs)
-			- [init](#fallbackconfig---input---libs)
-			- [urls](#fallbackconfig---input---libs)
+			- [alias](#fallbackconfig---input---libs--alias)
+			- [check](#fallbackconfig---input---libs--check)
+			- [deps](#fallbackconfig---input---deps)
+			- [exports](#fallbackconfig---input---libs--exports)
+			- [init](#fallbackconfig---input---libs--init)
+			- [urls](#fallbackconfig---input---libs--urls)
 - [Return Values](#return-values)
 
 ===
 
 <h4 align="center">Parameters</h4>
 
-| Parameter | Type   | Default | Required | Description |
-| --------- | ------ | ------- | -------- | ----------- |
-| *input*   | Object | *null*  | Yes      | Key/Value pair object that contains the configuration for the Fallback JS library. [See more details here.](#fallbackconfig---input) |
+| Parameter                        | Type   | Default | Required | Description |
+| -------------------------------- | ------ | ------- | -------- | ----------- |
+| [input](#fallbackconfig---input) | Object | *null*  | Yes      | Key/Value pair `Object` which contains the configuration for the Fallback JS library. |
 
 ===
 
@@ -205,24 +202,24 @@ This function allows you to configure the defaults for your project along with t
 
 The following parameters are allowed for the first level of our `input` `Object`. The `Object` itself has multiple levels which are listed further down in this document.
 
-| Parameter                                        | Type          | Default  | Required | Description   |
-| ------------------------------------------------ | ------------- | -------- | -------- | ------------- |
-| [amd](#fallbackconfig---input---amd)             | Boolean       | false    | No       | Where or not to enforce AMD on the page. |
-| [base](#fallbackconfig---input---amd)            | Object/String | null     | No       | Object/String to be used as the prefix for all URLs with. |
-| [debug](#fallbackconfig---input---amd)           | Boolean       | false    | No       | Toggle debugging mode. |
-| [delimiter](#fallbackconfig---input---delimiter) | String        | $        | No       | The delimiter string to be specified when loading non-JavaScript files. |
-| [global](#fallbackconfig---input---global)       | Object        | *window* | No       | Object to use when searching for our exports to check if a library has loaded. |
-| [libs](#fallbackconfig---input---libs)           | Object        | null     | No       | An object containing the configuration for each of your libraries. |
+| Parameter                                        | Type           | Default | Required | Description   |
+| ------------------------------------------------ | -------------- | ------- | -------- | ------------- |
+| [amd](#fallbackconfig---input---amd)             | Boolean        | false   | No       | Where or not to enforce the use of AMD on the page. |
+| [base](#fallbackconfig---input---base)           | Object/String  | null    | No       | Specific paths that you want to prefix all of your libraries with. |
+| [debug](#fallbackconfig---input---debug)         | Boolean/String | false   | No       | Toggle debugging mode. Only work in browsers which support `console`. |
+| [delimiter](#fallbackconfig---input---delimiter) | String         | $       | No       | The `String` delimiter to be used when loading non-JavaScript files. |
+| [globals](#fallbackconfig---input---globals)     | Object         | true    | No       | Whether or not to leverage the `window` `global` when loading libraries. |
+| [libs](#fallbackconfig---input---libs)           | Object         | null    | No       | An `Object` containing the configuration for a specific library. |
 
 **Example:**
 
 ```javascript
 fallback.config({
 	"amd": false,
-	"base": "./js/",
+	"base": "/js/",
 	"debug": true,
 	"delimiter": "$",
-	"global": window,
+	"globals": true,
 
 	"libs": {
 		"angular": "//ajax.googleapis.com/ajax/libs/angularjs/1.3.2/angular.min",
@@ -242,11 +239,11 @@ fallback.config({
 
 This configuration parameter allows you to enforce [AMD (Asynchronous Module Definitions)](https://github.com/amdjs/amdjs-api/blob/master/AMD.md) for the Fallback JS library.
 
-AMD for the library is enabled, but it's not enforced by default. In other words, if a library that supports AMD attempts to load, it won't be used as a module, it instead will be retained in the global scope of the page, untethered by the Fallback JS library.
+AMD for the library is enabled, but it's not enforced by default. In other words, if a library that supports AMD attempts loads on the page, it will not be be used as a module, it instead will be retained in the `window` `global` on the page, untethered by the Fallback JS library.
 
-By enabling AMD, any JavaScript libraries that support it will no longer be available in the global scope (the `window` object) of your page. The reasoning behind this is to encapsulate JavaScript libraries so that they're contained and not dirtying up the global scope.
+By enabling AMD, any JavaScript libraries that support it will no longer be available in the `window` `global` on your page. The reasoning behind this is to encapsulate JavaScript libraries so that they're contained and not dirtying up the global scope. This has been proven to be useful when used at an advanced level.
 
-This can be useful when used at an advanced level. In practice the level of complexitiy and time required to invest just to make this work properly isn't practical for most projects seeking a simply solution. Therefore this feature is `disabled` by default. Use this feature at your own discretion.
+**Reality Check:** In practice the level of complexitiy and time required to invest just to make this work properly isn't practical for most projects seeking a simplified solution of lazy loading libraries. Therefore this feature is `disabled` by default. *Use this feature at your own discretion.*
 
 **Example:**
 
@@ -265,7 +262,9 @@ fallback.config({
 | ------------- | ------- | -------- |
 | Object/String | null    | No       |
 
-If the `base` value is a `String`, all of your URLs will be prefixed with this path regardless of the type of file. If you specify an `Object` for the value, you can explicity set different paths to prefix for your URLs per each file type. Any URL that starts with `/`, `data:`, `http://` or `https://` will not be prefixed with the `base` value.
+If the `base` value is a `String`, each of your libraries URLs will be prefixed with this path regardless of their file type. If you specify an `Object`, you can explicity set different paths for each of your file types. Any URL that starts with `/`, `data:`, `http://` or `https://` will not be prefixed with the `base` value.
+
+Each URL for a library is prefixed immediately when it's configured. If you were add a library to your configuration and then set the `base` value afterwards, the URLs for that library wouldn't be prefixed with the newly set `base` value.
 
 The following table below reflects acceptable parameters when the value of `base` is an `Object`.
 
@@ -280,7 +279,7 @@ The following table below reflects acceptable parameters when the value of `base
 ```javascript
 // Set base URLs for all of our file types.
 fallback.config({
-	"base": "./js/"
+	"base": "/js/"
 });
 ```
 
@@ -288,9 +287,9 @@ fallback.config({
 // Set different base URLs for each of our file types.
 fallback.config({
 	"base": {
-		"css": "./css/",
-		"img": "./img/",
-		"js": "./js/"
+		"css": "/css/",
+		"img": "/img/",
+		"js": "/js/"
 	}
 });
 ```
@@ -299,13 +298,23 @@ fallback.config({
 
 <h4 align="center">fallback.config -> input -> debug</h4>
 
-| Type    | Default | Required |
-| ------- | ------- | -------- |
-| Boolean | false   | No       |
+| Type           | Default | Required |
+| -------------- | ------- | -------- |
+| Boolean/String | false   | No       |
 
 This configuration parameter allows you toggle debugging for the library. If turned on, this feature will log useful debugging information to the console, if the browser supports `window.console`.
 
 This feature is only available in the non-minified version of the library. For better compression, all logging messages have been stripped out of the minified version.
+
+The following table below reflects acceptable values for the `debug` parameter.
+
+| Value | Description |
+| ----- | ----------- |
+| false | Disabled logging. |
+| true  | Log everything. This includes errors, warnings and info notices. |
+| error | Log all only error notices. |
+| warn  | Log all only warning notices. |
+| info  | Log all only info notices. |
 
 **Example:**
 
@@ -325,7 +334,7 @@ fallback.config({
 | String | $       | No       |
 
 
-This configuration parameter allows you to change the string that's used to specify different file types for the Fallback JS library to load. By default the value is a `, and if you want to load a CSS file you would need to prefix your library with `css that way Fallback JS would know to load it as a CSS file and not a JavaScript file.
+Allows you to change the string that's used to specify different file types for the Fallback JS library to load. By default the value is a `, so if you wanted to load a CSS file you'd need to prefix that library's key `css. You need to do this so that Fallback JS knows to load that library as a Cascading Stylesheet and not a JavaScript file.
 
 *See [fallback.config -> input -> libs -> keys](#fallbackconfig---input---libs---keys) for a list of prefixes you can use.*
 
@@ -363,11 +372,20 @@ fallback.require(function(css_bootstrap) {
 
 ===
 
-<h4 align="center">fallback.config -> input -> global</h4>
+<h4 align="center">fallback.config -> input -> globals</h4>
 
-| Type   | Default  | Required |
-| ------ | -------- | -------- |
-| Object | *window* | No       |
+| Type    | Default | Required |
+| ------- | ------- | -------- |
+| Boolean | true    | No       |
+
+
+
+
+
+
+---
+@todo here
+---
 
 This configuration parameter allows you to set what you want the `global` to be for the page. By default this is set to `window` but can be changed to whatever you prefer.
 
