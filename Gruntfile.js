@@ -168,7 +168,7 @@ me.tasks.tests = function() {
 			});
 		});
 
-		me.async.parallelLimit(series, 2, function() {
+		me.async.parallelLimit(series, 1, function() {
 			done(success);
 		});
 	});
