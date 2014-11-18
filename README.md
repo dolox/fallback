@@ -334,7 +334,7 @@ fallback.config({
 | String | $       | No       |
 
 
-Allows you to change the string that's used to specify different file types for the Fallback JS library to load. By default the value is a `, so if you wanted to load a CSS file you'd need to prefix that library's key `css. You need to do this so that Fallback JS knows to load that library as a Cascading Stylesheet and not a JavaScript file.
+Allows you to change the string that's used to specify different file types for the Fallback JS library to load. By default the value is a `"$"`, so if you wanted to load a CSS file you'd need to prefix that library's key `"css$"`. You need to do this so that Fallback JS knows to load that library as a Cascading Stylesheet and not a JavaScript file.
 
 *See [fallback.config -> input -> libs -> keys](#fallbackconfig---input---libs---keys) for a list of prefixes you can use.*
 
