@@ -1,4 +1,5 @@
 var me = {
+	async: require('async'),
 	glob: require('glob'),
 	path: require('path')
 };
@@ -131,14 +132,43 @@ me.tasks.docs = function() {
 	]);
 };
 
-me.tasks.test = function() {
-	me.grunt.registerTask('test', function() {
+me.tasks.tests = function() {
+	me.grunt.registerTask('tests', function() {
+		var done = this.async();
+		var series = [];
+		var success = true;
+		var tasks = {};
+
 		Object.keys(me.grunt.config.data.karma).forEach(function(key) {
 			if (key === 'dev' || key === 'options') {
 				return;
 			}
 
-			me.grunt.task.run('karma:' + key);
+			var task = 'karma:' + key;
+			tasks[task] = 0;
+
+			series.push(function(callback) {
+				me.grunt.util.spawn({
+					args: [task],
+					grunt: true,
+
+					opts: {
+						stdio: 'inherit'
+					}
+				}, function(error, result, code) {
+					tasks[task] = code;
+
+					if (code !== 0) {
+						success = false;
+					}
+
+					callback();
+				});
+			});
+		});
+
+		me.async.parallelLimit(series, 1, function() {
+			done(success);
 		});
 	});
 };

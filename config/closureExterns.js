@@ -1,7 +1,8 @@
 /* globals fallback */
 
 // Globals
-var fallback =
+var fallback;
+
 fallback.config =
 fallback.define =
 fallback.require =
@@ -14,6 +15,7 @@ fallback.loader.js.boot =
 
 // Modules
 fallback.module.callbacks =
+fallback.module.definitions =
 fallback.module.loader =
 fallback.module.success =
 fallback.module.failed =
