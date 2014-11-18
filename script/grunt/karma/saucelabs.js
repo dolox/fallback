@@ -8,7 +8,6 @@ module.exports = function(grunt, tasks) {
 		tasks.karma[index].logLevel = tasks.karma.options.logLevel;
 		tasks.karma[index].options = {};
 		tasks.karma[index].options.files = tasks.karma.options.files;
-		tasks.karma[index].singleRun = false;
 		tasks.karma[index].transports = ['jsonp-polling'];
 	}
 
