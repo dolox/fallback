@@ -1,0 +1,36 @@
+{
+	"Chrome-Android43": {
+		"base": "SauceLabs",
+		"browserName": "android",
+		"platform": "Linux",
+		"version": "4.3"
+	},
+
+	"Chrome-Android42": {
+		"base": "SauceLabs",
+		"browserName": "android",
+		"platform": "Linux",
+		"version": "4.2"
+	},
+
+	"Safari-iOS6": {
+		"base": "SauceLabs",
+		"browserName": "iphone",
+		"platform": "OS X 10.8",
+		"version": "6.0"
+	},
+
+	"Safari-iOS7": {
+		"base": "SauceLabs",
+		"browserName": "iphone",
+		"platform": "OS X 10.8",
+		"version": "7.0"
+	},
+
+	"Safari-iOS8": {
+		"base": "SauceLabs",
+		"browserName": "iphone",
+		"platform": "OS X 10.9",
+		"version": "8.0"
+	}
+}

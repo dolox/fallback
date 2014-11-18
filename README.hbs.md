@@ -334,7 +334,7 @@ fallback.config({
 | String | $       | No       |
 
 
-Allows you to change the string that's used to specify different file types for the Fallback JS library to load. By default the value is a `"$"`, so if you wanted to load a CSS file you'd need to prefix that library's key `"css$"`. You need to do this so that Fallback JS knows to load that library as a Cascading Stylesheet and not a JavaScript file.
+Allows you to change the string that's used to specify different file types for the Fallback JS library to load. By default the value is a `"$"`, so if you wanted to load a CSS file you'd need to prefix that library's key with `"css$"`. You need to do this so that Fallback JS knows to load that library as a Cascading Stylesheet (CSS) and not a JavaScript file.
 
 *See [fallback.config -> input -> libs -> keys](#fallbackconfig---input---libs---keys) for a list of prefixes you can use.*
 
@@ -378,10 +378,47 @@ fallback.require(function(css_bootstrap) {
 | ------- | ------- | -------- |
 | Boolean | true    | No       |
 
+This parameter directly affects how libraries are loaded and referenced by the Fallback JS library. It specifically tells the library to check the `window` `global` to determine if a library has loaded properly and also how to reference that library when using the [define](#fallbackdefinename-dependencies-function) and `require` functions.
+
+Any value(s) which are set as [exports](#fallbackconfig---input---libs---key----values---exports) for a library will directly correlate as references to the `window` `global`. For example if you were set the [exports](#fallbackconfig---input---libs---key----values---exports) to `["jQuery", "$"]` for the library `jQuery`, Fallback JS would check for `window.jQuery` and `window.$` to determine whether or not the library was loaded. 
 
 
 
+@todo After one of those exports as deemed as `defined`, the library would then  If the library saw either of those [exports](#fallbackconfig---input---libs---key----values---exports) as `defined`, it would then use the `defined` export as a means of referencing the library (`jQuery`). *See the example below for an illustration.*
 
+**Note: If you set the `globals` parameter to `false`, you'll be forfeiting the following functionality:**
+
+- Preventing libraries from lazy loading if they've already loaded on the page by some means other than Fallback JS.
+
+- Detecting whether or not a library has successfully lazy loaded other than by relying on the native browsers callbacks. *Native callbacks don't work properly in legacy browsers.*
+
+- The ability to reference files which aren't using AMD. If you attempt to load a library and it's not wrapped in a [define](#fallbackdefinename-dependencies-function) `Function`, then you won't be able to reference it within the callback for your [define](#fallbackdefinename-dependencies-function) invocation.
+
+**Example:**
+
+```javascript
+fallback.config({
+	"globals": true,
+
+	"urls": {
+		"jQuery": {
+			files: "//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min"
+		}
+	}
+});
+
+// `jQuery` within this `Function` is simply pointing to `window.jQuery`.
+fallback.define("test", function(jQuery) {
+	// Execute my code here...
+});
+
+// `jQuery` within this `Function` is simply pointing to `window.jQuery`.
+fallback.require(function(jQuery) {
+	// Execute my code here...
+});
+```
+
+** 
 
 ---
 @todo here
@@ -389,7 +426,7 @@ fallback.require(function(css_bootstrap) {
 
 This configuration parameter allows you to set what you want the `global` to be for the page. By default this is set to `window` but can be changed to whatever you prefer.
 
-**This variable directly affects how libraries are loaded by the Fallback JS library.**
+****
 
 Whatever `exports` are specified for a library are searched upon in this `global` `Object` when we attempt to load our libraries. Let's take `jQuery` as an example. When you load `jQuery` on a page, `window.jQuery` holds a reference to the library. If we were to change our `global` value to say `app`, when Fallback JS attempts to load the `jQuery` library it will check if `app.jQuery` exists to determine whether or not the library actually loaded successfully or not. If `app.jQuery` doesn't exist, then it would assume that the library failed to load, and attempt the next URL for the `jQuery` library if it has one.
 
@@ -508,12 +545,12 @@ If the `value` of our `key` is an `Object`, then the following parameters are ac
 // An example where our libraries value is an `String`.
 fallback.config({
 	"libs": {
-		"jquery": "//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery.min"
+		"jQuery": "//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery.min"
 	}
 });
 
 // Load jQuery!
-fallback.require(function(jquery) {
+fallback.require(function(jQuery) {
 	// Execute my code here...
 });
 ```
@@ -522,7 +559,7 @@ fallback.require(function(jquery) {
 // An example where our libraries value is an `Array`.
 fallback.config({
 	"libs": {
-		"jquery": [
+		"jQuery": [
 			"//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery.min",
 			"//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min"
 		]
@@ -530,7 +567,7 @@ fallback.config({
 });
 
 // Load jQuery!
-fallback.require(function(jquery) {
+fallback.require(function(jQuery) {
 	// Execute my code here...
 });
 ```
@@ -539,9 +576,7 @@ fallback.require(function(jquery) {
 // An example where our libraries value is an `Object`.
 fallback.config({
 	"libs": {
-		"jquery": {
-			"exports": "jQuery",
-
+		"jQuery": {
 			"urls": [
 				"//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery.min",
 				"//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min"
@@ -551,7 +586,7 @@ fallback.config({
 });
 
 // Load jQuery!
-fallback.require(function(jquery) {
+fallback.require(function(jQuery) {
 	// Execute my code here...
 });
 ```
