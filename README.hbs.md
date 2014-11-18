@@ -3,11 +3,19 @@
 <h6 align="center">{{{sizeOfFile 'dist/fallback.min.js'}}} KB Compressed / {{{sizeOfFile 'dist/fallback.js'}}} KB Uncompressed</h6>
 
 <p align="center">
-	<a href="https://travis-ci.org/dolox/fallback" target="_blank"><img src="https://travis-ci.org/dolox/fallback.svg?style=flat" /></a>
+	<a href="https://raw.githubusercontent.com/dolox/fallback/master/dist/fallback.min.js"><img src="https://img.shields.io/badge/production-{{{sizeOfFile 'dist/fallback.min.js'}}}KB-brightgreen.svg" /></a>
+	<a href="https://raw.githubusercontent.com/dolox/fallback/master/dist/fallback.js"><img src="https://img.shields.io/badge/development-{{{sizeOfFile 'dist/fallback.js'}}}KB-brightgreen.svg" /></a>
 	<a href="http://badge.fury.io/gh/dolox%2Ffallback" target="_blank"><img src="https://badge.fury.io/gh/dolox%2Ffallback.svg" /></a>
 	<a href="http://badge.fury.io/bo/fallback" target="_blank"><img src="https://badge.fury.io/bo/fallback.svg" /></a>
-	<a href="https://david-dm.org/dolox/fallback" target="_blank"><img src="https://david-dm.org/dolox/fallback/status.svg?style=flat" /></a>
-	<a href="https://david-dm.org/dolox/fallback#info=devDependencies" target="_blank"><img src="https://david-dm.org/dolox/fallback/dev-status.svg?style=flat" /></a>
+	<a href="https://github.com/dolox/fallback/blob/master/LICENSE.txt"><img src="https://img.shields.io/badge/license-MIT-brightgreen.svg" /></a>
+
+	<br />
+
+	<a href="https://travis-ci.org/dolox/fallback" target="_blank"><img src="https://travis-ci.org/dolox/fallback.svg" /></a>
+	<a href="https://codeclimate.com/github/dolox/fallback" target="_blank"><img src="http://img.shields.io/codeclimate/github/dolox/fallback.svg" /></a>
+	<a href="https://codeclimate.com/github/dolox/fallback" target="_blank"><img src="http://img.shields.io/codeclimate/coverage/github/dolox/fallback.svg" /></a>
+	<a href="https://david-dm.org/dolox/fallback" target="_blank"><img src="https://david-dm.org/dolox/fallback/status.svg" /></a>
+	<a href="https://david-dm.org/dolox/fallback#info=devDependencies" target="_blank"><img src="https://david-dm.org/dolox/fallback/dev-status.svg" /></a>
 
 	<br />
 	<br />
