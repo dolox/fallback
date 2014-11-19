@@ -152,13 +152,13 @@ A technical overview with in depth explanations of the libraries functionality.
 
 ### Overview
 
-| Function                                            | Aliases                                                                                                          | Description   |
-| --------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ------------- |
-| [config](#fallbackconfiginput)                      | `cfg`, `conf`, `config`, `fallback.cfg`, `fallback.conf`, `fallback.config`, `fbk.cfg`, `fbk.conf`, `fbk.config` | Configures the libraries you want to load for your project. |
-| [define](#fallbackdefinename-dependencies-function) | `def`, `define`, `fallback.def`, `fallback.define`, `fbk.def`, `fbk.define`                                      | Define your JavaScript files so they can be easily loaded and referenced. |
-| [require](#fallbackrequiredependencies-function)    | `fallback.req`, `fallback.require`, `fbk.req`, `fbk.require`, `req`, `require`                                   | Loads your libraries asynchronously the page. |
-| [stats](#fallbackstats)                             | `fallback.stats`, `fbk.stats`                                                                                    | Exports statistics for any libraries that were loaded. |
-| [version](#fallbackversion)                         | `fallback.version`, `fbk.version`                                                                                | Get the current version number of Fallback JS. |
+| Function                                           | Aliases                                                                                                          | Description   |
+| -------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ------------- |
+| [config](#fallbackconfiginput)                     | `cfg`, `conf`, `config`, `fallback.cfg`, `fallback.conf`, `fallback.config`, `fbk.cfg`, `fbk.conf`, `fbk.config` | Configures the libraries you want to load for your project. |
+| [define](#fallbackdefinename-dependencies-factory) | `def`, `define`, `fallback.def`, `fallback.define`, `fbk.def`, `fbk.define`                                      | Define your JavaScript files so they can be easily loaded and referenced. |
+| [require](#fallbackrequiredependencies-factory)    | `fallback.req`, `fallback.require`, `fbk.req`, `fbk.require`, `req`, `require`                                   | Loads your libraries asynchronously the page. |
+| [stats](#fallbackstats)                            | `fallback.stats`, `fbk.stats`                                                                                    | Exports statistics for any libraries that were loaded. |
+| [version](#fallbackversion)                        | `fallback.version`, `fbk.version`                                                                                | Get the current version number of Fallback JS. |
 
 ===
 
@@ -176,12 +176,12 @@ This function allows you to configure the defaults for your project along with t
 		- [delimiter](#fallbackconfig---input---delimiter)
 		- [globals](#fallbackconfig---input---globals)
 		- [libs](#fallbackconfig---input---libs)
-			- [alias](#fallbackconfig---input---libs--alias)
-			- [check](#fallbackconfig---input---libs--check)
-			- [deps](#fallbackconfig---input---deps)
-			- [exports](#fallbackconfig---input---libs--exports)
-			- [init](#fallbackconfig---input---libs--init)
-			- [urls](#fallbackconfig---input---libs--urls)
+			- [alias](#fallbackconfig---input---libs---key----values---alias)
+			- [check](#fallbackconfig---input---libs---key----values---check)
+			- [deps](#fallbackconfig---input---libs---key----values---deps)
+			- [exports](#fallbackconfig---input---libs---key----values---exports)
+			- [init](#fallbackconfig---input---libs---key----values---init)
+			- [urls](#fallbackconfig---input---libs---key----values---urls)
 - [Return Values](#return-values)
 
 ===
@@ -378,31 +378,20 @@ fallback.require(function(css_bootstrap) {
 | ------- | ------- | -------- |
 | Boolean | true    | No       |
 
-This parameter directly affects how libraries are loaded and referenced by the Fallback JS library. It specifically tells the library to check the `window` `global` to determine if a library has loaded properly and also how to reference that library when using the [define](#fallbackdefinename-dependencies-function) and `require` functions.
+This parameter directly affects how libraries are loaded and referenced by the Fallback JS library. It specifically tells the library to check the `window` `global` to determine if a library has loaded properly and how to reference that library when using the [define](#fallbackdefinename-dependencies-factory) and [require](#fallbackrequiredependencies-factory) functions.
 
-Any value(s) which are set as [exports](#fallbackconfig---input---libs---key----values---exports) for a library will directly correlate as references to the `window` `global`. For example if you were set the [exports](#fallbackconfig---input---libs---key----values---exports) to `["jQuery", "$"]` for the library `jQuery`, Fallback JS would check for `window.jQuery` and `window.$` to determine whether or not the library was loaded. 
-
-
-
-@todo After one of those exports as deemed as `defined`, the library would then  If the library saw either of those [exports](#fallbackconfig---input---libs---key----values---exports) as `defined`, it would then use the `defined` export as a means of referencing the library (`jQuery`). *See the example below for an illustration.*
-
-**Note: If you set the `globals` parameter to `false`, you'll be forfeiting the following functionality:**
-
-- Preventing libraries from lazy loading if they've already loaded on the page by some means other than Fallback JS.
-
-- Detecting whether or not a library has successfully lazy loaded other than by relying on the native browsers callbacks. *Native callbacks don't work properly in legacy browsers.*
-
-- The ability to reference files which aren't using AMD. If you attempt to load a library and it's not wrapped in a [define](#fallbackdefinename-dependencies-function) `Function`, then you won't be able to reference it within the callback for your [define](#fallbackdefinename-dependencies-function) invocation.
+Any value(s) which are set as [exports](#fallbackconfig---input---libs---key----values---exports) for a library will directly correlate as references to the `window` `global`. For example if you were set the [exports](#fallbackconfig---input---libs---key----values---exports) to `["jQuery", "$"]` for the library `jQuery`, Fallback JS would check for `window.jQuery` and `window.$` to determine whether or not the library was loaded. If Fallback JS saw either of those `window` variables as `defined`, it would then reference those `window` variables whenever `jQuery` is used with the [define](#fallbackdefinename-dependencies-factory) and [require](#fallbackrequiredependencies-factory) functions.
 
 **Example:**
 
 ```javascript
+// Configure the Fallback JS library.
 fallback.config({
-	"globals": true,
-
 	"urls": {
 		"jQuery": {
-			files: "//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min"
+			// Tell the library to look for these variables in the `window` `global`.
+			"exports": ["jQuery", "$"],
+			"urls": "//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min"
 		}
 	}
 });
@@ -418,48 +407,19 @@ fallback.require(function(jQuery) {
 });
 ```
 
-** 
+**Note: If you set the `globals` parameter to `false`, you'll be forfeiting the following functionality:**
 
----
-@todo here
----
+- Preventing libraries from lazy loading if they've already loaded on the page by some means other than Fallback JS.
 
-This configuration parameter allows you to set what you want the `global` to be for the page. By default this is set to `window` but can be changed to whatever you prefer.
+- Detecting whether or not a library has successfully lazy loaded other than by relying on the native browsers callbacks. *Native callbacks don't work properly in legacy browsers.*
 
-****
-
-Whatever `exports` are specified for a library are searched upon in this `global` `Object` when we attempt to load our libraries. Let's take `jQuery` as an example. When you load `jQuery` on a page, `window.jQuery` holds a reference to the library. If we were to change our `global` value to say `app`, when Fallback JS attempts to load the `jQuery` library it will check if `app.jQuery` exists to determine whether or not the library actually loaded successfully or not. If `app.jQuery` doesn't exist, then it would assume that the library failed to load, and attempt the next URL for the `jQuery` library if it has one.
-
-**Warning: If you set the value of `global` to `null`, the library will fallback to relying on the browsers native callbacks to know whether or not a library has successfully loaded.** This is problematic with legacy browsers, and not recommended if you wish to support them. You'll also forfeit the functionality within Fallback JS that checks if a library has already loaded by some other means on the page other than by Fallback JS when a library is requested to be loaded.
+- The ability to reference files which aren't using AMD. If you attempt to load a JavaScript file which doesn't use the [define](#fallbackdefinename-dependencies-factory) `Function`, then you won't be able to reference it within the `factory` of a [define](#fallbackdefinename-dependencies-factory) or [require](#fallbackrequiredependencies-factory) statement.
 
 **Example:**
 
 ```javascript
-// Define our `app` reference.
-var app = {};
-
-// Set `app.homepage` to a non-falsey value.
-app.homepage = true;
-
-// Configure the Fallback JS library.
 fallback.config({
-	// Use the `app` reference as our global.
-	"globals": app,
-
-	"libs": {
-		"homepage": {
-			// If `app.homepage` already exists, don't attempt to lazy load the file.
-			"exports": "homepage",
-
-			// The path of our JavaScript file that doesn't use the `define` function.
-			"urls": "homepage"
-		}
-	}
-});
-
-// This won't attempt to load `homepage.js` since `app.homepage` already exists.
-fallback.require(function(homepage) function() {
-	// Execute my code here...
+	"globals": false
 });
 ```
 
@@ -471,7 +431,7 @@ fallback.require(function(homepage) function() {
 | ------ | ------- | -------- |
 | Object | null    | No       |
 
-This configuration parameter allows you to set the libraries that want Fallback JS to load.
+This parameter allows you to set the libraries that want Fallback JS to load. *You don't need to specify AMD, the library will automatically load them by default.*
 
 ===
 
@@ -481,9 +441,9 @@ This configuration parameter allows you to set the libraries that want Fallback 
 | ------ | ------- | -------- |
 | String | null    | Yes      |
 
-The `keys` of this `Object` are what you'll use to reference the library in question. For example if we added a key `test`, when we use the [require](@todo) function, we would specify `test` to load that library even though it may differ from the name of the actual library itself. Another example would be `jQuery`, but instead we want to use `jquery` so we don't have to capitalize the `Q`.
+The `keys` of this `Object` are what you'll use to reference the library in question. For example if we added the key `test`, when we use the [require](@todo) function, we would specify `test` to load that library even though it may differ from the name of the actual library itself. Another example would be `jQuery`, but instead we want to use `jquery` so we don't have to capitalize the `Q`.
 
-Any `keys` of the `libs` `Object` which have any of the following prefixes (listed in the table below) followed by the libraries [delimiter](#fallbackconfig---input---delimiter) will be handled in their own special way.
+Any `keys` of the `libs` `Object` which have any of the following prefixes *(listed in the table below)* followed by the libraries [delimiter](#fallbackconfig---input---delimiter) will be handled in their own special way.
 
 | Prefix | Description   |
 | ------ | ------------- |
@@ -494,7 +454,7 @@ Any `keys` of the `libs` `Object` which have any of the following prefixes (list
 **Example**
 
 ```javascript
-// The following example illustrates how we'd load CSS, image and JavaScript files.
+// The following example illustrates how we'd load CSS, Image and JavaScript files.
 fallback.config({
 	"libs": {
 		// Load this file as a stylesheet.
@@ -516,7 +476,7 @@ fallback.require(function(css$bootstrap, img$logo, js$angular) {
 
 ===
 
-<h4 align="center">fallback.config -> input -> libs -> key - > values</h4>
+<h4 align="center">fallback.config -> input -> libs -> key -> values</h4>
 
 | Type                | Default | Required |
 | ------------------- | ------- | -------- |
@@ -526,23 +486,23 @@ The `values` of our `keys` are acceptable in the following forms:
 
 - `String` - it will be treated as the [URL](#fallbackconfig---input---libs---key----values---urls) for the library.
 - `Array` - it will be treated as the [URLs](#fallbackconfig---input---libs---key----values---urls) for the library.
-- `Object` - it may have it's own specific configuration set. See below.
+- `Object` - it may have it's own specific configuration set. *See the table below.*
 
 If the `value` of our `key` is an `Object`, then the following parameters are acceptable:
 
 | Parameter                                                           | Type         | Default | Required | Description |
 | ------------------------------------------------------------------- | ------------ | ------- | -------- | ----------- |
 | [alias](#fallbackconfig---input---libs---key----values---alias)     | Array/String | *null*  | No       | Aliases to be used to directly reference the library in question. |
-| [check](#fallbackconfig---input---libs---key----values---check)     | Function     | *null*  | No       | A function to check whether or not a library is loaded on the page. |
+| [check](#fallbackconfig---input---libs---key----values---check)     | Function     | *null*  | No       | A custom `Function` to check whether or not a library has loaded properly. |
 | [deps](#fallbackconfig---input---libs---key----values---deps)       | Array/String | *null*  | No       | Dependencies that are required to load prior to the library in question loading. |
-| [exports](#fallbackconfig---input---libs---key----values---exports) | String       | *null*  | No       | The global variable(s) that reference the library. |
+| [exports](#fallbackconfig---input---libs---key----values---exports) | Array/String | *key*   | No       | The `window` `global` variable(s) that reference the library. |
 | [init](#fallbackconfig---input---libs---key----values---init)       | Function     | *null*  | No       | A function to invoke immediately after a library has loaded for the first time. |
 | [urls](#fallbackconfig---input---libs---key----values---urls)       | Array/String | *null*  | No       | URLs that will load the library. |
 
 **Examples:**
 
 ```javascript
-// An example where our libraries value is an `String`.
+// An example where our libraries value is a `String`.
 fallback.config({
 	"libs": {
 		"jQuery": "//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery.min"
@@ -585,7 +545,7 @@ fallback.config({
 	}
 });
 
-// Load jQuery!
+// Load `jQuery`
 fallback.require(function(jQuery) {
 	// Execute my code here...
 });
@@ -595,29 +555,193 @@ fallback.require(function(jQuery) {
 
 <h4 align="center">fallback.config -> input -> libs -> key - > values -> alias</h4>
 
-This configuration parameter allows you to set ..... @todo
+| Type         | Default | Required |
+| ------------ | ------- | -------- |
+| Array/String | null    | No       |
+
+This parameter allows you setup various aliases for each of your libraries. This is extremely useful when you're frequently referencing a library with a long naming convention that you'd prefer to not have to type.
+
+**Example:**
+
+```javascript
+// Configure the Fallback JS library.
+fallback.config({
+	"libs": {
+		"jQuery": {
+			// All of the following variables will reference `jQuery`.
+			"alias": ["$", "jq", "jquery"],
+
+			"urls": [
+				"//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery.min",
+				"//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min"
+			]
+		}
+	}
+});
+
+// All of the following `fallback.require` references below perform the same action!
+
+// Load `jQuery`
+fallback.require(function(jQuery) {
+	// Execute my code here...
+});
+
+// Load `jQuery`
+fallback.require(function($) {
+	// Execute my code here...
+});
+
+// Load `jQuery`
+fallback.require(function(jq) {
+	// Execute my code here...
+});
+
+// Load `jQuery`
+fallback.require(function(jquery) {
+	// Execute my code here...
+});
+```
 
 ===
 
 <h4 align="center">fallback.config -> input -> libs -> key - > values -> check</h4>
 
-@todo
+| Type     | Default | Required |
+| -------- | ------- | -------- |
+| Function | null    | No       |
+
+This parameter allows you to write your own custom checking `Function` to determine whether or not the library in question has loaded properly on the page. This can be extremely useful when attempting to load browser specific scripts and/or stylesheets.
+
+| Return Value | Description |
+| ------------ | ----------- |
+| false        | The library has failed to loaded on the page. Try the next URL in the URLs list. |
+| true         | The library has successfully loaded on the page. |
+
+This `Function` expects a `Boolean` return value to determine whether or not a library has loaded successfully. The `check` will run immediately when the library in question is referenced prior to attempting to load any of it's URLs. If the `check` returns `false`, Fallback JS will then attempt to load up each of the URLs for library. The `check` will re-run after attempting to load each URL for the library. Once Fallback JS finds that the `check` has returned `true`, it'll stop attempting to load anymore URLs and flag the library as having loaded successfully.
+
+**Example:**
+
+```javascript
+// Configure the Fallback JS library.
+fallback.config({
+	"libs": {
+		"iePolyfills": {
+			"check": function() {
+				// `window.document.addEventListener` doesn't exist in legacy IE
+				// browsers. The following if statement basically says, if we're
+				// in legacy IE and `window.iePolyfills` is `undefined` then attempt
+				// to load up this JavaScript file; otherwise don't load it.
+				if (!window.document.addEventListener && !window.iePolyfills) {
+					return false;
+				}
+
+				// Let Fallback JS know that this file has loaded properly.
+				return true;
+			},
+
+			"urls": "/js/iePolyfills"
+		}
+	}
+});
+
+// Load `iePolyfills`
+fallback.require(function(iePolyfills) {
+	// Execute my code here...
+});
+```
+
+**iePolyfills.js**
+```javascript
+window.iePolyfills = true;
+```
 
 ===
 
 <h4 align="center">fallback.config -> input -> libs -> key - > values -> deps</h4>
 
-@todo
+| Type         | Default | Required |
+| ------------ | ------- | -------- |
+| Array/String | null    | No       |
+
+This parameter allows you to set the dependencies which are required to load prior to the library in question. When attempting to reference a library using the [define](#fallbackdefinename-dependencies-factory) and [require](#fallbackrequiredependencies-factory) functions, all of their dependencies will be loaded first if they haven't already loaded.
+
+The value of this parameter can be either a `String` or `String Series` *(`Array` of `Strings`)*. The value(s) can correlate to either an [alias](#fallbackconfig---input---libs---key----values---alias) or [key](#fallbackconfig---input---libs---keys) for the library(s) dependency.
+
+A good example is `jQuery UI`. In order for `jQuery UI` to load we must first load `jQuery`, otherwise `jQuery UI` won't load properly.
+
+**Example:**
+
+```javascript
+// Configure our Fallback JS library.
+fallback.config({
+	"libs": {
+		"jquery": {
+			"alias": "$",
+			"exports": "jQuery",
+			"urls": "//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min"
+		},
+
+		"jqueryui": {
+			// When `jQuery UI` loads it defines `window.jQuery.ui` as it's `global`
+			// variable.
+			"exports": "jQuery.ui",
+
+			// Load `jQuery` prior to loaded this library. Notice here that we're
+			// using the `alias` for the `jQuery` library. We could've used the
+			// value `jQuery` as well and it would've had the same effect.
+			"deps": "$",
+
+			"urls": "//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery.min"
+		}
+	}
+});
+
+// Load `jQuery` and `jQuery UI`
+fallback.require(function(jqueryui) {
+	// Execute my code here...
+});
+```
 
 ===
 
 <h4 align="center">fallback.config -> input -> libs -> key - > values -> exports</h4>
 
-@todo
+| Type         | Default | Required |
+| ------------ | ------- | -------- |
+| Array/String | null    | No       |
+
+This parameter @todo
+
+*If [globals](#fallbackconfig---input---globals) are turned off, all `exports` will be disabled.*
+
+**Example:**
+
+```javascript
+// Configure our Fallback JS library.
+fallback.config({
+	"libs": {
+		"$": {
+			// In order for this library to have loaded successfully, `window.jQuery`
+			// must exist!
+			"exports": "jQuery",
+			"urls": "//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min"
+		}
+	}
+});
+
+// Load `jQuery`
+fallback.require(function($) {
+	// Execute my code here...
+});
+```
 
 ===
 
 <h4 align="center">fallback.config -> input -> libs -> key - > values -> init</h4>
+
+| Type     | Default | Required |
+| -------- | ------- | -------- |
+| Function | null    | No       |
 
 @todo
 
@@ -625,16 +749,22 @@ This configuration parameter allows you to set ..... @todo
 
 <h4 align="center">fallback.config -> input -> libs -> key - > values -> urls</h4>
 
+| Type         | Default | Required |
+| ------------ | ------- | -------- |
+| Array/String | *AMD*   | No       |
+
 @todo
+
+explain how if there's no URLs that AMD will kick in
 
 ===
 
 <h4 align="center">Return Values</h4>
 
-| Value | Type    | Description |
-| ----- | ----    | ----------- |
-| true  | Boolean | The config was imported properly. |
-| false | Boolean | The config wasn't imported due to being malformed. Turn debugging on and check console for helper messages. |
+| Value    | Type    | Description |
+| -------- | ------- | ----------- |
+| *Object* | Object  | If the configuration was imported properly, an `Object` with the normalized dataset that was imported will be returned. |
+| false    | Boolean | The configuration wasn't imported due to being malformed. Turn debugging on and check console for helper messages. |
 
 -----
 
@@ -791,7 +921,7 @@ def(function($) {
 
 -----
 
-### **fallback.require(dependencies, function)**
+### **fallback.require(dependencies, factory)**
 
 ***Aliases:*** `fallback.req`, `fallback.require`, `fbk.req`, `fbk.require`, `req`, `require`
 
