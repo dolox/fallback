@@ -106,6 +106,11 @@ me.loader.js.check = function(module, fallback) {
 		return true;
 	}
 
+	// If an anonymous moduel was defined, then it's for this library, meaning it loaded successfully.
+	if (me.isDefined(me.define.anonymous.factory)) {
+		return true;
+	}
+
 	// If the user added their own custom checking function, invoke it now to preform the check.
 	if (me.isFunction(module.check)) {
 		return module.check();

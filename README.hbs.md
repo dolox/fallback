@@ -74,15 +74,7 @@ cfg({
 		},
 
 		// Include `jQuery`.
-		"jquery": {
-			// Here we're giving `jQuery` an alias, so we can reference it as `$`
-			// instead of having to type `jquery` when we want to load it.
-			"alias": "$",
-
-			// The global vaiable that is set by `jQuery` when it's loaded on the
-			// page. If this variable is defined we won't attempt to load it.
-			"exports": "jQuery",
-
+		"jQuery": {
 			// The URLs to load `jQuery`.
 			"urls": [
 				"//.....some-bad-cdn...../.....FAIL-ON-PURPOSE.....",
@@ -92,13 +84,13 @@ cfg({
 		},
 
 		// Include `jQuery UI`.
-		"jqueryui": {
+		"jQueryUI": {
 			// The global vaiable that is set by `jQuery UI` when it's loaded on the
 			// page. If this variable is defined we won't attempt to load it.
 			"exports": "jQuery.ui",
 
 			// Load `jQuery` first before loading `jQuery UI`.
-			"deps": "jquery",
+			"deps": "jQuery",
 
 			// The URLs to load `jQuery UI`.
 			"urls": [
@@ -110,23 +102,23 @@ cfg({
 });
 
 // Load jQuery!
-req(function($) {
-	$("body").append("<div class='alert-success'>Loaded jQuery!</div>");
+req(function(jQuery) {
+	jQuery("body").append("<h3 class='alert-success'>Loaded jQuery!</h3>");
 });
 
 // Load jQuery UI!
-req(function(jqueryui, $) {
-	$("body").append("<div class='alert-success'>Loaded jQuery UI!</div>");
+req(function(jQueryUI, jQuery) {
+	jQuery("body").append("<h3 class='alert-success'>Loaded jQuery UI!</h3>");
 });
 
 // Load Twitter Bootstrap!
-req(function(css$bootstrap, $) {
-	$("body").append("<div class='alert-success'>Loaded Twiiter Bootstrap!</div>");
+req(function(css$bootstrap, jQuery) {
+	jQuery("body").append("<h3 class='alert-success'>Loaded Twitter Bootstrap!</h3>");
 });
 
 // Load All!
-req(function(css$bootstrap, jqueryui, $) {
-	$("body").append("<div class='alert-success'>Loaded All!</div>");
+req(function(css$bootstrap, jQueryUI, jQuery) {
+	jQuery("body").append("<h3 class='alert-success'>Loaded All!</h3>");
 });
 ```
 
@@ -865,6 +857,8 @@ This function allows you to define your JavaScript in a `AMD` *(Asynchronous Mod
 - [Return Values](#return-values)
 
 ===
+
+@todo
 
 <h4 align="center">Parameters</h4>
 

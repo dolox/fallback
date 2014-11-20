@@ -317,6 +317,11 @@ me.log = function() {
 		first = args.shift();
 	}
 
+	// Check to make sure the level of the debug message is acceptable for the configured debugging output.
+	if (me.debug !== true && me.debug !== level) {
+		return false;
+	}
+
 	// The prefixes before our actual message.
 	var prefixes = [first];
 
@@ -343,7 +348,7 @@ me.log = function() {
 // The various levels for our `log` function.
 me.log.levels = {
 	1: 'error',
-	2: 'warning',
+	2: 'warn',
 	3: 'info'
 };
 
@@ -648,11 +653,19 @@ me.config = function(input) {
 
 	// Loop through each of the keys for our `input` and run our normalization/import functions on each of them.
 	me.each(input, function(value, key) {
-		// Only accept the `value` if it's actually defined, otherwise we'll wind up overriding our existing configuration.
+		// Only accept the `value` if it's actually defined, otherwise we'll wind up overriding our existing configuration
+		// unintentionally with `undefined` values.
 		if (me.isDefined(value)) {
 			me[key] = input[key] = me.config[key](value);
 		}
 	});
+
+	// If `amd` is set to `true`, then set `define.amd` to an `Object`, otherwise force it to `undefined`.
+	if (me.isDefined(input.amd) && input.amd === true) {
+		me.define.amd = {};
+	} else {
+		me.define.amd = undefined;
+	}
 
 	// Return our normalized configuration.
 	return input;
@@ -661,7 +674,6 @@ me.config = function(input) {
 // Each of these functions expect to have values that's a `Boolean`. If this isn't the case, then a value of `false`
 // will be set as the value.
 me.config.amd =
-me.config.debug =
 me.config.globals = function(input) {
 	return me.normalizeBoolean(input, false);
 };
@@ -697,6 +709,20 @@ me.config.base = function(input) {
 // The whitelist of acceptable keys for `base` parameter if it's an `Object`.
 me.config.base.whitelist = ['css', 'img', 'js'];
 
+// The `debug` parameter can have a various set of values, this `Function` will normalize its value.
+me.config.debug = function(input) {
+	// If the `input` is a `String`, and it's in our whitelist, then accept it.
+	if (me.isString(input) && me.indexOf(me.config.debug.whitelist, input) !== -1) {
+		return input;
+	}
+
+	// Force the `input` to a `Boolean` and default it to `false`.
+	return me.normalizeBoolean(input, false);
+};
+
+// Whitelisted values for our `debug` parameter.
+me.config.debug.whitelist = [false, true, 'error', 'warn', 'info'];
+
 // The character to split our module names on to derive it's identity. The value must always be a `String`.
 me.config.delimiter = function(input) {
 	return me.normalizeString(input, '$');
@@ -710,6 +736,7 @@ me.config.libs = function(input) {
 		return {};
 	}
 
+	// The `normalized` value of our `input` parameter.
 	var normalized = {};
 
 	// Loop through our series of `Objects` for the `libs` parameter.
@@ -730,6 +757,7 @@ me.config.libs = function(input) {
 		me.module(key, normalized[key]);
 	});
 
+	// Return our noramlized `Object`.
 	return normalized;
 };
 
@@ -751,6 +779,11 @@ me.config.libs.populate = function(normalized, key, value) {
 
 	// Loop through and normalize each of the values for our `Object`.
 	me.each(value, function(subValue, subKey) {
+		// If `exports` is `undefined`, then use the `moduleName` as the `exports`.
+		if (subKey === 'exports' && !me.isDefined(subValue)) {
+			subValue = [key];
+		}
+
 		// If the `subKey` isn't a function, discard the normalization process for the iteration.
 		if (!me.isFunction(me.config.libs[subKey])) {
 			return;
@@ -863,6 +896,10 @@ me.define = function() {
 	// definition since the name was explicitly defined.
 	me.define.anonymous.reset();
 };
+
+// Whether or not to enforce the use of AMD. If this setting it turned on via the `config` `Function`, any library that
+// supports AMD will not longer be available via the `window` `global`. See documentation for further details.
+me.define.amd = undefined;
 
 // If a module is sitting in an anonymous state and waiting to be imported properly, this function will take the
 // `dependencies` and `factory` from that anonymous module, import them in to our properly named module, and then
@@ -1387,6 +1424,11 @@ me.loader.js.attributes = function(attribute) {
 me.loader.js.check = function(module, fallback) {
 	// See if the module itself has been flagged as loaded.
 	if (module.loader.loaded === true) {
+		return true;
+	}
+
+	// If an anonymous moduel was defined, then it's for this library, meaning it loaded successfully.
+	if (me.isDefined(me.define.anonymous.factory)) {
 		return true;
 	}
 

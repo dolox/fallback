@@ -1,10 +1,10 @@
 <p align="center"><a href="http://fallback.io/" target="_blank"><img alt="Fallback JS" height="128" src="http://fallback.io/img/logo.png" /></a></p>
 <h1 align="center">Fallback JS v2.0.0</h1>
-<h6 align="center">18.26 KB Compressed / 84.45 KB Uncompressed</h6>
+<h6 align="center">18.56 KB Compressed / 86.09 KB Uncompressed</h6>
 
 <p align="center">
-	<a href="https://raw.githubusercontent.com/dolox/fallback/v2.0.0/dist/fallback.min.js"><img src="https://img.shields.io/badge/production-18.26KB-brightgreen.svg" /></a>
-	<a href="https://raw.githubusercontent.com/dolox/fallback/v2.0.0/dist/fallback.js"><img src="https://img.shields.io/badge/development-84.45KB-brightgreen.svg" /></a>
+	<a href="https://raw.githubusercontent.com/dolox/fallback/v2.0.0/dist/fallback.min.js"><img src="https://img.shields.io/badge/production-18.56KB-brightgreen.svg" /></a>
+	<a href="https://raw.githubusercontent.com/dolox/fallback/v2.0.0/dist/fallback.js"><img src="https://img.shields.io/badge/development-86.09KB-brightgreen.svg" /></a>
 	<a href="http://badge.fury.io/gh/dolox%2Ffallback" target="_blank"><img src="https://badge.fury.io/gh/dolox%2Ffallback.svg" /></a>
 	<a href="http://badge.fury.io/bo/fallback" target="_blank"><img src="https://badge.fury.io/bo/fallback.svg" /></a>
 	<a href="https://github.com/dolox/fallback/blob/master/LICENSE.txt"><img src="https://img.shields.io/badge/license-MIT-brightgreen.svg" /></a>
@@ -74,15 +74,7 @@ cfg({
 		},
 
 		// Include `jQuery`.
-		"jquery": {
-			// Here we're giving `jQuery` an alias, so we can reference it as `
-			// instead of having to type `jquery` when we want to load it.
-			"alias": "$",
-
-			// The global vaiable that is set by `jQuery` when it's loaded on the
-			// page. If this variable is defined we won't attempt to load it.
-			"exports": "jQuery",
-
+		"jQuery": {
 			// The URLs to load `jQuery`.
 			"urls": [
 				"//.....some-bad-cdn...../.....FAIL-ON-PURPOSE.....",
@@ -92,13 +84,13 @@ cfg({
 		},
 
 		// Include `jQuery UI`.
-		"jqueryui": {
+		"jQueryUI": {
 			// The global vaiable that is set by `jQuery UI` when it's loaded on the
 			// page. If this variable is defined we won't attempt to load it.
 			"exports": "jQuery.ui",
 
 			// Load `jQuery` first before loading `jQuery UI`.
-			"deps": "jquery",
+			"deps": "jQuery",
 
 			// The URLs to load `jQuery UI`.
 			"urls": [
@@ -110,23 +102,23 @@ cfg({
 });
 
 // Load jQuery!
-req(function($) {
-	$("body").append("<div class='alert-success'>Loaded jQuery!</div>");
+req(function(jQuery) {
+	jQuery("body").append("<h3 class='alert-success'>Loaded jQuery!</h3>");
 });
 
 // Load jQuery UI!
-req(function(jqueryui, $) {
-	$("body").append("<div class='alert-success'>Loaded jQuery UI!</div>");
+req(function(jQueryUI, jQuery) {
+	jQuery("body").append("<h3 class='alert-success'>Loaded jQuery UI!</h3>");
 });
 
 // Load Twitter Bootstrap!
-req(function(css$bootstrap, $) {
-	$("body").append("<div class='alert-success'>Loaded Twiiter Bootstrap!</div>");
+req(function(css$bootstrap, jQuery) {
+	jQuery("body").append("<h3 class='alert-success'>Loaded Twitter Bootstrap!</h3>");
 });
 
 // Load All!
-req(function(css$bootstrap, jqueryui, $) {
-	$("body").append("<div class='alert-success'>Loaded All!</div>");
+req(function(css$bootstrap, jQueryUI, jQuery) {
+	jQuery("body").append("<h3 class='alert-success'>Loaded All!</h3>");
 });
 ```
 
@@ -865,6 +857,8 @@ This function allows you to define your JavaScript in a `AMD` *(Asynchronous Mod
 - [Return Values](#return-values)
 
 ===
+
+@todo
 
 <h4 align="center">Parameters</h4>
 

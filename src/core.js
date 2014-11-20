@@ -313,6 +313,11 @@ me.log = function() {
 		first = args.shift();
 	}
 
+	// Check to make sure the level of the debug message is acceptable for the configured debugging output.
+	if (me.debug !== true && me.debug !== level) {
+		return false;
+	}
+
 	// The prefixes before our actual message.
 	var prefixes = [first];
 
@@ -339,7 +344,7 @@ me.log = function() {
 // The various levels for our `log` function.
 me.log.levels = {
 	1: 'error',
-	2: 'warning',
+	2: 'warn',
 	3: 'info'
 };
 

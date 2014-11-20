@@ -43,6 +43,10 @@ me.define = function() {
 	me.define.anonymous.reset();
 };
 
+// Whether or not to enforce the use of AMD. If this setting it turned on via the `config` `Function`, any library that
+// supports AMD will not longer be available via the `window` `global`. See documentation for further details.
+me.define.amd = undefined;
+
 // If a module is sitting in an anonymous state and waiting to be imported properly, this function will take the
 // `dependencies` and `factory` from that anonymous module, import them in to our properly named module, and then
 // destroy the anonymous module sitting in a limbo state. Here's how this system of defining anonymous modules works:
