@@ -131,6 +131,27 @@ If you happen to stumble upon any helpful open source examples which aren't list
 - [Examples](https://github.com/dolox/fallback/tree/master/examples)
 *A number of examples included in the project which illustrate how you can use the Fallback JS library.*
 
+	- [Getting Started](https://github.com/dolox/fallback/tree/master/examples/getting-started)
+	*A simple illustration of how to get started (located in project `examples/` folder)*.
+
+	- [Loading Scripts](https://github.com/dolox/fallback/tree/master/examples/loading-scripts)
+	*How to go about configuring JavaScript libraries to work with Fallback JS (located in project `examples/` folder)*.
+
+	- [Loading Stylesheets](https://github.com/dolox/fallback/tree/master/examples/loading-stylesheets)
+	*How to go about configuring Stylesheets to work with Fallback JS (located in project `examples/` folder)*.
+
+	- [Loading Images](https://github.com/dolox/fallback/tree/master/examples/loading-images)
+	*How to go about configuring Images to work with Fallback JS (located in project `examples/` folder)*.
+
+	- [AMD Enforced](https://github.com/dolox/fallback/tree/master/examples/amd-enforced)
+	*Illustration of how to enforce the use of AMD (Asynchronous Module Definitions) with the library (located in project `examples/` folder)*.
+
+	- [Anonymous Modules](https://github.com/dolox/fallback/tree/master/examples/anonymous-modules)
+	*Illustration of how we can load files/modules without having any configuration set for them (located in project `examples/` folder)*.
+
+	- [Debugging](https://github.com/dolox/fallback/tree/master/examples/debugging)
+	*How to turn on debugging with the library. (located in project `examples/` folder)*.
+
 - [AngularJS Lazy Loading](http://plnkr.co/Q1mPmY)
 *This example illustrates how you can lazy load controllers, directives, modules and services in AngularJS.*
 
