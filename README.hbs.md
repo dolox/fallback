@@ -144,7 +144,7 @@ If you happen to stumble upon any helpful open source examples which aren't list
 	*How to go about configuring Images to work with Fallback JS.*
 
 	- [AMD Enforced](https://github.com/dolox/fallback/tree/master/examples/amd-enforced)
-	*Illustration of how to enforce the use of AMD (Asynchronous Module Definitions) with the library.*
+	*Illustration of how to enforce the use of AMD with the library.*
 
 	- [Anonymous Modules](https://github.com/dolox/fallback/tree/master/examples/anonymous-modules)
 	*Illustration of how we can load files/modules without having any configuration set for them.*
