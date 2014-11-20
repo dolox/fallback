@@ -1,4 +1,155 @@
 {
+
+	"Chrome-Android44": {
+		"base": "SauceLabs",
+		"browserName": "android",
+		"platform": "Linux",
+		"version": "4.4"
+	},
+
+
+
+	"Chrome-OSX109": {
+		"base": "SauceLabs",
+		"browserName": "chrome",
+		"platform": "OS X 10.9"
+	},
+
+	"Chrome-OSX108": {
+		"base": "SauceLabs",
+		"browserName": "chrome",
+		"platform": "OS X 10.8"
+	},
+
+
+
+	"Firefox-OSX": {
+		"base": "SauceLabs",
+		"browserName": "firefox",
+		"platform": "OS X 10.10"
+	},
+
+	"Firefox-Win7": {
+		"base": "SauceLabs",
+		"browserName": "firefox",
+		"platform": "Windows 7"
+	},
+
+	"Firefox-Win8": {
+		"base": "SauceLabs",
+		"browserName": "firefox",
+		"platform": "Windows 8"
+	},
+
+	"Firefox-Win81": {
+		"base": "SauceLabs",
+		"browserName": "firefox",
+		"platform": "Windows 8.1"
+	},
+
+	"Firefox-WinXP": {
+		"base": "SauceLabs",
+		"browserName": "firefox",
+		"platform": "Windows XP"
+	},
+
+	"IE11-Win81": {
+		"base": "SauceLabs",
+		"browserName": "internet explorer",
+		"platform": "Windows 8.1",
+		"version": "11"
+	},
+
+	"IE11-Win7": {
+		"base": "SauceLabs",
+		"browserName": "internet explorer",
+		"platform": "Windows 7",
+		"version": "11"
+	},
+
+	"IE10-Win8": {
+		"base": "SauceLabs",
+		"browserName": "internet explorer",
+		"platform": "Windows 8",
+		"version": "10"
+	},
+
+	"IE10-Win7": {
+		"base": "SauceLabs",
+		"browserName": "internet explorer",
+		"platform": "Windows 7",
+		"version": "10"
+	},
+
+	"IE9-Win7": {
+		"base": "SauceLabs",
+		"browserName": "internet explorer",
+		"platform": "Windows 7",
+		"version": "9"
+	},
+
+	"IE8-Win7": {
+		"base": "SauceLabs",
+		"browserName": "internet explorer",
+		"platform": "Windows 7",
+		"version": "8"
+	},
+
+	"IE8-WinXP": {
+		"base": "SauceLabs",
+		"browserName": "internet explorer",
+		"platform": "Windows XP",
+		"version": "8"
+	},
+
+	"IE7-WinXP": {
+		"base": "SauceLabs",
+		"browserName": "internet explorer",
+		"platform": "Windows XP",
+		"version": "7"
+	},
+
+	"IE6-WinXP": {
+		"base": "SauceLabs",
+		"browserName": "internet explorer",
+		"platform": "Windows XP",
+		"version": "6"
+	},
+
+	"Opera-Win7": {
+		"base": "SauceLabs",
+		"browserName": "opera",
+		"platform": "Windows 7"
+	},
+
+	"Opera-WinXP": {
+		"base": "SauceLabs",
+		"browserName": "opera",
+		"platform": "Windows XP"
+	},
+
+	"Safari-OSX1010": {
+		"base": "SauceLabs",
+		"browserName": "safari",
+		"platform": "OS X 10.10"
+	},
+
+	"Safari-OSX109": {
+		"base": "SauceLabs",
+		"browserName": "safari",
+		"platform": "OS X 10.9"
+	},
+
+	"Safari-OSX108": {
+		"base": "SauceLabs",
+		"browserName": "safari",
+		"platform": "OS X 10.8"
+	}
+
+
+
+
+
 	"Chrome-Android43": {
 		"base": "SauceLabs",
 		"browserName": "android",

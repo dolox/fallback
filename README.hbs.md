@@ -152,17 +152,17 @@ A technical overview with in depth explanations of the libraries functionality.
 
 ### Overview
 
-| Function                                           | Aliases                                                                                                          | Description   |
-| -------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ------------- |
-| [config](#fallbackconfiginput)                     | `cfg`, `conf`, `config`, `fallback.cfg`, `fallback.conf`, `fallback.config`, `fbk.cfg`, `fbk.conf`, `fbk.config` | Configures the libraries you want to load for your project. |
-| [define](#fallbackdefinename-dependencies-factory) | `def`, `define`, `fallback.def`, `fallback.define`, `fbk.def`, `fbk.define`                                      | Define your JavaScript files so they can be easily loaded and referenced. |
-| [require](#fallbackrequiredependencies-factory)    | `fallback.req`, `fallback.require`, `fbk.req`, `fbk.require`, `req`, `require`                                   | Loads your libraries asynchronously the page. |
-| [stats](#fallbackstats)                            | `fallback.stats`, `fbk.stats`                                                                                    | Exports statistics for any libraries that were loaded. |
-| [version](#fallbackversion)                        | `fallback.version`, `fbk.version`                                                                                | Get the current version number of Fallback JS. |
+| Function                                                 | Aliases                                                                                                          | Description   |
+| -------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ------------- |
+| [config](#fallbackconfiginput)                           | `cfg`, `conf`, `config`, `fallback.cfg`, `fallback.conf`, `fallback.config`, `fbk.cfg`, `fbk.conf`, `fbk.config` | Configures the libraries you want to load for your project. |
+| [define](#fallbackdefinename-dependencies-factory-error) | `def`, `define`, `fallback.def`, `fallback.define`, `fbk.def`, `fbk.define`                                      | Define your JavaScript files so they can be easily loaded and referenced. |
+| [require](#fallbackrequiredependencies-factory-error)          | `fallback.req`, `fallback.require`, `fbk.req`, `fbk.require`, `req`, `require`                                   | Loads your libraries asynchronously the page. |
+| [stats](#fallbackstats)                                  | `fallback.stats`, `fbk.stats`                                                                                    | Exports statistics for any libraries that were loaded. |
+| [version](#fallbackversion)                              | `fallback.version`, `fbk.version`                                                                                | Get the current version number of Fallback JS. |
 
 ===
 
-### **fallback.config(`input`)**
+### fallback.config(`input`)
 
 ***Aliases:*** `cfg`, `conf`, `config`, `fallback.cfg`, `fallback.conf`, `fallback.config`, `fbk.cfg`, `fbk.conf`, `fbk.config`
 
@@ -176,12 +176,14 @@ This function allows you to configure the defaults for your project along with t
 		- [delimiter](#fallbackconfig---input---delimiter)
 		- [globals](#fallbackconfig---input---globals)
 		- [libs](#fallbackconfig---input---libs)
-			- [alias](#fallbackconfig---input---libs---key----values---alias)
-			- [check](#fallbackconfig---input---libs---key----values---check)
-			- [deps](#fallbackconfig---input---libs---key----values---deps)
-			- [exports](#fallbackconfig---input---libs---key----values---exports)
-			- [init](#fallbackconfig---input---libs---key----values---init)
-			- [urls](#fallbackconfig---input---libs---key----values---urls)
+			- [keys](#fallbackconfig---input---libs---keys)
+			- [values](#fallbackconfig---input---libs---key---values)
+				- [alias](#fallbackconfig---input---libs---key----values---alias)
+				- [check](#fallbackconfig---input---libs---key----values---check)
+				- [deps](#fallbackconfig---input---libs---key----values---deps)
+				- [exports](#fallbackconfig---input---libs---key----values---exports)
+				- [init](#fallbackconfig---input---libs---key----values---init)
+				- [urls](#fallbackconfig---input---libs---key----values---urls)
 - [Return Values](#return-values)
 
 ===
@@ -378,9 +380,9 @@ fallback.require(function(css_bootstrap) {
 | ------- | ------- | -------- |
 | Boolean | true    | No       |
 
-This parameter directly affects how libraries are loaded and referenced by the Fallback JS library. It specifically tells the library to check the `window` `global` to determine if a library has loaded properly and how to reference that library when using the [define](#fallbackdefinename-dependencies-factory) and [require](#fallbackrequiredependencies-factory) functions.
+This parameter directly affects how libraries are loaded and referenced by the Fallback JS library. It specifically tells the library to check the `window` `global` to determine if a library has loaded properly and how to reference that library when using the [define](#fallbackdefinename-dependencies-factory-error) and [require](#fallbackrequiredependencies-factory-error) functions.
 
-Any value(s) which are set as [exports](#fallbackconfig---input---libs---key----values---exports) for a library will directly correlate as references to the `window` `global`. For example if you were set the [exports](#fallbackconfig---input---libs---key----values---exports) to `["jQuery", "$"]` for the library `jQuery`, Fallback JS would check for `window.jQuery` and `window.$` to determine whether or not the library was loaded. If Fallback JS saw either of those `window` variables as `defined`, it would then reference those `window` variables whenever `jQuery` is used with the [define](#fallbackdefinename-dependencies-factory) and [require](#fallbackrequiredependencies-factory) functions.
+Any value(s) which are set as [exports](#fallbackconfig---input---libs---key----values---exports) for a library will directly correlate as references to the `window` `global`. For example if you were set the [exports](#fallbackconfig---input---libs---key----values---exports) to `["jQuery", "$"]` for the library `jQuery`, Fallback JS would check for `window.jQuery` and `window.$` to determine whether or not the library was loaded. If Fallback JS saw either of those `window` variables as `defined`, it would then reference those `window` variables whenever `jQuery` is used with the [define](#fallbackdefinename-dependencies-factory-error) and [require](#fallbackrequiredependencies-factory-error) functions.
 
 **Example:**
 
@@ -413,7 +415,7 @@ fallback.require(function(jQuery) {
 
 - Detecting whether or not a library has successfully lazy loaded other than by relying on the native browsers callbacks. *Native callbacks don't work properly in legacy browsers.*
 
-- The ability to reference files which aren't using AMD. If you attempt to load a JavaScript file which doesn't use the [define](#fallbackdefinename-dependencies-factory) `Function`, then you won't be able to reference it within the `factory` of a [define](#fallbackdefinename-dependencies-factory) or [require](#fallbackrequiredependencies-factory) statement.
+- The ability to reference files which aren't using AMD. If you attempt to load a JavaScript file which doesn't use the [define](#fallbackdefinename-dependencies-factory-error) `Function`, then you won't be able to reference it within the `factory` of a [define](#fallbackdefinename-dependencies-factory-error) or [require](#fallbackrequiredependencies-factory-error) statement.
 
 **Example:**
 
@@ -441,7 +443,9 @@ This parameter allows you to set the libraries that want Fallback JS to load. *Y
 | ------ | ------- | -------- |
 | String | null    | Yes      |
 
-The `keys` of this `Object` are what you'll use to reference the library in question. For example if we added the key `test`, when we use the [require](@todo) function, we would specify `test` to load that library even though it may differ from the name of the actual library itself. Another example would be `jQuery`, but instead we want to use `jquery` so we don't have to capitalize the `Q`.
+The `keys` of this `Object` are what you'll use to reference the library in question. For example if we added the key `test`, when we use the [require](#fallbackrequiredependencies-factory-error) function, we would specify `test` to load that library even though it may differ from the name of the actual library itself. Another example would be `jQuery`, but instead we want to use `jquery` so we don't have to capitalize the `Q`.
+
+If the [exports](#fallbackconfig---input---libs---key----values---exports) parameter is not specified for a library, then the `key` will be treated as it's [exports](#fallbackconfig---input---libs---key----values---exports).
 
 Any `keys` of the `libs` `Object` which have any of the following prefixes *(listed in the table below)* followed by the libraries [delimiter](#fallbackconfig---input---delimiter) will be handled in their own special way.
 
@@ -663,7 +667,7 @@ window.iePolyfills = true;
 | ------------ | ------- | -------- |
 | Array/String | null    | No       |
 
-This parameter allows you to set the dependencies which are required to load prior to the library in question. When attempting to reference a library using the [define](#fallbackdefinename-dependencies-factory) and [require](#fallbackrequiredependencies-factory) functions, all of their dependencies will be loaded first if they haven't already loaded.
+This parameter allows you to set the dependencies which are required to load prior to the library in question. When attempting to reference a library using the [define](#fallbackdefinename-dependencies-factory-error) and [require](#fallbackrequiredependencies-factory-error) functions, all of the library dependencies will load first if they haven't already been loaded.
 
 The value of this parameter can be either a `String` or `String Series` *(`Array` of `Strings`)*. The value(s) can correlate to either an [alias](#fallbackconfig---input---libs---key----values---alias) or [key](#fallbackconfig---input---libs---keys) for the library(s) dependency.
 
@@ -710,9 +714,11 @@ fallback.require(function(jqueryui) {
 | ------------ | ------- | -------- |
 | Array/String | null    | No       |
 
-This parameter @todo
+This parameter allows you to tell the Fallback JS library what `window` `global` variable(s) it should expect to be `defined` when attempting to load a library. For example `jQuery UI` would have an exports value of `jQuery.ui` since when `jQuery UI` is loaded it explicitly defines `window.jQuery.ui`. We need to specify this in order to detect whether a library has loaded properly *(especially in legacy browsers)*.
 
-*If [globals](#fallbackconfig---input---globals) are turned off, all `exports` will be disabled.*
+If the [exports](#fallbackconfig---input---libs---key----values---exports) parameter is not specified for a library, then the [key](#fallbackconfig---input---libs---keys) will be treated as it's [exports](#fallbackconfig---input---libs---key----values---exports).
+
+*If the [globals](#fallbackconfig---input---globals) parameter is turned off, all `exports` will be disabled.*
 
 **Example:**
 
@@ -743,7 +749,24 @@ fallback.require(function($) {
 | -------- | ------- | -------- |
 | Function | null    | No       |
 
-@todo
+This parameter allows you to invoke a `Function` immediately after a library has loaded successfully.
+
+**Example:**
+
+```javascript
+// Configure our Fallback JS library.
+fallback.config({
+	"libs": {
+		"jQuery": {
+			"init": function() {
+				// Execute my code here...
+			},
+
+			"urls": "//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min"
+		}
+	}
+});
+```
 
 ===
 
@@ -753,9 +776,59 @@ fallback.require(function($) {
 | ------------ | ------- | -------- |
 | Array/String | *AMD*   | No       |
 
-@todo
+This parameter allows you to set the URLs that will load the library in question. It expects its value to be either a `String` or `String Series` *(`Array` of `Strings`)*. When loading a library, the URLs in this list will be loaded from first to last (in the `Array`) until either one has loaded successfully or all have been exhausted. You can add as many URLs as you want, there's no limit.
 
-explain how if there's no URLs that AMD will kick in
+**Example:**
+
+```javascript
+// Configure our Fallback JS library.
+fallback.config({
+	"base": "/js/",
+
+	"libs": {
+		"jQuery": {
+			"urls": [
+				"//.....some-bad-cdn...../.....FAIL-ON-PURPOSE.....",
+				"//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min",
+				"//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min"
+			]
+		}
+	}
+});
+
+// Fallback JS will attempt to load all of the URLs for `jQuery`
+fallback.require(function(jQuery) {
+	// Execute my code here...
+});
+```
+
+If you don't specify the `urls` parameter for a library, then the library will seen as an `AMD`. If the library is deemed as `AMD` then it will attempt to load the local file relative to the [base](#fallbackconfig---input---base) path that was set by the [config](#fallbackconfiginput) `Function`.
+
+**Example:**
+
+```javascript
+// Configure our Fallback JS library.
+fallback.config({
+	"base": "/js/",
+
+	"libs": {
+		"test": {
+			"alias": "testMod"
+		}
+	}
+});
+
+// Fallback JS will attempt to load `/js/test.js`.
+fallback.require(function(testMod) {
+	// Execute my code here...
+});
+
+// Notice we didn't add a configuration for `test2`, yet Fallback JS will attempt to
+// load `/js/test2.js`.
+fallback.require(function(test2) {
+	// Execute my code here...
+});
+```
 
 ===
 
@@ -768,18 +841,17 @@ explain how if there's no URLs that AMD will kick in
 
 -----
 
-### **fallback.define(`name`, `dependencies`, `factory`)**
+### fallback.define(`name`, `dependencies`, `factory`, `error`)
 
 ***Aliases:*** `def`, `define`, `fallback.def`, `fallback.define`, `fbk.def`, `fbk.define`
 
-This function allows you to define your JavaScript files in a definition like manner. This has proven to be beneficial when working on larger projects where you want to compartmentalize sections of a project.
-
-Let's say you have a website with a 3-4 pages that used `jQuery`, while the rest of your website was solely using `Angular JS`. After tracking your user load times, you've found that having to load `jQuery` was having a significant impact on your pages load time and decided to drop `jQuery` from being loaded on every page, and instead just have it lazy load on the few pages that actually needed it. If you had used the `define` `Function`, explicitly stating which parts of the code required `jQuery`, then removing `jQuery` from loading on every page would work seemlessly. If you didn't, you'd have to go back and re-work those areas that did.
+This function allows you to define your JavaScript in a `AMD` *(Asynchronous Module Definition)* manner. This has proven to be beneficial when working on larger projects where you want to compartmentalize sections of the project but not have to manually configure each of the files required.
 
 - [Parameters](#parameters-1)
 	- [name](#fallbackconfig---input)
 	- [dependencies](#fallbackconfig---input---base)
 	- [factory](#fallbackconfig---input---base)
+	- [error](#fallbackconfig---input---base)
 - [Return Values](#return-values)
 
 ===
@@ -790,7 +862,14 @@ Let's say you have a website with a 3-4 pages that used `jQuery`, while the rest
 | ------------ | ------------ | -------- | ------- | ----------- |
 | name         | String       | No       | null    | If a name is not set, the URL that was used to load the file will be used as the name. |
 | dependencies | Array/String | No       | null    | Dependencies that we expect to be load prior to invoking our `factory` `Function`. |
-| factory      | N/A          | Yes      | null    | A factory can be anything. An `Array`, `Boolean`, `Element`, `Number`, `Object`, `String`, etc. |
+| factory      | N/A          | Yes      | null    | A factory can be anything except the value `undefined`. |
+| error        | Function     | No       | null    | If a dependency failed to load, this `Function` will be invoked. |
+
+
+
+
+
+
 
 The parameters in this function will fallback on one another in the following manner:
 
@@ -921,7 +1000,7 @@ def(function($) {
 
 -----
 
-### **fallback.require(dependencies, factory)**
+### **fallback.require(`dependencies`, `factory`, `error`)**
 
 ***Aliases:*** `fallback.req`, `fallback.require`, `fbk.req`, `fbk.require`, `req`, `require`
 

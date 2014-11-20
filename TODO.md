@@ -1,3 +1,9 @@
+- make sure exports function uses key as default is undefined
+- make sure init functino works properly
+- setup define.amd on amd enforcement
+- allow debug to take boolean for all/off or the strings
+
+
 fix migration polyfills --- .importer
 
 
