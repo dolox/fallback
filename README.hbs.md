@@ -27,6 +27,7 @@
 
 - [Getting Started](#getting-started)
 - [Open Source Examples](#open-source-examples)
+- [Tools](#tools)
 - [API Documentation](#api-documentation)
 - [FAQ](#faq)
 - [About](#about)
@@ -143,6 +144,15 @@ If you happen to stumble upon any helpful open source examples which aren't list
 
 - [#fallbackjs on Plunker](http://plnkr.co/tags/fallbackjs)
 *Look on Plunker under the tag `#fallbackjs` to see a number of examples that've been posted by users.*
+
+---
+
+# Tools
+
+If you happen to stumble upon any helpful tools which aren't listed here, please let us know and we'll add them to the list! **[Let us know here!](https://github.com/dolox/fallback/issues)**
+
+- [fallback-cli](https://github.com/dolox/fallback-cli)
+*Node JS package which will automatically build your `fallback.config` based upon your bower dependencies.*
 
 ---
 
