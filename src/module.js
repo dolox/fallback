@@ -253,7 +253,10 @@ me.module.define.defaults = function() {
 		},
 
 		// Where all the URLs are stored for our module.
-		'urls': [me.normalizeStringSeries, null]
+		'urls': [me.normalizeStringSeries, null],
+
+		// The version of our module.
+		'version': [me.normalizeString, null]
 	};
 };
 

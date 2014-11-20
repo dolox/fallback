@@ -1,19 +1,17 @@
-[ ] allow the libs to accept a version # for semver
-
 [ ] fix me.log to have no colors in legacy browsers
 [ ] fix all log messages in project to be more helpful and leading
-
-[ ] define and require functions to have 2nd factory which is for error if any depednencies have failed to load or double anon module in same file
 
 [ ] strip out all the logs from the minify version and the log function
 [ ] minify version needs to have the banner
 
+[ ] define and require functions to have 2nd factory which is for error if any depednencies have failed to load or double anon module in same file
+
+
 [ ] fix migration polyfills --[ ] .importer
-
 [ ] angular js example
-[ ] define.amd exmaple
+[ ] full run through in IE6-11, safari, firefox, chrome, makes sure it's working properly including for all examples
 
-[ ] full run through in IE6-11, safari, firefox, chrome, makes sure it's working properly
+
 
 
 [ ] docs
@@ -37,6 +35,8 @@ unit tests
 		me.log <--- check for false/true with specific debug values set
 		me.config.debug
 		me.config.debug.whitelist
+
+		me.config.libs.version
 
 	[x] config
 	[x] core

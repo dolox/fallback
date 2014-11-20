@@ -186,6 +186,7 @@ This function allows you to configure the defaults for your project along with t
 				- [exports](#fallbackconfig---input---libs---key----values---exports)
 				- [init](#fallbackconfig---input---libs---key----values---init)
 				- [urls](#fallbackconfig---input---libs---key----values---urls)
+				- [version](#fallbackconfig---input---libs---key----values---version)
 - [Return Values](#return-values)
 
 ===
@@ -504,6 +505,7 @@ If the `value` of our `key` is an `Object`, then the following parameters are ac
 | [exports](#fallbackconfig---input---libs---key----values---exports) | Array/String | *key*   | No       | The `window` `global` variable(s) that reference the library. |
 | [init](#fallbackconfig---input---libs---key----values---init)       | Function     | *null*  | No       | A function to invoke immediately after a library has loaded for the first time. |
 | [urls](#fallbackconfig---input---libs---key----values---urls)       | Array/String | *null*  | No       | URLs that will load the library. |
+| [version](#fallbackconfig---input---libs---key----values---version) | String       | *null*  | No       | Set the version number of your library. |
 
 **Examples:**
 
@@ -756,7 +758,6 @@ This parameter allows you to invoke a `Function` immediately after a library has
 **Example:**
 
 ```javascript
-// Configure our Fallback JS library.
 fallback.config({
 	"libs": {
 		"jQuery": {
@@ -834,6 +835,29 @@ fallback.require(function(test2) {
 
 ===
 
+<h4 align="center">fallback.config -> input -> libs -> key - > values -> version</h4>
+
+| Type   | Default | Required |
+| ------ | ------- | -------- |
+| String | null    | No       |
+
+This parameter allows you to set the version of the library in question. This is simply used as a logging tool for developers and will show up in the output of the [stats](#fallbackstats) `Function`.
+
+**Example:**
+
+```javascript
+fallback.config({
+	"libs": {
+		"jQuery": {
+			"urls": "//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min",
+			"version": "2.1.1"
+		}
+	}
+});
+```
+
+===
+
 <h4 align="center">Return Values</h4>
 
 | Value    | Type    | Description |
@@ -841,7 +865,7 @@ fallback.require(function(test2) {
 | *Object* | Object  | If the configuration was imported properly, an `Object` with the normalized dataset that was imported will be returned. |
 | false    | Boolean | The configuration wasn't imported due to being malformed. Turn debugging on and check console for helper messages. |
 
------
+===
 
 ### fallback.define(`name`, `dependencies`, `factory`, `error`)
 
@@ -857,6 +881,15 @@ This function allows you to define your JavaScript in a `AMD` *(Asynchronous Mod
 - [Return Values](#return-values)
 
 ===
+
+
+
+
+
+
+
+
+
 
 @todo
 
@@ -1002,7 +1035,7 @@ def(function($) {
 });
 ```
 
------
+---
 
 ### fallback.require(`dependencies`, `factory`, `error`)
 
@@ -1017,7 +1050,15 @@ function | Function | Yes | null | If dependencies are specified, then they will
 
 @todo here
 
------
+===
+
+### fallback.stats
+
+===
+
+### fallback.version
+
+---
 
 # FAQ
 
@@ -1067,7 +1108,7 @@ A: @todo
 
 A: @todo
 
------
+---
 
 # About
 
@@ -1079,7 +1120,7 @@ Please read the [CONTRIBUTING.md](https://github.com/dolox/fallback/blob/master/
 
 [The MIT License (MIT)](https://github.com/dolox/fallback/blob/master/LICENSE.txt)
 
------
+---
 
 # Support
 

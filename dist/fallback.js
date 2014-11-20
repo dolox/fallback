@@ -556,7 +556,7 @@ me.parallel.queue = {};
 // Output the configured libraries, their load times and other useful statistics for the end user.
 me.stats = function() {
 	// Padding strings that we'll use for our output string.
-	var separator = '\n' + Array(250).join('-') + '\n';
+	var separator = '\n' + Array(280).join('-') + '\n';
 	var padding30 = Array(30).join(' ');
 	var padding60 = Array(60).join(' ');
 
@@ -568,6 +568,7 @@ me.stats = function() {
 
 	// The table header.
 	output += me.stringPad('Library', padding60);
+	output += me.stringPad('Version', padding30);
 	output += me.stringPad('Type', padding30);
 	output += me.stringPad('Time', padding30);
 	output += me.stringPad('Loaded', padding30);
@@ -582,6 +583,7 @@ me.stats = function() {
 		time = time || time === 0 ? time + 's' : 'N/A';
 
 		output += me.stringPad(key, padding60);
+		output += me.stringPad(value.version, padding30);
 		output += me.stringPad(typeof value.factory, padding30);
 		output += me.stringPad(time, padding30);
 		output += me.stringPad(me.normalizeBoolean(value.loader.loaded, false), padding30);
@@ -846,8 +848,14 @@ me.config.libs.init = function(input) {
 	return input;
 };
 
+// Normalize the version number if it's passed in with the library's configuration. We have to force the value to a
+// `String` due to version numbers showing up such as `1.0.1` which JavaScript doesn't support as a valid `Number`.
+me.config.libs.version = function(input) {
+	return me.normalizeString(input, null);
+};
+
 // The whitelist of acceptable keys for an `Object` in the `libs` parameter.
-me.config.libs.whitelist = ['alias', 'check', 'deps', 'init', 'exports', 'urls'];
+me.config.libs.whitelist = ['alias', 'check', 'deps', 'init', 'exports', 'urls', 'version'];
 
 // The whitelist of acceptable keys for the `config` functions input `Object`.
 me.config.whitelist = ['amd', 'base', 'debug', 'delimiter', 'globals', 'libs'];
@@ -1967,7 +1975,10 @@ me.module.define.defaults = function() {
 		},
 
 		// Where all the URLs are stored for our module.
-		'urls': [me.normalizeStringSeries, null]
+		'urls': [me.normalizeStringSeries, null],
+
+		// The version of our module.
+		'version': [me.normalizeString, null]
 	};
 };
 

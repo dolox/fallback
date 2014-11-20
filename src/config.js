@@ -210,8 +210,14 @@ me.config.libs.init = function(input) {
 	return input;
 };
 
+// Normalize the version number if it's passed in with the library's configuration. We have to force the value to a
+// `String` due to version numbers showing up such as `1.0.1` which JavaScript doesn't support as a valid `Number`.
+me.config.libs.version = function(input) {
+	return me.normalizeString(input, null);
+};
+
 // The whitelist of acceptable keys for an `Object` in the `libs` parameter.
-me.config.libs.whitelist = ['alias', 'check', 'deps', 'init', 'exports', 'urls'];
+me.config.libs.whitelist = ['alias', 'check', 'deps', 'init', 'exports', 'urls', 'version'];
 
 // The whitelist of acceptable keys for the `config` functions input `Object`.
 me.config.whitelist = ['amd', 'base', 'debug', 'delimiter', 'globals', 'libs'];
