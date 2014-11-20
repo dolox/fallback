@@ -1000,7 +1000,7 @@ def(function($) {
 
 -----
 
-### **fallback.require(`dependencies`, `factory`, `error`)**
+### fallback.require(`dependencies`, `factory`, `error`)
 
 ***Aliases:*** `fallback.req`, `fallback.require`, `fbk.req`, `fbk.require`, `req`, `require`
 

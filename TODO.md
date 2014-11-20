@@ -2,7 +2,9 @@
 - make sure init functino works properly
 - setup define.amd on amd enforcement
 - allow debug to take boolean for all/off or the strings
-
+- define and require functions to have 2nd factory which is for error if any depednencies have failed to load or double anon module in same file
+- minify version needs to have the banner
+- strip out all the logs from the minify version and the log function
 
 fix migration polyfills --- .importer
 
