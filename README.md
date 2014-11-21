@@ -969,7 +969,20 @@ The arguments for this `Function` may be passed in the following variety:
 | ------ | ------- | -------- |
 | String | null    | No       |
 
-@todo if no name, go amd
+The name of that you want to use to reference this module from another [define](#fallbackdefinename-dependencies-factory-error) or [require](#fallbackrequiredependencies-factory-error) `Function`.
+
+**Example:**
+
+```javascript
+define("testDefine", function() {
+	return "test";
+});
+
+require(function(testDefine) {
+	// This will log the `String` `test` to the console.
+	console.log(testDefine);
+});
+```
 
 ===
 
@@ -979,9 +992,29 @@ The arguments for this `Function` may be passed in the following variety:
 | ------------ | ------- | -------- |
 | Array/String | null    | No       |
 
-@todo
+This parameter can be an `Array` or `String` of dependencies you want to be loaded prior to invoking the `factory`.
 
-If no dependencies are passed in and the `factory` is a `Function`, then whatever parameters the `factory` has will become the dependencies. For example if you were to write `fallback.define(function(angular, jquery)) {}` then both `angular` and `jquery` would become the dependencies, and would load prior to invoking the `Function`.
+If no dependencies are passed in and the `factory` is a `Function`, then whatever parameters the `factory` has will become the dependencies.
+
+**Example:**
+
+```javascript
+// Specify the dependencies as an `Array`.
+define("test1", ["testDependency"], function(testDependency) {
+	console.log("`test1` Loaded!");
+});
+
+// Specify the dependencies as a `String`.
+define("test2", "testDependency", function(testDependency) {
+	console.log("`test2` Loaded!");
+});
+
+// Specify the dependencies solely within the `factory`. This will load
+// `testDependency.js` before attempting to invoke the console log message.
+define("test3", function(testDependency) {
+	console.log("`test3` Loaded!");
+});
+```
 
 ===
 
@@ -1174,31 +1207,41 @@ function | Function | Yes | null | If dependencies are specified, then they will
 
 ##### Q: How should Fallback JS be loaded?
 
-**A:** Fallback JS should be loaded from the `<head>` element of your HTML page.
+**A:** Ideally Fallback JS should be loaded from the `<head>` element of your HTML page with the `async` attribute set on the `<script>` element. Ideally you'd want Fallback JS to be your only `<script>` element on the page, and load any additional CSS/JS libraries via the Fallback JS configuration by taking advantage of the [special HTML attributes](#special-html-attributes). Be sure to include `type="text/javascript"` for legacy browsers. @todo
+
+**Example:**
+
+```html
+<html>
+<head>
+	<script async src="fallback.min.js" type="text/javascript"></script>
+</head>
+</html>
+```
 
 -
 
 ##### Q: Can I load up my CSS and JavaScript files in a single configuration block?
 
-A: Yes, please see the example at the top of the `README.md` file.
+**A:** Yes, please see the [Getting Started](#getting-started) example.
 
 -
 
-##### Q: Can I run the `config` function more than once?
+##### Q: Can I run the `config` `Function` more than once?
 
-A: Yes. @todo
+**A:** Yes. You can call the `config` `Function` as many times as you want, but if you call the `config` `Functoin` with a library that already exists you'll override it's values. @todo
 
 -
 
 ##### Q: Why can't I call the `define` function more than once without a name in the same file?
 
-A: @todo
+**A:** @todo
 
 -
 
 ##### Q: What happens if I set the `base` configuration parameter more than once?
 
-A: @todo
+**A:** @todo
 
 ---
 

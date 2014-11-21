@@ -969,7 +969,20 @@ The arguments for this `Function` may be passed in the following variety:
 | ------ | ------- | -------- |
 | String | null    | No       |
 
-@todo if no name, go amd
+The name of that you want to use to reference this module from another [define](#fallbackdefinename-dependencies-factory-error) or [require](#fallbackrequiredependencies-factory-error) `Function`.
+
+**Example:**
+
+```javascript
+define("testDefine", function() {
+	return "test";
+});
+
+require(function(testDefine) {
+	// This will log the `String` `test` to the console.
+	console.log(testDefine);
+});
+```
 
 ===
 
@@ -979,9 +992,29 @@ The arguments for this `Function` may be passed in the following variety:
 | ------------ | ------- | -------- |
 | Array/String | null    | No       |
 
-@todo
+This parameter can be an `Array` or `String` of dependencies you want to be loaded prior to invoking the `factory`.
 
-If no dependencies are passed in and the `factory` is a `Function`, then whatever parameters the `factory` has will become the dependencies. For example if you were to write `fallback.define(function(angular, jquery)) {}` then both `angular` and `jquery` would become the dependencies, and would load prior to invoking the `Function`.
+If no dependencies are passed in and the `factory` is a `Function`, then whatever parameters the `factory` has will become the dependencies.
+
+**Example:**
+
+```javascript
+// Specify the dependencies as an `Array`.
+define("test1", ["testDependency"], function(testDependency) {
+	console.log("`test1` Loaded!");
+});
+
+// Specify the dependencies as a `String`.
+define("test2", "testDependency", function(testDependency) {
+	console.log("`test2` Loaded!");
+});
+
+// Specify the dependencies solely within the `factory`. This will load
+// `testDependency.js` before attempting to invoke the console log message.
+define("test3", function(testDependency) {
+	console.log("`test3` Loaded!");
+});
+```
 
 ===
 
