@@ -39,47 +39,5 @@
 		"base": "SauceLabs",
 		"browserName": "chrome",
 		"platform": "Windows XP"
-	},
-
-	"Firefox-OSX1010": {
-		"base": "SauceLabs",
-		"browserName": "firefox",
-		"platform": "OS X 10.10"
-	},
-
-	"Firefox-OSX109": {
-		"base": "SauceLabs",
-		"browserName": "firefox",
-		"platform": "OS X 10.9"
-	},
-
-	"Firefox-OSX109": {
-		"base": "SauceLabs",
-		"browserName": "firefox",
-		"platform": "OS X 10.8"
-	},
-
-	"Firefox-Win7": {
-		"base": "SauceLabs",
-		"browserName": "firefox",
-		"platform": "Windows 7"
-	},
-
-	"Firefox-Win8": {
-		"base": "SauceLabs",
-		"browserName": "firefox",
-		"platform": "Windows 8"
-	},
-
-	"Firefox-Win81": {
-		"base": "SauceLabs",
-		"browserName": "firefox",
-		"platform": "Windows 8.1"
-	},
-
-	"Firefox-WinXP": {
-		"base": "SauceLabs",
-		"browserName": "firefox",
-		"platform": "Windows XP"
 	}
 }

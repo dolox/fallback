@@ -969,18 +969,37 @@ The arguments for this `Function` may be passed in the following variety:
 | ------ | ------- | -------- |
 | String | null    | No       |
 
-The name of that you want to use to reference this module from another [define](#fallbackdefinename-dependencies-factory-error) or [require](#fallbackrequiredependencies-factory-error) `Function`.
+The name that you want to use to reference this module from another [define](#fallbackdefinename-dependencies-factory-error) or [require](#fallbackrequiredependencies-factory-error) `Function`.
+
+If you don't specify the name for the definition then it'll be deemed as an anonymous module and use the name of the current file as it's definition name. Note that you cannot have multiple anonymous definitions within the same file as the library has no way of know how to reference or differentiate each.
 
 **Example:**
 
 ```javascript
-define("testDefine", function() {
+fallback.define("testDefine", function() {
 	return "test";
 });
 
-require(function(testDefine) {
+fallback.require(function(testDefine) {
 	// This will log the `String` `test` to the console.
 	console.log(testDefine);
+});
+```
+
+**testAnonymous.js**
+
+```javascript
+fallback.define(function() {
+	return "testAnonymous Module!";
+});
+```
+
+**main.js**
+
+```javascript
+fallback.require(function(testAnonymous) {
+	// This will log `testAnonymous Module!` to the console.
+	console.log(testAnonymous);
 });
 ```
 
@@ -1000,18 +1019,18 @@ If no dependencies are passed in and the `factory` is a `Function`, then whateve
 
 ```javascript
 // Specify the dependencies as an `Array`.
-define("test1", ["testDependency"], function(testDependency) {
+fallback.define("test1", ["testDependency"], function(testDependency) {
 	console.log("`test1` Loaded!");
 });
 
 // Specify the dependencies as a `String`.
-define("test2", "testDependency", function(testDependency) {
+fallback.define("test2", "testDependency", function(testDependency) {
 	console.log("`test2` Loaded!");
 });
 
 // Specify the dependencies solely within the `factory`. This will load
 // `testDependency.js` before attempting to invoke the console log message.
-define("test3", function(testDependency) {
+fallback.define("test3", function(testDependency) {
 	console.log("`test3` Loaded!");
 });
 ```
