@@ -18,7 +18,7 @@ module.exports = function(grunt, tasks) {
 
 	me.tasks = ['karma:dev'];
 
-	tasks.watch.tests = me;
+	tasks.watch.test = me;
 
 	return tasks;
 };

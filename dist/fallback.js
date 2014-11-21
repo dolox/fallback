@@ -1,4 +1,4 @@
-/* fallback.js v2.0.0 | http://fallback.io/| Salvatore Garbesi <sal@dolox.com> | (c) 2014 Dolox, Inc. */
+/* fallback.js v2.0.0 | http://fallback.io/ | Salvatore Garbesi <sal@dolox.com> | (c) 2014 Dolox, Inc. */
 
 (function(global) {
 
@@ -174,9 +174,6 @@ me.arrayUnique = function(input) {
 	// Return our normalized set of unique values.
 	return normalized;
 };
-
-// ASCII banner for the library.
-me.banner = '   ad88              88  88  88                                   88         88             \n  d8"                88  88  88                                   88         ""             \n  88                 88  88  88                                   88                        \nMM88MMM  ,adPPYYba,  88  88  88,dPPYba,   ,adPPYYba,   ,adPPYba,  88   ,d8   88  ,adPPYba,  \n  88     ""     `Y8  88  88  88P\'    "8a  ""     `Y8  a8"     ""  88 ,a8"    88  I8[    ""  \n  88     ,adPPPPP88  88  88  88       d8  ,adPPPPP88  8b          8888[      88   `"Y8ba,   \n  88     88,    ,88  88  88  88b,   ,a8"  88,    ,88  "8a,   ,aa  88`"Yba,   88  aa    ]8I  \n  88     `"8bbdP"Y8  88  88  8Y"Ybbd8"\'   `"8bbdP"Y8   `"Ybbd8"\'  88   `Y8a  88  `"YbbdP"\'  \n                                                                            ,88             \n                                                                          888P"';
 
 // All of our browser detection functions reside here. Some browsers have special edge cases that we need to cater to,
 // and that's the sole purpose of these functions.
@@ -561,7 +558,14 @@ me.stats = function() {
 	var padding60 = Array(60).join(' ');
 
 	// Add our banner to the output string.
-	var output = '\n' + me.banner;
+	var output = '\n';
+
+	if (me.banner.length === 8) {
+		output += me.stringPad(me.banner, padding60, true) + '\n';
+	} else {
+		output += me.banner;
+	}
+
 	output += '\n' + me.stringPad('v' + me.version, padding60, true) + '\n';
 	output += '\n' + me.stringPad(me.homepage, padding60, true) + '\n';
 	output += separator;
@@ -2420,6 +2424,8 @@ me.require.module = function(modules, callback) {
 	// Invoke the queue.
 	me.parallel(queue, callback);
 };
+
+me.banner = '   ad88              88  88  88                                   88         88             \n  d8"                88  88  88                                   88         ""             \n  88                 88  88  88                                   88                        \nMM88MMM  ,adPPYYba,  88  88  88,dPPYba,   ,adPPYYba,   ,adPPYba,  88   ,d8   88  ,adPPYba,  \n  88     ""     `Y8  88  88  88P\'    "8a  ""     `Y8  a8"     ""  88 ,a8"    88  I8[    ""  \n  88     ,adPPPPP88  88  88  88       d8  ,adPPPPP88  8b          8888[      88   `"Y8ba,   \n  88     88,    ,88  88  88  88b,   ,a8"  88,    ,88  "8a,   ,aa  88`"Yba,   88  aa    ]8I  \n  88     `"8bbdP"Y8  88  88  8Y"Ybbd8"\'   `"8bbdP"Y8   `"Ybbd8"\'  88   `Y8a  88  `"YbbdP"\'  \n                                                                            ,88             \n                                                                          888P"';
 
 me.homepage = 'http://fallback.io/';
 

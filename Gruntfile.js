@@ -81,8 +81,10 @@ me.tasks.build = function() {
 		'clean:dist',
 		'lint',
 		'concat',
-		'wrap',
+		'wrap:js',
+		'wrap:jsMin',
 		'closureCompiler',
+		'wrap:jsMinPost',
 		'docs',
 		'clean:distTmp',
 		'assemble'
@@ -104,9 +106,9 @@ me.tasks.dev = function() {
 };
 
 me.tasks.devTest = function() {
-	me.grunt.registerTask('devTests', [
+	me.grunt.registerTask('devTest', [
 		'karma:dev',
-		'watch:tests'
+		'watch:test'
 	]);
 };
 
@@ -132,8 +134,8 @@ me.tasks.docs = function() {
 	]);
 };
 
-me.tasks.tests = function() {
-	me.grunt.registerTask('tests', function() {
+me.tasks.test = function() {
+	me.grunt.registerTask('test', function() {
 		var done = this.async();
 		var series = [];
 		var success = true;

@@ -1,10 +1,10 @@
 <p align="center"><a href="http://fallback.io/" target="_blank"><img alt="Fallback JS" height="128" src="http://fallback.io/img/logo.png" /></a></p>
 <h1 align="center">Fallback JS v2.0.0</h1>
-<h6 align="center">18.77 KB Compressed / 86.75 KB Uncompressed</h6>
+<h6 align="center">15.94 KB Compressed / 86.83 KB Uncompressed</h6>
 
 <p align="center">
-	<a href="https://raw.githubusercontent.com/dolox/fallback/v2.0.0/dist/fallback.min.js"><img src="https://img.shields.io/badge/production-18.77KB-brightgreen.svg" /></a>
-	<a href="https://raw.githubusercontent.com/dolox/fallback/v2.0.0/dist/fallback.js"><img src="https://img.shields.io/badge/development-86.75KB-brightgreen.svg" /></a>
+	<a href="https://raw.githubusercontent.com/dolox/fallback/v2.0.0/dist/fallback.min.js"><img src="https://img.shields.io/badge/production-15.94KB-brightgreen.svg" /></a>
+	<a href="https://raw.githubusercontent.com/dolox/fallback/v2.0.0/dist/fallback.js"><img src="https://img.shields.io/badge/development-86.83KB-brightgreen.svg" /></a>
 	<a href="http://badge.fury.io/gh/dolox%2Ffallback" target="_blank"><img src="https://badge.fury.io/gh/dolox%2Ffallback.svg" /></a>
 	<a href="http://badge.fury.io/bo/fallback" target="_blank"><img src="https://badge.fury.io/bo/fallback.svg" /></a>
 	<a href="https://github.com/dolox/fallback/blob/master/LICENSE.txt"><img src="https://img.shields.io/badge/license-MIT-brightgreen.svg" /></a>
@@ -969,11 +969,13 @@ The arguments for this `Function` may be passed in the following variety:
 | ------ | ------- | -------- |
 | String | null    | No       |
 
-The name that you want to use to reference this module from another [define](#fallbackdefinename-dependencies-factory-error) or [require](#fallbackrequiredependencies-factory-error) `Function`.
+The name which will be used to reference the module from a [define](#fallbackdefinename-dependencies-factory-error) or [require](#fallbackrequiredependencies-factory-error) `Function`.
 
-If you don't specify the name for the definition then it'll be deemed as an anonymous module and use the name of the current file as it's definition name. Note that you cannot have multiple anonymous definitions within the same file as the library has no way of know how to reference or differentiate each.
+If you don't specify the name for the definition then it'll be deemed as an anonymous module and use the name of the current file as it's definition name. Note that you cannot have multiple anonymous definitions within the same file as the library has no way of knowing how to differentiate each.
 
 **Example:**
+
+**main.js**
 
 ```javascript
 fallback.define("testDefine", function() {
@@ -983,6 +985,12 @@ fallback.define("testDefine", function() {
 fallback.require(function(testDefine) {
 	// This will log the `String` `test` to the console.
 	console.log(testDefine);
+});
+
+// Lazy load a module.
+fallback.require(function(testAnonymous) {
+	// This will log `testAnonymous Module!` to the console.
+	console.log(testAnonymous);
 });
 ```
 
@@ -994,15 +1002,6 @@ fallback.define(function() {
 });
 ```
 
-**main.js**
-
-```javascript
-fallback.require(function(testAnonymous) {
-	// This will log `testAnonymous Module!` to the console.
-	console.log(testAnonymous);
-});
-```
-
 ===
 
 <h4 align="center">fallback.define -> dependencies</h4>
@@ -1011,9 +1010,9 @@ fallback.require(function(testAnonymous) {
 | ------------ | ------- | -------- |
 | Array/String | null    | No       |
 
-This parameter can be an `Array` or `String` of dependencies you want to be loaded prior to invoking the `factory`.
+This parameter can be an `Array` or `String` of dependencies you want to be loaded prior to invoking the `factory` of your definition.
 
-If no dependencies are passed in and the `factory` is a `Function`, then whatever parameters the `factory` has will become the dependencies.
+If no dependencies are set and the `factory` is a `Function`, then whatever parameters the `factory` has will become the dependencies.
 
 **Example:**
 

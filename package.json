@@ -1,15 +1,12 @@
 {
+	"banner": "   ad88              88  88  88                                   88         88             \\n  d8\"                88  88  88                                   88         \"\"             \\n  88                 88  88  88                                   88                        \\nMM88MMM  ,adPPYYba,  88  88  88,dPPYba,   ,adPPYYba,   ,adPPYba,  88   ,d8   88  ,adPPYba,  \\n  88     \"\"     `Y8  88  88  88P\\'    \"8a  \"\"     `Y8  a8\"     \"\"  88 ,a8\"    88  I8[    \"\"  \\n  88     ,adPPPPP88  88  88  88       d8  ,adPPPPP88  8b          8888[      88   `\"Y8ba,   \\n  88     88,    ,88  88  88  88b,   ,a8\"  88,    ,88  \"8a,   ,aa  88`\"Yba,   88  aa    ]8I  \\n  88     `\"8bbdP\"Y8  88  88  8Y\"Ybbd8\"\\'   `\"8bbdP\"Y8   `\"Ybbd8\"\\'  88   `Y8a  88  `\"YbbdP\"\\'  \\n                                                                            ,88             \\n                                                                          888P\"",
+
   "name": "fallback",
   "homepage": "http://fallback.io/",
   "version": "2.0.0",
+
   "description": "JavaScript library for dynamically loading CSS and JS files. Also provides the ability to load multiple files from a CDN with multiple fallback options and shimming! http://fallback.io/",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/dolox/fallback.git"
-  },
-  "scripts": {
-    "test": "grunt tests"
-  },
+
   "dependencies": {
     "assemble": "^0.4.42",
     "async": "^0.9.0",
@@ -29,6 +26,7 @@
     "lodash": "^2.4.1",
     "superstartup-closure-compiler": "^0.1.6"
   },
+
   "devDependencies": {
     "grunt-karma": "^0.9.0",
     "karma-chrome-launcher": "^0.1.5",
@@ -37,7 +35,26 @@
     "karma-mocha": "^0.1.9",
     "karma-sauce-launcher": "^0.2.10"
   },
+
   "engines": {
     "node": ">=0.10.0"
-  }
+  },
+
+  "npmName": "fallback",
+
+  "npmFileMap": [{
+    "basePath": "/dist/",
+    "files": [
+      "*.js"
+    ]
+  }],
+
+   "repository": {
+     "type": "git",
+     "url": "https://github.com/dolox/fallback.git"
+   },
+
+   "scripts": {
+     "test": "grunt test"
+   }
 }

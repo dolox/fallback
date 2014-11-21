@@ -21,7 +21,7 @@
 [ ] cleanup
 	[ ] update sample code on the website and file size
 	[ ] 301 fallbackjs.com to fallback.io
-	[ ] update cdnjs, attempt to automate pull requests
+	[ ] make sure cdnjs is automating pull requests from package.json
 
 
 

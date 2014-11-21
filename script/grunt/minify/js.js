@@ -16,7 +16,7 @@ module.exports = function(grunt, tasks) {
 
 	me.options.compilerOpts.externs = uri.config + 'closureExterns.js';
 
-	me.src = uri.dist + 'fallback.js';
+	me.src = uri.distTmp + 'fallback.min.js';
 
 	tasks.closureCompiler.js = me;
 
