@@ -36,7 +36,7 @@ describe('tests.unit.config.libs', function() {
 			test: 'test1'
 		});
 
-		expect(JSON.stringify(normalized)).to.equal('{"test":{"alias":[],"check":null,"deps":[],"init":null,"exports":[],"urls":["test1"]}}');
+		expect(JSON.stringify(normalized)).to.equal('{"test":{"alias":[],"check":null,"deps":[],"init":null,"exports":["test"],"urls":["test1"],"version":null}}');
 	});
 
 	it('should return the properly normalized `Object` when the value of a key is set to `Array`', function() {
@@ -44,7 +44,7 @@ describe('tests.unit.config.libs', function() {
 			test: tests
 		});
 
-		expect(JSON.stringify(normalized)).to.equal('{"test":{"alias":[],"check":null,"deps":[],"init":null,"exports":[],"urls":["test1","test2"]}}');
+		expect(JSON.stringify(normalized)).to.equal('{"test":{"alias":[],"check":null,"deps":[],"init":null,"exports":["test"],"urls":["test1","test2"],"version":null}}');
 	});
 
 	it('should return the properly normalized `Object` when the value of a key is set to `Object` with malformed values', function() {
@@ -56,11 +56,12 @@ describe('tests.unit.config.libs', function() {
 				deps: tests,
 				exports: tests,
 				init: tests,
-				urls: tests
+				urls: tests,
+				version: tests
 			}
 		});
 
-		expect(JSON.stringify(normalized)).to.equal('{"test":{"alias":["test1","test2"],"check":null,"deps":["test1","test2"],"init":null,"exports":["test1","test2"],"urls":["test1","test2"]}}');
+		expect(JSON.stringify(normalized)).to.equal('{"test":{"alias":["test1","test2"],"check":null,"deps":["test1","test2"],"init":null,"exports":["test1","test2"],"urls":["test1","test2"],"version":null}}');
 	});
 
 	it('should return the properly normalized `Object` when the value of a key is set to `Object` with proper values', function() {
@@ -71,12 +72,13 @@ describe('tests.unit.config.libs', function() {
 				deps: ['3', '4', '5'],
 				exports: ['6', '7', '8'],
 				init: function() {},
-				urls: ['9', '10', '11']
+				urls: ['9', '10', '11'],
+				version: '1.2.3'
 			}
 		});
 
 		expect(normalized.test.check).to.be.a('function');
 		expect(normalized.test.init).to.be.a('function');
-		expect(JSON.stringify(normalized)).to.equal('{"test":{"alias":["1","2","3"],"deps":["3","4","5"],"exports":["6","7","8"],"urls":["9","10","11"]}}');
+		expect(JSON.stringify(normalized)).to.equal('{"test":{"alias":["1","2","3"],"deps":["3","4","5"],"exports":["6","7","8"],"urls":["9","10","11"],"version":"1.2.3"}}');
 	});
 });

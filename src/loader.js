@@ -161,8 +161,8 @@ me.loader.urls.success = function(module, url, status, factory) {
 	// If we don't have a factory for our module, then there was no definition. Regardless of what our value is we'll
 	// reference it here.
 	if (!me.isDefined(module.factory)) {
-		module.invoked = true;
 		module.factory = factory;
+		module.invoked = true;
 	}
 
 	// Wrap up the loader process and handle our callbacks.

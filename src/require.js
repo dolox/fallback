@@ -133,6 +133,7 @@ me.require.args = function() {
 
 	// We'll fill up these variables based on the arguments.
 	var payload = {
+		error: null,
 		deps: null,
 		factory: null
 	};

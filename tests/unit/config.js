@@ -140,7 +140,49 @@ describe('tests.unit.config', function() {
 								deps: [],
 								init: null,
 								exports: [],
-								urls: []
+								urls: [],
+								version: null
+							}
+						}
+					};
+
+					var test = {};
+					test.libs = {};
+					test.libs.test = {};
+					test.libs.test[key] = value;
+
+					if (fallback.isString(value)) {
+						expectedValue.libs.test[key] = [value];
+					} else if (fallback.isArray(value)) {
+						expectedValue.libs.test[key] = value;
+					}
+
+					if (key !== 'exports') {
+						expectedValue.libs.test.exports = ['test'];
+					}
+
+					expectedValue = JSON.stringify(expectedValue);
+
+					test = config(test);
+					expect(JSON.stringify(test)).to.equal(expectedValue);
+				});
+
+				return;
+			}
+
+			// String checks.
+			if (fallback.indexOf(['version'], key) !== -1) {
+				it('should return an Object with a value for the key `' + key + '`', function() {
+					expectedValue = {
+						libs: {
+							test: {
+								alias: [],
+								check: null,
+								deps: [],
+								init: null,
+								exports: [],
+								urls: [],
+								version: null
 							}
 						}
 					};
@@ -152,9 +194,11 @@ describe('tests.unit.config', function() {
 					test.libs.test[key] = value;
 
 					if (fallback.isString(value)) {
-						expectedValue.libs.test[key] = [value];
-					} else if (fallback.isArray(value)) {
 						expectedValue.libs.test[key] = value;
+					}
+
+					if (key !== 'exports') {
+						expectedValue.libs.test.exports = ['test'];
 					}
 
 					expectedValue = JSON.stringify(expectedValue);
@@ -177,7 +221,8 @@ describe('tests.unit.config', function() {
 								deps: [],
 								init: null,
 								exports: [],
-								urls: []
+								urls: [],
+								version: null
 							}
 						}
 					};
@@ -190,6 +235,10 @@ describe('tests.unit.config', function() {
 
 					if (fallback.isFunction(value)) {
 						expectedValue.libs.test[key] = value;
+					}
+
+					if (key !== 'exports') {
+						expectedValue.libs.test.exports = ['test'];
 					}
 
 					expectedValue = JSON.stringify(expectedValue);

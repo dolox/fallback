@@ -35,7 +35,7 @@ describe('tests.unit.config.libs.populate', function() {
 		if (!fallback.isArray(value)) {
 			it('should return a normalized Object when a malformed 3rd parameter is passed in', function() {
 				var normalized = fallback.config.libs.populate({}, 'test', value);
-				expect(JSON.stringify(normalized)).to.equal('{"test":{"alias":[],"check":null,"deps":[],"init":null,"exports":[],"urls":[]}}');
+				expect(JSON.stringify(normalized)).to.equal('{"test":{"alias":[],"check":null,"deps":[],"init":null,"exports":["test"],"urls":[],"version":null}}');
 			});
 		}
 	});
@@ -48,12 +48,13 @@ describe('tests.unit.config.libs.populate', function() {
 			deps: 'b',
 			exports: 'c',
 			init: function() {},
-			urls: 'd'
+			urls: 'd',
+			version: '1.2.3'
 		});
 
 		expect(normalized.test.check).to.be.a('function');
 		expect(normalized.test.init).to.be.a('function');
 
-		expect(JSON.stringify(normalized)).to.equal('{"test":{"alias":["a"],"deps":["b"],"exports":["c"],"urls":["d"]}}');
+		expect(JSON.stringify(normalized)).to.equal('{"test":{"alias":["a"],"deps":["b"],"exports":["c"],"urls":["d"],"version":"1.2.3"}}');
 	});
 });

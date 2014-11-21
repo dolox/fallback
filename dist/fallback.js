@@ -1019,6 +1019,7 @@ me.define.args = function() {
 	// We'll fill up these variables based on the arguments.
 	var payload = {
 		deps: null,
+		error: null,
 		factory: null,
 		name: null
 	};
@@ -1053,7 +1054,7 @@ me.define.args = function() {
 		return payload;
 	}
 
-	// If we have more 3 or more arguments, ignore everything after the 3rd argument.
+	// If we have 3 or more arguments, reference the first 3 properly.
 	payload.deps = args[1];
 	payload.factory = args[3];
 	payload.name = args[0];
@@ -1265,8 +1266,8 @@ me.loader.urls.success = function(module, url, status, factory) {
 	// If we don't have a factory for our module, then there was no definition. Regardless of what our value is we'll
 	// reference it here.
 	if (!me.isDefined(module.factory)) {
-		module.invoked = true;
 		module.factory = factory;
+		module.invoked = true;
 	}
 
 	// Wrap up the loader process and handle our callbacks.
@@ -1933,6 +1934,9 @@ me.module.define.defaults = function() {
 		// Dependencies for the module.
 		'deps': [me.normalizeStringSeries, null],
 
+		// An error `Function` which will be called if the library or it's dependencies fail to load.
+		'error': [me.normalizeFunction, null],
+
 		// Exports for the module that we'll check the global scope for to see if the module loaded properly.
 		'exports': [me.normalizeStringSeries, null],
 
@@ -2314,6 +2318,7 @@ me.require.args = function() {
 
 	// We'll fill up these variables based on the arguments.
 	var payload = {
+		error: null,
 		deps: null,
 		factory: null
 	};

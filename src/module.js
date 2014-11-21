@@ -211,6 +211,9 @@ me.module.define.defaults = function() {
 		// Dependencies for the module.
 		'deps': [me.normalizeStringSeries, null],
 
+		// An error `Function` which will be called if the library or it's dependencies fail to load.
+		'error': [me.normalizeFunction, null],
+
 		// Exports for the module that we'll check the global scope for to see if the module loaded properly.
 		'exports': [me.normalizeStringSeries, null],
 

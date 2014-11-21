@@ -1,10 +1,10 @@
 <p align="center"><a href="http://fallback.io/" target="_blank"><img alt="Fallback JS" height="128" src="http://fallback.io/img/logo.png" /></a></p>
 <h1 align="center">Fallback JS v2.0.0</h1>
-<h6 align="center">18.71 KB Compressed / 86.6 KB Uncompressed</h6>
+<h6 align="center">18.77 KB Compressed / 86.75 KB Uncompressed</h6>
 
 <p align="center">
-	<a href="https://raw.githubusercontent.com/dolox/fallback/v2.0.0/dist/fallback.min.js"><img src="https://img.shields.io/badge/production-18.71KB-brightgreen.svg" /></a>
-	<a href="https://raw.githubusercontent.com/dolox/fallback/v2.0.0/dist/fallback.js"><img src="https://img.shields.io/badge/development-86.6KB-brightgreen.svg" /></a>
+	<a href="https://raw.githubusercontent.com/dolox/fallback/v2.0.0/dist/fallback.min.js"><img src="https://img.shields.io/badge/production-18.77KB-brightgreen.svg" /></a>
+	<a href="https://raw.githubusercontent.com/dolox/fallback/v2.0.0/dist/fallback.js"><img src="https://img.shields.io/badge/development-86.75KB-brightgreen.svg" /></a>
 	<a href="http://badge.fury.io/gh/dolox%2Ffallback" target="_blank"><img src="https://badge.fury.io/gh/dolox%2Ffallback.svg" /></a>
 	<a href="http://badge.fury.io/bo/fallback" target="_blank"><img src="https://badge.fury.io/bo/fallback.svg" /></a>
 	<a href="https://github.com/dolox/fallback/blob/master/LICENSE.txt"><img src="https://img.shields.io/badge/license-MIT-brightgreen.svg" /></a>
@@ -28,6 +28,7 @@
 - [Getting Started](#getting-started)
 - [Open Source Examples](#open-source-examples)
 - [Tools](#tools)
+- [Special HTML Attributes](#special-html-attributes)
 - [API Documentation](#api-documentation)
 - [FAQ](#faq)
 - [About](#about)
@@ -46,7 +47,7 @@ To let you dive right in, we're going to provide you with the sample of code bel
 <html>
 <head>
 	<!-- The `data-main` attribute tells the library to load `main.js` -->
-	<script data-main="main" src="fallback.min.js" type="text/javascript"></script>
+	<script async data-main="main" src="fallback.min.js" type="text/javascript"></script>
 </head>
 
 <body class="text-center">
@@ -152,9 +153,6 @@ If you happen to stumble upon any helpful open source examples which aren't list
 	- [Debugging](https://github.com/dolox/fallback/tree/master/examples/debugging)
 	*How to turn on debugging with the library.*
 
-- [AngularJS Lazy Loading](http://plnkr.co/Q1mPmY)
-*This example illustrates how you can lazy load controllers, directives, modules and services in AngularJS.*
-
 - [#fallbackjs on Plunker](http://plnkr.co/tags/fallbackjs)
 *Look on Plunker under the tag `#fallbackjs` to see a number of examples that've been posted by users.*
 
@@ -166,6 +164,32 @@ If you happen to stumble upon any helpful tools which aren't listed here, please
 
 - [fallback-cli](https://github.com/dolox/fallback-cli)
 *Node JS package which will automatically build your `fallback.config` based upon your bower dependencies.*
+
+---
+
+# Special HTML Attributes
+
+The following attributes serve as short-hand which you can add to your HTML `<script>` elements.
+
+| Attribute | Description |
+| --------- | ----------- |
+| base      | If the attribute `base` exists on a `<script>` element on the page, then Fallback JS will automatically set this as the [base](#fallbackconfig---input---base) configuraton for the project. This attribute is explicitly configured prior to the `main` attribute so that the value of `main` will use this value as it's base path. *Alias: `data-base`* |
+| main      | If the attribute `main` exists on a `<script>` element on the page, then Fallback JS will automatically [require](#fallbackrequiredependencies-factory-error) this file. *Alias: `data-main`*  |
+
+**Example:**
+
+```html
+<html>
+<head>
+	<!-- This will automatically load `/js/main.js` -->
+	<script data-base="/js/" data-main="main" src="fallback.min.js"></script>
+</head>
+
+<body class="text-center">
+	<h1>Libraries Loaded</h1>
+</body>
+</html>
+```
 
 ---
 
@@ -892,36 +916,94 @@ fallback.config({
 
 ***Aliases:*** `def`, `define`, `fallback.def`, `fallback.define`, `fbk.def`, `fbk.define`
 
-This function allows you to define your JavaScript in a `AMD` *(Asynchronous Module Definition)* manner. This has proven to be beneficial when working on larger projects where you want to compartmentalize sections of the project but not have to manually configure each of the files required.
+This function allows you to create a Asynchronous Module Definition *(AMD)*. This has proven to be beneficial when working on larger projects where you want to compartmentalize sections of a larger project.
 
 - [Parameters](#parameters-1)
-	- [name](#fallbackconfig---input)
-	- [dependencies](#fallbackconfig---input---base)
-	- [factory](#fallbackconfig---input---base)
-	- [error](#fallbackconfig---input---base)
+	- [name](#fallbackdefine---name)
+	- [dependencies](#fallbackdefine---dependencies)
+	- [factory](#fallbackdefine---factory)
+	- [error](#fallbackdefine---error)
 - [Return Values](#return-values)
 
 ===
 
+<h4 align="center">Parameters</h4>
+
+| Parameter                                      | Type         | Required | Default | Description |
+| ---------------------------------------------- | ------------ | -------- | ------- | ----------- |
+| [name](#fallbackdefine---name)                 | String       | No       | null    | If a name is not set, the URL that was used to load the file will be used as the name. |
+| [dependencies](#fallbackdefine---dependencies) | Array/String | No       | null    | Dependencies that we expect to be load prior to invoking our `factory` `Function`. |
+| [factory](#fallbackdefine---factory)           | *N/A*        | Yes      | null    | A factory can be anything except `undefined`. The inoked value of a `factory` is what will be returned whenever the module is referenced. |
+| [error](#fallbackdefine---error)               | Function     | No       | null    | If an error occurs, this function will be invoked with the error messages. |
+
+The arguments for this `Function` may be passed in the following variety:
+
+- If only **1 argument** is passed in, it'll be treated as:
+
+	 - The `factory`.
+
+- If only **2 arguments** are passed in, they'll be treated as:
+
+	 - The `name` and `factory` if the first parameter is a `String`.
+
+	 - The `dependencies` and `factory` if the first parameter is an `Array`.
+
+	 - The `factory` and `error` if both parameters are a `Function`.
+
+- If only **3 arguments** are passed in, they'll be treated as:
+
+	 - The `name`, `dependencies` and `factory` if the first parameter is a `String`.
+
+	 - The `dependencies`, `factory` and `error` if the first parameter isn't a `String`.
+
+- If all **4 arguments** are passed in, they'll be treated as:
+
+	- The `name`, `dependencies`, `factory` and `error`.
+
+===
 
 
+<h4 align="center">fallback.define -> name</h4>
 
+| Type   | Default | Required |
+| ------ | ------- | -------- |
+| String | null    | No       |
 
+@todo if no name, go amd
 
+===
 
+<h4 align="center">fallback.define -> dependencies</h4>
 
+| Type         | Default | Required |
+| ------------ | ------- | -------- |
+| Array/String | null    | No       |
+
+@todo
+
+If no dependencies are passed in and the `factory` is a `Function`, then whatever parameters the `factory` has will become the dependencies. For example if you were to write `fallback.define(function(angular, jquery)) {}` then both `angular` and `jquery` would become the dependencies, and would load prior to invoking the `Function`.
+
+===
+
+<h4 align="center">fallback.define -> factory</h4>
+
+| Type  | Default | Required |
+| ----- | ------- | -------- |
+| *N/A* | null    | Yes      |
+
+@todo
+
+===
+
+<h4 align="center">fallback.define -> error</h4>
+
+| Type     | Default | Required |
+| -------- | ------- | -------- |
+| Function | null    | No       |
 
 
 @todo
 
-<h4 align="center">Parameters</h4>
-
-| Parameter    | Type         | Required | Default | Description |
-| ------------ | ------------ | -------- | ------- | ----------- |
-| name         | String       | No       | null    | If a name is not set, the URL that was used to load the file will be used as the name. |
-| dependencies | Array/String | No       | null    | Dependencies that we expect to be load prior to invoking our `factory` `Function`. |
-| factory      | N/A          | Yes      | null    | A factory can be anything except the value `undefined`. |
-| error        | Function     | No       | null    | If a dependency failed to load, this `Function` will be invoked. |
 
 
 
@@ -929,15 +1011,9 @@ This function allows you to define your JavaScript in a `AMD` *(Asynchronous Mod
 
 
 
-The parameters in this function will fallback on one another in the following manner:
 
-- If only 1 parameter is passed in, it'll be treated as the `factory`.
-- If only 2 parameters are passed in, they'll be treated as:
-	 - The `dependencies` and `factory` if the first parameter is **NOT** a `String`.
-	 - The `name` and `factory` if the first parameter is a `String`.
-- If all 3 parameters are passed in, they'll be treated as the `name`, `dependencies` and `factory`.
 
-If no dependencies are passed in and the `factory` is a `Function`, then whatever parameters the `factory` has will become the dependencies. For example if you were to write `fallback.define(function(angular, jquery)) {}` then both `angular` and `jquery` would become the dependencies, and would load prior to invoking the `Function`.
+
 
 **Examples:**
 
@@ -973,11 +1049,6 @@ fallback.define('test', ['jquery'], function(jquery) {
 
 
 
-
-
-
-
-@todo @todo @todo @todo
 
 
 
@@ -1103,7 +1174,7 @@ function | Function | Yes | null | If dependencies are specified, then they will
 
 ##### Q: How should Fallback JS be loaded?
 
-**A:** @todo
+**A:** Fallback JS should be loaded from the `<head>` element of your HTML page.
 
 -
 
