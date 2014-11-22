@@ -15,9 +15,6 @@ me.init = function() {
 
 	// Initialize our loader object.
 	me.loader.init();
-
-	// Flag that our library has been initialized.
-	return me.inited = true;
 };
 
 // Reference the library's aliases into the `global` `Object` for the user to directly access. If a alias that we're
