@@ -142,13 +142,10 @@ me.loader.js.check.exports = function(exports) {
 
 	// Loop through each of our exports variable, until we find a match.
 	me.each(exports, function(variable) {
-		// We have to explicity use `eval` because variables will come in many forms. In particular sometimes they will come
-		// in the form of being a child of an object. For example `jQuery UI` loads under the `glboal` variable `jQuery.ui`.
-		// In order for us to get to this programtically we have to use `eval`.
+		// We have to wrap this in a `try catch` due the possibility of our `window` decendant `Object` being `undefined`.
 		try {
-			/*eslint-disable*/
-			factory = eval('window.' + variable);
-			/*eslint-enable*/
+			// Attempt to get a reference of our variable.
+			factory = me.getProperty(window, variable);
 
 			// If our `factory` is undefined, force the variable back to a `null`.
 			if (!me.isDefined(factory)) {

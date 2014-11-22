@@ -204,6 +204,17 @@ me.each = function(input, callback) {
 	}
 };
 
+// The ability to fetch the decendant property of an object, even if it's in dot notation.
+me.getProperty = function getDescendantProp(reference, property) {
+	var properties = property.split('.');
+
+	while (properties.length) {
+		reference = reference[properties.shift()];
+	}
+
+	return reference;
+};
+
 // Whether or not to use a reference to `window` to check if a library has already been loaded. This is also used when
 // loading libraries to determine if they loaded properly for legacy browsers.
 me.globals = true;

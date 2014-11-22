@@ -33,13 +33,14 @@ unit tests
 		me.log <--- check for false/true with specific debug values set
 		me.config.debug
 		me.config.debug.whitelist
-
+		
 		me.config.libs.version
 
 	[x] config
 	[x] core
 		[ ] parallel.anonymous
 		[ ] isIE
+		[ ]  me.getProperty
 		[ ] isIE11
 	[ ] define
 	[ ] loader
