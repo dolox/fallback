@@ -1,0 +1,15 @@
+language: node_js
+git:
+  depth: 10
+node_js:
+  - "0.10"
+install:
+  - npm install -g bower grunt-cli
+  - npm install
+  - bower install
+before_script: grunt build
+env:
+  global:
+    - SAUCE_USERNAME: fallback
+    - secure: bMg5ZjbvSbTZTw4DDGprSPgHOJrbJalObe3CsSt6aZXFyuF7a8UC8X4Fs3LBkpIHE9n71IOgyELRcAC6BQLlz2V+8Xs0UmFBnle2oR+mwH++jtrr8pHwUTlHjVn8Vm5i33BIqFtDCYnZWZCs9q7qSrslX6BSp9v7H7BwPuB1CWo=
+    - secure: ZRMLvd697YokRIbByPm8cjAZsZcvc+ivWsc9NCZ01W+NLJvYFJWMLJMIJL3D69bhpCmYZZ4y7NInS5bV25IL/KrOtbSJFXVAuzQXNhciKyJ47Dz3J1o6roCqw/S7dLlacp6QqCtKfskb5LOK+PB8UFmktdOxBqJENsSNXWpUGaA=

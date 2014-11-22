@@ -1,0 +1,1 @@
+define('predefinedNull', null);

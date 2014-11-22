@@ -1,0 +1,54 @@
+{
+	"autoWatch": true,
+	"browserNoActivityTimeout": 120000,
+	"captureTimeout": 600000,
+
+	"client": {
+		"mocha": {
+			"timeout": 120000
+		},
+
+		"useIframe": false
+	},
+
+	"colors": true,
+
+	"files": [
+		"bower_components/json/json2.js",
+		"dist/fallback.js",
+		"tests/**/*.js",
+		"tests/**/**/*.js",
+	{
+		"included": true,
+		"pattern": "tests/acceptance/css/cssPreloaded.css",
+		"served": true,
+		"watched": false
+	}, {
+		"included": false,
+		"pattern": "tests/acceptance/css/*.css",
+		"served": true,
+		"watched": false
+	}],
+
+	"frameworks": [
+		"expect",
+		"mocha"
+	],
+
+	"logLevel": "INFO",
+
+	"port": 9876,
+
+	"record-screenshots": false,
+
+	"reporters": [
+		"progress",
+		"saucelabs"
+	],
+
+	"saurceLabs": {
+		"testName": "Fallback JS"
+	},
+
+	"singleRun": true
+}
