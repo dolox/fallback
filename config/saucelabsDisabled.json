@@ -58,68 +58,7 @@
 
 
 
-	"IE11-Win81": {
-		"base": "SauceLabs",
-		"browserName": "internet explorer",
-		"platform": "Windows 8.1",
-		"version": "11"
-	},
 
-	"IE11-Win7": {
-		"base": "SauceLabs",
-		"browserName": "internet explorer",
-		"platform": "Windows 7",
-		"version": "11"
-	},
-
-	"IE10-Win8": {
-		"base": "SauceLabs",
-		"browserName": "internet explorer",
-		"platform": "Windows 8",
-		"version": "10"
-	},
-
-	"IE10-Win7": {
-		"base": "SauceLabs",
-		"browserName": "internet explorer",
-		"platform": "Windows 7",
-		"version": "10"
-	},
-
-	"IE9-Win7": {
-		"base": "SauceLabs",
-		"browserName": "internet explorer",
-		"platform": "Windows 7",
-		"version": "9"
-	},
-
-	"IE8-Win7": {
-		"base": "SauceLabs",
-		"browserName": "internet explorer",
-		"platform": "Windows 7",
-		"version": "8"
-	},
-
-	"IE8-WinXP": {
-		"base": "SauceLabs",
-		"browserName": "internet explorer",
-		"platform": "Windows XP",
-		"version": "8"
-	},
-
-	"IE7-WinXP": {
-		"base": "SauceLabs",
-		"browserName": "internet explorer",
-		"platform": "Windows XP",
-		"version": "7"
-	},
-
-	"IE6-WinXP": {
-		"base": "SauceLabs",
-		"browserName": "internet explorer",
-		"platform": "Windows XP",
-		"version": "6"
-	},
 
 	"Opera-Win7": {
 		"base": "SauceLabs",
