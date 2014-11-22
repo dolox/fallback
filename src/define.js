@@ -8,7 +8,7 @@ me.define = function() {
 
 	// If a name and factory weren't passed in, throw a notice to the end user and halt our function.
 	if (!args.name && !me.isDefined(args.factory)) {
-		me.log(2, 'define', 'No `name` or `factory` sent to the `define` function! Halting!', args);
+		me.log(1, 'define', 'No `name` or `factory` sent to the `define` function! Halting!', args);
 		return;
 	}
 
@@ -72,7 +72,7 @@ me.define.anonymous = function(moduleName) {
 
 	// If we couldn't find our module, then something went wrong. Let the end user know and halt the `Function`.
 	if (!module) {
-		me.log(2, 'define', 'anonymous', 'Anonymous module not found for `' + moduleName + '`! Halting definition!');
+		me.log(1, 'define', 'anonymous', 'Anonymous module not found for `' + moduleName + '`! Halting definition!');
 		return;
 	}
 

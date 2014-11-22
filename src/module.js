@@ -41,7 +41,7 @@ me.module.alias = function(moduleName, aliases) {
 	me.each(aliases, function(alias) {
 		// If the alias already exists, notify the end user before overwriting it.
 		if (me.isDefined(me.module.aliases[alias])) {
-			me.log('Module', 'Module alias `' + alias + '` already exists for `' + me.module.aliases[alias] + '`! Overwriting!');
+			me.log(2, 'module', 'Module alias `' + alias + '` already exists for `' + me.module.aliases[alias] + '`! Overwriting!');
 		}
 
 		// Reference our alias.
@@ -117,7 +117,7 @@ me.module.define = function(moduleName, input, noOverride) {
 		}
 
 		// Let the end user know that we're overriding a module.
-		me.log(3, 'Module', 'Module `' + moduleName + '` already exists! Overwriting!');
+		me.log(2, 'module', 'Module `' + moduleName + '` already exists! Overwriting!');
 	}
 
 	// Force our input to an `Object`.

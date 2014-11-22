@@ -55,7 +55,7 @@ me.init.aliases = function(container, input) {
 		me.each(aliases, function(alias) {
 			// If the alias is currently defined in the `container` object, skip it and throw a warning to the end user.
 			if (me.isDefined(container[alias])) {
-				me.log('core', 'init', 'aliases', 'The variable container["' + alias + '"] already exists.');
+				me.log('core', 'init', 'aliases', 'The variable container["' + alias + '"] already exists. Halted reference.');
 				return;
 			}
 
@@ -174,6 +174,11 @@ me.arrayUnique = function(input) {
 // All of our browser detection functions reside here. Some browsers have special edge cases that we need to cater to,
 // and that's the sole purpose of these functions.
 me.browser = {};
+
+// Detect whether or not the current browser is IE.
+me.browser.isIE = function() {
+	return window.document.documentMode ? true : false;
+};
 
 // Detect whether or not the current browser is IE11.
 me.browser.isIE11 = function() {
@@ -334,8 +339,20 @@ me.log = function() {
 		method = level;
 	}
 
+	// The message for console.
+	var message = '%cFallbackJS: %c' + level.toUpperCase() + ': ' + prefixes.join(': ') + ': %c' + args.join();
+	var style1 = 'font-weight: bold; color: #da542c';
+	var style2 = 'font-weight: bold; color: #000';
+	var style3 = 'color: #777';
+
+	// If we're in IE, ditch the console colors.
+	if (me.browser.isIE()) {
+		style1 = style2 = style3 = '';
+		message = message.replace(/%c/g, '');
+	}
+
 	// Log our message to the console. @todo need a non colorful message for legacy ie
-	return global.console[method]('%cFallbackJS: %c' + level.toUpperCase() + ': ' + prefixes.join(': ') + ': %c' + args.join(), 'font-weight: bold; color: #da542c', 'font-weight: bold; color: #000', 'color: #777');
+	return global.console[method](message, style1, style2, style3);
 };
 
 // The various levels for our `log` function.

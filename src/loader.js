@@ -90,7 +90,7 @@ me.loader.urls = function(module) {
 	var url = urls.shift();
 
 	// Throw a log message to the end user.
-	me.log('Loader', 'Requesting to load `' + module.name + '` via `' + url + '`');
+	me.log(3, 'loader', 'Requesting to load `' + module.name + '` via `' + url + '`');
 
 	// Call upon our specific loader script to load our URL.
 	me.loader[module.identity].boot(module, url, me.loader.urls.success, me.loader.urls.failed);
@@ -124,7 +124,7 @@ me.loader.urls.failed = function(module, url) {
 	// If there's no URL, then all URLs have been exhausted!
 	if (!url) {
 		me.loader.urls.completed(module);
-		me.log('Loader', message + 'module.');
+		me.log(2, 'loader', message + 'module.');
 		return;
 	}
 
@@ -133,7 +133,7 @@ me.loader.urls.failed = function(module, url) {
 
 	// Let the end user know which specific URL failed to load.
 	module.loader.failed.push(url);
-	me.log('Loader', message + ' for URL: ' + url);
+	me.log(3, 'loader', message + ' for URL: ' + url);
 
 	// Try the next URL in our URLs list.
 	me.loader.urls(module);
@@ -147,10 +147,10 @@ me.loader.urls.success = function(module, url, status, factory) {
 
 	// If our library was already loaded, we don't know what URL was successful, so we'll skip setting it.
 	if (status === 'predefined') {
-		me.log('Loader', '`' + module.name + '` already loaded on the page; referencing.');
+		me.log(3, 'loader', '`' + module.name + '` already loaded on the page; referencing.');
 	} else {
 		module.loader.success = url;
-		me.log('Loader', '`' + module.name + '` loaded successfully `' + url + '`.');
+		me.log(3, 'loader', '`' + module.name + '` loaded successfully `' + url + '`.');
 	}
 
 	// If we have a `init` function, we'll run it now.

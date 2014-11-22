@@ -179,6 +179,11 @@ me.arrayUnique = function(input) {
 // and that's the sole purpose of these functions.
 me.browser = {};
 
+// Detect whether or not the current browser is IE.
+me.browser.isIE = function() {
+	return window.document.documentMode ? true : false;
+};
+
 // Detect whether or not the current browser is IE11.
 me.browser.isIE11 = function() {
 	return Object.hasOwnProperty.call(global, 'ActiveXObject') && !global.ActiveXObject;
@@ -338,8 +343,20 @@ me.log = function() {
 		method = level;
 	}
 
+	// The message for console.
+	var message = '%cFallbackJS: %c' + level.toUpperCase() + ': ' + prefixes.join(': ') + ': %c' + args.join();
+	var style1 = 'font-weight: bold; color: #da542c';
+	var style2 = 'font-weight: bold; color: #000';
+	var style3 = 'color: #777';
+
+	// If we're in IE, ditch the console colors.
+	if (me.browser.isIE()) {
+		style1 = style2 = style3 = '';
+		message = message.replace(/%c/g, '');
+	}
+
 	// Log our message to the console. @todo need a non colorful message for legacy ie
-	return global.console[method]('%cFallbackJS: %c' + level.toUpperCase() + ': ' + prefixes.join(': ') + ': %c' + args.join(), 'font-weight: bold; color: #da542c', 'font-weight: bold; color: #000', 'color: #777');
+	return global.console[method](message, style1, style2, style3);
 };
 
 // The various levels for our `log` function.

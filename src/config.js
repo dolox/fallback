@@ -5,7 +5,7 @@
 me.config = function(input) {
 	// If the `input` parameter is not an `Object`, then halt the `Function`.
 	if (!me.isObject(input)) {
-		me.log('Config', 'Couldn\'t import config. The `input` must be an Object!', input);
+		me.log(2, 'config', 'Couldn\'t import config. The `input` must be an Object!', input);
 		return false;
 	}
 
@@ -47,7 +47,7 @@ me.config.globals = function(input) {
 me.config.base = function(input) {
 	// We expect the `base` parameter to be either a `String` or `Object`.
 	if (!me.isString(input) && !me.isObject(input)) {
-		me.log('Config', 'The `value` passed in your `config` for `base` was malformed, discarding.', input);
+		me.log(2, 'config', 'The `value` passed in your `config` for `base` was malformed, discarding.', input);
 		return null;
 	}
 
@@ -96,7 +96,7 @@ me.config.delimiter = function(input) {
 me.config.libs = function(input) {
 	// If the `libs` parameter isn't an `Object`, discard it and throw a warning to the end user.
 	if (!me.isObject(input)) {
-		me.log('Config', 'The `libs` parameter in your `config` was malformed, discarding.', input);
+		me.log(2, 'config', 'The `libs` parameter in your `config` was malformed, discarding.', input);
 		return {};
 	}
 

@@ -1,13 +1,9 @@
 [ ] define and require functions to have 2nd factory which is for error if any depednencies have failed to load or double anon module in same file
+
 [ ] anonymous modules defineName broken
 
-[ ] fix me.log to have no colors in legacy browsers
-[ ] fix all log messages in project to be more helpful and leading
-
-[ ] strip out all the logs from the minify version and the log function
-[ ] minify version needs to have the banner
-
 [ ] fix migration polyfills --[ ] .importer
+
 [ ] angular js example
 
 [ ] full run through in IE6-11, safari, firefox, chrome, makes sure it's working properly including for all examples
@@ -15,6 +11,7 @@
 [ ] change the gruntfile back to localhost from 10.0.1.2
 
 [ ] finish writing the README.docs for the last few things
+	[ ] state that logging won't work in minify version for better compression
 
 ---
 
@@ -43,6 +40,8 @@ unit tests
 	[x] config
 	[x] core
 		[ ] parallel.anonymous
+		[ ] isIE
+		[ ] isIE11
 	[ ] define
 	[ ] loader
 	[ ] loaderImage
