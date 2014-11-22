@@ -171,15 +171,17 @@ me.loader.css.scan = function(ruleset, selectors) {
 
 	// Loop through the rules.
 	for (var index in ruleset) {
-		var rule = ruleset[index];
+		if (ruleset[index]) {
+			var rule = ruleset[index];
 
-		// See if we find a match for one of our selectors.
-		if (me.indexOf(selectors, String(rule.selectorText).toLowerCase()) !== -1) {
-			// Flag that we found our selector.
-			found = true;
+			// See if we find a match for one of our selectors.
+			if (me.indexOf(selectors, String(rule.selectorText).toLowerCase()) !== -1) {
+				// Flag that we found our selector.
+				found = true;
 
-			// Halt the loop.
-			break;
+				// Halt the loop.
+				break;
+			}
 		}
 	}
 

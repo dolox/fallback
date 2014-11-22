@@ -563,9 +563,9 @@ me.parallel.queue = {};
 // Output the configured libraries, their load times and other useful statistics for the end user.
 me.stats = function() {
 	// Padding strings that we'll use for our output string.
-	var separator = '\n' + Array(280).join('-') + '\n';
-	var padding30 = Array(30).join(' ');
-	var padding60 = Array(60).join(' ');
+	var separator = '\n' + new Array(280).join('-') + '\n';
+	var padding30 = new Array(30).join(' ');
+	var padding60 = new Array(60).join(' ');
 
 	// Add our banner to the output string.
 	var output = '\n';

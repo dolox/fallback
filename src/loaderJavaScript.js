@@ -152,7 +152,7 @@ me.loader.js.check.exports = function(exports) {
 			factory = eval('window.' + variable);
 			/*eslint-enable*/
 
-			// If our `factor`y is undefined, force the variable back to a `null`.
+			// If our `factory` is undefined, force the variable back to a `null`.
 			if (!me.isDefined(factory)) {
 				factory = undefined;
 			}
