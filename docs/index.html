@@ -313,7 +313,7 @@ advantage of it.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (me.isDefined(container[alias])) {
-				me.log(<span class="hljs-string">'core'</span>, <span class="hljs-string">'init'</span>, <span class="hljs-string">'aliases'</span>, <span class="hljs-string">'The variable container["'</span> + alias + <span class="hljs-string">'"] already exists.'</span>);
+				me.log(<span class="hljs-string">'core'</span>, <span class="hljs-string">'init'</span>, <span class="hljs-string">'aliases'</span>, <span class="hljs-string">'The variable container["'</span> + alias + <span class="hljs-string">'"] already exists. Halted reference.'</span>);
 				<span class="hljs-keyword">return</span>;
 			}</pre></div></div>
             
@@ -2625,7 +2625,7 @@ will return the normalized value that was imported.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (!me.isObject(input)) {
-		me.log(<span class="hljs-string">'Config'</span>, <span class="hljs-string">'Couldn\'t import config. The `input` must be an Object!'</span>, input);
+		me.log(<span class="hljs-number">2</span>, <span class="hljs-string">'config'</span>, <span class="hljs-string">'Couldn\'t import config. The `input` must be an Object!'</span>, input);
 		<span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
 	}</pre></div></div>
             
@@ -2777,7 +2777,7 @@ me.config.globals = <span class="hljs-function"><span class="hljs-keyword">funct
             </div>
             
             <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (!me.isString(input) &amp;&amp; !me.isObject(input)) {
-		me.log(<span class="hljs-string">'Config'</span>, <span class="hljs-string">'The `value` passed in your `config` for `base` was malformed, discarding.'</span>, input);
+		me.log(<span class="hljs-number">2</span>, <span class="hljs-string">'config'</span>, <span class="hljs-string">'The `value` passed in your `config` for `base` was malformed, discarding.'</span>, input);
 		<span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
 	}</pre></div></div>
             
@@ -2972,7 +2972,7 @@ me.config.globals = <span class="hljs-function"><span class="hljs-keyword">funct
             </div>
             
             <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (!me.isObject(input)) {
-		me.log(<span class="hljs-string">'Config'</span>, <span class="hljs-string">'The `libs` parameter in your `config` was malformed, discarding.'</span>, input);
+		me.log(<span class="hljs-number">2</span>, <span class="hljs-string">'config'</span>, <span class="hljs-string">'The `libs` parameter in your `config` was malformed, discarding.'</span>, input);
 		<span class="hljs-keyword">return</span> {};
 	}</pre></div></div>
             
@@ -3485,7 +3485,7 @@ pass arguments into this function, for more details see comments in the <code>me
             </div>
             
             <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (!args.name &amp;&amp; !me.isDefined(args.factory)) {
-		me.log(<span class="hljs-number">2</span>, <span class="hljs-string">'define'</span>, <span class="hljs-string">'No `name` or `factory` sent to the `define` function! Halting!'</span>, args);
+		me.log(<span class="hljs-number">1</span>, <span class="hljs-string">'define'</span>, <span class="hljs-string">'No `name` or `factory` sent to the `define` function! Halting!'</span>, args);
 		<span class="hljs-keyword">return</span>;
 	}</pre></div></div>
             
@@ -3683,7 +3683,7 @@ without a name).</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (!<span class="hljs-built_in">module</span>) {
-		me.log(<span class="hljs-number">2</span>, <span class="hljs-string">'define'</span>, <span class="hljs-string">'anonymous'</span>, <span class="hljs-string">'Anonymous module not found for `'</span> + moduleName + <span class="hljs-string">'`! Halting definition!'</span>);
+		me.log(<span class="hljs-number">1</span>, <span class="hljs-string">'define'</span>, <span class="hljs-string">'anonymous'</span>, <span class="hljs-string">'Anonymous module not found for `'</span> + moduleName + <span class="hljs-string">'`! Halting definition!'</span>);
 		<span class="hljs-keyword">return</span>;
 	}</pre></div></div>
             
@@ -4763,7 +4763,7 @@ scripts themselves.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	me.log(<span class="hljs-string">'Loader'</span>, <span class="hljs-string">'Requesting to load `'</span> + <span class="hljs-built_in">module</span>.name + <span class="hljs-string">'` via `'</span> + url + <span class="hljs-string">'`'</span>);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	me.log(<span class="hljs-number">3</span>, <span class="hljs-string">'loader'</span>, <span class="hljs-string">'Requesting to load `'</span> + <span class="hljs-built_in">module</span>.name + <span class="hljs-string">'` via `'</span> + url + <span class="hljs-string">'`'</span>);</pre></div></div>
             
         </li>
         
@@ -4919,7 +4919,7 @@ scripts themselves.</p>
             
             <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (!url) {
 		me.loader.urls.completed(<span class="hljs-built_in">module</span>);
-		me.log(<span class="hljs-string">'Loader'</span>, message + <span class="hljs-string">'module.'</span>);
+		me.log(<span class="hljs-number">2</span>, <span class="hljs-string">'loader'</span>, message + <span class="hljs-string">'module.'</span>);
 		<span class="hljs-keyword">return</span>;
 	}</pre></div></div>
             
@@ -4952,7 +4952,7 @@ scripts themselves.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>	<span class="hljs-built_in">module</span>.loader.failed.push(url);
-	me.log(<span class="hljs-string">'Loader'</span>, message + <span class="hljs-string">' for URL: '</span> + url);</pre></div></div>
+	me.log(<span class="hljs-number">3</span>, <span class="hljs-string">'loader'</span>, message + <span class="hljs-string">' for URL: '</span> + url);</pre></div></div>
             
         </li>
         
@@ -5015,10 +5015,10 @@ happens to call the <code>define</code> function with an anonymous name, this is
             </div>
             
             <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (status === <span class="hljs-string">'predefined'</span>) {
-		me.log(<span class="hljs-string">'Loader'</span>, <span class="hljs-string">'`'</span> + <span class="hljs-built_in">module</span>.name + <span class="hljs-string">'` already loaded on the page; referencing.'</span>);
+		me.log(<span class="hljs-number">3</span>, <span class="hljs-string">'loader'</span>, <span class="hljs-string">'`'</span> + <span class="hljs-built_in">module</span>.name + <span class="hljs-string">'` already loaded on the page; referencing.'</span>);
 	} <span class="hljs-keyword">else</span> {
 		<span class="hljs-built_in">module</span>.loader.success = url;
-		me.log(<span class="hljs-string">'Loader'</span>, <span class="hljs-string">'`'</span> + <span class="hljs-built_in">module</span>.name + <span class="hljs-string">'` loaded successfully `'</span> + url + <span class="hljs-string">'`.'</span>);
+		me.log(<span class="hljs-number">3</span>, <span class="hljs-string">'loader'</span>, <span class="hljs-string">'`'</span> + <span class="hljs-built_in">module</span>.name + <span class="hljs-string">'` loaded successfully `'</span> + url + <span class="hljs-string">'`.'</span>);
 	}</pre></div></div>
             
         </li>
@@ -7117,7 +7117,7 @@ defaults will come out of whatever is contained in the <code>input</code> parame
             </div>
             
             <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> (me.isDefined(me.module.aliases[alias])) {
-			me.log(<span class="hljs-string">'Module'</span>, <span class="hljs-string">'Module alias `'</span> + alias + <span class="hljs-string">'` already exists for `'</span> + me.module.aliases[alias] + <span class="hljs-string">'`! Overwriting!'</span>);
+			me.log(<span class="hljs-number">2</span>, <span class="hljs-string">'module'</span>, <span class="hljs-string">'Module alias `'</span> + alias + <span class="hljs-string">'` already exists for `'</span> + me.module.aliases[alias] + <span class="hljs-string">'`! Overwriting!'</span>);
 		}</pre></div></div>
             
         </li>
@@ -7438,7 +7438,7 @@ defaults will come out of whatever is contained in the <code>input</code> parame
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		me.log(<span class="hljs-number">3</span>, <span class="hljs-string">'Module'</span>, <span class="hljs-string">'Module `'</span> + moduleName + <span class="hljs-string">'` already exists! Overwriting!'</span>);
+            <div class="content"><div class='highlight'><pre>		me.log(<span class="hljs-number">2</span>, <span class="hljs-string">'module'</span>, <span class="hljs-string">'Module `'</span> + moduleName + <span class="hljs-string">'` already exists! Overwriting!'</span>);
 	}</pre></div></div>
             
         </li>

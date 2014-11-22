@@ -59,7 +59,7 @@ me.init.aliases = function(container, input) {
 		me.each(aliases, function(alias) {
 			// If the alias is currently defined in the `container` object, skip it and throw a warning to the end user.
 			if (me.isDefined(container[alias])) {
-				me.log('core', 'init', 'aliases', 'The variable container["' + alias + '"] already exists.');
+				me.log('core', 'init', 'aliases', 'The variable container["' + alias + '"] already exists. Halted reference.');
 				return;
 			}
 
@@ -664,7 +664,7 @@ me.utility.types = ['Array', 'Boolean', 'Function', 'Number', 'Object', 'String'
 me.config = function(input) {
 	// If the `input` parameter is not an `Object`, then halt the `Function`.
 	if (!me.isObject(input)) {
-		me.log('Config', 'Couldn\'t import config. The `input` must be an Object!', input);
+		me.log(2, 'config', 'Couldn\'t import config. The `input` must be an Object!', input);
 		return false;
 	}
 
@@ -706,7 +706,7 @@ me.config.globals = function(input) {
 me.config.base = function(input) {
 	// We expect the `base` parameter to be either a `String` or `Object`.
 	if (!me.isString(input) && !me.isObject(input)) {
-		me.log('Config', 'The `value` passed in your `config` for `base` was malformed, discarding.', input);
+		me.log(2, 'config', 'The `value` passed in your `config` for `base` was malformed, discarding.', input);
 		return null;
 	}
 
@@ -755,7 +755,7 @@ me.config.delimiter = function(input) {
 me.config.libs = function(input) {
 	// If the `libs` parameter isn't an `Object`, discard it and throw a warning to the end user.
 	if (!me.isObject(input)) {
-		me.log('Config', 'The `libs` parameter in your `config` was malformed, discarding.', input);
+		me.log(2, 'config', 'The `libs` parameter in your `config` was malformed, discarding.', input);
 		return {};
 	}
 
@@ -891,7 +891,7 @@ me.define = function() {
 
 	// If a name and factory weren't passed in, throw a notice to the end user and halt our function.
 	if (!args.name && !me.isDefined(args.factory)) {
-		me.log(2, 'define', 'No `name` or `factory` sent to the `define` function! Halting!', args);
+		me.log(1, 'define', 'No `name` or `factory` sent to the `define` function! Halting!', args);
 		return;
 	}
 
@@ -955,7 +955,7 @@ me.define.anonymous = function(moduleName) {
 
 	// If we couldn't find our module, then something went wrong. Let the end user know and halt the `Function`.
 	if (!module) {
-		me.log(2, 'define', 'anonymous', 'Anonymous module not found for `' + moduleName + '`! Halting definition!');
+		me.log(1, 'define', 'anonymous', 'Anonymous module not found for `' + moduleName + '`! Halting definition!');
 		return;
 	}
 
@@ -1216,7 +1216,7 @@ me.loader.urls = function(module) {
 	var url = urls.shift();
 
 	// Throw a log message to the end user.
-	me.log('Loader', 'Requesting to load `' + module.name + '` via `' + url + '`');
+	me.log(3, 'loader', 'Requesting to load `' + module.name + '` via `' + url + '`');
 
 	// Call upon our specific loader script to load our URL.
 	me.loader[module.identity].boot(module, url, me.loader.urls.success, me.loader.urls.failed);
@@ -1250,7 +1250,7 @@ me.loader.urls.failed = function(module, url) {
 	// If there's no URL, then all URLs have been exhausted!
 	if (!url) {
 		me.loader.urls.completed(module);
-		me.log('Loader', message + 'module.');
+		me.log(2, 'loader', message + 'module.');
 		return;
 	}
 
@@ -1259,7 +1259,7 @@ me.loader.urls.failed = function(module, url) {
 
 	// Let the end user know which specific URL failed to load.
 	module.loader.failed.push(url);
-	me.log('Loader', message + ' for URL: ' + url);
+	me.log(3, 'loader', message + ' for URL: ' + url);
 
 	// Try the next URL in our URLs list.
 	me.loader.urls(module);
@@ -1273,10 +1273,10 @@ me.loader.urls.success = function(module, url, status, factory) {
 
 	// If our library was already loaded, we don't know what URL was successful, so we'll skip setting it.
 	if (status === 'predefined') {
-		me.log('Loader', '`' + module.name + '` already loaded on the page; referencing.');
+		me.log(3, 'loader', '`' + module.name + '` already loaded on the page; referencing.');
 	} else {
 		module.loader.success = url;
-		me.log('Loader', '`' + module.name + '` loaded successfully `' + url + '`.');
+		me.log(3, 'loader', '`' + module.name + '` loaded successfully `' + url + '`.');
 	}
 
 	// If we have a `init` function, we'll run it now.
@@ -1785,7 +1785,7 @@ me.module.alias = function(moduleName, aliases) {
 	me.each(aliases, function(alias) {
 		// If the alias already exists, notify the end user before overwriting it.
 		if (me.isDefined(me.module.aliases[alias])) {
-			me.log('Module', 'Module alias `' + alias + '` already exists for `' + me.module.aliases[alias] + '`! Overwriting!');
+			me.log(2, 'module', 'Module alias `' + alias + '` already exists for `' + me.module.aliases[alias] + '`! Overwriting!');
 		}
 
 		// Reference our alias.
@@ -1861,7 +1861,7 @@ me.module.define = function(moduleName, input, noOverride) {
 		}
 
 		// Let the end user know that we're overriding a module.
-		me.log(3, 'Module', 'Module `' + moduleName + '` already exists! Overwriting!');
+		me.log(2, 'module', 'Module `' + moduleName + '` already exists! Overwriting!');
 	}
 
 	// Force our input to an `Object`.
