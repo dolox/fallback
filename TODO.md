@@ -2,9 +2,9 @@
 
 [ ] anonymous modules defineName broken
 
-[ ] fix migration polyfills --[ ] .importer
-
-[ ] angular js example
+[ ] examples
+	[ ] fix migration polyfills --[ ] .importer
+	[ ] angular js example
 
 [ ] full run through in IE6-11, safari, firefox, chrome, makes sure it's working properly including for all examples
 
@@ -12,8 +12,7 @@
 
 [ ] finish writing the README.docs for the last few things
 	[ ] state that logging won't work in minify version for better compression
-
----
+	[ ] config.amd fix the wording
 
 [ ] cleanup
 	[ ] update sample code on the website and file size
