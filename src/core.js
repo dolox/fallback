@@ -571,56 +571,6 @@ me.parallel.generate = function(length) {
 // Container `Object` for all of the currently running parallel jobs.
 me.parallel.queue = {};
 
-// Output the configured libraries, their load times and other useful statistics for the end user.
-me.stats = function() {
-	// Padding strings that we'll use for our output string.
-	var separator = '\n' + new Array(280).join('-') + '\n';
-	var padding30 = new Array(30).join(' ');
-	var padding60 = new Array(60).join(' ');
-
-	// Add our banner to the output string.
-	var output = '\n';
-
-	if (me.banner.length === 8) {
-		output += me.stringPad(me.banner, padding60, true) + '\n';
-	} else {
-		output += me.banner;
-	}
-
-	output += '\n' + me.stringPad('v' + me.version, padding60, true) + '\n';
-	output += '\n' + me.stringPad(me.homepage, padding60, true) + '\n';
-	output += separator;
-
-	// The table header.
-	output += me.stringPad('Library', padding60);
-	output += me.stringPad('Version', padding30);
-	output += me.stringPad('Type', padding30);
-	output += me.stringPad('Time', padding30);
-	output += me.stringPad('Loaded', padding30);
-	output += me.stringPad('Invoked', padding30);
-	output += me.stringPad('Failed', padding30);
-	output += 'Success';
-	output += separator;
-
-	// The body of our table.
-	me.each(me.module.definitions, function(value, key) {
-		var time = (value.loader.timeEnd - value.loader.timeStart) / 1000;
-		time = time || time === 0 ? time + 's' : 'N/A';
-
-		output += me.stringPad(key, padding60);
-		output += me.stringPad(value.version, padding30);
-		output += me.stringPad(typeof value.factory, padding30);
-		output += me.stringPad(time, padding30);
-		output += me.stringPad(me.normalizeBoolean(value.loader.loaded, false), padding30);
-		output += me.stringPad(me.normalizeBoolean(value.invoked, false), padding30);
-		output += me.stringPad(value.loader.failed.length, padding30);
-		output += value.loader.success ? value.loader.success : 'N/A';
-		output += '\n';
-	});
-
-	return output;
-};
-
 // A function which simply pads a `String` with whatever `String` is supplied.
 me.stringPad = function(input, pad, left) {
 	if (!me.isDefined(pad)) {

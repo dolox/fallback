@@ -29,6 +29,8 @@ unit tests
 	me.config.libs.populate ->>> auto settings exports
 	me.config ->> setting define.amd = {};
 
+	me.stats moved to its own file
+
 	- config log levels
 		me.log <--- check for false/true with specific debug values set
 		me.config.debug

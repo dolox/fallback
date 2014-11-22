@@ -575,56 +575,6 @@ me.parallel.generate = function(length) {
 // Container `Object` for all of the currently running parallel jobs.
 me.parallel.queue = {};
 
-// Output the configured libraries, their load times and other useful statistics for the end user.
-me.stats = function() {
-	// Padding strings that we'll use for our output string.
-	var separator = '\n' + new Array(280).join('-') + '\n';
-	var padding30 = new Array(30).join(' ');
-	var padding60 = new Array(60).join(' ');
-
-	// Add our banner to the output string.
-	var output = '\n';
-
-	if (me.banner.length === 8) {
-		output += me.stringPad(me.banner, padding60, true) + '\n';
-	} else {
-		output += me.banner;
-	}
-
-	output += '\n' + me.stringPad('v' + me.version, padding60, true) + '\n';
-	output += '\n' + me.stringPad(me.homepage, padding60, true) + '\n';
-	output += separator;
-
-	// The table header.
-	output += me.stringPad('Library', padding60);
-	output += me.stringPad('Version', padding30);
-	output += me.stringPad('Type', padding30);
-	output += me.stringPad('Time', padding30);
-	output += me.stringPad('Loaded', padding30);
-	output += me.stringPad('Invoked', padding30);
-	output += me.stringPad('Failed', padding30);
-	output += 'Success';
-	output += separator;
-
-	// The body of our table.
-	me.each(me.module.definitions, function(value, key) {
-		var time = (value.loader.timeEnd - value.loader.timeStart) / 1000;
-		time = time || time === 0 ? time + 's' : 'N/A';
-
-		output += me.stringPad(key, padding60);
-		output += me.stringPad(value.version, padding30);
-		output += me.stringPad(typeof value.factory, padding30);
-		output += me.stringPad(time, padding30);
-		output += me.stringPad(me.normalizeBoolean(value.loader.loaded, false), padding30);
-		output += me.stringPad(me.normalizeBoolean(value.invoked, false), padding30);
-		output += me.stringPad(value.loader.failed.length, padding30);
-		output += value.loader.success ? value.loader.success : 'N/A';
-		output += '\n';
-	});
-
-	return output;
-};
-
 // A function which simply pads a `String` with whatever `String` is supplied.
 me.stringPad = function(input, pad, left) {
 	if (!me.isDefined(pad)) {
@@ -2425,6 +2375,90 @@ me.require.module = function(modules, callback) {
 
 	// Invoke the queue.
 	me.parallel(queue, callback);
+};
+
+// Output the configured libraries, their load times and other useful statistics for the end user.
+me.stats = function() {
+	// Line separator `String`.
+	var separator = '\n' + new Array(280).join('-') + '\n';
+
+	// Padding `String` that we'll use for our output string.
+	var padding30 = new Array(30).join(' ');
+
+	// Padding `String` that we'll use for our output string.
+	var padding60 = new Array(60).join(' ');
+
+	// Generate the banner for our output.
+	var output = me.stats.banner(separator, padding30, padding60);
+
+	// Generate the heading of our output.
+	output += me.stats.head(separator, padding30, padding60);
+
+	// The body of our statistics table.
+	me.each(me.module.definitions, function(value, key) {
+		output += me.stats.row(key, value, padding30, padding60);
+	});
+
+	// Return our output `String`.
+	return output;
+};
+
+me.stats.banner = function(separator, padding30, padding60) {
+	var output = '\n';
+
+	// Add our banner to the output string.
+	if (me.banner.length === 8) {
+		// Minified version of the library.
+		output += me.stringPad(me.banner, padding60, true) + '\n';
+	} else {
+		// Non-minified version of the library.
+		output += me.banner;
+	}
+
+	// Add the version to the bnaner.
+	output += '\n' + me.stringPad('v' + me.version, padding60, true) + '\n';
+
+	// Add the homepage to the banner.
+	output += '\n' + me.stringPad(me.homepage, padding60, true) + '\n';
+
+	// Separate the banner from the head column titles.
+	output += separator;
+
+	return output;
+};
+
+// Heading of the statistics output.
+me.stats.head = function(separator, padding30, padding60) {
+	// The table head column titles.
+	var output = me.stringPad('Library', padding60);
+	output += me.stringPad('Version', padding30);
+	output += me.stringPad('Type', padding30);
+	output += me.stringPad('Time', padding30);
+	output += me.stringPad('Loaded', padding30);
+	output += me.stringPad('Invoked', padding30);
+	output += me.stringPad('Failed', padding30);
+	output += 'Success';
+	output += separator;
+
+	// Return the heading.
+	return output;
+};
+
+me.stats.row = function(key, value, padding30, padding60) {
+	var time = (value.loader.timeEnd - value.loader.timeStart) / 1000;
+	time = time || time === 0 ? time + 's' : 'N/A';
+
+	var output = me.stringPad(key, padding60);
+	output += me.stringPad(value.version, padding30);
+	output += me.stringPad(typeof value.factory, padding30);
+	output += me.stringPad(time, padding30);
+	output += me.stringPad(me.normalizeBoolean(value.loader.loaded, false), padding30);
+	output += me.stringPad(me.normalizeBoolean(value.invoked, false), padding30);
+	output += me.stringPad(value.loader.failed.length, padding30);
+	output += value.loader.success ? value.loader.success : 'N/A';
+	output += '\n';
+
+	return output;
 };
 
 me.banner = '   ad88              88  88  88                                   88         88             \n  d8"                88  88  88                                   88         ""             \n  88                 88  88  88                                   88                        \nMM88MMM  ,adPPYYba,  88  88  88,dPPYba,   ,adPPYYba,   ,adPPYba,  88   ,d8   88  ,adPPYba,  \n  88     ""     `Y8  88  88  88P\'    "8a  ""     `Y8  a8"     ""  88 ,a8"    88  I8[    ""  \n  88     ,adPPPPP88  88  88  88       d8  ,adPPPPP88  8b          8888[      88   `"Y8ba,   \n  88     88,    ,88  88  88  88b,   ,a8"  88,    ,88  "8a,   ,aa  88`"Yba,   88  aa    ]8I  \n  88     `"8bbdP"Y8  88  88  8Y"Ybbd8"\'   `"8bbdP"Y8   `"Ybbd8"\'  88   `Y8a  88  `"YbbdP"\'  \n                                                                            ,88             \n                                                                          888P"';
