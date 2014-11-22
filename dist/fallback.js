@@ -19,9 +19,6 @@ me.init = function() {
 
 	// Initialize our loader object.
 	me.loader.init();
-
-	// Flag that our library has been initialized.
-	return me.inited = true;
 };
 
 // Reference the library's aliases into the `global` `Object` for the user to directly access. If a alias that we're
@@ -1137,9 +1134,6 @@ me.loader = {};
 me.loader.init = function() {
 	// Automatically configure our library via attributes being set on any `script` elements on the page.
 	me.loader.init.autoloader();
-
-	// Flag that our loader has been initialized.
-	return me.loader.inited = true;
 };
 
 // If the attributes `base` or `data-base` are found on any of the `script` tags within the page when the library is

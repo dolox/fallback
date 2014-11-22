@@ -4,7 +4,7 @@ git:
 node_js:
   - "0.10"
 install:
-  - npm install -g bower grunt-cli istanbul
+  - npm install -g bower codeclimate-test-reporter grunt-cli istanbul
   - npm install
   - bower install
 before_script:
