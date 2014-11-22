@@ -74,11 +74,11 @@ variable referenced throughout, this is simply short-hand for the library.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
-              <p>Reference the <code>head</code> element of our document and store it into memory.</p>
+              <p>Reference the <code>head</code> element of our document and store it into memory. The if statement is for test coverage.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	me.head = global.document.getElementsByTagName(<span class="hljs-string">'head'</span>)[<span class="hljs-number">0</span>];</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	me.head = global.document ? global.document.getElementsByTagName(<span class="hljs-string">'head'</span>)[<span class="hljs-number">0</span>] : <span class="hljs-literal">null</span>;</pre></div></div>
             
         </li>
         
@@ -842,7 +842,7 @@ and that’s the sole purpose of these functions.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>me.browser.isIE = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
-	<span class="hljs-keyword">return</span> <span class="hljs-built_in">window</span>.document.documentMode ? <span class="hljs-literal">true</span> : <span class="hljs-literal">false</span>;
+	<span class="hljs-keyword">return</span> global.document.documentMode ? <span class="hljs-literal">true</span> : <span class="hljs-literal">false</span>;
 };</pre></div></div>
             
         </li>
@@ -5531,11 +5531,11 @@ given <code>attribute</code> with <code>data-</code> and check for that attribut
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-336">&#182;</a>
               </div>
-              <p>Fetch all script tags that are on the page.</p>
+              <p>Fetch all script tags that are on the page. The if statement is for test coverage.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> scripts = global.document.getElementsByTagName(<span class="hljs-string">'script'</span>);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> scripts = global.document ? global.document.getElementsByTagName(<span class="hljs-string">'script'</span>) : <span class="hljs-literal">null</span>;</pre></div></div>
             
         </li>
         
@@ -9989,7 +9989,7 @@ me.version = <span class="hljs-string">'2.0.0'</span>;
 
 me.init();
 
-})(<span class="hljs-built_in">window</span>);</pre></div></div>
+})(<span class="hljs-keyword">this</span>);</pre></div></div>
             
         </li>
         

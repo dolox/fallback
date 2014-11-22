@@ -11,7 +11,7 @@ module.exports = function(grunt, tasks) {
 
 	me.options.wrapper = [
 		tasks.wrap.banner + '\n(function(global) {\n',
-		'me.banner = \'' + packageJson.name + '\';\n\nme.homepage = \'' + packageJson.homepage + '\';\n\nme.version = \'' + packageJson.version + '\';\n\nme.init();\n\n})(window);'
+		'me.banner = \'' + packageJson.name + '\';\n\nme.homepage = \'' + packageJson.homepage + '\';\n\nme.version = \'' + packageJson.version + '\';\n\nme.init();\n\n})(this);'
 	];
 
 	me.src = [uri.distTmp + 'fallback.min.js'];
