@@ -654,8 +654,6 @@ me.utility = function(container, type) {
 // The different utility types that we want to generate functions for.
 me.utility.types = ['Array', 'Boolean', 'Function', 'Number', 'Object', 'String'];
 
-/* global me */
-
 // Configure the library. If the `input` is malformed then the `Function` will return `false`, otherwise the `Function`
 // will return the normalized value that was imported.
 me.config = function(input) {
@@ -877,8 +875,6 @@ me.config.libs.whitelist = ['alias', 'check', 'deps', 'init', 'exports', 'urls',
 
 // The whitelist of acceptable keys for the `config` functions input `Object`.
 me.config.whitelist = ['amd', 'base', 'debug', 'delimiter', 'globals', 'libs'];
-
-/* global me */
 
 // Defining anonymous and named modules for our library is done through this function. There are a number of ways to
 // pass arguments into this function, for more details see comments in the `me.define.args` function.
@@ -1121,8 +1117,6 @@ me.define.module = function(args) {
 // Our last defined module reference. This is used to reference the proper names with our anonymous modules.
 me.define.module.last = null;
 
-/*global me*/
-
 // The loader object handles asynchronously loading of all the files for the library. It acts as a middle man between
 // the `require` function and our loader libraries. Loader libraries for example being `loaderImage.js`,
 // `loaderStylesheet.js` and `loaderJavaScript.js`. Those individual libraries are treated as non-logic based loaders.
@@ -1304,8 +1298,6 @@ me.loader.urls.success = function(module, url, status, factory) {
 	me.loader.urls.completed(module);
 };
 
-/* global me */
-
 // Image loader which is responsible for loading any images for the library.
 me.loader.img = {};
 
@@ -1357,8 +1349,6 @@ me.loader.img.remove = function(element) {
 	// Return `false` if we weren't able to remove the element.
 	return false;
 };
-
-/* global me */
 
 // JavaScript loader which is responsible for loading any scripts for the library.
 me.loader.js = {};
@@ -1553,8 +1543,6 @@ me.loader.js.element = function(url, success, failed) {
 	return me.head.appendChild(element);
 };
 
-/* global me */
-
 // Cascading Stylesheet loader which is responsible for loading any CSS files for the library.
 me.loader.css = {};
 
@@ -1734,8 +1722,6 @@ me.loader.css.scan = function(ruleset, selectors) {
 	// Return our search status.
 	return found;
 };
-
-/* global me */
 
 // Fetch an already existant module from our definitions. If the module in question doesn't exist then we'll generate
 // it automatically unless the `generate` parameter is explicitly set to `false`. If a `module` is defined, then it's
@@ -2196,8 +2182,6 @@ me.module.urls = function(identity, urls) {
 
 // URL prefixes to specifically ignore from prepending with our base URL.
 me.module.urls.ignore = ['/', 'data:', 'http://', 'https://'];
-
-/* global me */
 
 // Load up and invoke our modules along with all of their dependencies. This function will first find all dependencies
 // for our modules and then attempt to load and invoke them from least to most dependent. This procedure needs to
