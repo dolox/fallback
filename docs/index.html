@@ -4664,6 +4664,71 @@ loaded, automatically set the <code>base</code> variable for our configuration t
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-282">&#182;</a>
               </div>
+              <p>Patch for legacy browsers which sometimes fire off <code>onreadystatechange</code>. @ie</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>me.loader.onReadyStateChange = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(element, callback)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-283">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-283">&#182;</a>
+              </div>
+              <p>Attach the event to the element.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	element.onreadystatechange = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+		<span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.readyState || <span class="hljs-keyword">this</span>.readyState === <span class="hljs-string">'loaded'</span> || <span class="hljs-keyword">this</span>.readyState === <span class="hljs-string">'complete'</span>) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-284">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-284">&#182;</a>
+              </div>
+              <p>Explicity remove the callback after we receive it.
+Some versions of IE tend to fire off multiple success events. @ie</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">this</span>.onreadystatechange = <span class="hljs-literal">null</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-285">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-285">&#182;</a>
+              </div>
+              <p>Fire off our callback.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			callback();
+		}
+	};
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-286">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-286">&#182;</a>
+              </div>
               <p>Load the URLs passed in for the module in question. This will run a loop through each of the URLs, attempting to
 load one at a time, only stopping when either all URLs have been exhausted or a URL has loaded successfully. Other
 specific checks that determine whether or not a library was actually loaded properly are defined within the loader
@@ -4676,11 +4741,11 @@ scripts themselves.</p>
         </li>
         
         
-        <li id="section-283">
+        <li id="section-287">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-283">&#182;</a>
+                <a class="pilcrow" href="#section-287">&#182;</a>
               </div>
               <p>Reference our working URLs.</p>
 
@@ -4691,11 +4756,11 @@ scripts themselves.</p>
         </li>
         
         
-        <li id="section-284">
+        <li id="section-288">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-284">&#182;</a>
+                <a class="pilcrow" href="#section-288">&#182;</a>
               </div>
               <p>If we’ve exhausted all URLs available for the module, then the library has failed to load.</p>
 
@@ -4708,11 +4773,11 @@ scripts themselves.</p>
         </li>
         
         
-        <li id="section-285">
+        <li id="section-289">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-285">&#182;</a>
+                <a class="pilcrow" href="#section-289">&#182;</a>
               </div>
               <p>Shift our URL off of the <code>Array</code>, that way if we have to loop around, we don’t retry the same URL again.</p>
 
@@ -4723,11 +4788,11 @@ scripts themselves.</p>
         </li>
         
         
-        <li id="section-286">
+        <li id="section-290">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-286">&#182;</a>
+                <a class="pilcrow" href="#section-290">&#182;</a>
               </div>
               <p>Throw a log message to the end user.</p>
 
@@ -4738,11 +4803,11 @@ scripts themselves.</p>
         </li>
         
         
-        <li id="section-287">
+        <li id="section-291">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-287">&#182;</a>
+                <a class="pilcrow" href="#section-291">&#182;</a>
               </div>
               <p>Call upon our specific loader script to load our URL.</p>
 
@@ -4754,11 +4819,11 @@ scripts themselves.</p>
         </li>
         
         
-        <li id="section-288">
+        <li id="section-292">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-288">&#182;</a>
+                <a class="pilcrow" href="#section-292">&#182;</a>
               </div>
               <p>Common operations to perform whether a module loaded successfully or not.</p>
 
@@ -4769,11 +4834,11 @@ scripts themselves.</p>
         </li>
         
         
-        <li id="section-289">
+        <li id="section-293">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-289">&#182;</a>
+                <a class="pilcrow" href="#section-293">&#182;</a>
               </div>
               <p>Flag our module has having already attempted to load.</p>
 
@@ -4784,11 +4849,11 @@ scripts themselves.</p>
         </li>
         
         
-        <li id="section-290">
+        <li id="section-294">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-290">&#182;</a>
+                <a class="pilcrow" href="#section-294">&#182;</a>
               </div>
               <p>Set our end time for statistics.</p>
 
@@ -4799,11 +4864,11 @@ scripts themselves.</p>
         </li>
         
         
-        <li id="section-291">
+        <li id="section-295">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-291">&#182;</a>
+                <a class="pilcrow" href="#section-295">&#182;</a>
               </div>
               <p>Flag our module as no longer in a working/in progress state.</p>
 
@@ -4814,11 +4879,11 @@ scripts themselves.</p>
         </li>
         
         
-        <li id="section-292">
+        <li id="section-296">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-292">&#182;</a>
+                <a class="pilcrow" href="#section-296">&#182;</a>
               </div>
               <p>Fire off all of our callbacks.</p>
 
@@ -4830,11 +4895,11 @@ scripts themselves.</p>
         </li>
         
         
-        <li id="section-293">
+        <li id="section-297">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-293">&#182;</a>
+                <a class="pilcrow" href="#section-297">&#182;</a>
               </div>
               <p>When a URL or module fails to load this function will be called.</p>
 
@@ -4845,11 +4910,11 @@ scripts themselves.</p>
         </li>
         
         
-        <li id="section-294">
+        <li id="section-298">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-294">&#182;</a>
+                <a class="pilcrow" href="#section-298">&#182;</a>
               </div>
               <p>Legacy IE fires off the failed callback more than once, so we’ll double check to see if we’ve already fired it. @ie</p>
 
@@ -4862,11 +4927,11 @@ scripts themselves.</p>
         </li>
         
         
-        <li id="section-295">
+        <li id="section-299">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-295">&#182;</a>
+                <a class="pilcrow" href="#section-299">&#182;</a>
               </div>
               <p>Setup our log message that we’ll send to the end user.</p>
 
@@ -4877,11 +4942,11 @@ scripts themselves.</p>
         </li>
         
         
-        <li id="section-296">
+        <li id="section-300">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-296">&#182;</a>
+                <a class="pilcrow" href="#section-300">&#182;</a>
               </div>
               <p>If there’s no URL, then all URLs have been exhausted!</p>
 
@@ -4896,11 +4961,11 @@ scripts themselves.</p>
         </li>
         
         
-        <li id="section-297">
+        <li id="section-301">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-297">&#182;</a>
+                <a class="pilcrow" href="#section-301">&#182;</a>
               </div>
               <p>Reset the anonymous module name.</p>
 
@@ -4911,11 +4976,11 @@ scripts themselves.</p>
         </li>
         
         
-        <li id="section-298">
+        <li id="section-302">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-298">&#182;</a>
+                <a class="pilcrow" href="#section-302">&#182;</a>
               </div>
               <p>Let the end user know which specific URL failed to load.</p>
 
@@ -4927,11 +4992,11 @@ scripts themselves.</p>
         </li>
         
         
-        <li id="section-299">
+        <li id="section-303">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-299">&#182;</a>
+                <a class="pilcrow" href="#section-303">&#182;</a>
               </div>
               <p>Try the next URL in our URLs list.</p>
 
@@ -4943,11 +5008,11 @@ scripts themselves.</p>
         </li>
         
         
-        <li id="section-300">
+        <li id="section-304">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-300">&#182;</a>
+                <a class="pilcrow" href="#section-304">&#182;</a>
               </div>
               <p>When a URL loads sucessfully this function will be called.</p>
 
@@ -4958,11 +5023,11 @@ scripts themselves.</p>
         </li>
         
         
-        <li id="section-301">
+        <li id="section-305">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-301">&#182;</a>
+                <a class="pilcrow" href="#section-305">&#182;</a>
               </div>
               <p>We’re going to store the name of the module we’re attempting to load here. This way if the file that’s loaded
 happens to call the <code>define</code> function with an anonymous name, this is the name that we’ll use for the definition.</p>
@@ -4974,11 +5039,11 @@ happens to call the <code>define</code> function with an anonymous name, this is
         </li>
         
         
-        <li id="section-302">
+        <li id="section-306">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-302">&#182;</a>
+                <a class="pilcrow" href="#section-306">&#182;</a>
               </div>
               <p>If our library was already loaded, we don’t know what URL was successful, so we’ll skip setting it.</p>
 
@@ -4994,11 +5059,11 @@ happens to call the <code>define</code> function with an anonymous name, this is
         </li>
         
         
-        <li id="section-303">
+        <li id="section-307">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-303">&#182;</a>
+                <a class="pilcrow" href="#section-307">&#182;</a>
               </div>
               <p>If we have a <code>init</code> function, we’ll run it now.</p>
 
@@ -5011,11 +5076,11 @@ happens to call the <code>define</code> function with an anonymous name, this is
         </li>
         
         
-        <li id="section-304">
+        <li id="section-308">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-304">&#182;</a>
+                <a class="pilcrow" href="#section-308">&#182;</a>
               </div>
               <p>If we don’t have a factory for our module, then there was no definition. Regardless of what our value is we’ll
 reference it here.</p>
@@ -5030,11 +5095,11 @@ reference it here.</p>
         </li>
         
         
-        <li id="section-305">
+        <li id="section-309">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-305">&#182;</a>
+                <a class="pilcrow" href="#section-309">&#182;</a>
               </div>
               <p>Wrap up the loader process and handle our callbacks.</p>
 
@@ -5048,11 +5113,11 @@ reference it here.</p>
         </li>
         
         
-        <li id="section-306">
+        <li id="section-310">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-306">&#182;</a>
+                <a class="pilcrow" href="#section-310">&#182;</a>
               </div>
               <p>Image loader which is responsible for loading any images for the library.</p>
 
@@ -5063,11 +5128,11 @@ reference it here.</p>
         </li>
         
         
-        <li id="section-307">
+        <li id="section-311">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-307">&#182;</a>
+                <a class="pilcrow" href="#section-311">&#182;</a>
               </div>
               <p>The image loader is pretty straight forward as legacy browser support goes way back, we don’t need to perform any
 extra checking or manipulation.</p>
@@ -5079,11 +5144,11 @@ extra checking or manipulation.</p>
         </li>
         
         
-        <li id="section-308">
+        <li id="section-312">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-308">&#182;</a>
+                <a class="pilcrow" href="#section-312">&#182;</a>
               </div>
               <p>Create a new <code>img</code> element.</p>
 
@@ -5094,11 +5159,11 @@ extra checking or manipulation.</p>
         </li>
         
         
-        <li id="section-309">
+        <li id="section-313">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-309">&#182;</a>
+                <a class="pilcrow" href="#section-313">&#182;</a>
               </div>
               <p>If we get an <code>onerror</code> callback, the image failed to load.</p>
 
@@ -5109,11 +5174,11 @@ extra checking or manipulation.</p>
         </li>
         
         
-        <li id="section-310">
+        <li id="section-314">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-310">&#182;</a>
+                <a class="pilcrow" href="#section-314">&#182;</a>
               </div>
               <p>Remove the element from the page.</p>
 
@@ -5124,11 +5189,11 @@ extra checking or manipulation.</p>
         </li>
         
         
-        <li id="section-311">
+        <li id="section-315">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-311">&#182;</a>
+                <a class="pilcrow" href="#section-315">&#182;</a>
               </div>
               <p>Process our failed callback.</p>
 
@@ -5140,11 +5205,11 @@ extra checking or manipulation.</p>
         </li>
         
         
-        <li id="section-312">
+        <li id="section-316">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-312">&#182;</a>
+                <a class="pilcrow" href="#section-316">&#182;</a>
               </div>
               <p>If we get an <code>onload</code> callback, the image loaded successfully.</p>
 
@@ -5155,11 +5220,11 @@ extra checking or manipulation.</p>
         </li>
         
         
-        <li id="section-313">
+        <li id="section-317">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-313">&#182;</a>
+                <a class="pilcrow" href="#section-317">&#182;</a>
               </div>
               <p>Remove the element from the page.</p>
 
@@ -5170,11 +5235,11 @@ extra checking or manipulation.</p>
         </li>
         
         
-        <li id="section-314">
+        <li id="section-318">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-314">&#182;</a>
+                <a class="pilcrow" href="#section-318">&#182;</a>
               </div>
               <p>In the case of images, the factory represents the URL.</p>
 
@@ -5186,11 +5251,11 @@ extra checking or manipulation.</p>
         </li>
         
         
-        <li id="section-315">
+        <li id="section-319">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-315">&#182;</a>
+                <a class="pilcrow" href="#section-319">&#182;</a>
               </div>
               <p>Set the actual URL that we’re going to request to load for our image.</p>
 
@@ -5201,11 +5266,11 @@ extra checking or manipulation.</p>
         </li>
         
         
-        <li id="section-316">
+        <li id="section-320">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-316">&#182;</a>
+                <a class="pilcrow" href="#section-320">&#182;</a>
               </div>
               <p>Attempt to load the image on the page.</p>
 
@@ -5217,11 +5282,11 @@ extra checking or manipulation.</p>
         </li>
         
         
-        <li id="section-317">
+        <li id="section-321">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-317">&#182;</a>
+                <a class="pilcrow" href="#section-321">&#182;</a>
               </div>
               <p>Remove a dynamically generated element from the page.</p>
 
@@ -5232,11 +5297,11 @@ extra checking or manipulation.</p>
         </li>
         
         
-        <li id="section-318">
+        <li id="section-322">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-318">&#182;</a>
+                <a class="pilcrow" href="#section-322">&#182;</a>
               </div>
               <p>If <code>element.remove</code> exists, use it.</p>
 
@@ -5250,11 +5315,11 @@ extra checking or manipulation.</p>
         </li>
         
         
-        <li id="section-319">
+        <li id="section-323">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-319">&#182;</a>
+                <a class="pilcrow" href="#section-323">&#182;</a>
               </div>
               <p>Legacy IE (IE &lt; 9) doesn’t have a <code>.remove</code> method. @ie</p>
 
@@ -5268,11 +5333,11 @@ extra checking or manipulation.</p>
         </li>
         
         
-        <li id="section-320">
+        <li id="section-324">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-320">&#182;</a>
+                <a class="pilcrow" href="#section-324">&#182;</a>
               </div>
               <p>Return <code>false</code> if we weren’t able to remove the element.</p>
 
@@ -5286,11 +5351,11 @@ extra checking or manipulation.</p>
         </li>
         
         
-        <li id="section-321">
+        <li id="section-325">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-321">&#182;</a>
+                <a class="pilcrow" href="#section-325">&#182;</a>
               </div>
               <p>JavaScript loader which is responsible for loading any scripts for the library.</p>
 
@@ -5301,11 +5366,11 @@ extra checking or manipulation.</p>
         </li>
         
         
-        <li id="section-322">
+        <li id="section-326">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-322">&#182;</a>
+                <a class="pilcrow" href="#section-326">&#182;</a>
               </div>
               <p>Attempt to load a script onto the page.</p>
 
@@ -5316,11 +5381,11 @@ extra checking or manipulation.</p>
         </li>
         
         
-        <li id="section-323">
+        <li id="section-327">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-323">&#182;</a>
+                <a class="pilcrow" href="#section-327">&#182;</a>
               </div>
               <p>If the library is already loaded on the page, don’t attempt to reload it.</p>
 
@@ -5331,11 +5396,11 @@ extra checking or manipulation.</p>
         </li>
         
         
-        <li id="section-324">
+        <li id="section-328">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-324">&#182;</a>
+                <a class="pilcrow" href="#section-328">&#182;</a>
               </div>
               <p>Check if our module has already been loaded.</p>
 
@@ -5348,11 +5413,11 @@ extra checking or manipulation.</p>
         </li>
         
         
-        <li id="section-325">
+        <li id="section-329">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-325">&#182;</a>
+                <a class="pilcrow" href="#section-329">&#182;</a>
               </div>
               <p>If our library failed to load, we’ll call upon this function.</p>
 
@@ -5365,11 +5430,11 @@ extra checking or manipulation.</p>
         </li>
         
         
-        <li id="section-326">
+        <li id="section-330">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-326">&#182;</a>
+                <a class="pilcrow" href="#section-330">&#182;</a>
               </div>
               <p>Whether a callback comes back as an error/success, they’re not always trustworthy.
 We need to manually check to make sure that our libraries were loaded properly.</p>
@@ -5381,11 +5446,11 @@ We need to manually check to make sure that our libraries were loaded properly.<
         </li>
         
         
-        <li id="section-327">
+        <li id="section-331">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-327">&#182;</a>
+                <a class="pilcrow" href="#section-331">&#182;</a>
               </div>
               <p>Attempt to fetch the factory for our module.</p>
 
@@ -5396,11 +5461,11 @@ We need to manually check to make sure that our libraries were loaded properly.<
         </li>
         
         
-        <li id="section-328">
+        <li id="section-332">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-328">&#182;</a>
+                <a class="pilcrow" href="#section-332">&#182;</a>
               </div>
               <p>If the factory is empty, then it failed to load! Invoke the failure callback.</p>
 
@@ -5413,11 +5478,11 @@ We need to manually check to make sure that our libraries were loaded properly.<
         </li>
         
         
-        <li id="section-329">
+        <li id="section-333">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-329">&#182;</a>
+                <a class="pilcrow" href="#section-333">&#182;</a>
               </div>
               <p>We passed the checks, invoke the success callback.</p>
 
@@ -5429,11 +5494,11 @@ We need to manually check to make sure that our libraries were loaded properly.<
         </li>
         
         
-        <li id="section-330">
+        <li id="section-334">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-330">&#182;</a>
+                <a class="pilcrow" href="#section-334">&#182;</a>
               </div>
               <p>Spawn a new element on the page contained our URL with our callbacks.</p>
 
@@ -5445,11 +5510,11 @@ We need to manually check to make sure that our libraries were loaded properly.<
         </li>
         
         
-        <li id="section-331">
+        <li id="section-335">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-331">&#182;</a>
+                <a class="pilcrow" href="#section-335">&#182;</a>
               </div>
               <p>Sift through the script elements on the page and attempt to derive the values from <code>attribute</code> that is passed in to
 the <code>Function</code>. Along with checking the <code>attribute</code> that is passed in, this <code>Function</code> will also prefix the
@@ -5463,11 +5528,11 @@ given <code>attribute</code> with <code>data-</code> and check for that attribut
         </li>
         
         
-        <li id="section-332">
+        <li id="section-336">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-332">&#182;</a>
+                <a class="pilcrow" href="#section-336">&#182;</a>
               </div>
               <p>The <code>Array</code> to store our <code>attribute</code> values.</p>
 
@@ -5478,11 +5543,11 @@ given <code>attribute</code> with <code>data-</code> and check for that attribut
         </li>
         
         
-        <li id="section-333">
+        <li id="section-337">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-333">&#182;</a>
+                <a class="pilcrow" href="#section-337">&#182;</a>
               </div>
               <p>If the <code>attribute</code> is not a string, halt the <code>Function</code>.</p>
 
@@ -5495,11 +5560,11 @@ given <code>attribute</code> with <code>data-</code> and check for that attribut
         </li>
         
         
-        <li id="section-334">
+        <li id="section-338">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-334">&#182;</a>
+                <a class="pilcrow" href="#section-338">&#182;</a>
               </div>
               <p>Fetch all script tags that are on the page. The if statement is for test coverage.</p>
 
@@ -5510,11 +5575,11 @@ given <code>attribute</code> with <code>data-</code> and check for that attribut
         </li>
         
         
-        <li id="section-335">
+        <li id="section-339">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-335">&#182;</a>
+                <a class="pilcrow" href="#section-339">&#182;</a>
               </div>
               <p>Check to make sure that we retrieved a <code>HTMLCollection</code>, otherwise halt the <code>Function</code>.</p>
 
@@ -5527,11 +5592,11 @@ given <code>attribute</code> with <code>data-</code> and check for that attribut
         </li>
         
         
-        <li id="section-336">
+        <li id="section-340">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-336">&#182;</a>
+                <a class="pilcrow" href="#section-340">&#182;</a>
               </div>
               <p>Loop through each of our scripts.</p>
 
@@ -5542,11 +5607,11 @@ given <code>attribute</code> with <code>data-</code> and check for that attribut
         </li>
         
         
-        <li id="section-337">
+        <li id="section-341">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-337">&#182;</a>
+                <a class="pilcrow" href="#section-341">&#182;</a>
               </div>
               <p>If our script instance isn’t an <code>HTMLScriptElement</code>, then skip the iteration.</p>
 
@@ -5559,11 +5624,11 @@ given <code>attribute</code> with <code>data-</code> and check for that attribut
         </li>
         
         
-        <li id="section-338">
+        <li id="section-342">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-338">&#182;</a>
+                <a class="pilcrow" href="#section-342">&#182;</a>
               </div>
               <p>If <code>getAttribute</code> isn’t a <code>Function</code>, then we’re not looking at a HTML element, skip it. For legacy IE the
 <code>getAttribute</code> method is declared as <code>Object</code>.</p>
@@ -5577,11 +5642,11 @@ given <code>attribute</code> with <code>data-</code> and check for that attribut
         </li>
         
         
-        <li id="section-339">
+        <li id="section-343">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-339">&#182;</a>
+                <a class="pilcrow" href="#section-343">&#182;</a>
               </div>
               <p>Check to see if our <code>attribute</code> exists along with the prefix <code>data-</code> for the <code>attribute</code> in questino.</p>
 
@@ -5592,11 +5657,11 @@ given <code>attribute</code> with <code>data-</code> and check for that attribut
         </li>
         
         
-        <li id="section-340">
+        <li id="section-344">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-340">&#182;</a>
+                <a class="pilcrow" href="#section-344">&#182;</a>
               </div>
               <p>Store our attribute value.</p>
 
@@ -5607,11 +5672,11 @@ given <code>attribute</code> with <code>data-</code> and check for that attribut
         </li>
         
         
-        <li id="section-341">
+        <li id="section-345">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-341">&#182;</a>
+                <a class="pilcrow" href="#section-345">&#182;</a>
               </div>
               <p>We need to wrap this in a try catch because we cannot properly detect the method in legacy browsers. @ie
 Fetch the value for the attribute.</p>
@@ -5623,11 +5688,11 @@ Fetch the value for the attribute.</p>
         </li>
         
         
-        <li id="section-342">
+        <li id="section-346">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-342">&#182;</a>
+                <a class="pilcrow" href="#section-346">&#182;</a>
               </div>
               <p>Fetch our attribute.</p>
 
@@ -5639,11 +5704,11 @@ Fetch the value for the attribute.</p>
         </li>
         
         
-        <li id="section-343">
+        <li id="section-347">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-343">&#182;</a>
+                <a class="pilcrow" href="#section-347">&#182;</a>
               </div>
               <p>If the value exists then use it.</p>
 
@@ -5654,11 +5719,11 @@ Fetch the value for the attribute.</p>
         </li>
         
         
-        <li id="section-344">
+        <li id="section-348">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-344">&#182;</a>
+                <a class="pilcrow" href="#section-348">&#182;</a>
               </div>
               <p>Split our value on <code>,</code> that way we can pass in multiple values.</p>
 
@@ -5669,11 +5734,11 @@ Fetch the value for the attribute.</p>
         </li>
         
         
-        <li id="section-345">
+        <li id="section-349">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-345">&#182;</a>
+                <a class="pilcrow" href="#section-349">&#182;</a>
               </div>
               <p>Merge our values.</p>
 
@@ -5687,11 +5752,11 @@ Fetch the value for the attribute.</p>
         </li>
         
         
-        <li id="section-346">
+        <li id="section-350">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-346">&#182;</a>
+                <a class="pilcrow" href="#section-350">&#182;</a>
               </div>
               <p>Return the values for attributes.</p>
 
@@ -5703,11 +5768,11 @@ Fetch the value for the attribute.</p>
         </li>
         
         
-        <li id="section-347">
+        <li id="section-351">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-347">&#182;</a>
+                <a class="pilcrow" href="#section-351">&#182;</a>
               </div>
               <p>Check to see if a module has already been loaded on the page. This <code>Function</code> will return <code>Boolean</code>, <code>true</code> being
 that a module has already been loaded and <code>false</code> being that it hasn’t.</p>
@@ -5719,11 +5784,11 @@ that a module has already been loaded and <code>false</code> being that it hasn�
         </li>
         
         
-        <li id="section-348">
+        <li id="section-352">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-348">&#182;</a>
+                <a class="pilcrow" href="#section-352">&#182;</a>
               </div>
               <p>See if the module itself has been flagged as loaded.</p>
 
@@ -5736,11 +5801,11 @@ that a module has already been loaded and <code>false</code> being that it hasn�
         </li>
         
         
-        <li id="section-349">
+        <li id="section-353">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-349">&#182;</a>
+                <a class="pilcrow" href="#section-353">&#182;</a>
               </div>
               <p>If an anonymous moduel was defined, then it’s for this library, meaning it loaded successfully.</p>
 
@@ -5753,11 +5818,11 @@ that a module has already been loaded and <code>false</code> being that it hasn�
         </li>
         
         
-        <li id="section-350">
+        <li id="section-354">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-350">&#182;</a>
+                <a class="pilcrow" href="#section-354">&#182;</a>
               </div>
               <p>If the user added their own custom checking function, invoke it now to preform the check.</p>
 
@@ -5770,11 +5835,11 @@ that a module has already been loaded and <code>false</code> being that it hasn�
         </li>
         
         
-        <li id="section-351">
+        <li id="section-355">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-351">&#182;</a>
+                <a class="pilcrow" href="#section-355">&#182;</a>
               </div>
               <p>If globals are enabled, and we have exports for the module, check the <code>window</code> to see if they’re defined.</p>
 
@@ -5787,11 +5852,11 @@ that a module has already been loaded and <code>false</code> being that it hasn�
         </li>
         
         
-        <li id="section-352">
+        <li id="section-356">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-352">&#182;</a>
+                <a class="pilcrow" href="#section-356">&#182;</a>
               </div>
               <p>By default just return true, as this function was hit from a success callback.</p>
 
@@ -5803,11 +5868,11 @@ that a module has already been loaded and <code>false</code> being that it hasn�
         </li>
         
         
-        <li id="section-353">
+        <li id="section-357">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-353">&#182;</a>
+                <a class="pilcrow" href="#section-357">&#182;</a>
               </div>
               <p>Check for the instance of our library based on the exports given. If the instance of our library exists it’ll be
 returned, otherwise this function will return <code>null. The</code>Function<code>basically checks the</code>window` variable for a
@@ -5820,11 +5885,11 @@ subkey which are the exports that are specified in the paramter.</p>
         </li>
         
         
-        <li id="section-354">
+        <li id="section-358">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-354">&#182;</a>
+                <a class="pilcrow" href="#section-358">&#182;</a>
               </div>
               <p>If our <code>exports</code> parameter is not an <code>Array</code>, cast it to one.</p>
 
@@ -5837,11 +5902,11 @@ subkey which are the exports that are specified in the paramter.</p>
         </li>
         
         
-        <li id="section-355">
+        <li id="section-359">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-355">&#182;</a>
+                <a class="pilcrow" href="#section-359">&#182;</a>
               </div>
               <p>Storage for our factory value.</p>
 
@@ -5852,11 +5917,11 @@ subkey which are the exports that are specified in the paramter.</p>
         </li>
         
         
-        <li id="section-356">
+        <li id="section-360">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-356">&#182;</a>
+                <a class="pilcrow" href="#section-360">&#182;</a>
               </div>
               <p>If we have no exports, return <code>null</code>.</p>
 
@@ -5869,11 +5934,11 @@ subkey which are the exports that are specified in the paramter.</p>
         </li>
         
         
-        <li id="section-357">
+        <li id="section-361">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-357">&#182;</a>
+                <a class="pilcrow" href="#section-361">&#182;</a>
               </div>
               <p>Loop through each of our exports variable, until we find a match.</p>
 
@@ -5884,11 +5949,11 @@ subkey which are the exports that are specified in the paramter.</p>
         </li>
         
         
-        <li id="section-358">
+        <li id="section-362">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-358">&#182;</a>
+                <a class="pilcrow" href="#section-362">&#182;</a>
               </div>
               <p>We have to explicity use <code>eval</code> because variables will come in many forms. In particular sometimes they will come
 in the form of being a child of an object. For example <code>jQuery UI</code> loads under the <code>glboal</code> variable <code>jQuery.ui</code>.
@@ -5904,11 +5969,11 @@ In order for us to get to this programtically we have to use <code>eval</code>.<
         </li>
         
         
-        <li id="section-359">
+        <li id="section-363">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-359">&#182;</a>
+                <a class="pilcrow" href="#section-363">&#182;</a>
               </div>
               <p>If our <code>factory</code> is undefined, force the variable back to a <code>null</code>.</p>
 
@@ -5922,11 +5987,11 @@ In order for us to get to this programtically we have to use <code>eval</code>.<
         </li>
         
         
-        <li id="section-360">
+        <li id="section-364">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-360">&#182;</a>
+                <a class="pilcrow" href="#section-364">&#182;</a>
               </div>
               <p>Let the end user know that we hit an exception due to their malformed <code>exports</code> variable.</p>
 
@@ -5939,11 +6004,11 @@ In order for us to get to this programtically we have to use <code>eval</code>.<
         </li>
         
         
-        <li id="section-361">
+        <li id="section-365">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-361">&#182;</a>
+                <a class="pilcrow" href="#section-365">&#182;</a>
               </div>
               <p>Return the factory for our library.</p>
 
@@ -5955,11 +6020,11 @@ In order for us to get to this programtically we have to use <code>eval</code>.<
         </li>
         
         
-        <li id="section-362">
+        <li id="section-366">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-362">&#182;</a>
+                <a class="pilcrow" href="#section-366">&#182;</a>
               </div>
               <p>Spawn a new element on the page with our URL.</p>
 
@@ -5970,11 +6035,11 @@ In order for us to get to this programtically we have to use <code>eval</code>.<
         </li>
         
         
-        <li id="section-363">
+        <li id="section-367">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-363">&#182;</a>
+                <a class="pilcrow" href="#section-367">&#182;</a>
               </div>
               <p>Create a new script element instance.</p>
 
@@ -5985,11 +6050,11 @@ In order for us to get to this programtically we have to use <code>eval</code>.<
         </li>
         
         
-        <li id="section-364">
+        <li id="section-368">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-364">&#182;</a>
+                <a class="pilcrow" href="#section-368">&#182;</a>
               </div>
               <p>The browser supports it, enable crossorigin.</p>
 
@@ -6000,11 +6065,11 @@ In order for us to get to this programtically we have to use <code>eval</code>.<
         </li>
         
         
-        <li id="section-365">
+        <li id="section-369">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-365">&#182;</a>
+                <a class="pilcrow" href="#section-369">&#182;</a>
               </div>
               <p>If we get an error callback, bypass any checking and just fail.</p>
 
@@ -6015,11 +6080,11 @@ In order for us to get to this programtically we have to use <code>eval</code>.<
         </li>
         
         
-        <li id="section-366">
+        <li id="section-370">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-366">&#182;</a>
+                <a class="pilcrow" href="#section-370">&#182;</a>
               </div>
               <p>Do our checks and throw our callback.</p>
 
@@ -6030,60 +6095,26 @@ In order for us to get to this programtically we have to use <code>eval</code>.<
         </li>
         
         
-        <li id="section-367">
+        <li id="section-371">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-367">&#182;</a>
+                <a class="pilcrow" href="#section-371">&#182;</a>
               </div>
               <p>Special event handler for certain versions of IE. @ie</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	element.onreadystatechange = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
-		<span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.readyState || <span class="hljs-keyword">this</span>.readyState === <span class="hljs-string">'loaded'</span> || <span class="hljs-keyword">this</span>.readyState === <span class="hljs-string">'complete'</span>) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	element.onreadystatechange = me.loader.onReadyStateChange(element, success);</pre></div></div>
             
         </li>
         
         
-        <li id="section-368">
+        <li id="section-372">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-368">&#182;</a>
-              </div>
-              <p>Explicity remove the callback after we receive it.
-Some versions of IE tend to fire off multiple success events. @ie</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">this</span>.onreadystatechange = <span class="hljs-literal">null</span>;</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-369">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-369">&#182;</a>
-              </div>
-              <p>Do our checks and throw our callback.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>			success();
-		}
-	};</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-370">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-370">&#182;</a>
+                <a class="pilcrow" href="#section-372">&#182;</a>
               </div>
               <p>Set the actual URL that we’re going to request to load for our library.</p>
 
@@ -6094,11 +6125,11 @@ Some versions of IE tend to fire off multiple success events. @ie</p>
         </li>
         
         
-        <li id="section-371">
+        <li id="section-373">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-371">&#182;</a>
+                <a class="pilcrow" href="#section-373">&#182;</a>
               </div>
               <p>Set the type, some legacy browsers require this attribute be present.</p>
 
@@ -6109,11 +6140,11 @@ Some versions of IE tend to fire off multiple success events. @ie</p>
         </li>
         
         
-        <li id="section-372">
+        <li id="section-374">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-372">&#182;</a>
+                <a class="pilcrow" href="#section-374">&#182;</a>
               </div>
               <p>Load our URL on the page.</p>
 
@@ -6127,11 +6158,11 @@ Some versions of IE tend to fire off multiple success events. @ie</p>
         </li>
         
         
-        <li id="section-373">
+        <li id="section-375">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-373">&#182;</a>
+                <a class="pilcrow" href="#section-375">&#182;</a>
               </div>
               <p>Cascading Stylesheet loader which is responsible for loading any CSS files for the library.</p>
 
@@ -6142,11 +6173,11 @@ Some versions of IE tend to fire off multiple success events. @ie</p>
         </li>
         
         
-        <li id="section-374">
+        <li id="section-376">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-374">&#182;</a>
+                <a class="pilcrow" href="#section-376">&#182;</a>
               </div>
               <p>Attempt to load a stylesheet onto the page.</p>
 
@@ -6157,11 +6188,11 @@ Some versions of IE tend to fire off multiple success events. @ie</p>
         </li>
         
         
-        <li id="section-375">
+        <li id="section-377">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-375">&#182;</a>
+                <a class="pilcrow" href="#section-377">&#182;</a>
               </div>
               <p>If the stylesheet is already loaded on the page, don’t attempt to reload it.</p>
 
@@ -6172,11 +6203,11 @@ Some versions of IE tend to fire off multiple success events. @ie</p>
         </li>
         
         
-        <li id="section-376">
+        <li id="section-378">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-376">&#182;</a>
+                <a class="pilcrow" href="#section-378">&#182;</a>
               </div>
               <p>Check if our module has already been loaded.</p>
 
@@ -6189,11 +6220,11 @@ Some versions of IE tend to fire off multiple success events. @ie</p>
         </li>
         
         
-        <li id="section-377">
+        <li id="section-379">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-377">&#182;</a>
+                <a class="pilcrow" href="#section-379">&#182;</a>
               </div>
               <p>If our library failed to load, we’ll call upon this function.</p>
 
@@ -6206,11 +6237,11 @@ Some versions of IE tend to fire off multiple success events. @ie</p>
         </li>
         
         
-        <li id="section-378">
+        <li id="section-380">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-378">&#182;</a>
+                <a class="pilcrow" href="#section-380">&#182;</a>
               </div>
               <p>Whether a callback comes back as an error/success, they’re not always trustworthy.
 We need to manually check to make sure that our libraries were loaded properly.</p>
@@ -6222,11 +6253,11 @@ We need to manually check to make sure that our libraries were loaded properly.<
         </li>
         
         
-        <li id="section-379">
+        <li id="section-381">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-379">&#182;</a>
+                <a class="pilcrow" href="#section-381">&#182;</a>
               </div>
               <p>Attempt to fetch the factory for our module.</p>
 
@@ -6237,11 +6268,11 @@ We need to manually check to make sure that our libraries were loaded properly.<
         </li>
         
         
-        <li id="section-380">
+        <li id="section-382">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-380">&#182;</a>
+                <a class="pilcrow" href="#section-382">&#182;</a>
               </div>
               <p>If the factory is empty, then it failed to load! Invoke the failure callback.</p>
 
@@ -6254,11 +6285,11 @@ We need to manually check to make sure that our libraries were loaded properly.<
         </li>
         
         
-        <li id="section-381">
+        <li id="section-383">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-381">&#182;</a>
+                <a class="pilcrow" href="#section-383">&#182;</a>
               </div>
               <p>We passed the checks, invoke the success callback.</p>
 
@@ -6270,11 +6301,11 @@ We need to manually check to make sure that our libraries were loaded properly.<
         </li>
         
         
-        <li id="section-382">
+        <li id="section-384">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-382">&#182;</a>
+                <a class="pilcrow" href="#section-384">&#182;</a>
               </div>
               <p>Spawn a new element on the page contained our URL with our callbacks.</p>
 
@@ -6286,11 +6317,11 @@ We need to manually check to make sure that our libraries were loaded properly.<
         </li>
         
         
-        <li id="section-383">
+        <li id="section-385">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-383">&#182;</a>
+                <a class="pilcrow" href="#section-385">&#182;</a>
               </div>
               <p>Check to see if a module has already been loaded on the page. This <code>Function</code> will return <code>Boolean</code>, <code>true</code> being
 that a module has already been loaded and <code>false</code> being that it hasn’t.</p>
@@ -6302,11 +6333,11 @@ that a module has already been loaded and <code>false</code> being that it hasn�
         </li>
         
         
-        <li id="section-384">
+        <li id="section-386">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-384">&#182;</a>
+                <a class="pilcrow" href="#section-386">&#182;</a>
               </div>
               <p>See if the module itself has been flagged as loaded.</p>
 
@@ -6319,11 +6350,11 @@ that a module has already been loaded and <code>false</code> being that it hasn�
         </li>
         
         
-        <li id="section-385">
+        <li id="section-387">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-385">&#182;</a>
+                <a class="pilcrow" href="#section-387">&#182;</a>
               </div>
               <p>If the user added their own custom checking function, invoke it now to preform the check.</p>
 
@@ -6336,11 +6367,11 @@ that a module has already been loaded and <code>false</code> being that it hasn�
         </li>
         
         
-        <li id="section-386">
+        <li id="section-388">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-386">&#182;</a>
+                <a class="pilcrow" href="#section-388">&#182;</a>
               </div>
               <p>If globals are enabled, and we have exports for the module, check the DOM to see if they’re defined.</p>
 
@@ -6353,11 +6384,11 @@ that a module has already been loaded and <code>false</code> being that it hasn�
         </li>
         
         
-        <li id="section-387">
+        <li id="section-389">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-387">&#182;</a>
+                <a class="pilcrow" href="#section-389">&#182;</a>
               </div>
               <p>By default just return true, as this function was hit from a success callback.</p>
 
@@ -6369,11 +6400,11 @@ that a module has already been loaded and <code>false</code> being that it hasn�
         </li>
         
         
-        <li id="section-388">
+        <li id="section-390">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-388">&#182;</a>
+                <a class="pilcrow" href="#section-390">&#182;</a>
               </div>
               <p>Check for the instance of our library based on the exports given. If the instance of our library exists it’ll be
 returned, otherwise this function will return <code>null. The</code>Function<code>basically checks the</code>window` variable for a
@@ -6386,11 +6417,11 @@ subkey which are the exports that are specified in the paramter.</p>
         </li>
         
         
-        <li id="section-389">
+        <li id="section-391">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-389">&#182;</a>
+                <a class="pilcrow" href="#section-391">&#182;</a>
               </div>
               <p>If our <code>exports</code> parameter is not an <code>Array</code>, cast it to one.</p>
 
@@ -6403,11 +6434,11 @@ subkey which are the exports that are specified in the paramter.</p>
         </li>
         
         
-        <li id="section-390">
+        <li id="section-392">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-390">&#182;</a>
+                <a class="pilcrow" href="#section-392">&#182;</a>
               </div>
               <p>Storage for our factory value.</p>
 
@@ -6418,11 +6449,11 @@ subkey which are the exports that are specified in the paramter.</p>
         </li>
         
         
-        <li id="section-391">
+        <li id="section-393">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-391">&#182;</a>
+                <a class="pilcrow" href="#section-393">&#182;</a>
               </div>
               <p>If we have no exports, return <code>null</code>.</p>
 
@@ -6435,11 +6466,11 @@ subkey which are the exports that are specified in the paramter.</p>
         </li>
         
         
-        <li id="section-392">
+        <li id="section-394">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-392">&#182;</a>
+                <a class="pilcrow" href="#section-394">&#182;</a>
               </div>
               <p>Case all of our exports to lowercase as some browsers automatically change them.</p>
 
@@ -6454,11 +6485,11 @@ subkey which are the exports that are specified in the paramter.</p>
         </li>
         
         
-        <li id="section-393">
+        <li id="section-395">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-393">&#182;</a>
+                <a class="pilcrow" href="#section-395">&#182;</a>
               </div>
               <p>Swap our exports <code>Array</code> out with out normalized lowercase <code>Array</code>.</p>
 
@@ -6469,11 +6500,11 @@ subkey which are the exports that are specified in the paramter.</p>
         </li>
         
         
-        <li id="section-394">
+        <li id="section-396">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-394">&#182;</a>
+                <a class="pilcrow" href="#section-396">&#182;</a>
               </div>
               <p>If the <code>global.document</code> doesn’t contain the key <code>styleSheets</code>, return <code>null</code>.</p>
 
@@ -6486,11 +6517,11 @@ subkey which are the exports that are specified in the paramter.</p>
         </li>
         
         
-        <li id="section-395">
+        <li id="section-397">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-395">&#182;</a>
+                <a class="pilcrow" href="#section-397">&#182;</a>
               </div>
               <p>Loop through each of the documents stylesheets.</p>
 
@@ -6501,11 +6532,11 @@ subkey which are the exports that are specified in the paramter.</p>
         </li>
         
         
-        <li id="section-396">
+        <li id="section-398">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-396">&#182;</a>
+                <a class="pilcrow" href="#section-398">&#182;</a>
               </div>
               <p>If the stylesheet is <code>0</code>, skip it.</p>
 
@@ -6518,11 +6549,11 @@ subkey which are the exports that are specified in the paramter.</p>
         </li>
         
         
-        <li id="section-397">
+        <li id="section-399">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-397">&#182;</a>
+                <a class="pilcrow" href="#section-399">&#182;</a>
               </div>
               <p>Loop through the following keys in <code>global.document.stylesheets</code>.</p>
 
@@ -6533,11 +6564,11 @@ subkey which are the exports that are specified in the paramter.</p>
         </li>
         
         
-        <li id="section-398">
+        <li id="section-400">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-398">&#182;</a>
+                <a class="pilcrow" href="#section-400">&#182;</a>
               </div>
               <p>This has to be wrapped in a <code>try catch</code> due to some browsers throwing a CORS exception if the stylesheet is
 loaded via an external domain.</p>
@@ -6549,11 +6580,11 @@ loaded via an external domain.</p>
         </li>
         
         
-        <li id="section-399">
+        <li id="section-401">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-399">&#182;</a>
+                <a class="pilcrow" href="#section-401">&#182;</a>
               </div>
               <p>If <code>stylesheet.rules</code> exists, scan it for our export.</p>
 
@@ -6565,11 +6596,11 @@ loaded via an external domain.</p>
         </li>
         
         
-        <li id="section-400">
+        <li id="section-402">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-400">&#182;</a>
+                <a class="pilcrow" href="#section-402">&#182;</a>
               </div>
               <p>If we found our rule, halt the loop.</p>
 
@@ -6587,11 +6618,11 @@ loaded via an external domain.</p>
         </li>
         
         
-        <li id="section-401">
+        <li id="section-403">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-401">&#182;</a>
+                <a class="pilcrow" href="#section-403">&#182;</a>
               </div>
               <p>If we found our selector, halt the loop!</p>
 
@@ -6605,11 +6636,11 @@ loaded via an external domain.</p>
         </li>
         
         
-        <li id="section-402">
+        <li id="section-404">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-402">&#182;</a>
+                <a class="pilcrow" href="#section-404">&#182;</a>
               </div>
               <p>Return whether or not our stylesheet was loaded.</p>
 
@@ -6621,11 +6652,11 @@ loaded via an external domain.</p>
         </li>
         
         
-        <li id="section-403">
+        <li id="section-405">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-403">&#182;</a>
+                <a class="pilcrow" href="#section-405">&#182;</a>
               </div>
               <p>Spawn a new element on the page with our URL.</p>
 
@@ -6636,11 +6667,11 @@ loaded via an external domain.</p>
         </li>
         
         
-        <li id="section-404">
+        <li id="section-406">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-404">&#182;</a>
+                <a class="pilcrow" href="#section-406">&#182;</a>
               </div>
               <p>Create a new script element instance.</p>
 
@@ -6651,11 +6682,11 @@ loaded via an external domain.</p>
         </li>
         
         
-        <li id="section-405">
+        <li id="section-407">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-405">&#182;</a>
+                <a class="pilcrow" href="#section-407">&#182;</a>
               </div>
               <p>The browser supports it, enable crossorigin.</p>
 
@@ -6666,11 +6697,11 @@ loaded via an external domain.</p>
         </li>
         
         
-        <li id="section-406">
+        <li id="section-408">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-406">&#182;</a>
+                <a class="pilcrow" href="#section-408">&#182;</a>
               </div>
               <p>Set the actual URL that we’re going to request to load for our library.</p>
 
@@ -6681,11 +6712,11 @@ loaded via an external domain.</p>
         </li>
         
         
-        <li id="section-407">
+        <li id="section-409">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-407">&#182;</a>
+                <a class="pilcrow" href="#section-409">&#182;</a>
               </div>
               <p>If we get an error callback, bypass any checking and just fail.</p>
 
@@ -6696,11 +6727,11 @@ loaded via an external domain.</p>
         </li>
         
         
-        <li id="section-408">
+        <li id="section-410">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-408">&#182;</a>
+                <a class="pilcrow" href="#section-410">&#182;</a>
               </div>
               <p>Do our checks and throw our callback.</p>
 
@@ -6711,51 +6742,17 @@ loaded via an external domain.</p>
         </li>
         
         
-        <li id="section-409">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-409">&#182;</a>
-              </div>
-              <p>Special event handler for certain versions of IE. @ie</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>	element.onreadystatechange = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
-		<span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.readyState || <span class="hljs-keyword">this</span>.readyState === <span class="hljs-string">'loaded'</span> || <span class="hljs-keyword">this</span>.readyState === <span class="hljs-string">'complete'</span>) {</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-410">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-410">&#182;</a>
-              </div>
-              <p>Explicity remove the callback after we receive it.
-Some versions of IE tend to fire off multiple success events. @ie</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">this</span>.onreadystatechange = <span class="hljs-literal">null</span>;</pre></div></div>
-            
-        </li>
-        
-        
         <li id="section-411">
             <div class="annotation">
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-411">&#182;</a>
               </div>
-              <p>Do our checks and throw our callback.</p>
+              <p>Special event handler for certain versions of IE. @ie</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			success();
-		}
-	};</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	element.onreadystatechange = me.loader.onReadyStateChange(element, success);</pre></div></div>
             
         </li>
         

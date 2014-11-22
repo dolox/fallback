@@ -70,6 +70,21 @@ me.loader.boot = function(moduleName, callback) {
 	me.loader.urls(module);
 };
 
+// Patch for legacy browsers which sometimes fire off `onreadystatechange`. @ie
+me.loader.onReadyStateChange = function(element, callback) {
+	// Attach the event to the element.
+	element.onreadystatechange = function() {
+		if (!this.readyState || this.readyState === 'loaded' || this.readyState === 'complete') {
+			// Explicity remove the callback after we receive it.
+			// Some versions of IE tend to fire off multiple success events. @ie
+			this.onreadystatechange = null;
+
+			// Fire off our callback.
+			callback();
+		}
+	};
+};
+
 // Load the URLs passed in for the module in question. This will run a loop through each of the URLs, attempting to
 // load one at a time, only stopping when either all URLs have been exhausted or a URL has loaded successfully. Other
 // specific checks that determine whether or not a library was actually loaded properly are defined within the loader

@@ -181,16 +181,7 @@ me.loader.js.element = function(url, success, failed) {
 	element.onload = success;
 
 	// Special event handler for certain versions of IE. @ie
-	element.onreadystatechange = function() {
-		if (!this.readyState || this.readyState === 'loaded' || this.readyState === 'complete') {
-			// Explicity remove the callback after we receive it.
-			// Some versions of IE tend to fire off multiple success events. @ie
-			this.onreadystatechange = null;
-
-			// Do our checks and throw our callback.
-			success();
-		}
-	};
+	element.onreadystatechange = me.loader.onReadyStateChange(element, success);
 
 	// Set the actual URL that we're going to request to load for our library.
 	element.src = url;
