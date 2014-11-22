@@ -2380,9 +2380,9 @@ the value is for <code>fallback</code> as it’s value.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> separator = <span class="hljs-string">'\n'</span> + <span class="hljs-built_in">Array</span>(<span class="hljs-number">280</span>).join(<span class="hljs-string">'-'</span>) + <span class="hljs-string">'\n'</span>;
-	<span class="hljs-keyword">var</span> padding30 = <span class="hljs-built_in">Array</span>(<span class="hljs-number">30</span>).join(<span class="hljs-string">' '</span>);
-	<span class="hljs-keyword">var</span> padding60 = <span class="hljs-built_in">Array</span>(<span class="hljs-number">60</span>).join(<span class="hljs-string">' '</span>);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> separator = <span class="hljs-string">'\n'</span> + <span class="hljs-keyword">new</span> <span class="hljs-built_in">Array</span>(<span class="hljs-number">280</span>).join(<span class="hljs-string">'-'</span>) + <span class="hljs-string">'\n'</span>;
+	<span class="hljs-keyword">var</span> padding30 = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Array</span>(<span class="hljs-number">30</span>).join(<span class="hljs-string">' '</span>);
+	<span class="hljs-keyword">var</span> padding60 = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Array</span>(<span class="hljs-number">60</span>).join(<span class="hljs-string">' '</span>);</pre></div></div>
             
         </li>
         
@@ -5910,7 +5910,7 @@ In order for us to get to this programtically we have to use <code>eval</code>.<
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-359">&#182;</a>
               </div>
-              <p>If our <code>factor</code>y is undefined, force the variable back to a <code>null</code>.</p>
+              <p>If our <code>factory</code> is undefined, force the variable back to a <code>null</code>.</p>
 
             </div>
             
@@ -6832,7 +6832,8 @@ Some versions of IE tend to fire off multiple success events. @ie</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> index <span class="hljs-keyword">in</span> ruleset) {
-		<span class="hljs-keyword">var</span> rule = ruleset[index];</pre></div></div>
+		<span class="hljs-keyword">if</span> (ruleset[index]) {
+			<span class="hljs-keyword">var</span> rule = ruleset[index];</pre></div></div>
             
         </li>
         
@@ -6847,7 +6848,7 @@ Some versions of IE tend to fire off multiple success events. @ie</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> (me.indexOf(selectors, <span class="hljs-built_in">String</span>(rule.selectorText).toLowerCase()) !== -<span class="hljs-number">1</span>) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (me.indexOf(selectors, <span class="hljs-built_in">String</span>(rule.selectorText).toLowerCase()) !== -<span class="hljs-number">1</span>) {</pre></div></div>
             
         </li>
         
@@ -6862,7 +6863,7 @@ Some versions of IE tend to fire off multiple success events. @ie</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			found = <span class="hljs-literal">true</span>;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>				found = <span class="hljs-literal">true</span>;</pre></div></div>
             
         </li>
         
@@ -6877,7 +6878,8 @@ Some versions of IE tend to fire off multiple success events. @ie</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">break</span>;
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">break</span>;
+			}
 		}
 	}</pre></div></div>
             
