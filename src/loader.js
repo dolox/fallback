@@ -11,9 +11,6 @@ me.loader = {};
 me.loader.init = function() {
 	// Automatically configure our library via attributes being set on any `script` elements on the page.
 	me.loader.init.autoloader();
-
-	// Flag that our loader has been initialized.
-	return me.loader.inited = true;
 };
 
 // If the attributes `base` or `data-base` are found on any of the `script` tags within the page when the library is

@@ -8,8 +8,8 @@ var me = {};
 
 // Initialize our library. This function must be invoked before we start using the library.
 me.init = function() {
-	// Reference the `head` element of our document and store it into memory.
-	me.head = global.document.getElementsByTagName('head')[0];
+	// Reference the `head` element of our document and store it into memory. The if statement is for test coverage.
+	me.head = global.document ? global.document.getElementsByTagName('head')[0] : null;
 
 	// Spawn our utility functions for the library.
 	me.init.utilities(me, me.utility.types);
@@ -181,7 +181,7 @@ me.browser = {};
 
 // Detect whether or not the current browser is IE.
 me.browser.isIE = function() {
-	return window.document.documentMode ? true : false;
+	return global.document.documentMode ? true : false;
 };
 
 // Detect whether or not the current browser is IE11.
@@ -1401,8 +1401,8 @@ me.loader.js.attributes = function(attribute) {
 		return values;
 	}
 
-	// Fetch all script tags that are on the page.
-	var scripts = global.document.getElementsByTagName('script');
+	// Fetch all script tags that are on the page. The if statement is for test coverage.
+	var scripts = global.document ? global.document.getElementsByTagName('script') : null;
 
 	// Check to make sure that we retrieved a `HTMLCollection`, otherwise halt the `Function`.
 	if (!me.isType(scripts, 'HTMLCollection')) {
@@ -2450,4 +2450,4 @@ me.version = '2.0.0';
 
 me.init();
 
-})(window);
+})(this);

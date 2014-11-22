@@ -4,8 +4,8 @@ var me = {};
 
 // Initialize our library. This function must be invoked before we start using the library.
 me.init = function() {
-	// Reference the `head` element of our document and store it into memory.
-	me.head = global.document.getElementsByTagName('head')[0];
+	// Reference the `head` element of our document and store it into memory. The if statement is for test coverage.
+	me.head = global.document ? global.document.getElementsByTagName('head')[0] : null;
 
 	// Spawn our utility functions for the library.
 	me.init.utilities(me, me.utility.types);
@@ -15,9 +15,6 @@ me.init = function() {
 
 	// Initialize our loader object.
 	me.loader.init();
-
-	// Flag that our library has been initialized.
-	return me.inited = true;
 };
 
 // Reference the library's aliases into the `global` `Object` for the user to directly access. If a alias that we're
@@ -177,7 +174,7 @@ me.browser = {};
 
 // Detect whether or not the current browser is IE.
 me.browser.isIE = function() {
-	return window.document.documentMode ? true : false;
+	return global.document.documentMode ? true : false;
 };
 
 // Detect whether or not the current browser is IE11.

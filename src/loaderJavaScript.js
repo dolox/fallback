@@ -50,8 +50,8 @@ me.loader.js.attributes = function(attribute) {
 		return values;
 	}
 
-	// Fetch all script tags that are on the page.
-	var scripts = global.document.getElementsByTagName('script');
+	// Fetch all script tags that are on the page. The if statement is for test coverage.
+	var scripts = global.document ? global.document.getElementsByTagName('script') : null;
 
 	// Check to make sure that we retrieved a `HTMLCollection`, otherwise halt the `Function`.
 	if (!me.isType(scripts, 'HTMLCollection')) {

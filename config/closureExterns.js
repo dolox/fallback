@@ -1,5 +1,3 @@
-/* globals fallback */
-
 // Globals
 var fallback;
 
