@@ -5,6 +5,10 @@
 		"amd": true
 	},
 
+	"globals": {
+		"me": true
+	},
+
 	"rules": {
 		"no-alert": 2,
 		"no-array-constructor": 2,

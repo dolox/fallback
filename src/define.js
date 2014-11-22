@@ -1,5 +1,3 @@
-/* global me */
-
 // Defining anonymous and named modules for our library is done through this function. There are a number of ways to
 // pass arguments into this function, for more details see comments in the `me.define.args` function.
 me.define = function() {

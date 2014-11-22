@@ -1,5 +1,3 @@
-/* global me */
-
 // Image loader which is responsible for loading any images for the library.
 me.loader.img = {};
 

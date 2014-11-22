@@ -1,5 +1,3 @@
-/* global me */
-
 // JavaScript loader which is responsible for loading any scripts for the library.
 me.loader.js = {};
 

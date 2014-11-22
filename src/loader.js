@@ -1,5 +1,3 @@
-/*global me*/
-
 // The loader object handles asynchronously loading of all the files for the library. It acts as a middle man between
 // the `require` function and our loader libraries. Loader libraries for example being `loaderImage.js`,
 // `loaderStylesheet.js` and `loaderJavaScript.js`. Those individual libraries are treated as non-logic based loaders.

@@ -1,5 +1,3 @@
-/* global me */
-
 // Fetch an already existant module from our definitions. If the module in question doesn't exist then we'll generate
 // it automatically unless the `generate` parameter is explicitly set to `false`. If a `module` is defined, then it's
 // defaults will come out of whatever is contained in the `input` parameter.

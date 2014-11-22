@@ -1,5 +1,3 @@
-/* global me */
-
 // Load up and invoke our modules along with all of their dependencies. This function will first find all dependencies
 // for our modules and then attempt to load and invoke them from least to most dependent. This procedure needs to
 // happen in 2 separate operations due to the possibility of anonymous modules having their own dependencies that we

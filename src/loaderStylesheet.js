@@ -1,5 +1,3 @@
-/* global me */
-
 // Cascading Stylesheet loader which is responsible for loading any CSS files for the library.
 me.loader.css = {};
 

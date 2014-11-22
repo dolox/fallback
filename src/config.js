@@ -1,5 +1,3 @@
-/* global me */
-
 // Configure the library. If the `input` is malformed then the `Function` will return `false`, otherwise the `Function`
 // will return the normalized value that was imported.
 me.config = function(input) {
