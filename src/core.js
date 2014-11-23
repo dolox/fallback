@@ -52,8 +52,7 @@ me.init.aliases = function(container, input) {
 		me.each(aliases, function(alias) {
 			// If the alias is currently defined in the `container` object, skip it and throw a warning to the end user.
 			if (me.isDefined(container[alias])) {
-				me.log('core', 'init', 'aliases', 'The variable container["' + alias + '"] already exists. Halted reference.');
-				return;
+				me.log(2, 'core', 'init', 'aliases', 'The variable container["' + alias + '"] already exists. Overriding!');
 			}
 
 			// Map the alias to our module.

@@ -948,7 +948,7 @@ The arguments for this `Function` may be passed in the following variety:
 
 - If all **3 arguments** are passed in, they'll be treated as:
 
-	- The `name`, `dependencies`, `factory` and `error`.
+	- The `name`, `dependencies` and `factory`.
 
 ===
 

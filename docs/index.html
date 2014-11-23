@@ -298,8 +298,7 @@ advantage of it.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (me.isDefined(container[alias])) {
-				me.log(<span class="hljs-string">'core'</span>, <span class="hljs-string">'init'</span>, <span class="hljs-string">'aliases'</span>, <span class="hljs-string">'The variable container["'</span> + alias + <span class="hljs-string">'"] already exists. Halted reference.'</span>);
-				<span class="hljs-keyword">return</span>;
+				me.log(<span class="hljs-number">2</span>, <span class="hljs-string">'core'</span>, <span class="hljs-string">'init'</span>, <span class="hljs-string">'aliases'</span>, <span class="hljs-string">'The variable container["'</span> + alias + <span class="hljs-string">'"] already exists. Overriding!'</span>);
 			}</pre></div></div>
             
         </li>
@@ -5197,7 +5196,7 @@ scripts themselves.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	me.loader[<span class="hljs-built_in">module</span>.identity].boot(<span class="hljs-built_in">module</span>, url, me.loader.urls.success, me.loader.urls.failed);
+            <div class="content"><div class='highlight'><pre>	me.loader[<span class="hljs-built_in">module</span>.identity].boot(<span class="hljs-built_in">module</span>, url, me.loader.urls.success, me.loader.urls.failed, <span class="hljs-built_in">module</span>.identity);
 };</pre></div></div>
             
         </li>
@@ -9297,7 +9296,7 @@ and use a different set of base URLs with other modules.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-577">&#182;</a>
               </div>
-              <p>Store our extension string.</p>
+              <p>Store our extension string, for Node JS, don’t add an extension. @nodejs</p>
 
             </div>
             

@@ -1,29 +1,21 @@
-check nodejs add another loader if needed
-
-define undefine ?
-
-full run through
-
-
-
-
-
-
 
 [ ] full run through in IE6-11, safari, firefox, chrome, makes sure it's working properly including for all examples
 
-[ ] change the gruntfile back to localhost from 10.0.1.2
-
 [ ] finish writing the README.docs for the last few things
+	[ ] add all examples to README
 	[ ] state that logging won't work in minify version for better compression
 	[ ] config.amd fix the wording
 	[ ] error callbacks about halting factory executions down the waterfall
+	[ ] details about nodejs, make sure npm install works, thanks
 
 [ ] cleanup
 	[ ] update sample code on the website and file size
 	[ ] 301 fallbackjs.com to fallback.io
 	[ ] make sure cdnjs is automating pull requests from package.json
 	[ ] stats better docs
+
+
+
 
 
 

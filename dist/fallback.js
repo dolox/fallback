@@ -56,8 +56,7 @@ me.init.aliases = function(container, input) {
 		me.each(aliases, function(alias) {
 			// If the alias is currently defined in the `container` object, skip it and throw a warning to the end user.
 			if (me.isDefined(container[alias])) {
-				me.log('core', 'init', 'aliases', 'The variable container["' + alias + '"] already exists. Halted reference.');
-				return;
+				me.log(2, 'core', 'init', 'aliases', 'The variable container["' + alias + '"] already exists. Overriding!');
 			}
 
 			// Map the alias to our module.
@@ -1257,7 +1256,7 @@ me.loader.urls = function(module) {
 	me.log(3, 'loader', 'Requesting to load `' + module.name + '` via `' + url + '`');
 
 	// Call upon our specific loader script to load our URL.
-	me.loader[module.identity].boot(module, url, me.loader.urls.success, me.loader.urls.failed);
+	me.loader[module.identity].boot(module, url, me.loader.urls.success, me.loader.urls.failed, module.identity);
 };
 
 // Common operations to perform whether a module loaded successfully or not.
@@ -2222,7 +2221,7 @@ me.module.urls = function(moduleName, identity, urls) {
 	// Fetch the base URL for our module.
 	var base = me.module.base(identity) || '';
 
-	// Store our extension string.
+	// Store our extension string, for Node JS, don't add an extension. @nodejs
 	var extension = '.' + identity;
 
 	// If we don't have any URLs, then set the URLs to a AMD.

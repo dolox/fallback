@@ -453,7 +453,7 @@ me.module.urls = function(moduleName, identity, urls) {
 	// Fetch the base URL for our module.
 	var base = me.module.base(identity) || '';
 
-	// Store our extension string.
+	// Store our extension string, for Node JS, don't add an extension. @nodejs
 	var extension = '.' + identity;
 
 	// If we don't have any URLs, then set the URLs to a AMD.

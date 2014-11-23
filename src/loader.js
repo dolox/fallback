@@ -86,7 +86,7 @@ me.loader.urls = function(module) {
 	me.log(3, 'loader', 'Requesting to load `' + module.name + '` via `' + url + '`');
 
 	// Call upon our specific loader script to load our URL.
-	me.loader[module.identity].boot(module, url, me.loader.urls.success, me.loader.urls.failed);
+	me.loader[module.identity].boot(module, url, me.loader.urls.success, me.loader.urls.failed, module.identity);
 };
 
 // Common operations to perform whether a module loaded successfully or not.

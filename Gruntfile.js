@@ -56,7 +56,7 @@ me.boot.tasks = function() {
 };
 
 me.config = {
-	host: '10.0.1.2',
+	host: 'localhost',
 	livereloadPort: 3001,
 	port: 3000
 };
