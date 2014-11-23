@@ -6,7 +6,7 @@ module.exports = function(grunt, tasks) {
 
 	me.options = {};
 
-	me.options.checkModified = true;
+	me.options.checkModified = false;
 
 	me.options.compilerFile = uri.nodeModules + 'superstartup-closure-compiler/build/compiler.jar';
 

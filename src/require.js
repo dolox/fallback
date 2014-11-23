@@ -160,7 +160,7 @@ me.require.args.router = function(args) {
 	};
 
 	// Determine the router `Function` that we need to invoke.
-	var reference = 'route' + (args.length > 3 ? 3 : args.length);
+	var reference = args.length > 3 ? 3 : args.length;
 
 	// Invoke the router `Function` with the arguments and payload.
 	payload = me.require.args.router[reference](args, payload);
@@ -175,7 +175,7 @@ me.require.args.router = function(args) {
 };
 
 // Handle no arguments being passed into the `require` `Function`.
-me.require.args.router.route0 = function(args, payload) {
+me.require.args.router[0] = function(args, payload) {
 	// Throw an error to the end user.
 	me.log(1, 'require', 'args', 'No arguments were passed into `require`! Halting!', args);
 
@@ -184,7 +184,7 @@ me.require.args.router.route0 = function(args, payload) {
 };
 
 // Handle 1 argument being passed into the `require` `Function`.
-me.require.args.router.route1 = function(args, payload) {
+me.require.args.router[1] = function(args, payload) {
 	// If it's a `Function`, derive our dependencies from it.
 	if (me.isFunction(args[0])) {
 		// Reference the factory.
@@ -204,7 +204,7 @@ me.require.args.router.route1 = function(args, payload) {
 };
 
 // Handle 2 arguments being passed into the `require` `Function`.
-me.require.args.router.route2 = function(args, payload) {
+me.require.args.router[2] = function(args, payload) {
 	// If both arguments are a `Function` then treat them as the `factory` and `error` callbacks.
 	if (me.isFunction(args[0]) && me.isFunction(args[1])) {
 		// Reference the `error` `Function`.
@@ -231,7 +231,7 @@ me.require.args.router.route2 = function(args, payload) {
 };
 
 // Handle 3 arguments being passed into the `require` `Function`.
-me.require.args.router.route3 = function(args, payload) {
+me.require.args.router[3] = function(args, payload) {
 	// Reference the `dependencies`.
 	payload.deps = args[0];
 

@@ -117,8 +117,10 @@ me.tasks.devHup = function() {
 		'newer:clean:dist',
 		'newer:eslint',
 		'newer:concat',
-		'newer:wrap',
+		'newer:wrap:js',
+		'newer:wrap:jsMin',
 		'newer:closureCompiler',
+		'newer:wrap:jsMinPost',
 		'newer:clean:distTmp',
 
 		'docs',

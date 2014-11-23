@@ -11,14 +11,6 @@ fallback.loader.css.boot =
 fallback.loader.img.boot =
 fallback.loader.js.boot =
 
-// Modules
-fallback.module.definitions =
-fallback.module.errorCallbacks =
-fallback.module.failed =
-fallback.module.loader =
-fallback.module.success =
-fallback.module.successCallbacks =
-
 // Config
 fallback.config.amd =
 fallback.config.base =
@@ -39,7 +31,6 @@ fallback.normalizeBooleanSeries =
 fallback.isFunction =
 fallback.normalizeFunction =
 fallback.normalizeFunctionSeries =
-fallback.isHTMLScriptElement =
 fallback.isNumber =
 fallback.normalizeNumber =
 fallback.normalizeNumberSeries =

@@ -188,7 +188,7 @@ me.define.args.router = function(args) {
 	};
 
 	// Determine the router `Function` that we need to invoke.
-	var reference = 'route' + (args.length > 3 ? 3 : args.length);
+	var reference = args.length > 3 ? 3 : args.length;
 
 	// Invoke the router `Function` with the arguments and payload.
 	payload = me.define.args.router[reference](args, payload);
@@ -203,7 +203,7 @@ me.define.args.router = function(args) {
 };
 
 // Handle no arguments being passed into the `define` `Function`.
-me.define.args.router.route0 = function(args, payload) {
+me.define.args.router[0] = function(args, payload) {
 	// Throw an error to the end user.
 	me.log(1, 'define', 'args', 'No arguments were passed into `define`! Halting!', args);
 
@@ -212,7 +212,7 @@ me.define.args.router.route0 = function(args, payload) {
 };
 
 // Handle 1 argument being passed into the `define` `Function`.
-me.define.args.router.route1 = function(args, payload) {
+me.define.args.router[1] = function(args, payload) {
 	// Reference the `factory`.
 	payload.factory = args[0];
 
@@ -221,7 +221,7 @@ me.define.args.router.route1 = function(args, payload) {
 };
 
 // Handle 2 arguments being passed into the `define` `Function`.
-me.define.args.router.route2 = function(args, payload) {
+me.define.args.router[2] = function(args, payload) {
 	// If the first argument is a `String`, treat the arguments as `name`, and `factory`.
 	if (me.isString(args[0])) {
 		// Reference the `name`.
@@ -248,7 +248,7 @@ me.define.args.router.route2 = function(args, payload) {
 };
 
 // Handle 3 arguments being passed into the `define` `Function`.
-me.define.args.router.route3 = function(args, payload) {
+me.define.args.router[3] = function(args, payload) {
 	// Reference the `name`.
 	payload.name = args[0];
 

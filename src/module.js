@@ -217,16 +217,16 @@ me.module.define.defaults = function() {
 		'deps': [me.normalizeStringSeries, null],
 
 		// An error `Function` which will be called if the library or it's dependencies fail to load.
-		'error': [me.normalizeFunction, null],
+		error: [me.normalizeFunction, null],
 
 		// We store our errorr callbacks here for processing after our library has finished loading.
-		'errorCallbacks': [me.normalizeFunctionSeries, null],
+		errorCallbacks: [me.normalizeFunctionSeries, null],
 
 		// Exports for the module that we'll check the global scope for to see if the module loaded properly.
 		'exports': [me.normalizeStringSeries, null],
 
 		// The identity of the module, for example: `css`, `img`, or `js`.
-		'identitiy': [me.normalizeString, null],
+		identitiy: [me.normalizeString, null],
 
 		// If the factory of the module is a function, it'll be invoked upon it's first require then that state will be
 		// saved. This flags whether or not the factory was invoked and saved.
@@ -234,43 +234,43 @@ me.module.define.defaults = function() {
 
 		// The value of our module. It's value can be anything, example: `Array`, `Function`, `HTMLElement`, `Object`,
 		// `String`, etc.
-		'factory': null,
+		factory: null,
 
 		// Must be either `null` or a `Function`. As soon as module is first used/referenced, this `Function` will
 		// immediately be called upon if present.
 		'init': [me.normalizeFunction, null],
 
 		// Any loader data for the module will be stored here.
-		'loader': {
+		loader: {
 			// Any URLs that failed to load will be stored here.
-			'failed': [me.normalizeStringSeries, null],
+			failed: [me.normalizeStringSeries, null],
 
 			// Whether or not we actually attempted to load this module.
-			'loaded': [me.normalizeBoolean, false],
+			loaded: [me.normalizeBoolean, false],
 
 			// If a URL loaded sucecssfully, it will be stored here.
-			'success': [me.normalizeString, null],
+			success: [me.normalizeString, null],
 
 			// The time that a module finished loading.
-			'timeEnd': [me.normalizeNumber, null],
+			timeEnd: [me.normalizeNumber, null],
 
 			// The time that a module initiated it's load sequence. This includes all loading for the module in question. For
 			// example if a library had 3 fallback URLs, and the first 2 failed due to timeouts, and the 3rd was successful,
 			// this variable would reflect the current time prior to the first 2 URLs failing.
-			'timeStart': [me.normalizeNumber, null],
+			timeStart: [me.normalizeNumber, null],
 
 			// Flags whether or not the module is currently in the process of loading.
-			'working': [me.normalizeBoolean, false]
+			working: [me.normalizeBoolean, false]
 		},
 
 		// We store our errorr callbacks here for processing after our library has finished loading.
-		'successCallbacks': [me.normalizeFunctionSeries, null],
+		successCallbacks: [me.normalizeFunctionSeries, null],
 
 		// Where all the URLs are stored for our module.
 		'urls': [me.normalizeStringSeries, null],
 
 		// The version of our module.
-		'version': [me.normalizeString, null]
+		version: [me.normalizeString, null]
 	};
 };
 
@@ -378,28 +378,28 @@ me.module.invoke.callbacks = function(moduleName, success) {
 	var module = me.module(moduleName, null, false);
 
 	// Determine which set of callbacks to invoke.
-	var key = 'errorCallbacks';
+	var reference = module.errorCallbacks;
 
 	// If we're invoking our success callbacks, then wipe the error callback references from memory.
 	if (success) {
-		module[key] = [];
-		key = 'successCallbacks';
+		module.errorCallbacks = [];
+		reference = module.successCallbacks;
 	}
 
 	// If there are no callbacks, then halt the `Function`.
-	if (!me.isArray(module[key]) || !module[key].length) {
+	if (!me.isArray(reference) || !reference.length) {
 		return;
 	}
 
 	// Loop through end invoke each of the callbacks.
-	me.each(module[key], function(callback, index) {
+	me.each(reference, function(callback, index) {
 		// Invoke the callback.
 		if (me.isFunction(callback)) {
 			callback();
 		}
 
 		// Remove the callback from the queue.
-		delete module[key][index];
+		delete reference[index];
 	});
 };
 

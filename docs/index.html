@@ -4255,7 +4255,7 @@ particular case, we’ll destroy the new definition and instead alias it with ou
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> reference = <span class="hljs-string">'route'</span> + (args.length &gt; <span class="hljs-number">3</span> ? <span class="hljs-number">3</span> : args.length);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> reference = args.length &gt; <span class="hljs-number">3</span> ? <span class="hljs-number">3</span> : args.length;</pre></div></div>
             
         </li>
         
@@ -4318,7 +4318,7 @@ particular case, we’ll destroy the new definition and instead alias it with ou
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>me.define.args.router.route0 = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(args, payload)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>me.define.args.router[<span class="hljs-number">0</span>] = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(args, payload)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -4364,7 +4364,7 @@ particular case, we’ll destroy the new definition and instead alias it with ou
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>me.define.args.router.route1 = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(args, payload)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>me.define.args.router[<span class="hljs-number">1</span>] = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(args, payload)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -4410,7 +4410,7 @@ particular case, we’ll destroy the new definition and instead alias it with ou
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>me.define.args.router.route2 = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(args, payload)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>me.define.args.router[<span class="hljs-number">2</span>] = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(args, payload)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -4548,7 +4548,7 @@ particular case, we’ll destroy the new definition and instead alias it with ou
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>me.define.args.router.route3 = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(args, payload)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>me.define.args.router[<span class="hljs-number">3</span>] = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(args, payload)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -8257,7 +8257,7 @@ normalization loop.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		<span class="hljs-string">'error'</span>: [me.normalizeFunction, <span class="hljs-literal">null</span>],</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		error: [me.normalizeFunction, <span class="hljs-literal">null</span>],</pre></div></div>
             
         </li>
         
@@ -8272,7 +8272,7 @@ normalization loop.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		<span class="hljs-string">'errorCallbacks'</span>: [me.normalizeFunctionSeries, <span class="hljs-literal">null</span>],</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		errorCallbacks: [me.normalizeFunctionSeries, <span class="hljs-literal">null</span>],</pre></div></div>
             
         </li>
         
@@ -8302,7 +8302,7 @@ normalization loop.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		<span class="hljs-string">'identitiy'</span>: [me.normalizeString, <span class="hljs-literal">null</span>],</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		identitiy: [me.normalizeString, <span class="hljs-literal">null</span>],</pre></div></div>
             
         </li>
         
@@ -8334,7 +8334,7 @@ saved. This flags whether or not the factory was invoked and saved.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		<span class="hljs-string">'factory'</span>: <span class="hljs-literal">null</span>,</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		factory: <span class="hljs-literal">null</span>,</pre></div></div>
             
         </li>
         
@@ -8365,7 +8365,7 @@ immediately be called upon if present.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		<span class="hljs-string">'loader'</span>: {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		loader: {</pre></div></div>
             
         </li>
         
@@ -8380,7 +8380,7 @@ immediately be called upon if present.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-string">'failed'</span>: [me.normalizeStringSeries, <span class="hljs-literal">null</span>],</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			failed: [me.normalizeStringSeries, <span class="hljs-literal">null</span>],</pre></div></div>
             
         </li>
         
@@ -8395,7 +8395,7 @@ immediately be called upon if present.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-string">'loaded'</span>: [me.normalizeBoolean, <span class="hljs-literal">false</span>],</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			loaded: [me.normalizeBoolean, <span class="hljs-literal">false</span>],</pre></div></div>
             
         </li>
         
@@ -8410,7 +8410,7 @@ immediately be called upon if present.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-string">'success'</span>: [me.normalizeString, <span class="hljs-literal">null</span>],</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			success: [me.normalizeString, <span class="hljs-literal">null</span>],</pre></div></div>
             
         </li>
         
@@ -8425,7 +8425,7 @@ immediately be called upon if present.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-string">'timeEnd'</span>: [me.normalizeNumber, <span class="hljs-literal">null</span>],</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			timeEnd: [me.normalizeNumber, <span class="hljs-literal">null</span>],</pre></div></div>
             
         </li>
         
@@ -8442,7 +8442,7 @@ this variable would reflect the current time prior to the first 2 URLs failing.<
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-string">'timeStart'</span>: [me.normalizeNumber, <span class="hljs-literal">null</span>],</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			timeStart: [me.normalizeNumber, <span class="hljs-literal">null</span>],</pre></div></div>
             
         </li>
         
@@ -8457,7 +8457,7 @@ this variable would reflect the current time prior to the first 2 URLs failing.<
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-string">'working'</span>: [me.normalizeBoolean, <span class="hljs-literal">false</span>]
+            <div class="content"><div class='highlight'><pre>			working: [me.normalizeBoolean, <span class="hljs-literal">false</span>]
 		},</pre></div></div>
             
         </li>
@@ -8473,7 +8473,7 @@ this variable would reflect the current time prior to the first 2 URLs failing.<
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		<span class="hljs-string">'successCallbacks'</span>: [me.normalizeFunctionSeries, <span class="hljs-literal">null</span>],</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		successCallbacks: [me.normalizeFunctionSeries, <span class="hljs-literal">null</span>],</pre></div></div>
             
         </li>
         
@@ -8503,7 +8503,7 @@ this variable would reflect the current time prior to the first 2 URLs failing.<
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		<span class="hljs-string">'version'</span>: [me.normalizeString, <span class="hljs-literal">null</span>]
+            <div class="content"><div class='highlight'><pre>		version: [me.normalizeString, <span class="hljs-literal">null</span>]
 	};
 };</pre></div></div>
             
@@ -8978,7 +8978,7 @@ dependencies have been exhausted and added to the queue.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> key = <span class="hljs-string">'errorCallbacks'</span>;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> reference = <span class="hljs-built_in">module</span>.errorCallbacks;</pre></div></div>
             
         </li>
         
@@ -8994,8 +8994,8 @@ dependencies have been exhausted and added to the queue.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (success) {
-		<span class="hljs-built_in">module</span>[key] = [];
-		key = <span class="hljs-string">'successCallbacks'</span>;
+		<span class="hljs-built_in">module</span>.errorCallbacks = [];
+		reference = <span class="hljs-built_in">module</span>.successCallbacks;
 	}</pre></div></div>
             
         </li>
@@ -9011,7 +9011,7 @@ dependencies have been exhausted and added to the queue.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (!me.isArray(<span class="hljs-built_in">module</span>[key]) || !<span class="hljs-built_in">module</span>[key].length) {
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (!me.isArray(reference) || !reference.length) {
 		<span class="hljs-keyword">return</span>;
 	}</pre></div></div>
             
@@ -9028,7 +9028,7 @@ dependencies have been exhausted and added to the queue.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	me.each(<span class="hljs-built_in">module</span>[key], <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(callback, index)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	me.each(reference, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(callback, index)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -9060,7 +9060,7 @@ dependencies have been exhausted and added to the queue.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">delete</span> <span class="hljs-built_in">module</span>[key][index];
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">delete</span> reference[index];
 	});
 };</pre></div></div>
             
@@ -10186,7 +10186,7 @@ dependencies are actually required for it.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> reference = <span class="hljs-string">'route'</span> + (args.length &gt; <span class="hljs-number">3</span> ? <span class="hljs-number">3</span> : args.length);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> reference = args.length &gt; <span class="hljs-number">3</span> ? <span class="hljs-number">3</span> : args.length;</pre></div></div>
             
         </li>
         
@@ -10249,7 +10249,7 @@ dependencies are actually required for it.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>me.require.args.router.route0 = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(args, payload)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>me.require.args.router[<span class="hljs-number">0</span>] = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(args, payload)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -10295,7 +10295,7 @@ dependencies are actually required for it.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>me.require.args.router.route1 = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(args, payload)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>me.require.args.router[<span class="hljs-number">1</span>] = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(args, payload)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -10389,7 +10389,7 @@ dependencies are actually required for it.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>me.require.args.router.route2 = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(args, payload)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>me.require.args.router[<span class="hljs-number">2</span>] = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(args, payload)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -10527,7 +10527,7 @@ dependencies are actually required for it.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>me.require.args.router.route3 = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(args, payload)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>me.require.args.router[<span class="hljs-number">3</span>] = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(args, payload)</span> </span>{</pre></div></div>
             
         </li>
         
