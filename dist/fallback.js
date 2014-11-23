@@ -6,6 +6,7 @@
 // variable referenced throughout, this is simply short-hand for the library.
 var me = {};
 
+
 // Initialize our library. This function must be invoked before we start using the library.
 me.init = function() {
 	// Reference the `head` element of our document and store it into memory. The if statement is for test coverage.
@@ -13,6 +14,30 @@ me.init = function() {
 
 	// Spawn our utility functions for the library.
 	me.init.utilities(me, me.utility.types);
+
+	// The following is for better compression.
+	/* eslint-disable */
+	me.isArray = me['isArray'];
+	me.isBoolean = me['isBoolean'];
+	me.isFunction = me['isFunction'];
+	me.isNumber = me['isNumber'];
+	me.isObject = me['isObject'];
+	me.isString = me['isString'];
+
+	me.normalizeArray = me['normalizeArray'];
+	me.normalizeBoolean = me['normalizeBoolean'];
+	me.normalizeFunction = me['normalizeFunction'];
+	me.normalizeNumber = me['normalizeNumber'];
+	me.normalizeObject = me['normalizeObject'];
+	me.normalizeString = me['normalizeString'];
+
+	me.normalizeArraySeries = me['normalizeArraySeries'];
+	me.normalizeBooleanSeries = me['normalizeBooleanSeries'];
+	me.normalizeFunctionSeries = me['normalizeFunctionSeries'];
+	me.normalizeNumberSeries = me['normalizeNumberSeries'];
+	me.normalizeObjectSeries = me['normalizeObjectSeries'];
+	me.normalizeStringSeries = me['normalizeStringSeries'];
+	/* eslint-enable */
 
 	// Reference aliases for the library into the `global` object for the user to directly access.
 	me.init.aliases(global, me.aliases);

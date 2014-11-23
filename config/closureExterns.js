@@ -22,21 +22,4 @@ fallback.config.libs.deps =
 fallback.config.libs.exports =
 fallback.config.libs.urls =
 fallback.config.libs.check =
-fallback.config.libs.init =
-
-// Normalization
-fallback.isBoolean =
-fallback.normalizeBoolean =
-fallback.normalizeBooleanSeries =
-fallback.isFunction =
-fallback.normalizeFunction =
-fallback.normalizeFunctionSeries =
-fallback.isNumber =
-fallback.normalizeNumber =
-fallback.normalizeNumberSeries =
-fallback.isObject =
-fallback.normalizeObject =
-fallback.normalizeObjectSeries =
-fallback.isString =
-fallback.normalizeString =
-fallback.normalizeStringSeries = true;
+fallback.config.libs.init = true;
