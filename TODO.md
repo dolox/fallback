@@ -1,10 +1,14 @@
-[ ] define and require functions to have 2nd factory which is for error if any depednencies have failed to load or double anon module in same file
+check nodejs add another loader if needed
 
-[ ] anonymous modules defineName broken
+define undefine ?
 
-[ ] examples
-	[ ] fix migration polyfills --[ ] .importer
-	[ ] angular js example
+full run through
+
+
+
+
+
+
 
 [ ] full run through in IE6-11, safari, firefox, chrome, makes sure it's working properly including for all examples
 
@@ -13,12 +17,13 @@
 [ ] finish writing the README.docs for the last few things
 	[ ] state that logging won't work in minify version for better compression
 	[ ] config.amd fix the wording
+	[ ] error callbacks about halting factory executions down the waterfall
 
 [ ] cleanup
 	[ ] update sample code on the website and file size
 	[ ] 301 fallbackjs.com to fallback.io
 	[ ] make sure cdnjs is automating pull requests from package.json
-
+	[ ] stats better docs
 
 
 
@@ -40,9 +45,11 @@ unit tests
 
 	[x] config
 	[x] core
+		[ ] me.init.aliases
 		[ ] parallel.anonymous
 		[ ] isIE
 		[ ]  me.getProperty
+		[ ] me.isPrefixed
 		[ ] isIE11
 	[ ] define
 	[ ] loader

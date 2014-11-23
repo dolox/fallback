@@ -1,10 +1,10 @@
 <p align="center"><a href="http://fallback.io/" target="_blank"><img alt="Fallback JS" height="128" src="http://fallback.io/img/logo.png" /></a></p>
 <h1 align="center">Fallback JS v2.0.0</h1>
-<h6 align="center">16.15 KB Compressed / 88.16 KB Uncompressed</h6>
+<h6 align="center">18.13 KB Compressed / 95.71 KB Uncompressed</h6>
 
 <p align="center">
-	<a href="https://raw.githubusercontent.com/dolox/fallback/v2.0.0/dist/fallback.min.js"><img src="https://img.shields.io/badge/production-16.15KB-brightgreen.svg" /></a>
-	<a href="https://raw.githubusercontent.com/dolox/fallback/v2.0.0/dist/fallback.js"><img src="https://img.shields.io/badge/development-88.16KB-brightgreen.svg" /></a>
+	<a href="https://raw.githubusercontent.com/dolox/fallback/v2.0.0/dist/fallback.min.js"><img src="https://img.shields.io/badge/production-18.13KB-brightgreen.svg" /></a>
+	<a href="https://raw.githubusercontent.com/dolox/fallback/v2.0.0/dist/fallback.js"><img src="https://img.shields.io/badge/development-95.71KB-brightgreen.svg" /></a>
 	<a href="http://badge.fury.io/gh/dolox%2Ffallback" target="_blank"><img src="https://badge.fury.io/gh/dolox%2Ffallback.svg" /></a>
 	<a href="http://badge.fury.io/bo/fallback" target="_blank"><img src="https://badge.fury.io/bo/fallback.svg" /></a>
 	<a href="https://github.com/dolox/fallback/blob/master/LICENSE.txt"><img src="https://img.shields.io/badge/license-MIT-brightgreen.svg" /></a>
@@ -202,7 +202,7 @@ A technical overview with in depth explanations of the libraries functionality.
 | Function                                                 | Aliases                                                                                                          | Description   |
 | -------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ------------- |
 | [config](#fallbackconfiginput)                           | `cfg`, `conf`, `config`, `fallback.cfg`, `fallback.conf`, `fallback.config`, `fbk.cfg`, `fbk.conf`, `fbk.config` | Configures the libraries you want to load for your project. |
-| [define](#fallbackdefinename-dependencies-factory-error) | `def`, `define`, `fallback.def`, `fallback.define`, `fbk.def`, `fbk.define`                                      | Define your JavaScript files so they can be easily loaded and referenced. |
+| [define](#fallbackdefinename-dependencies-factory) | `def`, `define`, `fallback.def`, `fallback.define`, `fbk.def`, `fbk.define`                                      | Define your JavaScript files so they can be easily loaded and referenced. |
 | [require](#fallbackrequiredependencies-factory-error)          | `fallback.req`, `fallback.require`, `fbk.req`, `fbk.require`, `req`, `require`                                   | Loads your libraries asynchronously the page. |
 | [stats](#fallbackstats)                                  | `fallback.stats`, `fbk.stats`                                                                                    | Exports statistics for any libraries that were loaded. |
 | [version](#fallbackversion)                              | `fallback.version`, `fbk.version`                                                                                | Get the current version number of Fallback JS. |
@@ -428,9 +428,9 @@ fallback.require(function(css_bootstrap) {
 | ------- | ------- | -------- |
 | Boolean | true    | No       |
 
-This parameter directly affects how libraries are loaded and referenced by the Fallback JS library. It specifically tells the library to check the `window` `global` to determine if a library has loaded properly and how to reference that library when using the [define](#fallbackdefinename-dependencies-factory-error) and [require](#fallbackrequiredependencies-factory-error) functions.
+This parameter directly affects how libraries are loaded and referenced by the Fallback JS library. It specifically tells the library to check the `window` `global` to determine if a library has loaded properly and how to reference that library when using the [define](#fallbackdefinename-dependencies-factory) and [require](#fallbackrequiredependencies-factory-error) functions.
 
-Any value(s) which are set as [exports](#fallbackconfig---input---libs---key----values---exports) for a library will directly correlate as references to the `window` `global`. For example if you were set the [exports](#fallbackconfig---input---libs---key----values---exports) to `["jQuery", "$"]` for the library `jQuery`, Fallback JS would check for `window.jQuery` and `window. to determine whether or not the library was loaded. If Fallback JS saw either of those `window` variables as `defined`, it would then reference those `window` variables whenever `jQuery` is used with the [define](#fallbackdefinename-dependencies-factory-error) and [require](#fallbackrequiredependencies-factory-error) functions.
+Any value(s) which are set as [exports](#fallbackconfig---input---libs---key----values---exports) for a library will directly correlate as references to the `window` `global`. For example if you were set the [exports](#fallbackconfig---input---libs---key----values---exports) to `["jQuery", "$"]` for the library `jQuery`, Fallback JS would check for `window.jQuery` and `window. to determine whether or not the library was loaded. If Fallback JS saw either of those `window` variables as `defined`, it would then reference those `window` variables whenever `jQuery` is used with the [define](#fallbackdefinename-dependencies-factory) and [require](#fallbackrequiredependencies-factory-error) functions.
 
 **Example:**
 
@@ -463,7 +463,7 @@ fallback.require(function(jQuery) {
 
 - Detecting whether or not a library has successfully lazy loaded other than by relying on the native browsers callbacks. *Native callbacks don't work properly in legacy browsers.*
 
-- The ability to reference files which aren't using AMD. If you attempt to load a JavaScript file which doesn't use the [define](#fallbackdefinename-dependencies-factory-error) `Function`, then you won't be able to reference it within the `factory` of a [define](#fallbackdefinename-dependencies-factory-error) or [require](#fallbackrequiredependencies-factory-error) statement.
+- The ability to reference files which aren't using AMD. If you attempt to load a JavaScript file which doesn't use the [define](#fallbackdefinename-dependencies-factory) `Function`, then you won't be able to reference it within the `factory` of a [define](#fallbackdefinename-dependencies-factory) or [require](#fallbackrequiredependencies-factory-error) statement.
 
 **Example:**
 
@@ -716,7 +716,7 @@ window.iePolyfills = true;
 | ------------ | ------- | -------- |
 | Array/String | null    | No       |
 
-This parameter allows you to set the dependencies which are required to load prior to the library in question. When attempting to reference a library using the [define](#fallbackdefinename-dependencies-factory-error) and [require](#fallbackrequiredependencies-factory-error) functions, all of the library dependencies will load first if they haven't already been loaded.
+This parameter allows you to set the dependencies which are required to load prior to the library in question. When attempting to reference a library using the [define](#fallbackdefinename-dependencies-factory) and [require](#fallbackrequiredependencies-factory-error) functions, all of the library dependencies will load first if they haven't already been loaded.
 
 The value of this parameter can be either a `String` or `String Series` *(`Array` of `Strings`)*. The value(s) can correlate to either an [alias](#fallbackconfig---input---libs---key----values---alias) or [key](#fallbackconfig---input---libs---keys) for the library(s) dependency.
 
@@ -912,7 +912,7 @@ fallback.config({
 
 ===
 
-### fallback.define(`name`, `dependencies`, `factory`, `error`)
+### fallback.define(`name`, `dependencies`, `factory`)
 
 ***Aliases:*** `def`, `define`, `fallback.def`, `fallback.define`, `fbk.def`, `fbk.define`
 
@@ -922,7 +922,6 @@ This function allows you to create a Asynchronous Module Definition *(AMD)*. Thi
 	- [name](#fallbackdefine---name)
 	- [dependencies](#fallbackdefine---dependencies)
 	- [factory](#fallbackdefine---factory)
-	- [error](#fallbackdefine---error)
 - [Return Values](#return-values)
 
 ===
@@ -934,7 +933,6 @@ This function allows you to create a Asynchronous Module Definition *(AMD)*. Thi
 | [name](#fallbackdefine---name)                 | String       | No       | null    | If a name is not set, the URL that was used to load the file will be used as the name. |
 | [dependencies](#fallbackdefine---dependencies) | Array/String | No       | null    | Dependencies that we expect to be load prior to invoking our `factory` `Function`. |
 | [factory](#fallbackdefine---factory)           | *N/A*        | Yes      | null    | A factory can be anything except `undefined`. The inoked value of a `factory` is what will be returned whenever the module is referenced. |
-| [error](#fallbackdefine---error)               | Function     | No       | null    | If an error occurs, this function will be invoked with the error messages. |
 
 The arguments for this `Function` may be passed in the following variety:
 
@@ -944,19 +942,11 @@ The arguments for this `Function` may be passed in the following variety:
 
 - If only **2 arguments** are passed in, they'll be treated as:
 
-	 - The `name` and `factory` if the first parameter is a `String`.
+	 - The `name` and `factory` if the first argument is a `String`.
 
-	 - The `dependencies` and `factory` if the first parameter is an `Array`.
+	 - The `dependencies` and `factory` if the first argument is an `Array`.
 
-	 - The `factory` and `error` if both parameters are a `Function`.
-
-- If only **3 arguments** are passed in, they'll be treated as:
-
-	 - The `name`, `dependencies` and `factory` if the first parameter is a `String`.
-
-	 - The `dependencies`, `factory` and `error` if the first parameter isn't a `String`.
-
-- If all **4 arguments** are passed in, they'll be treated as:
+- If all **3 arguments** are passed in, they'll be treated as:
 
 	- The `name`, `dependencies`, `factory` and `error`.
 
@@ -969,7 +959,7 @@ The arguments for this `Function` may be passed in the following variety:
 | ------ | ------- | -------- |
 | String | null    | No       |
 
-The name which will be used to reference the module from a [define](#fallbackdefinename-dependencies-factory-error) or [require](#fallbackrequiredependencies-factory-error) `Function`.
+The name which will be used to reference the module from a [define](#fallbackdefinename-dependencies-factory) or [require](#fallbackrequiredependencies-factory-error) `Function`.
 
 If you don't specify the name for the definition then it'll be deemed as an anonymous module and use the name of the current file as it's definition name. Note that you cannot have multiple anonymous definitions within the same file as the library has no way of knowing how to differentiate each.
 
@@ -1045,16 +1035,6 @@ fallback.define("test3", function(testDependency) {
 @todo
 
 ===
-
-<h4 align="center">fallback.define -> error</h4>
-
-| Type     | Default | Required |
-| -------- | ------- | -------- |
-| Function | null    | No       |
-
-
-@todo
-
 
 
 
@@ -1190,6 +1170,30 @@ Parameter | Type | Required | Default | Description
 ------------- | ------------- | ------------- | ------------- | -------------
 dependencies | Array/String | No | null | A string/array of dependencies that we expected to be loaded before executing our function.
 function | Function | Yes | null | If dependencies are specified, then they will be sent to this function as their arguments. However, if you don't specify the dependencies, whatever arguments are within this function will be correlated as the dependencies for this function. See below for further details along with an example.
+
+
+The arguments for this `Function` may be passed in the following variety:
+
+- If only **1 argument** is passed in, it'll be treated as:
+
+	- The `dependencies` if the first argument is not a `String` or `Array`.
+
+	- The `factory` if the first argument is a `Function`.
+
+- If only **2 arguments** are passed in, they'll be treated as:
+
+	- The `dependencies` and `factory` if the first argument is a `String` or `Array`.
+
+	- The `factory` and `error` if both arguments are a `Function`.
+
+- If all **3 arguments** are passed in, they'll be treated as:
+
+	- The `dependencies`, `factory` and `error`.
+
+
+
+
+
 
 @todo here
 

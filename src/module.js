@@ -81,24 +81,34 @@ me.module.base = function(identity) {
 	return null;
 };
 
-// Process all pending callbacks that are queued for a specific module.
-me.module.callbacks = function(moduleName) {
-	// Fetch the reference to our module.
-	var module = me.module(moduleName, null, false);
+// Attempt to load a module.
+me.module.boot = function(moduleName, successCallback, errorCallback) {
+	// Fetch the instance of our module.
+	var module = me.module(moduleName);
 
-	// If there are no callbacks, then halt the `Function`.
-	if (!me.isArray(module.callbacks) || !module.callbacks.length) {
+	// If our module is already loaded, then skip the loading process and hit the callback.
+	if (module.loader.loaded === true) {
+		successCallback();
 		return;
 	}
 
-	// Loop through end invoke each of the callbacks.
-	me.each(module.callbacks, function(callback, index) {
-		// Invoke the callback.
-		callback();
+	// Push our success callback to the queue.
+	if (me.isFunction(successCallback)) {
+		module.successCallbacks.push(successCallback);
+	}
 
-		// Remove the callback from the queue.
-		delete module.callbacks[index];
-	});
+	// Push our error callback to the queue.
+	if (me.isFunction(errorCallback)) {
+		module.errorCallbacks.push(errorCallback);
+	}
+
+	// If this module is currently in the process of being loaded, queue our callback and skip processing.
+	if (module.loader.working === true) {
+		return;
+	}
+
+	// Attempt to load the module on to the page.
+	me.loader.boot(module);
 };
 
 // Define a new module and normalize the `input`. This `Function` will override a module if it already exists with the
@@ -183,7 +193,7 @@ me.module.define.normalize = function(moduleName, input) {
 	normalized.identity = me.module.identify(moduleName);
 
 	// Normalize all of the URLs for the module now and store them in a normalized state.
-	normalized.urls = me.module.urls(normalized.identity, normalized.urls);
+	normalized.urls = me.module.urls(moduleName, normalized.identity, normalized.urls);
 
 	// Return our normalized input.
 	return normalized;
@@ -200,9 +210,6 @@ me.module.define.defaults = function() {
 		// Aliases for the module.
 		'alias': [me.normalizeStringSeries, null],
 
-		// We store our callbacks here for processing after our library has finished loading.
-		'callbacks': [me.normalizeFunctionSeries, null],
-
 		// Custom check function to determine whether or not our library has loaded properly.
 		'check': [me.normalizeFunction, null],
 
@@ -211,6 +218,9 @@ me.module.define.defaults = function() {
 
 		// An error `Function` which will be called if the library or it's dependencies fail to load.
 		'error': [me.normalizeFunction, null],
+
+		// We store our errorr callbacks here for processing after our library has finished loading.
+		'errorCallbacks': [me.normalizeFunctionSeries, null],
 
 		// Exports for the module that we'll check the global scope for to see if the module loaded properly.
 		'exports': [me.normalizeStringSeries, null],
@@ -252,6 +262,9 @@ me.module.define.defaults = function() {
 			// Flags whether or not the module is currently in the process of loading.
 			'working': [me.normalizeBoolean, false]
 		},
+
+		// We store our errorr callbacks here for processing after our library has finished loading.
+		'successCallbacks': [me.normalizeFunctionSeries, null],
 
 		// Where all the URLs are stored for our module.
 		'urls': [me.normalizeStringSeries, null],
@@ -359,6 +372,37 @@ me.module.invoke = function(moduleName) {
 	return module.factory;
 };
 
+// Invoke all pending callbacks that are queued for a specific module.
+me.module.invoke.callbacks = function(moduleName, success) {
+	// Fetch the reference to our module.
+	var module = me.module(moduleName, null, false);
+
+	// Determine which set of callbacks to invoke.
+	var key = 'errorCallbacks';
+
+	// If we're invoking our success callbacks, then wipe the error callback references from memory.
+	if (success) {
+		module[key] = [];
+		key = 'successCallbacks';
+	}
+
+	// If there are no callbacks, then halt the `Function`.
+	if (!me.isArray(module[key]) || !module[key].length) {
+		return;
+	}
+
+	// Loop through end invoke each of the callbacks.
+	me.each(module[key], function(callback, index) {
+		// Invoke the callback.
+		if (me.isFunction(callback)) {
+			callback();
+		}
+
+		// Remove the callback from the queue.
+		delete module[key][index];
+	});
+};
+
 // Invoke a `factory` with the arguments being the dependencies that are passed in via the `deps` parameter.
 me.module.invoke.factory = function(factory, deps) {
 	// If the `factory` passed in is not a `Function`, then simply return it's current value.
@@ -405,12 +449,17 @@ me.module.references = function(modules) {
 // This has a few benefits: we don't have to worry about processing the URLs later. We're able to store a snapshot
 // of the current base URLs for the module in question, this way we can change our base URLs later and still maintain
 // and use a different set of base URLs with other modules.
-me.module.urls = function(identity, urls) {
+me.module.urls = function(moduleName, identity, urls) {
 	// Fetch the base URL for our module.
-	var base = me.module.base(identity);
+	var base = me.module.base(identity) || '';
 
 	// Store our extension string.
 	var extension = '.' + identity;
+
+	// If we don't have any URLs, then set the URLs to a AMD.
+	if (!urls.length) {
+		return [base + moduleName + extension];
+	}
 
 	// Store our set of normalized URLs that we'll reference.
 	var normalizedUrls = [];
@@ -424,27 +473,9 @@ me.module.urls = function(identity, urls) {
 			url += extension;
 		}
 
-		// If we have a `base` URL, then do the following.
-		if (base) {
-			// Flag whether or not a URL should be ignore from being prepended with the base URL.
-			var isIgnored = false;
-
-			// Loop through our ignore list.
-			me.each(me.module.urls.ignore, function(ignorer) {
-				// Check to see if the prefix of our URL has a match in our ignore list.
-				if (url.substr(0, ignorer.length) === ignorer) {
-					// Flag the URL as ignored.
-					isIgnored = true;
-
-					// Halt the loop.
-					return false;
-				}
-			});
-
-			// If the URL isn't prefixed with a match from our ignore list, then prepend the base URL.
-			if (!isIgnored) {
-				url = base + url;
-			}
+		// If we have a `base` URL and it's not prefixed with a match from our ignore list, then prepend the base URL.
+		if (base && !me.isPrefixed(url, me.module.urls.ignore)) {
+			url = base + url;
 		}
 
 		// Push the normalized URL off to our list.

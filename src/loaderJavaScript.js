@@ -8,7 +8,7 @@ me.loader.js.boot = function(module, url, callbackSuccess, callbackFailed) {
 
 	// Check if our module has already been loaded.
 	if (factory) {
-		return callbackSuccess(module, url, 'predefined', factory);
+		return callbackSuccess(module, url, factory, true);
 	}
 
 	// If our library failed to load, we'll call upon this function.
@@ -28,7 +28,7 @@ me.loader.js.boot = function(module, url, callbackSuccess, callbackFailed) {
 		}
 
 		// We passed the checks, invoke the success callback.
-		return callbackSuccess(module, url, 'success', factory);
+		return callbackSuccess(module, url, factory);
 	};
 
 	// Spawn a new element on the page contained our URL with our callbacks.
@@ -104,9 +104,17 @@ me.loader.js.check = function(module, fallback) {
 		return true;
 	}
 
-	// If an anonymous moduel was defined, then it's for this library, meaning it loaded successfully.
-	if (me.isDefined(me.define.anonymous.factory)) {
-		return true;
+	// Store the `factory`, as we'll use it later in the `Function`.
+	var factory;
+
+	// If globals are enabled, and we have exports for the module, check the `window` to see if they're defined.
+	if (me.globals === true && module.exports.length) {
+		factory = me.loader.js.check.exports(module.exports);
+	}
+
+	// If an anonymous module was defined, then it's for this library, meaning it loaded successfully.
+	if (me.define.anonymous.pending) {
+		return factory ? factory : true;
 	}
 
 	// If the user added their own custom checking function, invoke it now to preform the check.
@@ -114,9 +122,9 @@ me.loader.js.check = function(module, fallback) {
 		return module.check();
 	}
 
-	// If globals are enabled, and we have exports for the module, check the `window` to see if they're defined.
-	if (me.globals === true && module.exports.length) {
-		return me.loader.js.check.exports(module.exports);
+	// If the `factory` is not `undefined`, then return it.
+	if (me.isDefined(factory)) {
+		return factory;
 	}
 
 	// By default just return true, as this function was hit from a success callback.

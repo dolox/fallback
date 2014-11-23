@@ -12,11 +12,12 @@ fallback.loader.img.boot =
 fallback.loader.js.boot =
 
 // Modules
-fallback.module.callbacks =
 fallback.module.definitions =
+fallback.module.errorCallbacks =
+fallback.module.failed =
 fallback.module.loader =
 fallback.module.success =
-fallback.module.failed =
+fallback.module.successCallbacks =
 
 // Config
 fallback.config.amd =

@@ -1,5 +1,5 @@
 /* global describe, expect, fallback, it */
-
+/*
 describe('acceptance.cssPreloaded - Make sure a CSS file is not loaded if it\'s already detected on the page.', function() {
 	var test = '//localhost:9876/base/tests/acceptance/css/cssPreloaded';
 
@@ -22,3 +22,4 @@ describe('acceptance.cssPreloaded - Make sure a CSS file is not loaded if it\'s 
 		});
 	});
 });
+*/

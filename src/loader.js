@@ -37,24 +37,7 @@ me.loader.init.autoloader = function() {
 };
 
 // Attempt to load our module.
-me.loader.boot = function(moduleName, callback) {
-	// Fetch the instance of our module.
-	var module = me.module(moduleName);
-
-	// If our module is already loaded, then skip the loading process and hit the callback.
-	if (module.loader.loaded === true) {
-		callback();
-		return;
-	}
-
-	// Push our callback to the queue.
-	module.callbacks.push(callback);
-
-	// If this module is currently in the process of being loaded, queue our callback and skip processing.
-	if (module.loader.working === true) {
-		return;
-	}
-
+me.loader.boot = function(module) {
 	// If we made it this far, we need to actually process the module in question.
 	module.loader.working = true;
 
@@ -68,7 +51,7 @@ me.loader.boot = function(moduleName, callback) {
 	me.loader.urls(module);
 };
 
-// Patch for legacy browsers which sometimes fire off `onreadystatechange`. @ie
+// Patch for legacy browsers which sometimes fire off `onreadystatechange` instead of the `onload` callback. @ie
 me.loader.onReadyStateChange = function(element, callback) {
 	// Attach the event to the element.
 	element.onreadystatechange = function() {
@@ -107,7 +90,7 @@ me.loader.urls = function(module) {
 };
 
 // Common operations to perform whether a module loaded successfully or not.
-me.loader.urls.completed = function(module) {
+me.loader.urls.completed = function(module, success) {
 	// Flag our module has having already attempted to load.
 	module.loader.loaded = true;
 
@@ -118,7 +101,7 @@ me.loader.urls.completed = function(module) {
 	module.loader.working = false;
 
 	// Fire off all of our callbacks.
-	me.module.callbacks(module.name);
+	me.module.invoke.callbacks(module.name, success);
 };
 
 // When a URL or module fails to load this function will be called.
@@ -133,7 +116,7 @@ me.loader.urls.failed = function(module, url) {
 
 	// If there's no URL, then all URLs have been exhausted!
 	if (!url) {
-		me.loader.urls.completed(module);
+		me.loader.urls.completed(module, false);
 		me.log(2, 'loader', message + 'module.');
 		return;
 	}
@@ -143,20 +126,20 @@ me.loader.urls.failed = function(module, url) {
 
 	// Let the end user know which specific URL failed to load.
 	module.loader.failed.push(url);
-	me.log(3, 'loader', message + ' for URL: ' + url);
+	me.log(3, 'loader', message + 'for URL: ' + url);
 
 	// Try the next URL in our URLs list.
 	me.loader.urls(module);
 };
 
 // When a URL loads sucessfully this function will be called.
-me.loader.urls.success = function(module, url, status, factory) {
+me.loader.urls.success = function(module, url, factory, predefined) {
 	// We're going to store the name of the module we're attempting to load here. This way if the file that's loaded
 	// happens to call the `define` function with an anonymous name, this is the name that we'll use for the definition.
 	me.define.anonymous(module.name);
 
 	// If our library was already loaded, we don't know what URL was successful, so we'll skip setting it.
-	if (status === 'predefined') {
+	if (predefined === true) {
 		me.log(3, 'loader', '`' + module.name + '` already loaded on the page; referencing.');
 	} else {
 		module.loader.success = url;
@@ -176,5 +159,5 @@ me.loader.urls.success = function(module, url, status, factory) {
 	}
 
 	// Wrap up the loader process and handle our callbacks.
-	me.loader.urls.completed(module);
+	me.loader.urls.completed(module, true);
 };

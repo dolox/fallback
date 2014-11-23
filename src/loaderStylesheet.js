@@ -4,11 +4,11 @@ me.loader.css = {};
 // Attempt to load a stylesheet onto the page.
 me.loader.css.boot = function(module, url, callbackSuccess, callbackFailed) {
 	// If the stylesheet is already loaded on the page, don't attempt to reload it.
-	var factory = me.loader.css.check(module, false);
+	var factory = me.loader.css.check(module, url, false);
 
 	// Check if our module has already been loaded.
 	if (factory) {
-		return callbackSuccess(module, url, 'predefined', factory);
+		return callbackSuccess(module, url, factory, true);
 	}
 
 	// If our library failed to load, we'll call upon this function.
@@ -20,7 +20,7 @@ me.loader.css.boot = function(module, url, callbackSuccess, callbackFailed) {
 	// We need to manually check to make sure that our libraries were loaded properly.
 	var check = function() {
 		// Attempt to fetch the factory for our module.
-		factory = me.loader.css.check(module);
+		factory = me.loader.css.check(module, url);
 
 		// If the factory is empty, then it failed to load! Invoke the failure callback.
 		if (!factory) {
@@ -28,7 +28,7 @@ me.loader.css.boot = function(module, url, callbackSuccess, callbackFailed) {
 		}
 
 		// We passed the checks, invoke the success callback.
-		return callbackSuccess(module, url, 'success', factory);
+		return callbackSuccess(module, url, factory);
 	};
 
 	// Spawn a new element on the page contained our URL with our callbacks.
@@ -37,7 +37,7 @@ me.loader.css.boot = function(module, url, callbackSuccess, callbackFailed) {
 
 // Check to see if a module has already been loaded on the page. This `Function` will return `Boolean`, `true` being
 // that a module has already been loaded and `false` being that it hasn't.
-me.loader.css.check = function(module, fallback) {
+me.loader.css.check = function(module, url, fallback) {
 	// See if the module itself has been flagged as loaded.
 	if (module.loader.loaded === true) {
 		return true;
@@ -49,13 +49,17 @@ me.loader.css.check = function(module, fallback) {
 	}
 
 	// If globals are enabled, and we have exports for the module, check the DOM to see if they're defined.
-	if (me.globals === true && module.exports.length) {
+	if (me.globals === true && module.exports.length && !me.isPrefixed(url, me.loader.css.check.ignore)) {
 		return me.loader.css.check.exports(module.exports);
 	}
 
 	// By default just return true, as this function was hit from a success callback.
 	return me.isDefined(fallback) ? fallback : true;
 };
+
+// Bypass checking if a URL starts with any of the following values. This is due to CORS issues with the browsers when
+// a CSS file is loaded from an external source.
+me.loader.css.check.ignore = ['//', 'http://', 'https://'];
 
 // Check for the instance of our library based on the exports given. If the instance of our library exists it'll be
 // returned, otherwise this function will return `null. The `Function` basically checks the `window` variable for a

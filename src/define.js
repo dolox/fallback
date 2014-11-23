@@ -4,12 +4,6 @@ me.define = function() {
 	// Fetch and normalize the argument that were passed in.
 	var args = me.define.args.apply(null, arguments);
 
-	// If a name and factory weren't passed in, throw a notice to the end user and halt our function.
-	if (!args.name && !me.isDefined(args.factory)) {
-		me.log(1, 'define', 'No `name` or `factory` sent to the `define` function! Halting!', args);
-		return;
-	}
-
 	// Fill up our dependencies.
 	args = me.define.deps(args);
 
@@ -21,7 +15,7 @@ me.define = function() {
 	// throw a notice to our end user.
 	if (!args.name) {
 		// We cannot define multiple anonymous modules with the same name!
-		if (me.isDefined(me.define.anonymous.factory)) {
+		if (me.define.anonymous.pending) {
 			me.log(1, 'define', 'Multiple Anonymous modules defined in the same file! Halting!', args);
 			return;
 		}
@@ -35,17 +29,15 @@ me.define = function() {
 	// Generate our new module and reference it as our last defined module.
 	me.define.module.last = me.define.module(args);
 
-	// Reset any anonymous modules that were waiting in limbo. If we don't configure a module, use the `require` function
-	// to load it,and the file that loads has explicitly define the module name, then we no longer need this anonymous
-	// definition since the name was explicitly defined.
-	me.define.anonymous.reset();
+	// Flag the anonymous modules as not pending.
+	me.define.anonymous.pending = false;
 };
 
 // Whether or not to enforce the use of AMD. If this setting it turned on via the `config` `Function`, any library that
 // supports AMD will not longer be available via the `window` `global`. See documentation for further details.
 me.define.amd = undefined;
 
-// If a module is sitting in an anonymous state and waiting to be imported properly, this function will take the
+// If a module is sitting in an anonymous state and waiting to be imported properly, this `Function` will take the
 // `dependencies` and `factory` from that anonymous module, import them in to our properly named module, and then
 // destroy the anonymous module sitting in a limbo state. Here's how this system of defining anonymous modules works:
 // If we attempt to load a module via our `require` function, and that module doesn't happen to exist in our
@@ -61,7 +53,7 @@ me.define.anonymous = function(moduleName) {
 	// If we don't have a anonymous module waiting to be defined, then halt the function. We should at the very least have
 	// either a `factory` or reference to the last defined module (which in this case would be our anonymous module
 	// without a name).
-	if (!me.isDefined(me.define.anonymous.factory) && !me.define.module.last) {
+	if (!me.define.anonymous.pending && !me.define.module.last) {
 		return;
 	}
 
@@ -113,8 +105,14 @@ me.define.anonymous.deps = undefined;
 // The factory for our anonymous `module` waiting to be properly defined.
 me.define.anonymous.factory = undefined;
 
+// Flag whether or not an anonymous module is pending to be defined.
+me.define.anonymous.pending = false;
+
 // Clear out any saved anonymous `module` properties.
 me.define.anonymous.reset = function() {
+	// Clear the pending state.
+	me.define.anonymous.pending = false;
+
 	// Clear the dependencies.
 	me.define.anonymous.deps = undefined;
 
@@ -135,6 +133,9 @@ me.define.anonymous.save = function(args) {
 		return;
 	}
 
+	// Flag the pending state.
+	me.define.anonymous.pending = true;
+
 	// Set the dependencies for our anonymous module.
 	if (me.isDefined(args.deps)) {
 		me.define.anonymous.deps = args.deps;
@@ -146,56 +147,118 @@ me.define.anonymous.save = function(args) {
 	}
 };
 
-// Handle the arguments for our define function in a special way. In certain cases only 1, 2 or 3 parameters may be
-// passed to the `Function`. This `Function` will determine what those parameters should be defined as.
+// Fetch and normalize the arguments that are passed into our `define` function. The arguments for our `define`
+// `Function` can be sent in a number of different forms.
 me.define.args = function() {
 	// Convert our `arguments` into an `Array`.
 	var args = me.arrayClone(arguments);
 
+	// Route the arguments.
+	args = me.define.args.router(args);
+
+	// Return back our normalized arguments.
+	return me.define.args.normalize(args);
+};
+
+// Normalize the arguments payload.
+me.define.args.normalize = function(payload) {
+	// Normalize the `name` `String`.
+	payload.name = me.normalizeString(payload.name);
+
+	// Normalize the `error` `Function`.
+	payload.error = me.normalizeFunction(payload.error);
+
+	// Normamlize the `dependencies` `Array`.
+	payload.deps = payload.deps ? me.normalizeStringSeries(payload.deps) : null;
+
+	// Don't normalize the `factory`, as it can be anything except `undefined`.
+
+	// Return the noramlized `payload`.
+	return payload;
+};
+
+// Route the arguments passed into the `define` `Function`.
+me.define.args.router = function(args) {
 	// We'll fill up these variables based on the arguments.
 	var payload = {
-		deps: null,
+		name: null,
 		error: null,
-		factory: null,
-		name: null
+		deps: null,
+		factory: undefined
 	};
 
-	// If we have no arguments, halt our function.
-	if (!args.length) {
-		return payload;
+	// Determine the router `Function` that we need to invoke.
+	var reference = 'route' + (args.length > 3 ? 3 : args.length);
+
+	// Invoke the router `Function` with the arguments and payload.
+	payload = me.define.args.router[reference](args, payload);
+
+	// If we need to derive the `dependencies` from the `factory` `Function`, then do so now.
+	if (!me.isString(payload.deps) && !me.isArray(payload.deps) && me.isFunction(payload.factory)) {
+		payload.deps = me.args(payload.factory);
 	}
 
-	// If we only got a single argument, treat it as the factory.
-	if (args.length === 1) {
-		payload.factory = args[0];
+	// Return our factored payload.
+	return payload;
+};
 
-		return payload;
-	}
+// Handle no arguments being passed into the `define` `Function`.
+me.define.args.router.route0 = function(args, payload) {
+	// Throw an error to the end user.
+	me.log(1, 'define', 'args', 'No arguments were passed into `define`! Halting!', args);
 
-	// If we have 2 arguments, then there's some special checks here.
-	if (args.length === 2) {
-		// The last parameter in this case will always be our factory.
+	// Return our factored payload.
+	return payload;
+};
+
+// Handle 1 argument being passed into the `define` `Function`.
+me.define.args.router.route1 = function(args, payload) {
+	// Reference the `factory`.
+	payload.factory = args[0];
+
+	// Return our factored payload.
+	return payload;
+};
+
+// Handle 2 arguments being passed into the `define` `Function`.
+me.define.args.router.route2 = function(args, payload) {
+	// If the first argument is a `String`, treat the arguments as `name`, and `factory`.
+	if (me.isString(args[0])) {
+		// Reference the `name`.
+		payload.name = args[0];
+
+		// Reference the `factory`.
 		payload.factory = args[1];
 
-		// If our first argument happens to be a string, treat it as the name.
-		if (me.isString(args[0])) {
-			payload.name = args[0];
+	// If the first argument is an `Array`, treat the arguments as `dependencies`, and `factory`.
+	} else if (me.isArray(args[0])) {
+		// Reference the `dependencies`.
+		payload.deps = args[0];
 
-			return payload;
-		}
+		// Reference the `factory`.
+		payload.factory = args[1];
 
-		// If our first argument wasn't a string, treat it as the `deps` or discard it.
-		payload.deps = me.isArray(args[0]) ? args[0] : null;
-
-		return payload;
+	// If none of the criteria above matched, then the arguments are malformed.
+	} else {
+		me.log(1, 'define', 'args', '2 arguments were passed into `define` that were malformed! Discarding!', args);
 	}
 
-	// If we have 3 or more arguments, reference the first 3 properly.
-	payload.deps = args[1];
-	payload.factory = args[3];
+	// Return our factored payload.
+	return payload;
+};
+
+// Handle 3 arguments being passed into the `define` `Function`.
+me.define.args.router.route3 = function(args, payload) {
+	// Reference the `name`.
 	payload.name = args[0];
 
-	// Return our normalized payload of parameters.
+	// Reference the `dependencies`.
+	payload.deps = args[1];
+
+	// Reference the `factory`.
+	payload.factory = args[2];
+
+	// Return our factored payload.
 	return payload;
 };
 
@@ -221,19 +284,23 @@ me.define.deps = function(args) {
 
 // Generate and return our new module.
 me.define.module = function(args) {
-	// Generate the module.
-	return me.module.define(args.name, {
-		// Set our dependencies.
-		deps: args.deps,
+	// Generate or reference the module.
+	var module = me.module(args.name);
 
-		// Set our factory.
-		factory: args.factory,
+	// Set our dependencies.
+	module.deps = me.normalizeStringSeries(args.deps);
 
-		// Explicity flag that the module has been loaded, that way when we reference it, we don't attempt to load it.
-		loader: {
-			loaded: true
-		}
-	});
+	// Set our error.
+	module.error = me.normalizeFunction(args.error);
+
+	// Set our factory.
+	module.factory = args.factory;
+
+	// Explicity flag that the module has been loaded, that way when we reference it, we don't attempt to load it.
+	module.loader.loaded = true;
+
+	// Return a reference to the module.
+	return module;
 };
 
 // Our last defined module reference. This is used to reference the proper names with our anonymous modules.

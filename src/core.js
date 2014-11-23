@@ -63,6 +63,9 @@ me.init.aliases = function(container, input) {
 			container[alias] = factory;
 		});
 	});
+
+	// Reset any pending anonymous state.
+	me.define.anonymous.reset();
 };
 
 // Automatically spawn helper functions that we'll use throughout the library. For example we're spawning the following
@@ -205,7 +208,7 @@ me.each = function(input, callback) {
 };
 
 // The ability to fetch the decendant property of an object, even if it's in dot notation.
-me.getProperty = function getDescendantProp(reference, property) {
+me.getProperty = function(reference, property) {
 	var properties = property.split('.');
 
 	while (properties.length) {
@@ -261,6 +264,27 @@ me.indexOf = function(input, value) {
 // Check whether or not a variable is defined.
 me.isDefined = function(variable) {
 	return variable !== void 0;
+};
+
+// Check a `String` to see if it contains a prefix.
+me.isPrefixed = function(reference, prefixes) {
+	// Flag whether or not a URL should be ignore from being prepended with the base URL.
+	var isPrefixed = false;
+
+	// Loop through our ignore list.
+	me.each(prefixes, function(prefix) {
+		// Check to see if the prefix of our URL has a match in our ignore list.
+		if (reference.substr(0, prefix.length) === prefix) {
+			// Flag the URL as ignored.
+			isPrefixed = true;
+
+			// Halt the loop.
+			return false;
+		}
+	});
+
+	// Return whether or not we found a match.
+	return isPrefixed;
 };
 
 // Check if a variable is a specific type.
@@ -494,23 +518,23 @@ me.objectMerge = function(input, defaults, fallback) {
 };
 
 // Run a number of functions in parallel with the ability to call a single callback once they've all completed.
-me.parallel = function(references, callback) {
-	// Our reference argument must be an `Array`, if not halt the function.
-	if (!me.isArray(references)) {
+me.parallel = function(factories, callback) {
+	// Our `factories` argument must be an `Array`, if not halt the function.
+	if (!me.isArray(factories)) {
 		callback();
 		return;
 	}
 
-	// Normalize our references.
-	references = me.normalizeFunctionSeries(references, null, true);
+	// Normalize our `factories`.
+	factories = me.normalizeFunctionSeries(factories, null, true);
 
 	// Generate a new queue instance.
-	var guid = me.parallel.generate(references.length);
+	var guid = me.parallel.generate(factories.length);
 
 	// Loop through all of our refernces and execute them.
-	me.each(references, function(reference) {
+	me.each(factories, function(factory) {
 		// Anonymous spawn and track our `Function` to invoke.
-		me.parallel.anonymous(reference, guid, callback);
+		me.parallel.anonymous(factory, guid, callback);
 	});
 };
 

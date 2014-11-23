@@ -5,19 +5,29 @@
 
 # Getting Started
 
-If you're migrating from `v1` of the library, the process should be fairly easy. In `v1` there were only 2 functions which were officially supported by the project: `fallback.load` and `fallback.ready`. The following guide explains how you can migrate your code to `v2` of the library by updating your code or using polyfills.
+If you're migrating from `v1` of the library, the process should be fairly easy. In `v1` there were only 2 functions which were officially supported by the project: `fallback.load` and `fallback.ready`. The following guide explains how you can migrate your code to `v2` of the library by updating your code.
 
 ---
 
 # fallback.load
 
-In `v1` you'd call this function to immediately load up the library you wanted to use on the page. In `v2` you'll need to first configure (fallback.config) the libraries that you want to make available to Fallback JS, then load (fallback.require).
+In `v1` you'd call this function to immediately load up the library you wanted to use on the page. In `v2` you'll need to first configure (fallback.config) the libraries that you want to make available to Fallback JS, then load (fallback.require). There's also a change for including CSS files where you must prefix the library key with `css$`. *See below.*
 
 **v1:**
 
 ```
 fallback.load({
+	// Twitter Bootstrap Stylesheet
+	'.col-xs-1': '//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min',
+
+	// JSON library for legacy browsers.
 	JSON: '//cdnjs.cloudflare.com/ajax/libs/json2/20121008/json2.min.js'
+}, {
+	// Force certain libraries to load before others.
+	shim: {
+		// Load the JSON library before the Twitter Bootstrap stylesheet.
+		'.col-xs-1': ['JSON']
+	}
 });
 ```
 
@@ -26,56 +36,31 @@ fallback.load({
 ```
 fallback.config({
 	libs: {
+		// Twitter Bootstrap Stylesheet
+		css$bootstrap: {
+			// We must specify a style that exists in the stylesheet so we can determine if it loads properly.
+			export: '.col-xs-1',
+
+			// Load the JSON library before the Twitter Bootstrap stylesheet.
+			deps: 'JSON',
+
+			// The URLs to load the Stylesheet.
+			urls: '//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min'
+		},
+
+		// JSON library for legacy browsers.
 		JSON: '//cdnjs.cloudflare.com/ajax/libs/json2/20121008/json2.min.js'
 	}
 });
 
-require('JSON');
-```
-
-**Polyfill:**
-
-```javascript
-fallback.load = function(libraries, options, callback) {
-	fallback.config({
-		libs: libraries
-	});
-
-	var libKeys = [];
-
-	for (var library in libraries) {
-		libKeys.push(library);
-	}
-
-	fallback.require(libKeys, callback);
-
-	if (typeof options === 'object') {
-		if (typeof options.callback === 'function') {
-			fallback.require(libKeys, options.callback);
-		}
-
-		if (typeof options.shim === 'object') {
-			for (var library in options.shim) {
-				var libs = {};
-
-				libs[library] = {
-					deps: options.shim[library]
-				};
-
-				fallback.config({
-					libs: libs
-				})
-			}
-		}
-	}
-};
+require(['css$bootstrap', 'JSON]);
 ```
 
 ---
 
 # fallback.ready
 
-In `v2` the `fallback.require` function is a drop in replacement for `fallback.ready`. Simply rename everywhere you're referencing `fallback.ready` to `fallback.require` (or one of it's aliases) and you're done! Or if you don't want to change your code, try using the polyfill below.
+In `v2` the `fallback.require` function is a drop in replacement for `fallback.ready`. Simply rename everywhere you're referencing `fallback.ready` to `fallback.require` (or one of it's aliases) and you're done!
 
 **v1:**
 
@@ -91,10 +76,4 @@ fallback.ready(['jQuery'], function() {
 fallback.require(['jQuery'], function() {
 	// Execute my code here...
 });
-```
-
-**Polyfill:**
-
-```javascript
-fallback.ready = fallback.require;
 ```

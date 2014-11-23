@@ -67,6 +67,9 @@ me.init.aliases = function(container, input) {
 			container[alias] = factory;
 		});
 	});
+
+	// Reset any pending anonymous state.
+	me.define.anonymous.reset();
 };
 
 // Automatically spawn helper functions that we'll use throughout the library. For example we're spawning the following
@@ -209,7 +212,7 @@ me.each = function(input, callback) {
 };
 
 // The ability to fetch the decendant property of an object, even if it's in dot notation.
-me.getProperty = function getDescendantProp(reference, property) {
+me.getProperty = function(reference, property) {
 	var properties = property.split('.');
 
 	while (properties.length) {
@@ -265,6 +268,27 @@ me.indexOf = function(input, value) {
 // Check whether or not a variable is defined.
 me.isDefined = function(variable) {
 	return variable !== void 0;
+};
+
+// Check a `String` to see if it contains a prefix.
+me.isPrefixed = function(reference, prefixes) {
+	// Flag whether or not a URL should be ignore from being prepended with the base URL.
+	var isPrefixed = false;
+
+	// Loop through our ignore list.
+	me.each(prefixes, function(prefix) {
+		// Check to see if the prefix of our URL has a match in our ignore list.
+		if (reference.substr(0, prefix.length) === prefix) {
+			// Flag the URL as ignored.
+			isPrefixed = true;
+
+			// Halt the loop.
+			return false;
+		}
+	});
+
+	// Return whether or not we found a match.
+	return isPrefixed;
 };
 
 // Check if a variable is a specific type.
@@ -498,23 +522,23 @@ me.objectMerge = function(input, defaults, fallback) {
 };
 
 // Run a number of functions in parallel with the ability to call a single callback once they've all completed.
-me.parallel = function(references, callback) {
-	// Our reference argument must be an `Array`, if not halt the function.
-	if (!me.isArray(references)) {
+me.parallel = function(factories, callback) {
+	// Our `factories` argument must be an `Array`, if not halt the function.
+	if (!me.isArray(factories)) {
 		callback();
 		return;
 	}
 
-	// Normalize our references.
-	references = me.normalizeFunctionSeries(references, null, true);
+	// Normalize our `factories`.
+	factories = me.normalizeFunctionSeries(factories, null, true);
 
 	// Generate a new queue instance.
-	var guid = me.parallel.generate(references.length);
+	var guid = me.parallel.generate(factories.length);
 
 	// Loop through all of our refernces and execute them.
-	me.each(references, function(reference) {
+	me.each(factories, function(factory) {
 		// Anonymous spawn and track our `Function` to invoke.
-		me.parallel.anonymous(reference, guid, callback);
+		me.parallel.anonymous(factory, guid, callback);
 	});
 };
 
@@ -843,12 +867,6 @@ me.define = function() {
 	// Fetch and normalize the argument that were passed in.
 	var args = me.define.args.apply(null, arguments);
 
-	// If a name and factory weren't passed in, throw a notice to the end user and halt our function.
-	if (!args.name && !me.isDefined(args.factory)) {
-		me.log(1, 'define', 'No `name` or `factory` sent to the `define` function! Halting!', args);
-		return;
-	}
-
 	// Fill up our dependencies.
 	args = me.define.deps(args);
 
@@ -860,7 +878,7 @@ me.define = function() {
 	// throw a notice to our end user.
 	if (!args.name) {
 		// We cannot define multiple anonymous modules with the same name!
-		if (me.isDefined(me.define.anonymous.factory)) {
+		if (me.define.anonymous.pending) {
 			me.log(1, 'define', 'Multiple Anonymous modules defined in the same file! Halting!', args);
 			return;
 		}
@@ -874,17 +892,15 @@ me.define = function() {
 	// Generate our new module and reference it as our last defined module.
 	me.define.module.last = me.define.module(args);
 
-	// Reset any anonymous modules that were waiting in limbo. If we don't configure a module, use the `require` function
-	// to load it,and the file that loads has explicitly define the module name, then we no longer need this anonymous
-	// definition since the name was explicitly defined.
-	me.define.anonymous.reset();
+	// Flag the anonymous modules as not pending.
+	me.define.anonymous.pending = false;
 };
 
 // Whether or not to enforce the use of AMD. If this setting it turned on via the `config` `Function`, any library that
 // supports AMD will not longer be available via the `window` `global`. See documentation for further details.
 me.define.amd = undefined;
 
-// If a module is sitting in an anonymous state and waiting to be imported properly, this function will take the
+// If a module is sitting in an anonymous state and waiting to be imported properly, this `Function` will take the
 // `dependencies` and `factory` from that anonymous module, import them in to our properly named module, and then
 // destroy the anonymous module sitting in a limbo state. Here's how this system of defining anonymous modules works:
 // If we attempt to load a module via our `require` function, and that module doesn't happen to exist in our
@@ -900,7 +916,7 @@ me.define.anonymous = function(moduleName) {
 	// If we don't have a anonymous module waiting to be defined, then halt the function. We should at the very least have
 	// either a `factory` or reference to the last defined module (which in this case would be our anonymous module
 	// without a name).
-	if (!me.isDefined(me.define.anonymous.factory) && !me.define.module.last) {
+	if (!me.define.anonymous.pending && !me.define.module.last) {
 		return;
 	}
 
@@ -952,8 +968,14 @@ me.define.anonymous.deps = undefined;
 // The factory for our anonymous `module` waiting to be properly defined.
 me.define.anonymous.factory = undefined;
 
+// Flag whether or not an anonymous module is pending to be defined.
+me.define.anonymous.pending = false;
+
 // Clear out any saved anonymous `module` properties.
 me.define.anonymous.reset = function() {
+	// Clear the pending state.
+	me.define.anonymous.pending = false;
+
 	// Clear the dependencies.
 	me.define.anonymous.deps = undefined;
 
@@ -974,6 +996,9 @@ me.define.anonymous.save = function(args) {
 		return;
 	}
 
+	// Flag the pending state.
+	me.define.anonymous.pending = true;
+
 	// Set the dependencies for our anonymous module.
 	if (me.isDefined(args.deps)) {
 		me.define.anonymous.deps = args.deps;
@@ -985,56 +1010,118 @@ me.define.anonymous.save = function(args) {
 	}
 };
 
-// Handle the arguments for our define function in a special way. In certain cases only 1, 2 or 3 parameters may be
-// passed to the `Function`. This `Function` will determine what those parameters should be defined as.
+// Fetch and normalize the arguments that are passed into our `define` function. The arguments for our `define`
+// `Function` can be sent in a number of different forms.
 me.define.args = function() {
 	// Convert our `arguments` into an `Array`.
 	var args = me.arrayClone(arguments);
 
+	// Route the arguments.
+	args = me.define.args.router(args);
+
+	// Return back our normalized arguments.
+	return me.define.args.normalize(args);
+};
+
+// Normalize the arguments payload.
+me.define.args.normalize = function(payload) {
+	// Normalize the `name` `String`.
+	payload.name = me.normalizeString(payload.name);
+
+	// Normalize the `error` `Function`.
+	payload.error = me.normalizeFunction(payload.error);
+
+	// Normamlize the `dependencies` `Array`.
+	payload.deps = payload.deps ? me.normalizeStringSeries(payload.deps) : null;
+
+	// Don't normalize the `factory`, as it can be anything except `undefined`.
+
+	// Return the noramlized `payload`.
+	return payload;
+};
+
+// Route the arguments passed into the `define` `Function`.
+me.define.args.router = function(args) {
 	// We'll fill up these variables based on the arguments.
 	var payload = {
-		deps: null,
+		name: null,
 		error: null,
-		factory: null,
-		name: null
+		deps: null,
+		factory: undefined
 	};
 
-	// If we have no arguments, halt our function.
-	if (!args.length) {
-		return payload;
+	// Determine the router `Function` that we need to invoke.
+	var reference = 'route' + (args.length > 3 ? 3 : args.length);
+
+	// Invoke the router `Function` with the arguments and payload.
+	payload = me.define.args.router[reference](args, payload);
+
+	// If we need to derive the `dependencies` from the `factory` `Function`, then do so now.
+	if (!me.isString(payload.deps) && !me.isArray(payload.deps) && me.isFunction(payload.factory)) {
+		payload.deps = me.args(payload.factory);
 	}
 
-	// If we only got a single argument, treat it as the factory.
-	if (args.length === 1) {
-		payload.factory = args[0];
+	// Return our factored payload.
+	return payload;
+};
 
-		return payload;
-	}
+// Handle no arguments being passed into the `define` `Function`.
+me.define.args.router.route0 = function(args, payload) {
+	// Throw an error to the end user.
+	me.log(1, 'define', 'args', 'No arguments were passed into `define`! Halting!', args);
 
-	// If we have 2 arguments, then there's some special checks here.
-	if (args.length === 2) {
-		// The last parameter in this case will always be our factory.
+	// Return our factored payload.
+	return payload;
+};
+
+// Handle 1 argument being passed into the `define` `Function`.
+me.define.args.router.route1 = function(args, payload) {
+	// Reference the `factory`.
+	payload.factory = args[0];
+
+	// Return our factored payload.
+	return payload;
+};
+
+// Handle 2 arguments being passed into the `define` `Function`.
+me.define.args.router.route2 = function(args, payload) {
+	// If the first argument is a `String`, treat the arguments as `name`, and `factory`.
+	if (me.isString(args[0])) {
+		// Reference the `name`.
+		payload.name = args[0];
+
+		// Reference the `factory`.
 		payload.factory = args[1];
 
-		// If our first argument happens to be a string, treat it as the name.
-		if (me.isString(args[0])) {
-			payload.name = args[0];
+	// If the first argument is an `Array`, treat the arguments as `dependencies`, and `factory`.
+	} else if (me.isArray(args[0])) {
+		// Reference the `dependencies`.
+		payload.deps = args[0];
 
-			return payload;
-		}
+		// Reference the `factory`.
+		payload.factory = args[1];
 
-		// If our first argument wasn't a string, treat it as the `deps` or discard it.
-		payload.deps = me.isArray(args[0]) ? args[0] : null;
-
-		return payload;
+	// If none of the criteria above matched, then the arguments are malformed.
+	} else {
+		me.log(1, 'define', 'args', '2 arguments were passed into `define` that were malformed! Discarding!', args);
 	}
 
-	// If we have 3 or more arguments, reference the first 3 properly.
-	payload.deps = args[1];
-	payload.factory = args[3];
+	// Return our factored payload.
+	return payload;
+};
+
+// Handle 3 arguments being passed into the `define` `Function`.
+me.define.args.router.route3 = function(args, payload) {
+	// Reference the `name`.
 	payload.name = args[0];
 
-	// Return our normalized payload of parameters.
+	// Reference the `dependencies`.
+	payload.deps = args[1];
+
+	// Reference the `factory`.
+	payload.factory = args[2];
+
+	// Return our factored payload.
 	return payload;
 };
 
@@ -1060,19 +1147,23 @@ me.define.deps = function(args) {
 
 // Generate and return our new module.
 me.define.module = function(args) {
-	// Generate the module.
-	return me.module.define(args.name, {
-		// Set our dependencies.
-		deps: args.deps,
+	// Generate or reference the module.
+	var module = me.module(args.name);
 
-		// Set our factory.
-		factory: args.factory,
+	// Set our dependencies.
+	module.deps = me.normalizeStringSeries(args.deps);
 
-		// Explicity flag that the module has been loaded, that way when we reference it, we don't attempt to load it.
-		loader: {
-			loaded: true
-		}
-	});
+	// Set our error.
+	module.error = me.normalizeFunction(args.error);
+
+	// Set our factory.
+	module.factory = args.factory;
+
+	// Explicity flag that the module has been loaded, that way when we reference it, we don't attempt to load it.
+	module.loader.loaded = true;
+
+	// Return a reference to the module.
+	return module;
 };
 
 // Our last defined module reference. This is used to reference the proper names with our anonymous modules.
@@ -1117,24 +1208,7 @@ me.loader.init.autoloader = function() {
 };
 
 // Attempt to load our module.
-me.loader.boot = function(moduleName, callback) {
-	// Fetch the instance of our module.
-	var module = me.module(moduleName);
-
-	// If our module is already loaded, then skip the loading process and hit the callback.
-	if (module.loader.loaded === true) {
-		callback();
-		return;
-	}
-
-	// Push our callback to the queue.
-	module.callbacks.push(callback);
-
-	// If this module is currently in the process of being loaded, queue our callback and skip processing.
-	if (module.loader.working === true) {
-		return;
-	}
-
+me.loader.boot = function(module) {
 	// If we made it this far, we need to actually process the module in question.
 	module.loader.working = true;
 
@@ -1148,7 +1222,7 @@ me.loader.boot = function(moduleName, callback) {
 	me.loader.urls(module);
 };
 
-// Patch for legacy browsers which sometimes fire off `onreadystatechange`. @ie
+// Patch for legacy browsers which sometimes fire off `onreadystatechange` instead of the `onload` callback. @ie
 me.loader.onReadyStateChange = function(element, callback) {
 	// Attach the event to the element.
 	element.onreadystatechange = function() {
@@ -1187,7 +1261,7 @@ me.loader.urls = function(module) {
 };
 
 // Common operations to perform whether a module loaded successfully or not.
-me.loader.urls.completed = function(module) {
+me.loader.urls.completed = function(module, success) {
 	// Flag our module has having already attempted to load.
 	module.loader.loaded = true;
 
@@ -1198,7 +1272,7 @@ me.loader.urls.completed = function(module) {
 	module.loader.working = false;
 
 	// Fire off all of our callbacks.
-	me.module.callbacks(module.name);
+	me.module.invoke.callbacks(module.name, success);
 };
 
 // When a URL or module fails to load this function will be called.
@@ -1213,7 +1287,7 @@ me.loader.urls.failed = function(module, url) {
 
 	// If there's no URL, then all URLs have been exhausted!
 	if (!url) {
-		me.loader.urls.completed(module);
+		me.loader.urls.completed(module, false);
 		me.log(2, 'loader', message + 'module.');
 		return;
 	}
@@ -1223,20 +1297,20 @@ me.loader.urls.failed = function(module, url) {
 
 	// Let the end user know which specific URL failed to load.
 	module.loader.failed.push(url);
-	me.log(3, 'loader', message + ' for URL: ' + url);
+	me.log(3, 'loader', message + 'for URL: ' + url);
 
 	// Try the next URL in our URLs list.
 	me.loader.urls(module);
 };
 
 // When a URL loads sucessfully this function will be called.
-me.loader.urls.success = function(module, url, status, factory) {
+me.loader.urls.success = function(module, url, factory, predefined) {
 	// We're going to store the name of the module we're attempting to load here. This way if the file that's loaded
 	// happens to call the `define` function with an anonymous name, this is the name that we'll use for the definition.
 	me.define.anonymous(module.name);
 
 	// If our library was already loaded, we don't know what URL was successful, so we'll skip setting it.
-	if (status === 'predefined') {
+	if (predefined === true) {
 		me.log(3, 'loader', '`' + module.name + '` already loaded on the page; referencing.');
 	} else {
 		module.loader.success = url;
@@ -1256,7 +1330,7 @@ me.loader.urls.success = function(module, url, status, factory) {
 	}
 
 	// Wrap up the loader process and handle our callbacks.
-	me.loader.urls.completed(module);
+	me.loader.urls.completed(module, true);
 };
 
 // Image loader which is responsible for loading any images for the library.
@@ -1283,7 +1357,7 @@ me.loader.img.boot = function(module, url, callbackSuccess, callbackFailed) {
 		me.loader.img.remove(element);
 
 		// In the case of images, the factory represents the URL.
-		return callbackSuccess(module, url, 'success', url);
+		return callbackSuccess(module, url, url);
 	};
 
 	// Set the actual URL that we're going to request to load for our image.
@@ -1321,7 +1395,7 @@ me.loader.js.boot = function(module, url, callbackSuccess, callbackFailed) {
 
 	// Check if our module has already been loaded.
 	if (factory) {
-		return callbackSuccess(module, url, 'predefined', factory);
+		return callbackSuccess(module, url, factory, true);
 	}
 
 	// If our library failed to load, we'll call upon this function.
@@ -1341,7 +1415,7 @@ me.loader.js.boot = function(module, url, callbackSuccess, callbackFailed) {
 		}
 
 		// We passed the checks, invoke the success callback.
-		return callbackSuccess(module, url, 'success', factory);
+		return callbackSuccess(module, url, factory);
 	};
 
 	// Spawn a new element on the page contained our URL with our callbacks.
@@ -1417,9 +1491,17 @@ me.loader.js.check = function(module, fallback) {
 		return true;
 	}
 
-	// If an anonymous moduel was defined, then it's for this library, meaning it loaded successfully.
-	if (me.isDefined(me.define.anonymous.factory)) {
-		return true;
+	// Store the `factory`, as we'll use it later in the `Function`.
+	var factory;
+
+	// If globals are enabled, and we have exports for the module, check the `window` to see if they're defined.
+	if (me.globals === true && module.exports.length) {
+		factory = me.loader.js.check.exports(module.exports);
+	}
+
+	// If an anonymous module was defined, then it's for this library, meaning it loaded successfully.
+	if (me.define.anonymous.pending) {
+		return factory ? factory : true;
 	}
 
 	// If the user added their own custom checking function, invoke it now to preform the check.
@@ -1427,9 +1509,9 @@ me.loader.js.check = function(module, fallback) {
 		return module.check();
 	}
 
-	// If globals are enabled, and we have exports for the module, check the `window` to see if they're defined.
-	if (me.globals === true && module.exports.length) {
-		return me.loader.js.check.exports(module.exports);
+	// If the `factory` is not `undefined`, then return it.
+	if (me.isDefined(factory)) {
+		return factory;
 	}
 
 	// By default just return true, as this function was hit from a success callback.
@@ -1507,11 +1589,11 @@ me.loader.css = {};
 // Attempt to load a stylesheet onto the page.
 me.loader.css.boot = function(module, url, callbackSuccess, callbackFailed) {
 	// If the stylesheet is already loaded on the page, don't attempt to reload it.
-	var factory = me.loader.css.check(module, false);
+	var factory = me.loader.css.check(module, url, false);
 
 	// Check if our module has already been loaded.
 	if (factory) {
-		return callbackSuccess(module, url, 'predefined', factory);
+		return callbackSuccess(module, url, factory, true);
 	}
 
 	// If our library failed to load, we'll call upon this function.
@@ -1523,7 +1605,7 @@ me.loader.css.boot = function(module, url, callbackSuccess, callbackFailed) {
 	// We need to manually check to make sure that our libraries were loaded properly.
 	var check = function() {
 		// Attempt to fetch the factory for our module.
-		factory = me.loader.css.check(module);
+		factory = me.loader.css.check(module, url);
 
 		// If the factory is empty, then it failed to load! Invoke the failure callback.
 		if (!factory) {
@@ -1531,7 +1613,7 @@ me.loader.css.boot = function(module, url, callbackSuccess, callbackFailed) {
 		}
 
 		// We passed the checks, invoke the success callback.
-		return callbackSuccess(module, url, 'success', factory);
+		return callbackSuccess(module, url, factory);
 	};
 
 	// Spawn a new element on the page contained our URL with our callbacks.
@@ -1540,7 +1622,7 @@ me.loader.css.boot = function(module, url, callbackSuccess, callbackFailed) {
 
 // Check to see if a module has already been loaded on the page. This `Function` will return `Boolean`, `true` being
 // that a module has already been loaded and `false` being that it hasn't.
-me.loader.css.check = function(module, fallback) {
+me.loader.css.check = function(module, url, fallback) {
 	// See if the module itself has been flagged as loaded.
 	if (module.loader.loaded === true) {
 		return true;
@@ -1552,13 +1634,17 @@ me.loader.css.check = function(module, fallback) {
 	}
 
 	// If globals are enabled, and we have exports for the module, check the DOM to see if they're defined.
-	if (me.globals === true && module.exports.length) {
+	if (me.globals === true && module.exports.length && !me.isPrefixed(url, me.loader.css.check.ignore)) {
 		return me.loader.css.check.exports(module.exports);
 	}
 
 	// By default just return true, as this function was hit from a success callback.
 	return me.isDefined(fallback) ? fallback : true;
 };
+
+// Bypass checking if a URL starts with any of the following values. This is due to CORS issues with the browsers when
+// a CSS file is loaded from an external source.
+me.loader.css.check.ignore = ['//', 'http://', 'https://'];
 
 // Check for the instance of our library based on the exports given. If the instance of our library exists it'll be
 // returned, otherwise this function will return `null. The `Function` basically checks the `window` variable for a
@@ -1764,24 +1850,34 @@ me.module.base = function(identity) {
 	return null;
 };
 
-// Process all pending callbacks that are queued for a specific module.
-me.module.callbacks = function(moduleName) {
-	// Fetch the reference to our module.
-	var module = me.module(moduleName, null, false);
+// Attempt to load a module.
+me.module.boot = function(moduleName, successCallback, errorCallback) {
+	// Fetch the instance of our module.
+	var module = me.module(moduleName);
 
-	// If there are no callbacks, then halt the `Function`.
-	if (!me.isArray(module.callbacks) || !module.callbacks.length) {
+	// If our module is already loaded, then skip the loading process and hit the callback.
+	if (module.loader.loaded === true) {
+		successCallback();
 		return;
 	}
 
-	// Loop through end invoke each of the callbacks.
-	me.each(module.callbacks, function(callback, index) {
-		// Invoke the callback.
-		callback();
+	// Push our success callback to the queue.
+	if (me.isFunction(successCallback)) {
+		module.successCallbacks.push(successCallback);
+	}
 
-		// Remove the callback from the queue.
-		delete module.callbacks[index];
-	});
+	// Push our error callback to the queue.
+	if (me.isFunction(errorCallback)) {
+		module.errorCallbacks.push(errorCallback);
+	}
+
+	// If this module is currently in the process of being loaded, queue our callback and skip processing.
+	if (module.loader.working === true) {
+		return;
+	}
+
+	// Attempt to load the module on to the page.
+	me.loader.boot(module);
 };
 
 // Define a new module and normalize the `input`. This `Function` will override a module if it already exists with the
@@ -1866,7 +1962,7 @@ me.module.define.normalize = function(moduleName, input) {
 	normalized.identity = me.module.identify(moduleName);
 
 	// Normalize all of the URLs for the module now and store them in a normalized state.
-	normalized.urls = me.module.urls(normalized.identity, normalized.urls);
+	normalized.urls = me.module.urls(moduleName, normalized.identity, normalized.urls);
 
 	// Return our normalized input.
 	return normalized;
@@ -1883,9 +1979,6 @@ me.module.define.defaults = function() {
 		// Aliases for the module.
 		'alias': [me.normalizeStringSeries, null],
 
-		// We store our callbacks here for processing after our library has finished loading.
-		'callbacks': [me.normalizeFunctionSeries, null],
-
 		// Custom check function to determine whether or not our library has loaded properly.
 		'check': [me.normalizeFunction, null],
 
@@ -1894,6 +1987,9 @@ me.module.define.defaults = function() {
 
 		// An error `Function` which will be called if the library or it's dependencies fail to load.
 		'error': [me.normalizeFunction, null],
+
+		// We store our errorr callbacks here for processing after our library has finished loading.
+		'errorCallbacks': [me.normalizeFunctionSeries, null],
 
 		// Exports for the module that we'll check the global scope for to see if the module loaded properly.
 		'exports': [me.normalizeStringSeries, null],
@@ -1935,6 +2031,9 @@ me.module.define.defaults = function() {
 			// Flags whether or not the module is currently in the process of loading.
 			'working': [me.normalizeBoolean, false]
 		},
+
+		// We store our errorr callbacks here for processing after our library has finished loading.
+		'successCallbacks': [me.normalizeFunctionSeries, null],
 
 		// Where all the URLs are stored for our module.
 		'urls': [me.normalizeStringSeries, null],
@@ -2042,6 +2141,37 @@ me.module.invoke = function(moduleName) {
 	return module.factory;
 };
 
+// Invoke all pending callbacks that are queued for a specific module.
+me.module.invoke.callbacks = function(moduleName, success) {
+	// Fetch the reference to our module.
+	var module = me.module(moduleName, null, false);
+
+	// Determine which set of callbacks to invoke.
+	var key = 'errorCallbacks';
+
+	// If we're invoking our success callbacks, then wipe the error callback references from memory.
+	if (success) {
+		module[key] = [];
+		key = 'successCallbacks';
+	}
+
+	// If there are no callbacks, then halt the `Function`.
+	if (!me.isArray(module[key]) || !module[key].length) {
+		return;
+	}
+
+	// Loop through end invoke each of the callbacks.
+	me.each(module[key], function(callback, index) {
+		// Invoke the callback.
+		if (me.isFunction(callback)) {
+			callback();
+		}
+
+		// Remove the callback from the queue.
+		delete module[key][index];
+	});
+};
+
 // Invoke a `factory` with the arguments being the dependencies that are passed in via the `deps` parameter.
 me.module.invoke.factory = function(factory, deps) {
 	// If the `factory` passed in is not a `Function`, then simply return it's current value.
@@ -2088,12 +2218,17 @@ me.module.references = function(modules) {
 // This has a few benefits: we don't have to worry about processing the URLs later. We're able to store a snapshot
 // of the current base URLs for the module in question, this way we can change our base URLs later and still maintain
 // and use a different set of base URLs with other modules.
-me.module.urls = function(identity, urls) {
+me.module.urls = function(moduleName, identity, urls) {
 	// Fetch the base URL for our module.
-	var base = me.module.base(identity);
+	var base = me.module.base(identity) || '';
 
 	// Store our extension string.
 	var extension = '.' + identity;
+
+	// If we don't have any URLs, then set the URLs to a AMD.
+	if (!urls.length) {
+		return [base + moduleName + extension];
+	}
 
 	// Store our set of normalized URLs that we'll reference.
 	var normalizedUrls = [];
@@ -2107,27 +2242,9 @@ me.module.urls = function(identity, urls) {
 			url += extension;
 		}
 
-		// If we have a `base` URL, then do the following.
-		if (base) {
-			// Flag whether or not a URL should be ignore from being prepended with the base URL.
-			var isIgnored = false;
-
-			// Loop through our ignore list.
-			me.each(me.module.urls.ignore, function(ignorer) {
-				// Check to see if the prefix of our URL has a match in our ignore list.
-				if (url.substr(0, ignorer.length) === ignorer) {
-					// Flag the URL as ignored.
-					isIgnored = true;
-
-					// Halt the loop.
-					return false;
-				}
-			});
-
-			// If the URL isn't prefixed with a match from our ignore list, then prepend the base URL.
-			if (!isIgnored) {
-				url = base + url;
-			}
+		// If we have a `base` URL and it's not prefixed with a match from our ignore list, then prepend the base URL.
+		if (base && !me.isPrefixed(url, me.module.urls.ignore)) {
+			url = base + url;
 		}
 
 		// Push the normalized URL off to our list.
@@ -2157,34 +2274,38 @@ me.require = function() {
 
 		// Invoke our `factory` function with it's required dependency references.
 		me.module.invoke.factory(args.factory, args.deps);
+	}, function(errors) {
+		if (me.isFunction(args.error)) {
+			args.error(errors);
+		}
 	});
 };
 
 // Load up all of our dependencies, along with any nested dependencies in the order of least to most dependent.
-me.require.boot = function(modules, callback) {
+me.require.boot = function(modules, successCallback, errorCallback) {
 	// If our `deps` argument was malformed or empty, invoke our callback and halt the function.
 	if (!me.isArray(modules) || !modules.length) {
-		callback();
+		successCallback();
 		return;
 	}
 
 	// Boot up our anonymous modules first. If we're booting, halt the function and we'll loop back around.
-	if (me.require.boot.anonymous(modules, callback)) {
+	if (me.require.boot.anonymous(modules, successCallback, errorCallback)) {
 		return;
 	}
 
 	// Boot our dependencies.
-	me.require.boot.dependencies(modules, callback);
+	me.require.boot.dependencies(modules, successCallback, errorCallback);
 };
 
 // Check to see if there's any anonymous modules waiting to be loaded, if there is, then we'll load them.
-me.require.boot.anonymous = function(modules, callback) {
+me.require.boot.anonymous = function(modules, successCallback, errorCallback) {
 	// Store our anonymous module that we need to load.
 	var queue = me.require.boot.anonymous.queue(modules);
 
 	// If we have any anonymous modules that we need to load, do it now, then loop back around.
 	if (queue.length) {
-		me.require.loop(queue, modules, callback);
+		me.require.loop(queue, modules, successCallback, errorCallback);
 
 		// Explicitly return `true` so that we don't halt the loop.
 		return true;
@@ -2229,7 +2350,7 @@ me.require.boot.anonymous.queue = function(modules) {
 };
 
 // Load up all of the dependencies for the modules that are passed in.
-me.require.boot.dependencies = function(modules, callback) {
+me.require.boot.dependencies = function(modules, successCallback, errorCallback) {
 	// Fetch all of the dependencies for our modules.
 	var dependencies = me.module.dependencies(modules);
 
@@ -2247,31 +2368,50 @@ me.require.boot.dependencies = function(modules, callback) {
 					// Load up our new dependencies.
 					return me.require.boot(newDependencies, function() {
 						// Loop back around to see if any new dependencies have loaded from our set of newly loaded dependencies.
-						me.require.module(modules, callback);
+						me.require.module(modules, successCallback, errorCallback);
 					});
 				}
 
 				// If we didn't have any new dependencies, then run our callback.
-				callback();
-			});
-		});
+				successCallback();
+			}, errorCallback);
+		}, errorCallback);
 	}
 
 	// Load the start of our dependency tree.
-	me.require.module(modules, callback);
+	me.require.module(modules, successCallback, errorCallback);
 };
 
 // Fetch and normalize the arguments that are passed into our `require` function. The arguments for our `require`
-// function can be sent in a number of different forms such as:
-// (dependency) - Where `dependency` is a `String`.
-// (dependencies) - Where `dependency` is a `Array`.
-// (factory) - Where `factory` is a `Function`.
-// (dependency, factory) - Where `dependency` is a `String` and `factory` is a `Function`.
-// (dependencies, factory) - Where `dependencies` is a `Array` and `factory` is a `Function`.
+// `Function` can be sent in a number of different forms.
 me.require.args = function() {
 	// Convert our `arguments` into an `Array`.
 	var args = me.arrayClone(arguments);
 
+	// Route the arguments.
+	args = me.require.args.router(args);
+
+	// Return back our normalized arguments.
+	return me.require.args.normalize(args);
+};
+
+// Normalize the arguments payload.
+me.require.args.normalize = function(payload) {
+	// Normalize the `error` `Function`.
+	payload.error = me.normalizeFunction(payload.error);
+
+	// Normamlize the `dependencies` `Array`.
+	payload.deps = payload.deps ? me.normalizeStringSeries(payload.deps) : null;
+
+	// Normalize the `factory` `Function`.
+	payload.factory = me.normalizeFunction(payload.factory);
+
+	// Return the noramlized `payload`.
+	return payload;
+};
+
+// Route the arguments passed into the `require` `Function`.
+me.require.args.router = function(args) {
 	// We'll fill up these variables based on the arguments.
 	var payload = {
 		error: null,
@@ -2279,23 +2419,89 @@ me.require.args = function() {
 		factory: null
 	};
 
-	// If we only have a single argument, and it's a function, derive our dependencies from it.
-	if (args.length === 1 && me.isFunction(args[0])) {
-		payload.deps = me.args(args[0]);
+	// Determine the router `Function` that we need to invoke.
+	var reference = 'route' + (args.length > 3 ? 3 : args.length);
+
+	// Invoke the router `Function` with the arguments and payload.
+	payload = me.require.args.router[reference](args, payload);
+
+	// If we need to derive the `dependencies` from the `factory` `Function`, then do so now.
+	if (!me.isString(payload.deps) && !me.isArray(payload.deps) && me.isFunction(payload.factory)) {
+		payload.deps = me.args(payload.factory);
+	}
+
+	// Return our factored payload.
+	return payload;
+};
+
+// Handle no arguments being passed into the `require` `Function`.
+me.require.args.router.route0 = function(args, payload) {
+	// Throw an error to the end user.
+	me.log(1, 'require', 'args', 'No arguments were passed into `require`! Halting!', args);
+
+	// Return our factored payload.
+	return payload;
+};
+
+// Handle 1 argument being passed into the `require` `Function`.
+me.require.args.router.route1 = function(args, payload) {
+	// If it's a `Function`, derive our dependencies from it.
+	if (me.isFunction(args[0])) {
+		// Reference the factory.
 		payload.factory = args[0];
 
-		return payload;
+	// If it's an `Array` or `String` it's the `dependencies`.
+	} else if (me.isArray(args[0]) || me.isString(args[0])) {
+		payload.deps = args[0];
+
+	// If none of the criteria above matched, then the arguments are malformed.
+	} else {
+		me.log(1, 'require', 'args', '1 argument was passed into `require` that was malformed! Discarding!', args);
 	}
 
-	// If we made it this far, treat the first argument has our dependecies, and the 2nd has is our factory.
-	payload.deps = me.normalizeStringSeries(args[0]);
+	// Return our factored payload.
+	return payload;
+};
 
-	// If a 2nd argument is defined, treat it as our factory.
-	if (me.isDefined(args[1])) {
+// Handle 2 arguments being passed into the `require` `Function`.
+me.require.args.router.route2 = function(args, payload) {
+	// If both arguments are a `Function` then treat them as the `factory` and `error` callbacks.
+	if (me.isFunction(args[0]) && me.isFunction(args[1])) {
+		// Reference the `error` `Function`.
+		payload.error = args[1];
+
+		// Reference the `factory` `Function`.
+		payload.factory = me.normalizeFunction(args[0]);
+
+	// Otherwise treat the arguments as the `dependencies` and `factory`.
+	} else if (me.isArray(args[0]) || me.isString(args[0])) {
+		// Reference the `dependencies`.
+		payload.deps = args[0];
+
+		// Reference the `factory`.
 		payload.factory = args[1];
+
+	// If none of the criteria above matched, then the arguments are malformed.
+	} else {
+		me.log(1, 'require', 'args', '2 arguments were passed into `require` that were malformed! Discarding!', args);
 	}
 
-	// Return back our normalized arguments.
+	// Return our factored payload.
+	return payload;
+};
+
+// Handle 3 arguments being passed into the `require` `Function`.
+me.require.args.router.route3 = function(args, payload) {
+	// Reference the `dependencies`.
+	payload.deps = args[0];
+
+	// Reference the `factory`.
+	payload.factory = me.normalizeFunction(args[1]);
+
+	// Reference the `error`.
+	payload.error = me.normalizeFunction(args[2]);
+
+	// Return our factored payload.
 	return payload;
 };
 
@@ -2345,19 +2551,19 @@ me.require.invoke = function(deps) {
 // have successfully loaded. This `Function` is being to used to exhaust all dependencies. In the case of anonymous
 // modules, we may load up a file and find out we have new dependencies that must be loaded, this `Function` is taking
 // care of that.
-me.require.loop = function(queue, modules, callback) {
+me.require.loop = function(queue, modules, successCallback, errorCallback) {
 	// Load any modules in our queue.
 	me.require.module(queue, function() {
 		// Run back to `require.boot` and attempt to boot up the modules originally requested.
-		me.require.boot(modules, callback);
-	});
+		me.require.boot(modules, successCallback, errorCallback);
+	}, errorCallback);
 };
 
 // Load up an `Array` of modules simultaneously.
-me.require.module = function(modules, callback) {
+me.require.module = function(modules, successCallback, errorCallback) {
 	// If we have no `modules`, then invoke our callback and halt the function.
 	if (!me.isArray(modules) || !modules.length) {
-		callback();
+		successCallback();
 		return;
 	}
 
@@ -2368,13 +2574,43 @@ me.require.module = function(modules, callback) {
 	me.each(modules, function(moduleName) {
 		// Push our anonymous `Function` off to our parallel queue.
 		queue.push(function(callback) {
-			// Load the module onto the page.
-			me.loader.boot(moduleName, callback);
+			// Load the module.
+			me.module.boot(moduleName, callback, callback);
 		});
 	});
 
-	// Invoke the queue.
-	me.parallel(queue, callback);
+	// Invoke the queue along with the callback handler.
+	me.parallel(queue, function() {
+		me.require.module.callback(modules, successCallback, errorCallback);
+	});
+};
+
+// Handle the callback after loading modules to check if there were errors.
+me.require.module.callback = function(modules, successCallback, errorCallback) {
+	// Store any errors in this `Array`.
+	var errors = [];
+
+	// Loop through each of modules and see if there were any errors.
+	me.each(modules, function(moduleName) {
+		// Fetch a reference of the module.
+		var module = me.module(moduleName);
+
+		// If there's no successful, but there are failed URLs, then the module failed to load.
+		if (!module.loader.success && module.loader.failed.length) {
+			errors.push({
+				module: moduleName,
+				message: 'Failed to load.'
+			});
+		}
+	});
+
+	// If we have errors, fire off our error callback.
+	if (errors.length) {
+		return errorCallback(errors);
+	}
+
+	// Fallback on our success callback.
+	successCallback();
 };
 
 // Output the configured libraries, their load times and other useful statistics for the end user.

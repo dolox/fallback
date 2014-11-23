@@ -3,7 +3,7 @@
 <head>
 	<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" />
 	<link href="../css/main.css" rel="stylesheet" />
-	<script src="../../dist/fallback.min.js" type="text/javascript"></script>
+	<script src="../../dist/fallback.js" type="text/javascript"></script>
 	<title>Fallback JS - Examples - Loading Scripts</title>
 </head>
 
@@ -21,19 +21,40 @@
 				},
 
 				'angularBootstrap': {
-					'exports': 'angular.module("ui.bootstrap")',
+					'check': function() {
+						try {
+							return window.angular.module('ui.bootstrap') ? true : false;
+						} catch (error) {}
+
+						return false;
+					},
+
 					'deps': 'angular',
 					'urls': '//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.6.0/ui-bootstrap-tpls.min'
 				},
 
 				'angularRoute': {
-					'exports': 'angular.module("ngRoute")',
+					'check': function() {
+						try {
+							return window.angular.module('ngRoute') ? true : false;
+						} catch (error) {}
+
+						return false;
+					},
+
 					'deps': 'angular',
 					'urls': '//ajax.googleapis.com/ajax/libs/angularjs/1.2.3/angular-route.min'
 				},
 
 				'angularTouch': {
-					'exports': 'angular.module("ngTouch")',
+					'check': function() {
+						try {
+							return window.angular.module('ngTouch') ? true : false;
+						} catch (error) {}
+
+						return false;
+					},
+
 					'deps': 'angular',
 					'urls': '//ajax.googleapis.com/ajax/libs/angularjs/1.2.3/angular-touch.min'
 				},

@@ -22,7 +22,7 @@ me.loader.img.boot = function(module, url, callbackSuccess, callbackFailed) {
 		me.loader.img.remove(element);
 
 		// In the case of images, the factory represents the URL.
-		return callbackSuccess(module, url, 'success', url);
+		return callbackSuccess(module, url, url);
 	};
 
 	// Set the actual URL that we're going to request to load for our image.
