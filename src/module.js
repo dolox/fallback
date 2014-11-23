@@ -155,14 +155,14 @@ me.module.define.normalize = function(moduleName, input) {
 	var normalized = {};
 
 	// Loop through the top level and loader sublevels of our `input` and `defaults`.
-	me.each(['', 'loader'], function(inputKey) {
+	me.each([false, true], function(inputKey) {
 		// The reference to the level of our defaults that we're normalizing in this iteration.
 		var payload = defaults;
 
 		// If the `inputKey` isn't empty, then we're normalizing a sublevel. Adjust the payload's reference.
 		if (inputKey) {
-			normalized[inputKey] = {};
-			payload = payload[inputKey];
+			normalized.loader = {};
+			payload = payload.loader;
 		}
 
 		// Loop through our defaults.
@@ -177,7 +177,7 @@ me.module.define.normalize = function(moduleName, input) {
 
 			// If the `inputKey` isn't empty, store the `value` in our sublevel of our normalized `Object`.
 			if (inputKey) {
-				normalized[inputKey][key] = value;
+				normalized.loader[key] = value;
 				return;
 			}
 
@@ -230,7 +230,7 @@ me.module.define.defaults = function() {
 
 		// If the factory of the module is a function, it'll be invoked upon it's first require then that state will be
 		// saved. This flags whether or not the factory was invoked and saved.
-		'invoked': [me.normalizeBoolean, false],
+		invoked: [me.normalizeBoolean, false],
 
 		// The value of our module. It's value can be anything, example: `Array`, `Function`, `HTMLElement`, `Object`,
 		// `String`, etc.

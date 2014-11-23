@@ -8036,7 +8036,7 @@ defaults will come out of whatever is contained in the <code>input</code> parame
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	me.each([<span class="hljs-string">''</span>, <span class="hljs-string">'loader'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(inputKey)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	me.each([<span class="hljs-literal">false</span>, <span class="hljs-literal">true</span>], <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(inputKey)</span> </span>{</pre></div></div>
             
         </li>
         
@@ -8067,8 +8067,8 @@ defaults will come out of whatever is contained in the <code>input</code> parame
             </div>
             
             <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> (inputKey) {
-			normalized[inputKey] = {};
-			payload = payload[inputKey];
+			normalized.loader = {};
+			payload = payload.loader;
 		}</pre></div></div>
             
         </li>
@@ -8132,7 +8132,7 @@ defaults will come out of whatever is contained in the <code>input</code> parame
             </div>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (inputKey) {
-				normalized[inputKey][key] = value;
+				normalized.loader[key] = value;
 				<span class="hljs-keyword">return</span>;
 			}</pre></div></div>
             
@@ -8354,7 +8354,7 @@ saved. This flags whether or not the factory was invoked and saved.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		<span class="hljs-string">'invoked'</span>: [me.normalizeBoolean, <span class="hljs-literal">false</span>],</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		invoked: [me.normalizeBoolean, <span class="hljs-literal">false</span>],</pre></div></div>
             
         </li>
         

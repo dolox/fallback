@@ -7,9 +7,9 @@ fallback.require =
 fallback.stats =
 
 // Loader
-fallback.loader.css.boot =
-fallback.loader.img.boot =
-fallback.loader.js.boot =
+fallback.css =
+fallback.img =
+fallback.js =
 
 // Config
 fallback.config.amd =
