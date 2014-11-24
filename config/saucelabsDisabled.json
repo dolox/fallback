@@ -1,5 +1,107 @@
 {
 
+
+	"Chrome-OSX109": {
+		"base": "SauceLabs",
+		"browserName": "chrome",
+		"platform": "OS X 10.9"
+	},
+
+	"Chrome-OSX108": {
+		"base": "SauceLabs",
+		"browserName": "chrome",
+		"platform": "OS X 10.8"
+	},
+
+	"Chrome-Win7": {
+		"base": "SauceLabs",
+		"browserName": "chrome",
+		"platform": "Windows 7"
+	},
+
+	"Chrome-Win8": {
+		"base": "SauceLabs",
+		"browserName": "chrome",
+		"platform": "Windows 8"
+	},
+
+	"Chrome-Win81": {
+		"base": "SauceLabs",
+		"browserName": "chrome",
+		"platform": "Windows 8.1"
+	},
+
+	"Chrome-WinXP": {
+		"base": "SauceLabs",
+		"browserName": "chrome",
+		"platform": "Windows XP"
+	},
+
+	"IE11-Win81": {
+		"base": "SauceLabs",
+		"browserName": "internet explorer",
+		"platform": "Windows 8.1",
+		"version": "11"
+	},
+
+	"IE10-Win8": {
+		"base": "SauceLabs",
+		"browserName": "internet explorer",
+		"platform": "Windows 8",
+		"version": "10"
+	},
+
+	"IE11-Win7": {
+		"base": "SauceLabs",
+		"browserName": "internet explorer",
+		"platform": "Windows 7",
+		"version": "11"
+	},
+
+	"IE10-Win7": {
+		"base": "SauceLabs",
+		"browserName": "internet explorer",
+		"platform": "Windows 7",
+		"version": "10"
+	},
+
+	"IE9-Win7": {
+		"base": "SauceLabs",
+		"browserName": "internet explorer",
+		"platform": "Windows 7",
+		"version": "9"
+	},
+
+	"IE8-Win7": {
+		"base": "SauceLabs",
+		"browserName": "internet explorer",
+		"platform": "Windows 7",
+		"version": "8"
+	},
+
+	"IE8-WinXP": {
+		"base": "SauceLabs",
+		"browserName": "internet explorer",
+		"platform": "Windows XP",
+		"version": "8"
+	},
+
+	"IE7-WinXP": {
+		"base": "SauceLabs",
+		"browserName": "internet explorer",
+		"platform": "Windows XP",
+		"version": "7"
+	},
+
+	"IE6-WinXP": {
+		"base": "SauceLabs",
+		"browserName": "internet explorer",
+		"platform": "Windows XP",
+		"version": "6"
+	},
+
+
+
 	"Chrome-Android44": {
 		"base": "SauceLabs",
 		"browserName": "android",

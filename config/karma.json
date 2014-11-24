@@ -13,6 +13,11 @@
 
 	"colors": true,
 
+	"coverageReporter": {
+		"dir": "tests/coverage/",
+		"type": "lcovonly"
+	},
+
 	"files": [
 		"bower_components/json/json2.js",
 		"dist/fallback.js",
@@ -39,14 +44,19 @@
 
 	"port": 9876,
 
+	"preprocessors": {
+		"dist/fallback.js": "coverage"
+	},
+
 	"record-screenshots": false,
 
 	"reporters": [
+		"coverage",
 		"progress",
 		"saucelabs"
 	],
 
-	"saurceLabs": {
+	"sauceLabs": {
 		"testName": "Fallback JS"
 	},
 

@@ -4,12 +4,11 @@ git:
 node_js:
   - "0.10"
 install:
-  - npm install -g bower codeclimate-test-reporter grunt-cli istanbul
+  - npm install -g bower codeclimate-test-reporter grunt-cli
   - npm install
   - bower install
 before_script:
-  - istanbul cover dist/fallback.js
-  - cat coverage/lcov.info | codeclimate
+  - codeclimate < tests/coverage/**/lcov.info
   - grunt build
 env:
   global:

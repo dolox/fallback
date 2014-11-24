@@ -1,5 +1,5 @@
 bower_components
-coverage
+tests/coverage
 
 # Created by https://www.gitignore.io
 

@@ -1,4 +1,3 @@
-// Globals
 var fallback;
 
 fallback.config =

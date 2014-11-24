@@ -109,7 +109,7 @@ variable referenced throughout, this is simply short-hand for the library.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>	<span class="hljs-comment">/* eslint-disable */</span>
-	me.isArray = me[<span class="hljs-string">'isArray'</span>];
+	me.isArray = me[<span class="hljs-string">'isArray'</span>]; <span class="hljs-comment">// @todo this isn't being renamed during minification</span>
 	me.isBoolean = me[<span class="hljs-string">'isBoolean'</span>];
 	me.isFunction = me[<span class="hljs-string">'isFunction'</span>];
 	me.isNumber = me[<span class="hljs-string">'isNumber'</span>];

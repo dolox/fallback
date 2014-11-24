@@ -1,3 +1,4 @@
+[ ] when loading an anon module and specifying the same name the code breaks... ex require(abc123), define(abc123, function()) <---- breaks. fix it
 
 [ ] full run through in IE6-11, safari, firefox, chrome, makes sure it's working properly including for all examples
 

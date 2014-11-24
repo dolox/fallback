@@ -6,7 +6,6 @@
 // variable referenced throughout, this is simply short-hand for the library.
 var me = {};
 
-
 // Initialize our library. This function must be invoked before we start using the library.
 me.init = function() {
 	// Reference the `head` element of our document and store it into memory. The if statement is for test coverage.
@@ -17,7 +16,7 @@ me.init = function() {
 
 	// The following is for better compression.
 	/* eslint-disable */
-	me.isArray = me['isArray'];
+	me.isArray = me['isArray']; // @todo this isn't being renamed during minification
 	me.isBoolean = me['isBoolean'];
 	me.isFunction = me['isFunction'];
 	me.isNumber = me['isNumber'];
