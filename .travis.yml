@@ -8,8 +8,9 @@ install:
   - npm install
   - bower install
 before_script:
-  - codeclimate < tests/coverage/**/lcov.info
   - grunt build
+after_script:
+  - codeclimate < tests/coverage/**/lcov.info
 env:
   global:
     - SAUCE_USERNAME: fallback
