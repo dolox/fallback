@@ -2,7 +2,7 @@
 // pass arguments into this function, for more details see comments in the `me.define.args` function.
 me.define = function() {
 	// Fetch and normalize the argument that were passed in.
-	var args =	me.amd.args(arguments, me.define.args.router, 3, me.define.args.normalize, {
+	var args =	me.amd.args(arguments, me.define.args.router, me.define.args.normalize, {
 		name: null,
 		error: null,
 		deps: null,

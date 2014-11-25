@@ -4,7 +4,7 @@
 // don't actually know about until after we've loaded it's file.
 me.require = function() {
 	// Fetch and normalize the argument that were passed in.
-	var args =	me.amd.args(arguments, me.require.args.router, 3, me.require.args.normalize, {
+	var args =	me.amd.args(arguments, me.require.args.router, me.require.args.normalize, {
 		error: null,
 		deps: null,
 		factory: null

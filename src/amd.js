@@ -1,18 +1,19 @@
-// Common functionality for both the `define` and `require` modules.
+// Common functionality for both the `define` and `require` `Functions`.
 me.amd = {};
 
-me.amd.args = function(args, router, maxlength, normalizer, payload) {
+// Route and normalize the arguments.
+me.amd.args = function(args, router, normalizer, payload) {
 	// Convert our `arguments` into an `Array`.
 	args = me.arrayClone(args);
 
 	// Route the arguments.
-	args = me.amd.router(args, router, maxlength, payload);
+	args = me.amd.router(args, router, 3, payload);
 
 	// Return back our normalized arguments.
 	return normalizer(args);
 };
 
-// Route the arguments passed into our `define` or `require` `Function`.
+// Route a set of arguments.
 me.amd.router = function(args, router, maxlength, payload) {
 	// Determine the router `Function` that we need to invoke.
 	var reference = args.length > maxlength ? maxlength : args.length;

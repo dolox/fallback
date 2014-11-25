@@ -76,6 +76,13 @@ me.init.aliases = function(container, input) {
 
 // We need the minification processor to see a few variables so that it can minifiy them.
 me.init.compression = function() {
+	me.init.compression.is();
+	me.init.compression.normalize();
+	me.init.compression.normalizeSeries();
+};
+
+// Reference all of the `is` functions.
+me.init.compression.is = function() {
 	/* eslint-disable */
 	/* jshint -W069 */
 
@@ -87,12 +94,30 @@ me.init.compression = function() {
 	me.isObject = me['isObject'];
 	me.isString = me['isString'];
 
+	/* jshint +W069 */
+	/* eslint-enable */
+};
+
+// Reference all of the `normalize` functions.
+me.init.compression.normalize = function() {
+	/* eslint-disable */
+	/* jshint -W069 */
+
 	me.normalizeArray = me['normalizeArray'];
 	me.normalizeBoolean = me['normalizeBoolean'];
 	me.normalizeFunction = me['normalizeFunction'];
 	me.normalizeNumber = me['normalizeNumber'];
 	me.normalizeObject = me['normalizeObject'];
 	me.normalizeString = me['normalizeString'];
+
+	/* jshint +W069 */
+	/* eslint-enable */
+};
+
+// Reference all of the `normalize` `series` functions.
+me.init.compression.normalizeSeries = function() {
+	/* eslint-disable */
+	/* jshint -W069 */
 
 	me.normalizeArraySeries = me['normalizeArraySeries'];
 	me.normalizeBooleanSeries = me['normalizeBooleanSeries'];
@@ -672,21 +697,22 @@ me.utility = function(container, type) {
 // The different utility types that we want to generate functions for.
 me.utility.types = ['Array', 'Boolean', 'Function', 'Number', 'Object', 'String'];
 
-// Common functionality for both the `define` and `require` modules.
+// Common functionality for both the `define` and `require` `Functions`.
 me.amd = {};
 
-me.amd.args = function(args, router, maxlength, normalizer, payload) {
+// Route and normalize the arguments.
+me.amd.args = function(args, router, normalizer, payload) {
 	// Convert our `arguments` into an `Array`.
 	args = me.arrayClone(args);
 
 	// Route the arguments.
-	args = me.amd.router(args, router, maxlength, payload);
+	args = me.amd.router(args, router, 3, payload);
 
 	// Return back our normalized arguments.
 	return normalizer(args);
 };
 
-// Route the arguments passed into our `define` or `require` `Function`.
+// Route a set of arguments.
 me.amd.router = function(args, router, maxlength, payload) {
 	// Determine the router `Function` that we need to invoke.
 	var reference = args.length > maxlength ? maxlength : args.length;
@@ -929,7 +955,7 @@ me.config.whitelist = ['amd', 'base', 'debug', 'delimiter', 'globals', 'libs'];
 // pass arguments into this function, for more details see comments in the `me.define.args` function.
 me.define = function() {
 	// Fetch and normalize the argument that were passed in.
-	var args =	me.amd.args(arguments, me.define.args.router, 3, me.define.args.normalize, {
+	var args =	me.amd.args(arguments, me.define.args.router, me.define.args.normalize, {
 		name: null,
 		error: null,
 		deps: null,
@@ -2302,7 +2328,7 @@ me.module.urls.ignore = ['/', 'data:', 'http://', 'https://'];
 // don't actually know about until after we've loaded it's file.
 me.require = function() {
 	// Fetch and normalize the argument that were passed in.
-	var args =	me.amd.args(arguments, me.require.args.router, 3, me.require.args.normalize, {
+	var args =	me.amd.args(arguments, me.require.args.router, me.require.args.normalize, {
 		error: null,
 		deps: null,
 		factory: null
