@@ -1,0 +1,7 @@
+{
+	"globals": {
+		"me": true
+	},
+
+	"sub": true
+}

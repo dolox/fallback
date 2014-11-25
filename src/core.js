@@ -73,7 +73,6 @@ me.init.aliases = function(container, input) {
 // We need the minification processor to see a few variables so that it can minifiy them.
 me.init.compression = function() {
 	/* eslint-disable */
-	/* jshint -W069 */
 
 	// `isArray` is reserved, it won't be compressed during minification.
 	me.isaArray = me['isArray'];
@@ -97,7 +96,6 @@ me.init.compression = function() {
 	me.normalizeObjectSeries = me['normalizeObjectSeries'];
 	me.normalizeStringSeries = me['normalizeStringSeries'];
 
-	/* jshint +W069 */
 	/* eslint-enable */
 };
 

@@ -378,8 +378,7 @@ advantage of it.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>me.init.compression = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
-	<span class="hljs-comment">/* eslint-disable */</span>
-	<span class="hljs-comment">/* jshint -W069 */</span></pre></div></div>
+	<span class="hljs-comment">/* eslint-disable */</span></pre></div></div>
             
         </li>
         
@@ -415,7 +414,6 @@ advantage of it.</p>
 	me.normalizeObjectSeries = me[<span class="hljs-string">'normalizeObjectSeries'</span>];
 	me.normalizeStringSeries = me[<span class="hljs-string">'normalizeStringSeries'</span>];
 
-	<span class="hljs-comment">/* jshint +W069 */</span>
 	<span class="hljs-comment">/* eslint-enable */</span>
 };</pre></div></div>
             
@@ -9614,11 +9612,7 @@ an order from least to most dependent, that way our initial <code>require</code>
             </div>
             
             <div class="content"><div class='highlight'><pre>		me.module.invoke.factory(args.factory, args.deps);
-	}, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(errors)</span> </span>{
-		<span class="hljs-keyword">if</span> (me.isFunction(args.error)) {
-			args.error(errors);
-		}
-	});
+	}, args.error);
 };</pre></div></div>
             
         </li>

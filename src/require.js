@@ -18,11 +18,7 @@ me.require = function() {
 
 		// Invoke our `factory` function with it's required dependency references.
 		me.module.invoke.factory(args.factory, args.deps);
-	}, function(errors) {
-		if (me.isFunction(args.error)) {
-			args.error(errors);
-		}
-	});
+	}, args.error);
 };
 
 // Load up all of our dependencies, along with any nested dependencies in the order of least to most dependent.
