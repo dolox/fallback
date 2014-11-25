@@ -47,7 +47,7 @@ module.exports = function(grunt, tasks) {
 		return factored;
 	};
 
-	me.src = tasks.concat.options.src;
+	me.src = tasks.concat.options.src.concat(uri.root + 'config/closureHelper.js');
 
 	tasks.concat.jsMin = me;
 

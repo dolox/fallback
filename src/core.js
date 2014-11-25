@@ -7,12 +7,6 @@ me.init = function() {
 	// Reference the `head` element of our document and store it into memory. The if statement is for test coverage.
 	me.head = global.document ? global.document.getElementsByTagName('head')[0] : null;
 
-	// Spawn our utility functions for the library.
-	me.init.utilities(me, me.utility.types);
-
-	// The following is for better compression with the minification process.
-	me.init.compression();
-
 	// Reference aliases for the library into the `global` object for the user to directly access.
 	me.init.aliases(global, me.aliases);
 
@@ -69,69 +63,6 @@ me.init.aliases = function(container, input) {
 	// Reset any pending anonymous state.
 	me.define.anonymous.reset();
 };
-
-// We need the minification processor to see a few variables so that it can minifiy them.
-me.init.compression = function() {
-	/* eslint-disable */
-	me.init.compression.a();
-	me.init.compression.b();
-	me.init.compression.c();
-	// `isArray` is reserved, it won't be compressed during minification.
-	/*
-	me.isaArray = me['isArray'];
-	me.isBoolean = me['isBoolean'];
-	me.isFunction = me['isFunction'];
-	me.isNumber = me['isNumber'];
-	me.isObject = me['isObject'];
-	me.isString = me['isString'];
-
-	me.normalizeArray = me['normalizeArray'];
-	me.normalizeBoolean = me['normalizeBoolean'];
-	me.normalizeFunction = me['normalizeFunction'];
-	me.normalizeNumber = me['normalizeNumber'];
-	me.normalizeObject = me['normalizeObject'];
-	me.normalizeString = me['normalizeString'];
-
-	me.normalizeArraySeries = me['normalizeArraySeries'];
-	me.normalizeBooleanSeries = me['normalizeBooleanSeries'];
-	me.normalizeFunctionSeries = me['normalizeFunctionSeries'];
-	me.normalizeNumberSeries = me['normalizeNumberSeries'];
-	me.normalizeObjectSeries = me['normalizeObjectSeries'];
-	me.normalizeStringSeries = me['normalizeStringSeries'];
-	*/
-
-	/* eslint-enable */
-};
-
-/* eslint-disable */
-me.init.compression.a = function() {
-	// `isArray` is reserved, it won't be compressed during minification.
-	me.isaArray = me['isArray'];
-	me.isBoolean = me['isBoolean'];
-	me.isFunction = me['isFunction'];
-	me.isNumber = me['isNumber'];
-	me.isObject = me['isObject'];
-	me.isString = me['isString'];
-};
-
-me.init.compression.b = function() {
-	me.normalizeArray = me['normalizeArray'];
-	me.normalizeBoolean = me['normalizeBoolean'];
-	me.normalizeFunction = me['normalizeFunction'];
-	me.normalizeNumber = me['normalizeNumber'];
-	me.normalizeObject = me['normalizeObject'];
-	me.normalizeString = me['normalizeString'];
-};
-
-me.init.compression.c = function() {
-	me.normalizeArraySeries = me['normalizeArraySeries'];
-	me.normalizeBooleanSeries = me['normalizeBooleanSeries'];
-	me.normalizeFunctionSeries = me['normalizeFunctionSeries'];
-	me.normalizeNumberSeries = me['normalizeNumberSeries'];
-	me.normalizeObjectSeries = me['normalizeObjectSeries'];
-	me.normalizeStringSeries = me['normalizeStringSeries'];
-};
-/* eslint-enable */
 
 // Automatically spawn helper functions that we'll use throughout the library. For example we're spawning the following
 // functions: `isArray`, `normalizeArray`, `normalizeArraySeries`, etc. Spawning these functions this way results in
@@ -699,3 +630,6 @@ me.utility = function(container, type) {
 
 // The different utility types that we want to generate functions for.
 me.utility.types = ['Array', 'Boolean', 'Function', 'Number', 'Object', 'String'];
+
+// Spawn our utility functions for the library.
+me.init.utilities(me, me.utility.types);
