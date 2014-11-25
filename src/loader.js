@@ -3,21 +3,21 @@
 // `loaderStylesheet.js` and `loaderJavaScript.js`. Those individual libraries are treated as non-logic based loaders.
 // Their sole purpose is to simply load a specific URL, then let us know whether it load successfully or not. Any and
 // all logic which performs trying additional fallbacks and checks lives within the loader object.
-me.loader = {};
+var loader = {};
 
 // Initialization function for our loader object.
-me.loader.init = function() {
+loader.init = function() {
 	// Automatically configure our library via attributes being set on any `script` elements on the page.
-	me.loader.init.autoloader();
+	loader.init.autoloader();
 };
 
 // If the attributes `base` or `data-base` are found on any of the `script` tags within the page when the library is
 // loaded, automatically set the `base` variable for our configuration to that `value`. If the attributes `main` or
 // `data-main` are found on any of the `script` tags when the library is loaded on the page, automatically load up that
 // `value` as a module. If the `value` is a comma delimited string, we'll split on the comma and load each separately.
-me.loader.init.autoloader = function() {
+loader.init.autoloader = function() {
 	// Fetch `base` and/or `data-base`.
-	var base = me.normalizeStringSeries(me.loader.js.attributes('base'));
+	var base = me.normalizeStringSeries(loader.js.attributes('base'));
 
 	// If our `attribute` exists, then configure it.
 	if (base.length) {
@@ -28,7 +28,7 @@ me.loader.init.autoloader = function() {
 	}
 
 	// Fetch `main` and/or `data-main`.
-	var main = me.normalizeStringSeries(me.loader.js.attributes('main'));
+	var main = me.normalizeStringSeries(loader.js.attributes('main'));
 
 	// If our `attribute` exists, then `require` it.
 	if (main.length) {
@@ -37,7 +37,7 @@ me.loader.init.autoloader = function() {
 };
 
 // Attempt to load our module.
-me.loader.boot = function(module) {
+loader.boot = function(module) {
 	// If we made it this far, we need to actually process the module in question.
 	module.loader.working = true;
 
@@ -48,11 +48,11 @@ me.loader.boot = function(module) {
 	module.loader.workingURLs = me.arrayClone(module.urls);
 
 	// Make sure to clone our URLs array as we're going to be manipulating it.
-	me.loader.urls(module);
+	loader.urls(module);
 };
 
 // Patch for legacy browsers which sometimes fire off `onreadystatechange` instead of the `onload` callback. @ie
-me.loader.onReadyStateChange = function(element, callback) {
+loader.onReadyStateChange = function(element, callback) {
 	// Attach the event to the element.
 	element.onreadystatechange = function() {
 		if (!this.readyState || this.readyState === 'loaded' || this.readyState === 'complete') {
@@ -70,13 +70,13 @@ me.loader.onReadyStateChange = function(element, callback) {
 // load one at a time, only stopping when either all URLs have been exhausted or a URL has loaded successfully. Other
 // specific checks that determine whether or not a library was actually loaded properly are defined within the loader
 // scripts themselves.
-me.loader.urls = function(module) {
+loader.urls = function(module) {
 	// Reference our working URLs.
 	var urls = module.loader.workingURLs;
 
 	// If we've exhausted all URLs available for the module, then the library has failed to load.
 	if (!urls.length) {
-		return me.loader.urls.failed(module);
+		return loader.urls.failed(module);
 	}
 
 	// Shift our URL off of the `Array`, that way if we have to loop around, we don't retry the same URL again.
@@ -86,11 +86,11 @@ me.loader.urls = function(module) {
 	me.log(3, 'loader', 'Requesting to load `' + module.name + '` via `' + url + '`');
 
 	// Call upon our specific loader script to load our URL.
-	me.loader[module.identity].boot(module, url, me.loader.urls.success, me.loader.urls.failed, module.identity);
+	loader[module.identity].boot(module, url, loader.urls.success, loader.urls.failed, module.identity);
 };
 
 // Common operations to perform whether a module loaded successfully or not.
-me.loader.urls.completed = function(module, success) {
+loader.urls.completed = function(module, success) {
 	// Flag our module has having already attempted to load.
 	module.loader.loaded = true;
 
@@ -105,7 +105,7 @@ me.loader.urls.completed = function(module, success) {
 };
 
 // When a URL or module fails to load this function will be called.
-me.loader.urls.failed = function(module, url) {
+loader.urls.failed = function(module, url) {
 	// Legacy IE fires off the failed callback more than once, so we'll double check to see if we've already fired it. @ie
 	if (me.indexOf(module.loader.failed, url) !== -1) {
 		return;
@@ -116,7 +116,7 @@ me.loader.urls.failed = function(module, url) {
 
 	// If there's no URL, then all URLs have been exhausted!
 	if (!url) {
-		me.loader.urls.completed(module, false);
+		loader.urls.completed(module, false);
 		me.log(2, 'loader', message + 'module.');
 		return;
 	}
@@ -129,11 +129,11 @@ me.loader.urls.failed = function(module, url) {
 	me.log(3, 'loader', message + 'for URL: ' + url);
 
 	// Try the next URL in our URLs list.
-	me.loader.urls(module);
+	loader.urls(module);
 };
 
 // When a URL loads sucessfully this function will be called.
-me.loader.urls.success = function(module, url, factory, predefined) {
+loader.urls.success = function(module, url, factory, predefined) {
 	// We're going to store the name of the module we're attempting to load here. This way if the file that's loaded
 	// happens to call the `define` function with an anonymous name, this is the name that we'll use for the definition.
 	me.define.anonymous(module.name);
@@ -159,5 +159,8 @@ me.loader.urls.success = function(module, url, factory, predefined) {
 	}
 
 	// Wrap up the loader process and handle our callbacks.
-	me.loader.urls.completed(module, true);
+	loader.urls.completed(module, true);
 };
+
+// Reference the module within the library.
+me.loader = loader;

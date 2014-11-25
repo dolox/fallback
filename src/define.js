@@ -1,8 +1,10 @@
 // Defining anonymous and named modules for our library is done through this function. There are a number of ways to
-// pass arguments into this function, for more details see comments in the `me.define.args` function.
-me.define = function() {
+// pass arguments into this function, for more details see comments in the `define.args` function.
+/* eslint-disable*/
+var define = function() {
+	/* eslint-enable*/
 	// Fetch and normalize the argument that were passed in.
-	var args =	me.amd.args(arguments, me.define.args.router, me.define.args.normalize, {
+	var args =	me.amd.args(arguments, define.args.router, define.args.normalize, {
 		name: null,
 		error: null,
 		deps: null,
@@ -10,7 +12,7 @@ me.define = function() {
 	});
 
 	// Fill up our dependencies.
-	args = me.define.deps(args);
+	args = define.deps(args);
 
 	// If we're attempting to define an anonymous module, and we already have an anonymous module that was previously
 	// passed to the function before we had a chance to actually declare it's name, then there was 2 anonymous modules
@@ -20,27 +22,27 @@ me.define = function() {
 	// throw a notice to our end user.
 	if (!args.name) {
 		// We cannot define multiple anonymous modules with the same name!
-		if (me.define.anonymous.pending) {
+		if (define.anonymous.pending) {
 			me.log(1, 'define', 'Multiple Anonymous modules defined in the same file! Halting!', args);
 			return;
 		}
 
 		// If we don't have a name for our module, then we'll define it as an anonymous module. Our callback that loaded our
 		// file will see this and set the proper name once the callback executes, which will happen synchronously.
-		me.define.anonymous.save(args);
+		define.anonymous.save(args);
 		return;
 	}
 
 	// Generate our new module and reference it as our last defined module.
-	me.define.module.last = me.define.module(args);
+	define.module.last = define.module(args);
 
 	// Flag the anonymous modules as not pending.
-	me.define.anonymous.pending = false;
+	define.anonymous.pending = false;
 };
 
 // Whether or not to enforce the use of AMD. If this setting it turned on via the `config` `Function`, any library that
 // supports AMD will not longer be available via the `window` `global`. See documentation for further details.
-me.define.amd = undefined;
+define.amd = undefined;
 
 // If a module is sitting in an anonymous state and waiting to be imported properly, this `Function` will take the
 // `dependencies` and `factory` from that anonymous module, import them in to our properly named module, and then
@@ -54,11 +56,11 @@ me.define.amd = undefined;
 // anonymous module that's sitting in a limbo state with the name of the module that was given from our callback. If
 // our callback provides a `define` function with a name, any anonymous modules sitting in a limbo state will be wiped
 // out completely.
-me.define.anonymous = function(moduleName) {
+define.anonymous = function(moduleName) {
 	// If we don't have a anonymous module waiting to be defined, then halt the function. We should at the very least have
 	// either a `factory` or reference to the last defined module (which in this case would be our anonymous module
 	// without a name).
-	if (!me.define.anonymous.pending && !me.define.module.last) {
+	if (!define.anonymous.pending && !define.module.last) {
 		return;
 	}
 
@@ -74,9 +76,9 @@ me.define.anonymous = function(moduleName) {
 	// If our module already exists and there's a module that's set as our last defined, then a file was loaded which the
 	// library assumed was anonymous, but wound up being explicitly calling the `define` `Function` with a `name`. In this
 	// particular case, we'll destroy the new definition and instead alias it with our anonymous module.
-	if (module && me.define.module.last) {
+	if (module && define.module.last) {
 		// Define the alias coming from the `define` function for the anonymous file that was loaded.
-		me.module.alias(module.name, [me.define.module.last.name]);
+		me.module.alias(module.name, [define.module.last.name]);
 
 		// Attempt to fetch the index of our anonymous module from our require library.
 		var anonymousIndex = me.indexOf(me.require.anonymous, moduleName);
@@ -87,51 +89,51 @@ me.define.anonymous = function(moduleName) {
 			me.require.anonymous.splice(anonymousIndex, 1);
 
 			// Reference the factory.
-			module.factory = me.define.module.last.factory;
+			module.factory = define.module.last.factory;
 		}
 
 		// Delete the actually module reference.
-		delete me.module.definitions[me.define.module.last.name];
+		delete me.module.definitions[define.module.last.name];
 	} else {
 		// Set the dependencies for our anonymous `module`.
-		module.deps = me.define.anonymous.deps;
+		module.deps = define.anonymous.deps;
 
 		// Set the factory for our anonymous `module`.
-		module.factory = me.define.anonymous.factory;
+		module.factory = define.anonymous.factory;
 	}
 
 	// Reset the pending anonymous values waiting to be populated.
-	me.define.anonymous.reset();
+	define.anonymous.reset();
 };
 
 // The dependencies for our anonymous `module` waiting to be properly defined.
-me.define.anonymous.deps = undefined;
+define.anonymous.deps = undefined;
 
 // The factory for our anonymous `module` waiting to be properly defined.
-me.define.anonymous.factory = undefined;
+define.anonymous.factory = undefined;
 
 // Flag whether or not an anonymous module is pending to be defined.
-me.define.anonymous.pending = false;
+define.anonymous.pending = false;
 
 // Clear out any saved anonymous `module` properties.
-me.define.anonymous.reset = function() {
+define.anonymous.reset = function() {
 	// Clear the pending state.
-	me.define.anonymous.pending = false;
+	define.anonymous.pending = false;
 
 	// Clear the dependencies.
-	me.define.anonymous.deps = undefined;
+	define.anonymous.deps = undefined;
 
 	// Clear the factory.
-	me.define.anonymous.factory = undefined;
+	define.anonymous.factory = undefined;
 };
 
 // Store the anonymous module waiting to be defined.
-me.define.anonymous.save = function(args) {
+define.anonymous.save = function(args) {
 	// Remove the reference for our last defined module.
-	me.define.module.last = null;
+	define.module.last = null;
 
 	// Reset the previously saved values if present.
-	me.define.anonymous.reset();
+	define.anonymous.reset();
 
 	// If the `args` parameter isn't an `Object`, halt the `Function`.
 	if (!me.isObject(args)) {
@@ -139,25 +141,25 @@ me.define.anonymous.save = function(args) {
 	}
 
 	// Flag the pending state.
-	me.define.anonymous.pending = true;
+	define.anonymous.pending = true;
 
 	// Set the dependencies for our anonymous module.
 	if (me.isDefined(args.deps)) {
-		me.define.anonymous.deps = args.deps;
+		define.anonymous.deps = args.deps;
 	}
 
 	// Set the factory for our anonymous module.
 	if (me.isDefined(args.factory)) {
-		me.define.anonymous.factory = args.factory;
+		define.anonymous.factory = args.factory;
 	}
 };
 
 // Route and normalize the arguments that are passed into our `define` function. The arguments for our `define`
 // `Function` can be sent in a number of different forms.
-me.define.args = {};
+define.args = {};
 
 // Normalize the arguments payload.
-me.define.args.normalize = function(payload) {
+define.args.normalize = function(payload) {
 	// Normalize the `name` `String`.
 	payload.name = me.normalizeString(payload.name);
 
@@ -174,10 +176,10 @@ me.define.args.normalize = function(payload) {
 };
 
 // Route the arguments passed into the `define` `Function`.
-me.define.args.router = [];
+define.args.router = [];
 
 // Handle no arguments being passed into the `define` `Function`.
-me.define.args.router[0] = function(args, payload) {
+define.args.router[0] = function(args, payload) {
 	// Throw an error to the end user.
 	me.log(1, 'define', 'args', 'No arguments were passed into `define`! Halting!', args);
 
@@ -186,7 +188,7 @@ me.define.args.router[0] = function(args, payload) {
 };
 
 // Handle 1 argument being passed into the `define` `Function`.
-me.define.args.router[1] = function(args, payload) {
+define.args.router[1] = function(args, payload) {
 	// Reference the `factory`.
 	payload.factory = args[0];
 
@@ -195,7 +197,7 @@ me.define.args.router[1] = function(args, payload) {
 };
 
 // Handle 2 arguments being passed into the `define` `Function`.
-me.define.args.router[2] = function(args, payload) {
+define.args.router[2] = function(args, payload) {
 	// If the first argument is a `String`, treat the arguments as `name`, and `factory`.
 	if (me.isString(args[0])) {
 		// Reference the `name`.
@@ -222,7 +224,7 @@ me.define.args.router[2] = function(args, payload) {
 };
 
 // Handle 3 arguments being passed into the `define` `Function`.
-me.define.args.router[3] = function(args, payload) {
+define.args.router[3] = function(args, payload) {
 	// Reference the `name`.
 	payload.name = args[0];
 
@@ -237,7 +239,7 @@ me.define.args.router[3] = function(args, payload) {
 };
 
 // Fill up our dependencies based on our arguments if we need to.
-me.define.deps = function(args) {
+define.deps = function(args) {
 	// If we already have our dependencies defined, then skip the function.
 	if (args.deps) {
 		return args;
@@ -257,7 +259,7 @@ me.define.deps = function(args) {
 };
 
 // Generate and return our new module.
-me.define.module = function(args) {
+define.module = function(args) {
 	// Generate or reference the module.
 	var module = me.module(args.name);
 
@@ -278,4 +280,7 @@ me.define.module = function(args) {
 };
 
 // Our last defined module reference. This is used to reference the proper names with our anonymous modules.
-me.define.module.last = null;
+define.module.last = null;
+
+// Reference the module within the library.
+me.define = define;

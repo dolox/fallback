@@ -1,16 +1,16 @@
 // Image loader which is responsible for loading any images for the library.
-me.loader.img = {};
+var img = {};
 
 // The image loader is pretty straight forward as legacy browser support goes way back, we don't need to perform any
 // extra checking or manipulation.
-me.loader.img.boot = function(module, url, callbackSuccess, callbackFailed) {
+img.boot = function(module, url, callbackSuccess, callbackFailed) {
 	// Create a new `img` element.
 	var element = global.document.createElement('img');
 
 	// If we get an `onerror` callback, the image failed to load.
 	element.onerror = function() {
 		// Remove the element from the page.
-		me.loader.img.remove(element);
+		img.remove(element);
 
 		// Process our failed callback.
 		return callbackFailed(module, url);
@@ -19,7 +19,7 @@ me.loader.img.boot = function(module, url, callbackSuccess, callbackFailed) {
 	// If we get an `onload` callback, the image loaded successfully.
 	element.onload = function() {
 		// Remove the element from the page.
-		me.loader.img.remove(element);
+		img.remove(element);
 
 		// In the case of images, the factory represents the URL.
 		return callbackSuccess(module, url, url);
@@ -33,7 +33,7 @@ me.loader.img.boot = function(module, url, callbackSuccess, callbackFailed) {
 };
 
 // Remove a dynamically generated element from the page.
-me.loader.img.remove = function(element) {
+img.remove = function(element) {
 	// If `element.remove` exists, use it.
 	if (me.isFunction(element.remove)) {
 		element.remove();
@@ -49,3 +49,6 @@ me.loader.img.remove = function(element) {
 	// Return `false` if we weren't able to remove the element.
 	return false;
 };
+
+// Reference the module within the `loader`.
+me.loader.img = img;

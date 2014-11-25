@@ -1,3 +1,5 @@
+// @todo better compression
+
 // Automatically spawn helper functions that we'll use throughout the library. For example we're spawning the following
 // functions: `isArray`, `normalizeArray`, `normalizeArraySeries`, etc. Spawning these functions this way results in
 // less code for the library and achieves the same objective.

@@ -2,7 +2,7 @@
 // in, the function `normalizeString` would be generated for the library. The purpose of these functions are to
 // normalize any data that's passed into them. If you try to pass an `Array` to `normalizeString`, the function would
 // then return the `fallback` value that is specified; if no `fallback` value is specified it would then return `null`.
-me.normalize = function(input, type, fallback) {
+var normalize = function(input, type, fallback) {
 	// Declare our function name;
 	var functionName = 'is' + type;
 
@@ -16,7 +16,7 @@ me.normalize = function(input, type, fallback) {
 
 // Perform normalization on a series of data types. It provides the same functionality as the `normalize` function but
 // it expects to receive of an `Array` series of data sets.
-me.normalize.series = function(input, type, fallback, strip) {
+normalize.series = function(input, type, fallback, strip) {
 	// Store our normalized series.
 	var normalized = [];
 
@@ -44,3 +44,6 @@ me.normalize.series = function(input, type, fallback, strip) {
 	// Return our normalized series.
 	return normalized;
 };
+
+// Reference the module within the library.
+me.normalize = normalize;

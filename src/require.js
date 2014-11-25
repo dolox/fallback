@@ -2,19 +2,21 @@
 // for our modules and then attempt to load and invoke them from least to most dependent. This procedure needs to
 // happen in 2 separate operations due to the possibility of anonymous modules having their own dependencies that we
 // don't actually know about until after we've loaded it's file.
-me.require = function() {
+/* eslint-disable */
+var require = function() {
+	/* eslint-enable */
 	// Fetch and normalize the argument that were passed in.
-	var args =	me.amd.args(arguments, me.require.args.router, me.require.args.normalize, {
+	var args =	me.amd.args(arguments, require.args.router, require.args.normalize, {
 		error: null,
 		deps: null,
 		factory: null
 	});
 
 	// Boot up our dependencies.
-	me.require.boot(args.deps, function() {
+	require.boot(args.deps, function() {
 		// At this point all of our dependencies have loaded, now we need to go ahead and invoke all of our dependencies in
 		// an order from least to most dependent, that way our initial `require` being requested can be invoked.
-		me.require.invoke(args.deps);
+		require.invoke(args.deps);
 
 		// Invoke our `factory` function with it's required dependency references.
 		me.module.invoke.factory(args.factory, args.deps);
@@ -22,7 +24,7 @@ me.require = function() {
 };
 
 // Load up all of our dependencies, along with any nested dependencies in the order of least to most dependent.
-me.require.boot = function(modules, successCallback, errorCallback) {
+require.boot = function(modules, successCallback, errorCallback) {
 	// If our `deps` argument was malformed or empty, invoke our callback and halt the function.
 	if (!me.isaArray(modules) || !modules.length) {
 		successCallback();
@@ -30,22 +32,22 @@ me.require.boot = function(modules, successCallback, errorCallback) {
 	}
 
 	// Boot up our anonymous modules first. If we're booting, halt the function and we'll loop back around.
-	if (me.require.boot.anonymous(modules, successCallback, errorCallback)) {
+	if (require.boot.anonymous(modules, successCallback, errorCallback)) {
 		return;
 	}
 
 	// Boot our dependencies.
-	me.require.boot.dependencies(modules, successCallback, errorCallback);
+	require.boot.dependencies(modules, successCallback, errorCallback);
 };
 
 // Check to see if there's any anonymous modules waiting to be loaded, if there is, then we'll load them.
-me.require.boot.anonymous = function(modules, successCallback, errorCallback) {
+require.boot.anonymous = function(modules, successCallback, errorCallback) {
 	// Store our anonymous module that we need to load.
-	var queue = me.require.boot.anonymous.queue(modules);
+	var queue = require.boot.anonymous.queue(modules);
 
 	// If we have any anonymous modules that we need to load, do it now, then loop back around.
 	if (queue.length) {
-		me.require.loop(queue, modules, successCallback, errorCallback);
+		require.loop(queue, modules, successCallback, errorCallback);
 
 		// Explicitly return `true` so that we don't halt the loop.
 		return true;
@@ -56,7 +58,7 @@ me.require.boot.anonymous = function(modules, successCallback, errorCallback) {
 };
 
 // Check to see if we have any dependencies which are anonymous modules that've yet to be loaded.
-me.require.boot.anonymous.queue = function(modules) {
+require.boot.anonymous.queue = function(modules) {
 	// Store our queue of anonymous modules.
 	var queue = [];
 
@@ -69,10 +71,10 @@ me.require.boot.anonymous.queue = function(modules) {
 		// dependencies are actually required for it.
 		if (!module) {
 			// Push the module off to our anonymous list.
-			me.require.anonymous.push(moduleName);
+			require.anonymous.push(moduleName);
 
 			// Setup the configuration for our anonymous module.
-			me.require.config(moduleName);
+			require.config(moduleName);
 
 			// Push the module off to our queue.
 			queue.push(moduleName);
@@ -82,7 +84,7 @@ me.require.boot.anonymous.queue = function(modules) {
 		}
 
 		// Loop and find any dependencies that are anonymous modules as well and queue them.
-		queue = queue.concat(me.require.boot.anonymous.queue(module.deps));
+		queue = queue.concat(require.boot.anonymous.queue(module.deps));
 	});
 
 	// Return all of our queued anonymous modules.
@@ -90,25 +92,25 @@ me.require.boot.anonymous.queue = function(modules) {
 };
 
 // Load up all of the dependencies for the modules that are passed in.
-me.require.boot.dependencies = function(modules, successCallback, errorCallback) {
+require.boot.dependencies = function(modules, successCallback, errorCallback) {
 	// Fetch all of the dependencies for our modules.
 	var dependencies = me.module.dependencies(modules);
 
 	// Loop around until we find the start of our dependency tree.
 	if (dependencies.length) {
 		// If we have dependencies, we're not at the start of the tree, keep looping around.
-		return me.require.boot(dependencies, function() {
+		return require.boot(dependencies, function() {
 			// Load the modules.
-			me.require.module(modules, function() {
+			require.module(modules, function() {
 				// Fetch the dependencies for our modules again.
 				var newDependencies = me.module.dependencies(modules);
 
 				// Determine if there are any new dependencies, since we've loaded our set of modules.
 				if (newDependencies.join() !== dependencies.join()) {
 					// Load up our new dependencies.
-					return me.require.boot(newDependencies, function() {
+					return require.boot(newDependencies, function() {
 						// Loop back around to see if any new dependencies have loaded from our set of newly loaded dependencies.
-						me.require.module(modules, successCallback, errorCallback);
+						require.module(modules, successCallback, errorCallback);
 					});
 				}
 
@@ -119,17 +121,17 @@ me.require.boot.dependencies = function(modules, successCallback, errorCallback)
 	}
 
 	// Load the start of our dependency tree.
-	me.require.module(modules, successCallback, errorCallback);
+	require.module(modules, successCallback, errorCallback);
 };
 
 // Route and normalize the arguments that are passed into our `require` function. The arguments for our `require`
 // `Function` can be sent in a number of different forms.
-me.require.args = {};
+require.args = {};
 
 // Normalize the arguments payload.
-me.require.args.normalize = function(payload) {
+require.args.normalize = function(payload) {
 	// Normalize the `error` `Function`.
-	payload.error = me.normalizeFunction(payload.error);
+	payload.error = me.normalizeFunction(payload.error, function() {});
 
 	// Normamlize the `dependencies` `Array`.
 	payload.deps = payload.deps ? me.normalizeStringSeries(payload.deps) : null;
@@ -142,10 +144,10 @@ me.require.args.normalize = function(payload) {
 };
 
 // Route the arguments passed into the `require` `Function`.
-me.require.args.router = [];
+require.args.router = [];
 
 // Handle no arguments being passed into the `require` `Function`.
-me.require.args.router[0] = function(args, payload) {
+require.args.router[0] = function(args, payload) {
 	// Throw an error to the end user.
 	me.log(1, 'require', 'args', 'No arguments were passed into `require`! Halting!', args);
 
@@ -154,7 +156,7 @@ me.require.args.router[0] = function(args, payload) {
 };
 
 // Handle 1 argument being passed into the `require` `Function`.
-me.require.args.router[1] = function(args, payload) {
+require.args.router[1] = function(args, payload) {
 	// If it's a `Function`, derive our dependencies from it.
 	if (me.isFunction(args[0])) {
 		// Reference the factory.
@@ -174,7 +176,7 @@ me.require.args.router[1] = function(args, payload) {
 };
 
 // Handle 2 arguments being passed into the `require` `Function`.
-me.require.args.router[2] = function(args, payload) {
+require.args.router[2] = function(args, payload) {
 	// If both arguments are a `Function` then treat them as the `factory` and `error` callbacks.
 	if (me.isFunction(args[0]) && me.isFunction(args[1])) {
 		// Reference the `error` `Function`.
@@ -201,7 +203,7 @@ me.require.args.router[2] = function(args, payload) {
 };
 
 // Handle 3 arguments being passed into the `require` `Function`.
-me.require.args.router[3] = function(args, payload) {
+require.args.router[3] = function(args, payload) {
 	// Reference the `dependencies`.
 	payload.deps = args[0];
 
@@ -216,10 +218,10 @@ me.require.args.router[3] = function(args, payload) {
 };
 
 // List of anonymously required modules.
-me.require.anonymous = [];
+require.anonymous = [];
 
 // Configure an anonymous module with a path and definition.
-me.require.config = function(moduleName) {
+require.config = function(moduleName) {
 	// If we don't have a `moduleName`, then the invocation was malformed. Halt the function.
 	if (!moduleName) {
 		return false;
@@ -239,7 +241,7 @@ me.require.config = function(moduleName) {
 
 // Assumes that all depdendencies being passed into the `deps` parameter have already been loaded. The sole purpose of
 // this `Function` is to simply invoke the factories for each of the dependencies if they haven't already been invoked.
-me.require.invoke = function(deps) {
+require.invoke = function(deps) {
 	// Fetch any dependencies of our dependencies.
 	var dependencies = me.module.dependencies(deps, true);
 
@@ -261,16 +263,16 @@ me.require.invoke = function(deps) {
 // have successfully loaded. This `Function` is being to used to exhaust all dependencies. In the case of anonymous
 // modules, we may load up a file and find out we have new dependencies that must be loaded, this `Function` is taking
 // care of that.
-me.require.loop = function(queue, modules, successCallback, errorCallback) {
+require.loop = function(queue, modules, successCallback, errorCallback) {
 	// Load any modules in our queue.
-	me.require.module(queue, function() {
+	require.module(queue, function() {
 		// Run back to `require.boot` and attempt to boot up the modules originally requested.
-		me.require.boot(modules, successCallback, errorCallback);
+		require.boot(modules, successCallback, errorCallback);
 	}, errorCallback);
 };
 
 // Load up an `Array` of modules simultaneously.
-me.require.module = function(modules, successCallback, errorCallback) {
+require.module = function(modules, successCallback, errorCallback) {
 	// If we have no `modules`, then invoke our callback and halt the function.
 	if (!me.isaArray(modules) || !modules.length) {
 		successCallback();
@@ -291,12 +293,12 @@ me.require.module = function(modules, successCallback, errorCallback) {
 
 	// Invoke the queue along with the callback handler.
 	me.parallel(queue, function() {
-		me.require.module.callback(modules, successCallback, errorCallback);
+		require.module.callback(modules, successCallback, errorCallback);
 	});
 };
 
 // Handle the callback after loading modules to check if there were errors.
-me.require.module.callback = function(modules, successCallback, errorCallback) {
+require.module.callback = function(modules, successCallback, errorCallback) {
 	// Store any errors in this `Array`.
 	var errors = [];
 
@@ -322,3 +324,6 @@ me.require.module.callback = function(modules, successCallback, errorCallback) {
 	// Fallback on our success callback.
 	successCallback();
 };
+
+// Reference the module within the library.
+me.require = require;

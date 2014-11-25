@@ -1,10 +1,10 @@
 // JavaScript loader which is responsible for loading any scripts for the library.
-me.loader.js = {};
+var javascript = {};
 
 // Attempt to load a script onto the page.
-me.loader.js.boot = function(module, url, callbackSuccess, callbackFailed) {
+javascript.boot = function(module, url, callbackSuccess, callbackFailed) {
 	// If the library is already loaded on the page, don't attempt to reload it.
-	var factory = me.loader.js.check(module, false);
+	var factory = javascript.check(module, false);
 
 	// Check if our module has already been loaded.
 	if (factory) {
@@ -20,7 +20,7 @@ me.loader.js.boot = function(module, url, callbackSuccess, callbackFailed) {
 	// We need to manually check to make sure that our libraries were loaded properly.
 	var check = function() {
 		// Attempt to fetch the factory for our module.
-		factory = me.loader.js.check(module);
+		factory = javascript.check(module);
 
 		// If the factory is empty, then it failed to load! Invoke the failure callback.
 		if (!me.isDefined(factory)) {
@@ -32,14 +32,14 @@ me.loader.js.boot = function(module, url, callbackSuccess, callbackFailed) {
 	};
 
 	// Spawn a new element on the page contained our URL with our callbacks.
-	return me.loader.js.element(url, check, failed);
+	return javascript.element(url, check, failed);
 };
 
 // Sift through the script elements on the page and attempt to derive the values from `attribute` that is passed in to
 // the `Function`. Along with checking the `attribute` that is passed in, this `Function` will also prefix the
 // given `attribute` with `data-` and check for that attribute as well. For example if the `Function` was called with
 // `base`, then the `Function` will atempt to derive values for the attributes `base` and `data-base`.
-me.loader.js.attributes = function(attribute) {
+javascript.attributes = function(attribute) {
 	// The `Array` to store our `attribute` values.
 	var values = [];
 
@@ -98,7 +98,7 @@ me.loader.js.attributes = function(attribute) {
 
 // Check to see if a module has already been loaded on the page. This `Function` will return `Boolean`, `true` being
 // that a module has already been loaded and `false` being that it hasn't.
-me.loader.js.check = function(module, fallback) {
+javascript.check = function(module, fallback) {
 	// See if the module itself has been flagged as loaded.
 	if (module.loader.loaded === true) {
 		return true;
@@ -109,7 +109,7 @@ me.loader.js.check = function(module, fallback) {
 
 	// If globals are enabled, and we have exports for the module, check the `window` to see if they're defined.
 	if (me.globals === true && module.exports.length) {
-		factory = me.loader.js.check.exports(module.exports);
+		factory = javascript.check.exports(module.exports);
 	}
 
 	// If an anonymous module was defined, then it's for this library, meaning it loaded successfully.
@@ -134,7 +134,7 @@ me.loader.js.check = function(module, fallback) {
 // Check for the instance of our library based on the exports given. If the instance of our library exists it'll be
 // returned, otherwise this function will return `null. The `Function` basically checks the `window` variable for a
 // subkey which are the exports that are specified in the paramter.
-me.loader.js.check.exports = function(exports) {
+javascript.check.exports = function(exports) {
 	// If our `exports` parameter is not an `Array`, cast it to one.
 	if (!me.isaArray(exports)) {
 		exports = [exports];
@@ -170,7 +170,7 @@ me.loader.js.check.exports = function(exports) {
 };
 
 // Spawn a new element on the page with our URL.
-me.loader.js.element = function(url, success, failed) {
+javascript.element = function(url, success, failed) {
 	// Create a new script element instance.
 	var element = global.document.createElement('script');
 
@@ -195,3 +195,6 @@ me.loader.js.element = function(url, success, failed) {
 	// Load our URL on the page.
 	return me.head.appendChild(element);
 };
+
+// Reference the module within the `loader`.
+me.loader.js = javascript;

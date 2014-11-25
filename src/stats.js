@@ -1,5 +1,5 @@
 // Output the configured libraries, their load times and other useful statistics for the end user.
-me.stats = function() {
+var stats = function() {
 	// Line separator `String`.
 	var separator = '\n' + new Array(280).join('-') + '\n';
 
@@ -10,21 +10,21 @@ me.stats = function() {
 	var padding60 = new Array(60).join(' ');
 
 	// Generate the banner for our output.
-	var output = me.stats.banner(separator, padding30, padding60);
+	var output = stats.banner(separator, padding30, padding60);
 
 	// Generate the heading of our output.
-	output += me.stats.head(separator, padding30, padding60);
+	output += stats.head(separator, padding30, padding60);
 
 	// The body of our statistics table.
 	me.each(me.module.definitions, function(value, key) {
-		output += me.stats.row(key, value, padding30, padding60);
+		output += stats.row(key, value, padding30, padding60);
 	});
 
 	// Return our output `String`.
 	return output;
 };
 
-me.stats.banner = function(separator, padding30, padding60) {
+stats.banner = function(separator, padding30, padding60) {
 	var output = '\n';
 
 	// Add our banner to the output string.
@@ -49,7 +49,7 @@ me.stats.banner = function(separator, padding30, padding60) {
 };
 
 // Heading of the statistics output.
-me.stats.head = function(separator, padding30, padding60) {
+stats.head = function(separator, padding30, padding60) {
 	// The table head column titles.
 	var output = me.stringPad('Library', padding60);
 	output += me.stringPad('Version', padding30);
@@ -65,7 +65,7 @@ me.stats.head = function(separator, padding30, padding60) {
 	return output;
 };
 
-me.stats.row = function(key, value, padding30, padding60) {
+stats.row = function(key, value, padding30, padding60) {
 	var time = (value.loader.timeEnd - value.loader.timeStart) / 1000;
 	time = time || time === 0 ? time + 's' : 'N/A';
 
@@ -81,3 +81,6 @@ me.stats.row = function(key, value, padding30, padding60) {
 
 	return output;
 };
+
+// Reference the module within the library.
+me.stats = stats;

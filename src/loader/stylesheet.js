@@ -1,10 +1,10 @@
 // Cascading Stylesheet loader which is responsible for loading any CSS files for the library.
-me.loader.css = {};
+var stylesheet = {};
 
 // Attempt to load a stylesheet onto the page.
-me.loader.css.boot = function(module, url, callbackSuccess, callbackFailed) {
+stylesheet.boot = function(module, url, callbackSuccess, callbackFailed) {
 	// If the stylesheet is already loaded on the page, don't attempt to reload it.
-	var factory = me.loader.css.check(module, url, false);
+	var factory = stylesheet.check(module, url, false);
 
 	// Check if our module has already been loaded.
 	if (factory) {
@@ -20,7 +20,7 @@ me.loader.css.boot = function(module, url, callbackSuccess, callbackFailed) {
 	// We need to manually check to make sure that our libraries were loaded properly.
 	var check = function() {
 		// Attempt to fetch the factory for our module.
-		factory = me.loader.css.check(module, url);
+		factory = stylesheet.check(module, url);
 
 		// If the factory is empty, then it failed to load! Invoke the failure callback.
 		if (!factory) {
@@ -32,12 +32,12 @@ me.loader.css.boot = function(module, url, callbackSuccess, callbackFailed) {
 	};
 
 	// Spawn a new element on the page contained our URL with our callbacks.
-	return me.loader.css.element(url, check, failed);
+	return stylesheet.element(url, check, failed);
 };
 
 // Check to see if a module has already been loaded on the page. This `Function` will return `Boolean`, `true` being
 // that a module has already been loaded and `false` being that it hasn't.
-me.loader.css.check = function(module, url, fallback) {
+stylesheet.check = function(module, url, fallback) {
 	// See if the module itself has been flagged as loaded.
 	if (module.loader.loaded === true) {
 		return true;
@@ -49,8 +49,8 @@ me.loader.css.check = function(module, url, fallback) {
 	}
 
 	// If globals are enabled, and we have exports for the module, check the DOM to see if they're defined.
-	if (me.globals === true && module.exports.length && !me.isPrefixed(url, me.loader.css.check.ignore)) {
-		return me.loader.css.check.exports(module.exports);
+	if (me.globals === true && module.exports.length && !me.isPrefixed(url, stylesheet.check.ignore)) {
+		return stylesheet.check.exports(module.exports);
 	}
 
 	// By default just return true, as this function was hit from a success callback.
@@ -59,12 +59,12 @@ me.loader.css.check = function(module, url, fallback) {
 
 // Bypass checking if a URL starts with any of the following values. This is due to CORS issues with the browsers when
 // a CSS file is loaded from an external source.
-me.loader.css.check.ignore = ['//', 'http://', 'https://'];
+stylesheet.check.ignore = ['//', 'http://', 'https://'];
 
 // Check for the instance of our library based on the exports given. If the instance of our library exists it'll be
 // returned, otherwise this function will return `null. The `Function` basically checks the `window` variable for a
 // subkey which are the exports that are specified in the paramter.
-me.loader.css.check.exports = function(exports) {
+stylesheet.check.exports = function(exports) {
 	// If our `exports` parameter is not an `Array`, cast it to one.
 	if (!me.isaArray(exports)) {
 		exports = [exports];
@@ -94,9 +94,9 @@ me.loader.css.check.exports = function(exports) {
 	}
 
 	// Loop through each of the documents stylesheets.
-	me.each(global.document.styleSheets, function(stylesheet) {
-		// If the stylesheet is `0`, skip it.
-		if (stylesheet === 0) {
+	me.each(global.document.styleSheets, function(sheet) {
+		// If the sheet is `0`, skip it.
+		if (sheet === 0) {
 			return true;
 		}
 
@@ -106,9 +106,9 @@ me.loader.css.check.exports = function(exports) {
 			// This has to be wrapped in a `try catch` due to some browsers throwing a CORS exception if the stylesheet is
 			//loaded via an external domain.
 			try {
-				// If `stylesheet.rules` exists, scan it for our export.
-				if (me.isDefined(stylesheet[key])) {
-					factory = me.loader.css.scan(stylesheet[key], exports);
+				// If `sheet.rules` exists, scan it for our export.
+				if (me.isDefined(sheet[key])) {
+					factory = stylesheet.scan(sheet[key], exports);
 
 					// If we found our rule, halt the loop.
 					if (factory) {
@@ -116,7 +116,7 @@ me.loader.css.check.exports = function(exports) {
 					}
 				}
 			} catch (exception) {
-				me.log(2, 'loaderStylesheet', '`fallback.loader.css.check.exports` threw an exception.', exception);
+				me.log(2, 'loader', 'stylesheet', '`fallback.loader.css.check.exports` threw an exception.', exception);
 			}
 		});
 
@@ -131,7 +131,7 @@ me.loader.css.check.exports = function(exports) {
 };
 
 // Spawn a new element on the page with our URL.
-me.loader.css.element = function(url, success, failed) {
+stylesheet.element = function(url, success, failed) {
 	// Create a new script element instance.
 	var element = global.document.createElement('link');
 
@@ -158,7 +158,7 @@ me.loader.css.element = function(url, success, failed) {
 };
 
 // Scan through the documents stylesheets searching for a specific selector.
-me.loader.css.scan = function(ruleset, selectors) {
+stylesheet.scan = function(ruleset, selectors) {
 	// Store whether or not we found our selector.
 	var found = false;
 
@@ -181,3 +181,6 @@ me.loader.css.scan = function(ruleset, selectors) {
 	// Return our search status.
 	return found;
 };
+
+// Reference the module within the `loader`.
+me.loader.css = stylesheet;

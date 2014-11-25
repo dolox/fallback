@@ -1,20 +1,20 @@
 // Common functionality for both the `define` and `require` `Functions`.
-me.amd = {};
+var amd = {};
 
 // Route and normalize the arguments.
-me.amd.args = function(args, router, normalizer, payload) {
+amd.args = function(args, router, normalizer, payload) {
 	// Convert our `arguments` into an `Array`.
 	args = me.arrayClone(args);
 
 	// Route the arguments.
-	args = me.amd.router(args, router, 3, payload);
+	args = amd.router(args, router, 3, payload);
 
 	// Return back our normalized arguments.
 	return normalizer(args);
 };
 
 // Route a set of arguments.
-me.amd.router = function(args, router, maxlength, payload) {
+amd.router = function(args, router, maxlength, payload) {
 	// Determine the router `Function` that we need to invoke.
 	var reference = args.length > maxlength ? maxlength : args.length;
 
@@ -29,3 +29,6 @@ me.amd.router = function(args, router, maxlength, payload) {
 	// Return our factored payload.
 	return payload;
 };
+
+// Reference the module within the library.
+me.amd = amd;

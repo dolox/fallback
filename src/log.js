@@ -1,5 +1,5 @@
 // Logging function for when debugging is turned on.
-me.log = function() {
+var log = function() {
 	// Make sure that both debugging is enable and what `global.console` exists.
 	if (!me.debug || !global.console) {
 		return false;
@@ -66,8 +66,11 @@ me.log = function() {
 };
 
 // The various levels for our `log` function.
-me.log.levels = {
+log.levels = {
 	1: 'error',
 	2: 'warn',
 	3: 'info'
 };
+
+// Reference the module within the library.
+me.log = log;
