@@ -47,7 +47,7 @@ module.exports = function(grunt, tasks) {
 		return factored;
 	};
 
-	me.src = tasks.concat.files;
+	me.src = tasks.concat.options.src;
 
 	tasks.concat.jsMin = me;
 

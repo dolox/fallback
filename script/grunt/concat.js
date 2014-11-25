@@ -2,14 +2,16 @@ module.exports = function(grunt, tasks) {
 	var me = {};
 	var uri = grunt.app.config.uri;
 
-	me.files = [
+	me.options = {};
+
+	me.options.src = [
 		uri.src + 'core.js'
 	];
 
 	grunt.file.expandMapping([uri.src + '*.js'], null, {
 		rename: function(dest, matchedSrcPath) {
-			if (matchedSrcPath !== me.files[0]) {
-				me.files.push(matchedSrcPath);
+			if (matchedSrcPath !== me.options.src[0]) {
+				me.options.src.push(matchedSrcPath);
 			}
 
 			return matchedSrcPath;

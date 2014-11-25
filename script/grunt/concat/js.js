@@ -4,7 +4,7 @@ module.exports = function(grunt, tasks) {
 
 	me.dest = uri.distTmp + 'fallback.js';
 
-	me.src = tasks.concat.files;
+	me.src = tasks.concat.options.src;
 
 	tasks.concat.js = me;
 
