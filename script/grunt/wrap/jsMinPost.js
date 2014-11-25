@@ -8,10 +8,7 @@ module.exports = function(grunt, tasks) {
 
 	me.options = {};
 
-	me.options.wrapper = [
-		tasks.wrap.banner,
-		''
-	];
+	me.options.wrapper = [grunt.wrapBanner, ''];
 
 	me.src = [uri.dist + 'fallback.min.js'];
 

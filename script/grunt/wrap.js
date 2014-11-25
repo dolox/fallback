@@ -3,15 +3,16 @@ module.exports = function(grunt, tasks) {
 	var uri = grunt.app.config.uri;
 	var packageJson = grunt.file.readJSON(grunt.app.config.uri.root + 'package.json');
 
-	var banner = '/* fallback.js v' + grunt.file.readJSON(uri.root + 'package.json').version + ' | ' + packageJson.homepage + ' | Salvatore Garbesi <sal@dolox.com> | (c) ' + new Date().getFullYear() + ' Dolox, Inc. */\n';
-	me.prefix = banner + '\n(function(global) {\n';
+	grunt.wrapBanner = '/* fallback.js v' + grunt.file.readJSON(uri.root + 'package.json').version + ' | ' + packageJson.homepage + ' | Salvatore Garbesi <sal@dolox.com> | (c) ' + new Date().getFullYear() + ' Dolox, Inc. */\n';
 
-	var wrapPrefix = 'me.banner = \'';
-	var wrapSuffix = '\';\n\nme.homepage = \'' + packageJson.homepage + '\';\n\nme.version = \'' + packageJson.version + '\';\n\nme.init();\n\n})(this);';
+	grunt.wrapPrefix = grunt.wrapBanner + '\n(function(global) {\n';
 
-	me.suffixWithBanner = wrapPrefix + packageJson.banner + wrapSuffix;
+	var suffixPrefix = 'me.banner = \'';
+	var suffixSuffix = '\';\n\nme.homepage = \'' + packageJson.homepage + '\';\n\nme.version = \'' + packageJson.version + '\';\n\nme.init();\n\n})(this);';
 
-	me.suffixWithName = wrapPrefix + packageJson.name + wrapSuffix;
+	grunt.wrapSuffixWithBanner = suffixPrefix + packageJson.banner + suffixSuffix;
+
+	grunt.wrapSuffixWithName = suffixPrefix + packageJson.name + suffixSuffix;
 
 	tasks.wrap = me;
 

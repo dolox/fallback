@@ -8,7 +8,7 @@ module.exports = function(grunt, tasks) {
 
 	me.options = {};
 
-	me.options.wrapper = [me.prefix, me.suffixWithBanner];
+	me.options.wrapper = [grunt.wrapPrefix, grunt.wrapSuffixWithBanner];
 
 	me.src = [uri.distTmp + 'fallback.js'];
 
