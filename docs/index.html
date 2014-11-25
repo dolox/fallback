@@ -109,7 +109,7 @@ variable referenced throughout, this is simply short-hand for the library.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>	<span class="hljs-comment">/* eslint-disable */</span>
-	<span class="hljs-comment">/* jshint ignore:start */</span>
+	<span class="hljs-comment">/* jshint -W069 */</span>
 	me.isaArray = me[<span class="hljs-string">'isArray'</span>]; <span class="hljs-comment">// `isArray` is reserved, it won't be compressed during minification.</span>
 	me.isBoolean = me[<span class="hljs-string">'isBoolean'</span>];
 	me.isFunction = me[<span class="hljs-string">'isFunction'</span>];
@@ -130,7 +130,7 @@ variable referenced throughout, this is simply short-hand for the library.</p>
 	me.normalizeNumberSeries = me[<span class="hljs-string">'normalizeNumberSeries'</span>];
 	me.normalizeObjectSeries = me[<span class="hljs-string">'normalizeObjectSeries'</span>];
 	me.normalizeStringSeries = me[<span class="hljs-string">'normalizeStringSeries'</span>];
-	<span class="hljs-comment">/* jshint ignore:end */</span>
+	<span class="hljs-comment">/* jshint +W069 */</span>
 	<span class="hljs-comment">/* eslint-enable */</span></pre></div></div>
             
         </li>

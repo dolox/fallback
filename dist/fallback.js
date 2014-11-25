@@ -16,7 +16,7 @@ me.init = function() {
 
 	// The following is for better compression with the minification process.
 	/* eslint-disable */
-	/* jshint ignore:start */
+	/* jshint -W069 */
 	me.isaArray = me['isArray']; // `isArray` is reserved, it won't be compressed during minification.
 	me.isBoolean = me['isBoolean'];
 	me.isFunction = me['isFunction'];
@@ -37,7 +37,7 @@ me.init = function() {
 	me.normalizeNumberSeries = me['normalizeNumberSeries'];
 	me.normalizeObjectSeries = me['normalizeObjectSeries'];
 	me.normalizeStringSeries = me['normalizeStringSeries'];
-	/* jshint ignore:end */
+	/* jshint +W069 */
 	/* eslint-enable */
 
 	// Reference aliases for the library into the `global` object for the user to directly access.
