@@ -14,28 +14,11 @@ me.init = function() {
 	// Spawn our utility functions for the library.
 	me.init.utilities(me, me.utility.types);
 
-	// The following is for better compression.
+	// The following is for better compression with the minification process.
 	/* eslint-disable */
-	me.isArray = me['isArray']; // @todo this isn't being renamed during minification
-	me.isBoolean = me['isBoolean'];
-	me.isFunction = me['isFunction'];
-	me.isNumber = me['isNumber'];
-	me.isObject = me['isObject'];
-	me.isString = me['isString'];
+	/* istanbul ignore next */
+	// @todo this isn't being renamed during minification
 
-	me.normalizeArray = me['normalizeArray'];
-	me.normalizeBoolean = me['normalizeBoolean'];
-	me.normalizeFunction = me['normalizeFunction'];
-	me.normalizeNumber = me['normalizeNumber'];
-	me.normalizeObject = me['normalizeObject'];
-	me.normalizeString = me['normalizeString'];
-
-	me.normalizeArraySeries = me['normalizeArraySeries'];
-	me.normalizeBooleanSeries = me['normalizeBooleanSeries'];
-	me.normalizeFunctionSeries = me['normalizeFunctionSeries'];
-	me.normalizeNumberSeries = me['normalizeNumberSeries'];
-	me.normalizeObjectSeries = me['normalizeObjectSeries'];
-	me.normalizeStringSeries = me['normalizeStringSeries'];
 	/* eslint-enable */
 
 	// Reference aliases for the library into the `global` object for the user to directly access.

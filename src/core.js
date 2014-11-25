@@ -10,28 +10,30 @@ me.init = function() {
 	// Spawn our utility functions for the library.
 	me.init.utilities(me, me.utility.types);
 
-	// The following is for better compression.
+	// @todo this isn't being renamed during minification
+	// The following is for better compression with the minification process.
 	/* eslint-disable */
-	me.isArray = me['isArray']; // @todo this isn't being renamed during minification
-	me.isBoolean = me['isBoolean'];
-	me.isFunction = me['isFunction'];
-	me.isNumber = me['isNumber'];
-	me.isObject = me['isObject'];
-	me.isString = me['isString'];
+	/* istanbul ignore next */
+	me.isArray = me['isArray']; /* istanbul ignore next */
+	me.isBoolean = me['isBoolean']; /* istanbul ignore next */
+	me.isFunction = me['isFunction']; /* istanbul ignore next */
+	me.isNumber = me['isNumber']; /* istanbul ignore next */
+	me.isObject = me['isObject']; /* istanbul ignore next */
+	me.isString = me['isString']; /* istanbul ignore next */
 
-	me.normalizeArray = me['normalizeArray'];
-	me.normalizeBoolean = me['normalizeBoolean'];
-	me.normalizeFunction = me['normalizeFunction'];
-	me.normalizeNumber = me['normalizeNumber'];
-	me.normalizeObject = me['normalizeObject'];
-	me.normalizeString = me['normalizeString'];
+	me.normalizeArray = me['normalizeArray']; /* istanbul ignore next */
+	me.normalizeBoolean = me['normalizeBoolean']; /* istanbul ignore next */
+	me.normalizeFunction = me['normalizeFunction']; /* istanbul ignore next */
+	me.normalizeNumber = me['normalizeNumber']; /* istanbul ignore next */
+	me.normalizeObject = me['normalizeObject']; /* istanbul ignore next */
+	me.normalizeString = me['normalizeString']; /* istanbul ignore next */
 
-	me.normalizeArraySeries = me['normalizeArraySeries'];
-	me.normalizeBooleanSeries = me['normalizeBooleanSeries'];
-	me.normalizeFunctionSeries = me['normalizeFunctionSeries'];
-	me.normalizeNumberSeries = me['normalizeNumberSeries'];
-	me.normalizeObjectSeries = me['normalizeObjectSeries'];
-	me.normalizeStringSeries = me['normalizeStringSeries'];
+	me.normalizeArraySeries = me['normalizeArraySeries']; /* istanbul ignore next */
+	me.normalizeBooleanSeries = me['normalizeBooleanSeries']; /* istanbul ignore next */
+	me.normalizeFunctionSeries = me['normalizeFunctionSeries']; /* istanbul ignore next */
+	me.normalizeNumberSeries = me['normalizeNumberSeries']; /* istanbul ignore next */
+	me.normalizeObjectSeries = me['normalizeObjectSeries']; /* istanbul ignore next */
+	me.normalizeStringSeries = me['normalizeStringSeries']; /* istanbul ignore next */
 	/* eslint-enable */
 
 	// Reference aliases for the library into the `global` object for the user to directly access.
