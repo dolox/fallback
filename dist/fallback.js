@@ -76,13 +76,6 @@ me.init.aliases = function(container, input) {
 
 // We need the minification processor to see a few variables so that it can minifiy them.
 me.init.compression = function() {
-	me.init.compression.is();
-	me.init.compression.normalize();
-	me.init.compression.normalizeSeries();
-};
-
-// Reference all of the `is` functions.
-me.init.compression.is = function() {
 	/* eslint-disable */
 	/* jshint -W069 */
 
@@ -94,30 +87,12 @@ me.init.compression.is = function() {
 	me.isObject = me['isObject'];
 	me.isString = me['isString'];
 
-	/* jshint +W069 */
-	/* eslint-enable */
-};
-
-// Reference all of the `normalize` functions.
-me.init.compression.normalize = function() {
-	/* eslint-disable */
-	/* jshint -W069 */
-
 	me.normalizeArray = me['normalizeArray'];
 	me.normalizeBoolean = me['normalizeBoolean'];
 	me.normalizeFunction = me['normalizeFunction'];
 	me.normalizeNumber = me['normalizeNumber'];
 	me.normalizeObject = me['normalizeObject'];
 	me.normalizeString = me['normalizeString'];
-
-	/* jshint +W069 */
-	/* eslint-enable */
-};
-
-// Reference all of the `normalize` `series` functions.
-me.init.compression.normalizeSeries = function() {
-	/* eslint-disable */
-	/* jshint -W069 */
 
 	me.normalizeArraySeries = me['normalizeArraySeries'];
 	me.normalizeBooleanSeries = me['normalizeBooleanSeries'];
