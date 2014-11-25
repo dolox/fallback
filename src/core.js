@@ -167,20 +167,6 @@ me.arrayUnique = function(input) {
 	return normalized;
 };
 
-// All of our browser detection functions reside here. Some browsers have special edge cases that we need to cater to,
-// and that's the sole purpose of these functions.
-me.browser = {};
-
-// Detect whether or not the current browser is IE.
-me.browser.isIE = function() {
-	return global.document.documentMode ? true : false;
-};
-
-// Detect whether or not the current browser is IE11.
-me.browser.isIE11 = function() {
-	return Object.hasOwnProperty.call(global, 'ActiveXObject') && !global.ActiveXObject;
-};
-
 // The character to split our module names on to derive it's identity.
 me.delimiter = '$';
 
@@ -217,17 +203,6 @@ me.getProperty = function(reference, property) {
 // Whether or not to use a reference to `window` to check if a library has already been loaded. This is also used when
 // loading libraries to determine if they loaded properly for legacy browsers.
 me.globals = true;
-
-// Generate a global unique idenifier.
-me.guid = function() {
-	return me.guid.block() + me.guid.block(true) + me.guid.block(true) + me.guid.block();
-};
-
-// Random blocks for a GUID.
-me.guid.block = function(dashed) {
-	var generated = (Math.random().toString(16) + '000000000').substr(2, 8);
-	return dashed ? '-' + generated.substr(0, 4) + '-' + generated.substr(4, 4) : generated;
-};
 
 // Legacy browsers don't support `Array.prototype.indexOf`, this function dubs as a polyfill for this browsers. In
 // particular IE < 9, doesn't support it. @ie @ie6 @ie7 @ie8
@@ -390,53 +365,6 @@ me.log.levels = {
 	3: 'info'
 };
 
-// Generate a normalization function based on the type that is passed in. For example if a type of `String` was passed
-// in, the function `normalizeString` would be generated for the library. The purpose of these functions are to
-// normalize any data that's passed into them. If you try to pass an `Array` to `normalizeString`, the function would
-// then return the `fallback` value that is specified; if no `fallback` value is specified it would then return `null`.
-me.normalize = function(input, type, fallback) {
-	// Declare our function name;
-	var functionName = 'is' + type;
-
-	// If an invalid `type` is passed in to our function, return our `fallback` or `null`.
-	if (!me.isFunction(me[functionName])) {
-		return me.isDefined(fallback) ? fallback : null;
-	}
-
-	return me[functionName](input) ? input : fallback;
-};
-
-// Perform normalization on a series of data types. It provides the same functionality as the `normalize` function but
-// it expects to receive of an `Array` series of data sets.
-me.normalizeSeries = function(input, type, fallback, strip) {
-	// Store our normalized series.
-	var normalized = [];
-
-	// Case our input to an array/series.
-	if (!me.isaArray(input)) {
-		input = [input];
-	}
-
-	// Loop through eaach of our values. For legacy browsers, if `undefined` is part of an `Array` and you use a `for in`,
-	// the iteration for `undefined` won't show up in the loop! This is a fallback for those browsers! Wow! @ie
-	for (var index = 0; index < input.length; index++) {
-		// Normalize our value.
-		var value = me.normalize(input[index], type, fallback);
-
-		// If strip is not explicity set in, and the `value` is `undefined` or `null`, it'll be removed from the normalized
-		// result set.
-		if (strip !== false && (!me.isDefined(value) || value === null)) {
-			continue;
-		}
-
-		// Set our normalized value.
-		normalized.push(value);
-	}
-
-	// Return our normalized series.
-	return normalized;
-};
-
 // Constrain an object to only contain a specific set of keys. All other keys are discarded, and a warning is thrown.
 me.objectConstrain = function(input, whitelist, reference) {
 	// Store our normalized `Object`.
@@ -513,84 +441,6 @@ me.objectMerge = function(input, defaults, fallback) {
 	return normalized;
 };
 
-// Run a number of functions in parallel with the ability to call a single callback once they've all completed.
-me.parallel = function(factories, callback) {
-	// Our `factories` argument must be an `Array`, if not halt the function.
-	if (!me.isaArray(factories)) {
-		callback();
-		return;
-	}
-
-	// Normalize our `factories`.
-	factories = me.normalizeFunctionSeries(factories, null, true);
-
-	// Generate a new queue instance.
-	var guid = me.parallel.generate(factories.length);
-
-	// Loop through all of our refernces and execute them.
-	me.each(factories, function(factory) {
-		// Anonymous spawn and track our `Function` to invoke.
-		me.parallel.anonymous(factory, guid, callback);
-	});
-};
-
-// Our anonymous functions that we're executing in parallel.
-me.parallel.anonymous = function(factory, guid, callback) {
-	// If our `factory` parameter isn't a `Function`, halt the `Function`.
-	if (!me.isFunction(factory)) {
-		return;
-	}
-
-	// Normalize our `guid` parameter.
-	guid = me.normalizeString(guid, me.guid(true));
-
-	// Normalize our `callback` paramter.
-	callback = me.normalizeFunction(callback);
-
-	// Invoke our queued function.
-	factory(function() {
-		// Reference the instance of our parallel runner.
-		var parallel = me.parallel.queue[guid];
-
-		// If the `guid` is not defined in our queue, then it was cancelled.
-		if (!me.isDefined(parallel)) {
-			return callback(false);
-		}
-
-		// Increment our callback invocation count.
-		parallel.interval++;
-
-		// If all of our functions ran successful, process our final callback and clear our memory of the queue.
-		if (parallel.interval === parallel.length) {
-			// Remove our runner instance from the queue.
-			delete me.parallel.queue[guid];
-
-			// Fire off our final callback, as the queue has been exhausted.
-			callback(true);
-		}
-	});
-};
-
-// Generate a new parallel instance into our queue.
-me.parallel.generate = function(length) {
-	// Generate a unique identifier for our parallel instance to avoid collisions.
-	var guid = me.guid(true);
-
-	// Add the our `references` to our parallel queue.
-	me.parallel.queue[guid] = {
-		// The number of callbacks that were invoked.
-		interval: 0,
-
-		// The total number of callbacks to run in parralel.
-		length: length
-	};
-
-	return guid;
-};
-
-// Container `Object` for all of the currently running parallel jobs.
-me.parallel.queue = {};
-
 // A function which simply pads a `String` with whatever `String` is supplied.
 me.stringPad = function(input, pad, left) {
 	if (!me.isDefined(pad)) {
@@ -624,7 +474,7 @@ me.utility = function(container, type) {
 
 	// Our normalization series function.
 	container['normalize' + type + 'Series'] = function(input, fallback, strip) {
-		return me.normalizeSeries(input, type, me.isDefined(fallback) ? fallback : [], strip);
+		return me.normalize.series(input, type, me.isDefined(fallback) ? fallback : [], strip);
 	};
 };
 
