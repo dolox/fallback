@@ -13,27 +13,27 @@ me.init = function() {
 	// @todo this isn't being renamed during minification
 	// The following is for better compression with the minification process.
 	/* eslint-disable */
-	/* istanbul ignore next */
-	me.isArray = me['isArray']; /* istanbul ignore next */
-	me.isBoolean = me['isBoolean']; /* istanbul ignore next */
-	me.isFunction = me['isFunction']; /* istanbul ignore next */
-	me.isNumber = me['isNumber']; /* istanbul ignore next */
-	me.isObject = me['isObject']; /* istanbul ignore next */
-	me.isString = me['isString']; /* istanbul ignore next */
+	/* istanbul ignore */
+	me.isArray = me['isArray']; /* istanbul ignore */
+	me.isBoolean = me['isBoolean']; /* istanbul ignore */
+	me.isFunction = me['isFunction']; /* istanbul ignore */
+	me.isNumber = me['isNumber']; /* istanbul ignore */
+	me.isObject = me['isObject']; /* istanbul ignore */
+	me.isString = me['isString']; /* istanbul ignore */
 
-	me.normalizeArray = me['normalizeArray']; /* istanbul ignore next */
-	me.normalizeBoolean = me['normalizeBoolean']; /* istanbul ignore next */
-	me.normalizeFunction = me['normalizeFunction']; /* istanbul ignore next */
-	me.normalizeNumber = me['normalizeNumber']; /* istanbul ignore next */
-	me.normalizeObject = me['normalizeObject']; /* istanbul ignore next */
-	me.normalizeString = me['normalizeString']; /* istanbul ignore next */
+	me.normalizeArray = me['normalizeArray']; /* istanbul ignore */
+	me.normalizeBoolean = me['normalizeBoolean']; /* istanbul ignore */
+	me.normalizeFunction = me['normalizeFunction']; /* istanbul ignore */
+	me.normalizeNumber = me['normalizeNumber']; /* istanbul ignore */
+	me.normalizeObject = me['normalizeObject']; /* istanbul ignore */
+	me.normalizeString = me['normalizeString']; /* istanbul ignore */
 
-	me.normalizeArraySeries = me['normalizeArraySeries']; /* istanbul ignore next */
-	me.normalizeBooleanSeries = me['normalizeBooleanSeries']; /* istanbul ignore next */
-	me.normalizeFunctionSeries = me['normalizeFunctionSeries']; /* istanbul ignore next */
-	me.normalizeNumberSeries = me['normalizeNumberSeries']; /* istanbul ignore next */
-	me.normalizeObjectSeries = me['normalizeObjectSeries']; /* istanbul ignore next */
-	me.normalizeStringSeries = me['normalizeStringSeries']; /* istanbul ignore next */
+	me.normalizeArraySeries = me['normalizeArraySeries']; /* istanbul ignore */
+	me.normalizeBooleanSeries = me['normalizeBooleanSeries']; /* istanbul ignore */
+	me.normalizeFunctionSeries = me['normalizeFunctionSeries']; /* istanbul ignore */
+	me.normalizeNumberSeries = me['normalizeNumberSeries']; /* istanbul ignore */
+	me.normalizeObjectSeries = me['normalizeObjectSeries']; /* istanbul ignore */
+	me.normalizeStringSeries = me['normalizeStringSeries']; /* istanbul ignore */
 	/* eslint-enable */
 
 	// Reference aliases for the library into the `global` object for the user to directly access.
