@@ -4,7 +4,11 @@
 // don't actually know about until after we've loaded it's file.
 me.require = function() {
 	// Fetch and normalize the argument that were passed in.
-	var args = me.require.args.apply(null, arguments);
+	var args =	me.amd.args(arguments, me.require.args.router, 3, me.require.args.normalize, {
+		error: null,
+		deps: null,
+		factory: null
+	});
 
 	// Boot up our dependencies.
 	me.require.boot(args.deps, function() {
@@ -122,18 +126,9 @@ me.require.boot.dependencies = function(modules, successCallback, errorCallback)
 	me.require.module(modules, successCallback, errorCallback);
 };
 
-// Fetch and normalize the arguments that are passed into our `require` function. The arguments for our `require`
+// Route and normalize the arguments that are passed into our `require` function. The arguments for our `require`
 // `Function` can be sent in a number of different forms.
-me.require.args = function() {
-	// Convert our `arguments` into an `Array`.
-	var args = me.arrayClone(arguments);
-
-	// Route the arguments.
-	args = me.require.args.router(args);
-
-	// Return back our normalized arguments.
-	return me.require.args.normalize(args);
-};
+me.require.args = {};
 
 // Normalize the arguments payload.
 me.require.args.normalize = function(payload) {
@@ -151,28 +146,7 @@ me.require.args.normalize = function(payload) {
 };
 
 // Route the arguments passed into the `require` `Function`.
-me.require.args.router = function(args) {
-	// We'll fill up these variables based on the arguments.
-	var payload = {
-		error: null,
-		deps: null,
-		factory: null
-	};
-
-	// Determine the router `Function` that we need to invoke.
-	var reference = args.length > 3 ? 3 : args.length;
-
-	// Invoke the router `Function` with the arguments and payload.
-	payload = me.require.args.router[reference](args, payload);
-
-	// If we need to derive the `dependencies` from the `factory` `Function`, then do so now.
-	if (!me.isString(payload.deps) && !me.isaArray(payload.deps) && me.isFunction(payload.factory)) {
-		payload.deps = me.args(payload.factory);
-	}
-
-	// Return our factored payload.
-	return payload;
-};
+me.require.args.router = [];
 
 // Handle no arguments being passed into the `require` `Function`.
 me.require.args.router[0] = function(args, payload) {

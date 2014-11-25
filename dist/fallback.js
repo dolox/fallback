@@ -15,30 +15,7 @@ me.init = function() {
 	me.init.utilities(me, me.utility.types);
 
 	// The following is for better compression with the minification process.
-	/* eslint-disable */
-	/* jshint -W069 */
-	me.isaArray = me['isArray']; // `isArray` is reserved, it won't be compressed during minification.
-	me.isBoolean = me['isBoolean'];
-	me.isFunction = me['isFunction'];
-	me.isNumber = me['isNumber'];
-	me.isObject = me['isObject'];
-	me.isString = me['isString'];
-
-	me.normalizeArray = me['normalizeArray'];
-	me.normalizeBoolean = me['normalizeBoolean'];
-	me.normalizeFunction = me['normalizeFunction'];
-	me.normalizeNumber = me['normalizeNumber'];
-	me.normalizeObject = me['normalizeObject'];
-	me.normalizeString = me['normalizeString'];
-
-	me.normalizeArraySeries = me['normalizeArraySeries'];
-	me.normalizeBooleanSeries = me['normalizeBooleanSeries'];
-	me.normalizeFunctionSeries = me['normalizeFunctionSeries'];
-	me.normalizeNumberSeries = me['normalizeNumberSeries'];
-	me.normalizeObjectSeries = me['normalizeObjectSeries'];
-	me.normalizeStringSeries = me['normalizeStringSeries'];
-	/* jshint +W069 */
-	/* eslint-enable */
+	me.init.compression();
 
 	// Reference aliases for the library into the `global` object for the user to directly access.
 	me.init.aliases(global, me.aliases);
@@ -95,6 +72,37 @@ me.init.aliases = function(container, input) {
 
 	// Reset any pending anonymous state.
 	me.define.anonymous.reset();
+};
+
+// We need the minification processor to see a few variables so that it can minifiy them.
+me.init.compression = function() {
+	/* eslint-disable */
+	/* jshint -W069 */
+
+	// `isArray` is reserved, it won't be compressed during minification.
+	me.isaArray = me['isArray'];
+	me.isBoolean = me['isBoolean'];
+	me.isFunction = me['isFunction'];
+	me.isNumber = me['isNumber'];
+	me.isObject = me['isObject'];
+	me.isString = me['isString'];
+
+	me.normalizeArray = me['normalizeArray'];
+	me.normalizeBoolean = me['normalizeBoolean'];
+	me.normalizeFunction = me['normalizeFunction'];
+	me.normalizeNumber = me['normalizeNumber'];
+	me.normalizeObject = me['normalizeObject'];
+	me.normalizeString = me['normalizeString'];
+
+	me.normalizeArraySeries = me['normalizeArraySeries'];
+	me.normalizeBooleanSeries = me['normalizeBooleanSeries'];
+	me.normalizeFunctionSeries = me['normalizeFunctionSeries'];
+	me.normalizeNumberSeries = me['normalizeNumberSeries'];
+	me.normalizeObjectSeries = me['normalizeObjectSeries'];
+	me.normalizeStringSeries = me['normalizeStringSeries'];
+
+	/* jshint +W069 */
+	/* eslint-enable */
 };
 
 // Automatically spawn helper functions that we'll use throughout the library. For example we're spawning the following
@@ -664,6 +672,37 @@ me.utility = function(container, type) {
 // The different utility types that we want to generate functions for.
 me.utility.types = ['Array', 'Boolean', 'Function', 'Number', 'Object', 'String'];
 
+// Common functionality for both the `define` and `require` modules.
+me.amd = {};
+
+me.amd.args = function(args, router, maxlength, normalizer, payload) {
+	// Convert our `arguments` into an `Array`.
+	args = me.arrayClone(args);
+
+	// Route the arguments.
+	args = me.amd.router(args, router, maxlength, payload);
+
+	// Return back our normalized arguments.
+	return normalizer(args);
+};
+
+// Route the arguments passed into our `define` or `require` `Function`.
+me.amd.router = function(args, router, maxlength, payload) {
+	// Determine the router `Function` that we need to invoke.
+	var reference = args.length > maxlength ? maxlength : args.length;
+
+	// Invoke the router `Function` with the arguments and payload.
+	payload = router[reference](args, payload);
+
+	// If we need to derive the `dependencies` from the `factory` `Function`, then do so now.
+	if (!me.isString(payload.deps) && !me.isaArray(payload.deps) && me.isFunction(payload.factory)) {
+		payload.deps = me.args(payload.factory);
+	}
+
+	// Return our factored payload.
+	return payload;
+};
+
 // Configure the library. If the `input` is malformed then the `Function` will return `false`, otherwise the `Function`
 // will return the normalized value that was imported.
 me.config = function(input) {
@@ -890,7 +929,12 @@ me.config.whitelist = ['amd', 'base', 'debug', 'delimiter', 'globals', 'libs'];
 // pass arguments into this function, for more details see comments in the `me.define.args` function.
 me.define = function() {
 	// Fetch and normalize the argument that were passed in.
-	var args = me.define.args.apply(null, arguments);
+	var args =	me.amd.args(arguments, me.define.args.router, 3, me.define.args.normalize, {
+		name: null,
+		error: null,
+		deps: null,
+		factory: undefined
+	});
 
 	// Fill up our dependencies.
 	args = me.define.deps(args);
@@ -1035,18 +1079,9 @@ me.define.anonymous.save = function(args) {
 	}
 };
 
-// Fetch and normalize the arguments that are passed into our `define` function. The arguments for our `define`
+// Route and normalize the arguments that are passed into our `define` function. The arguments for our `define`
 // `Function` can be sent in a number of different forms.
-me.define.args = function() {
-	// Convert our `arguments` into an `Array`.
-	var args = me.arrayClone(arguments);
-
-	// Route the arguments.
-	args = me.define.args.router(args);
-
-	// Return back our normalized arguments.
-	return me.define.args.normalize(args);
-};
+me.define.args = {};
 
 // Normalize the arguments payload.
 me.define.args.normalize = function(payload) {
@@ -1066,29 +1101,7 @@ me.define.args.normalize = function(payload) {
 };
 
 // Route the arguments passed into the `define` `Function`.
-me.define.args.router = function(args) {
-	// We'll fill up these variables based on the arguments.
-	var payload = {
-		name: null,
-		error: null,
-		deps: null,
-		factory: undefined
-	};
-
-	// Determine the router `Function` that we need to invoke.
-	var reference = args.length > 3 ? 3 : args.length;
-
-	// Invoke the router `Function` with the arguments and payload.
-	payload = me.define.args.router[reference](args, payload);
-
-	// If we need to derive the `dependencies` from the `factory` `Function`, then do so now.
-	if (!me.isString(payload.deps) && !me.isaArray(payload.deps) && me.isFunction(payload.factory)) {
-		payload.deps = me.args(payload.factory);
-	}
-
-	// Return our factored payload.
-	return payload;
-};
+me.define.args.router = [];
 
 // Handle no arguments being passed into the `define` `Function`.
 me.define.args.router[0] = function(args, payload) {
@@ -2289,7 +2302,11 @@ me.module.urls.ignore = ['/', 'data:', 'http://', 'https://'];
 // don't actually know about until after we've loaded it's file.
 me.require = function() {
 	// Fetch and normalize the argument that were passed in.
-	var args = me.require.args.apply(null, arguments);
+	var args =	me.amd.args(arguments, me.require.args.router, 3, me.require.args.normalize, {
+		error: null,
+		deps: null,
+		factory: null
+	});
 
 	// Boot up our dependencies.
 	me.require.boot(args.deps, function() {
@@ -2407,18 +2424,9 @@ me.require.boot.dependencies = function(modules, successCallback, errorCallback)
 	me.require.module(modules, successCallback, errorCallback);
 };
 
-// Fetch and normalize the arguments that are passed into our `require` function. The arguments for our `require`
+// Route and normalize the arguments that are passed into our `require` function. The arguments for our `require`
 // `Function` can be sent in a number of different forms.
-me.require.args = function() {
-	// Convert our `arguments` into an `Array`.
-	var args = me.arrayClone(arguments);
-
-	// Route the arguments.
-	args = me.require.args.router(args);
-
-	// Return back our normalized arguments.
-	return me.require.args.normalize(args);
-};
+me.require.args = {};
 
 // Normalize the arguments payload.
 me.require.args.normalize = function(payload) {
@@ -2436,28 +2444,7 @@ me.require.args.normalize = function(payload) {
 };
 
 // Route the arguments passed into the `require` `Function`.
-me.require.args.router = function(args) {
-	// We'll fill up these variables based on the arguments.
-	var payload = {
-		error: null,
-		deps: null,
-		factory: null
-	};
-
-	// Determine the router `Function` that we need to invoke.
-	var reference = args.length > 3 ? 3 : args.length;
-
-	// Invoke the router `Function` with the arguments and payload.
-	payload = me.require.args.router[reference](args, payload);
-
-	// If we need to derive the `dependencies` from the `factory` `Function`, then do so now.
-	if (!me.isString(payload.deps) && !me.isaArray(payload.deps) && me.isFunction(payload.factory)) {
-		payload.deps = me.args(payload.factory);
-	}
-
-	// Return our factored payload.
-	return payload;
-};
+me.require.args.router = [];
 
 // Handle no arguments being passed into the `require` `Function`.
 me.require.args.router[0] = function(args, payload) {

@@ -2,7 +2,12 @@
 // pass arguments into this function, for more details see comments in the `me.define.args` function.
 me.define = function() {
 	// Fetch and normalize the argument that were passed in.
-	var args = me.define.args.apply(null, arguments);
+	var args =	me.amd.args(arguments, me.define.args.router, 3, me.define.args.normalize, {
+		name: null,
+		error: null,
+		deps: null,
+		factory: undefined
+	});
 
 	// Fill up our dependencies.
 	args = me.define.deps(args);
@@ -147,18 +152,9 @@ me.define.anonymous.save = function(args) {
 	}
 };
 
-// Fetch and normalize the arguments that are passed into our `define` function. The arguments for our `define`
+// Route and normalize the arguments that are passed into our `define` function. The arguments for our `define`
 // `Function` can be sent in a number of different forms.
-me.define.args = function() {
-	// Convert our `arguments` into an `Array`.
-	var args = me.arrayClone(arguments);
-
-	// Route the arguments.
-	args = me.define.args.router(args);
-
-	// Return back our normalized arguments.
-	return me.define.args.normalize(args);
-};
+me.define.args = {};
 
 // Normalize the arguments payload.
 me.define.args.normalize = function(payload) {
@@ -178,29 +174,7 @@ me.define.args.normalize = function(payload) {
 };
 
 // Route the arguments passed into the `define` `Function`.
-me.define.args.router = function(args) {
-	// We'll fill up these variables based on the arguments.
-	var payload = {
-		name: null,
-		error: null,
-		deps: null,
-		factory: undefined
-	};
-
-	// Determine the router `Function` that we need to invoke.
-	var reference = args.length > 3 ? 3 : args.length;
-
-	// Invoke the router `Function` with the arguments and payload.
-	payload = me.define.args.router[reference](args, payload);
-
-	// If we need to derive the `dependencies` from the `factory` `Function`, then do so now.
-	if (!me.isString(payload.deps) && !me.isaArray(payload.deps) && me.isFunction(payload.factory)) {
-		payload.deps = me.args(payload.factory);
-	}
-
-	// Return our factored payload.
-	return payload;
-};
+me.define.args.router = [];
 
 // Handle no arguments being passed into the `define` `Function`.
 me.define.args.router[0] = function(args, payload) {
