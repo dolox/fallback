@@ -104,33 +104,33 @@ variable referenced throughout, this is simply short-hand for the library.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
-              <p>@todo this isn’t being renamed during minification
-The following is for better compression with the minification process.</p>
+              <p>The following is for better compression with the minification process.</p>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>	<span class="hljs-comment">/* eslint-disable */</span>
-	<span class="hljs-comment">/* istanbul ignore */</span>
-	me.isArray = me[<span class="hljs-string">'isArray'</span>]; <span class="hljs-comment">/* istanbul ignore */</span>
-	me.isBoolean = me[<span class="hljs-string">'isBoolean'</span>]; <span class="hljs-comment">/* istanbul ignore */</span>
-	me.isFunction = me[<span class="hljs-string">'isFunction'</span>]; <span class="hljs-comment">/* istanbul ignore */</span>
-	me.isNumber = me[<span class="hljs-string">'isNumber'</span>]; <span class="hljs-comment">/* istanbul ignore */</span>
-	me.isObject = me[<span class="hljs-string">'isObject'</span>]; <span class="hljs-comment">/* istanbul ignore */</span>
-	me.isString = me[<span class="hljs-string">'isString'</span>]; <span class="hljs-comment">/* istanbul ignore */</span>
+	<span class="hljs-comment">/* jshint ignore:start */</span>
+	me.isaArray = me[<span class="hljs-string">'isArray'</span>]; <span class="hljs-comment">// `isArray` is reserved, it won't be compressed during minification.</span>
+	me.isBoolean = me[<span class="hljs-string">'isBoolean'</span>];
+	me.isFunction = me[<span class="hljs-string">'isFunction'</span>];
+	me.isNumber = me[<span class="hljs-string">'isNumber'</span>];
+	me.isObject = me[<span class="hljs-string">'isObject'</span>];
+	me.isString = me[<span class="hljs-string">'isString'</span>];
 
-	me.normalizeArray = me[<span class="hljs-string">'normalizeArray'</span>]; <span class="hljs-comment">/* istanbul ignore */</span>
-	me.normalizeBoolean = me[<span class="hljs-string">'normalizeBoolean'</span>]; <span class="hljs-comment">/* istanbul ignore */</span>
-	me.normalizeFunction = me[<span class="hljs-string">'normalizeFunction'</span>]; <span class="hljs-comment">/* istanbul ignore */</span>
-	me.normalizeNumber = me[<span class="hljs-string">'normalizeNumber'</span>]; <span class="hljs-comment">/* istanbul ignore */</span>
-	me.normalizeObject = me[<span class="hljs-string">'normalizeObject'</span>]; <span class="hljs-comment">/* istanbul ignore */</span>
-	me.normalizeString = me[<span class="hljs-string">'normalizeString'</span>]; <span class="hljs-comment">/* istanbul ignore */</span>
+	me.normalizeArray = me[<span class="hljs-string">'normalizeArray'</span>];
+	me.normalizeBoolean = me[<span class="hljs-string">'normalizeBoolean'</span>];
+	me.normalizeFunction = me[<span class="hljs-string">'normalizeFunction'</span>];
+	me.normalizeNumber = me[<span class="hljs-string">'normalizeNumber'</span>];
+	me.normalizeObject = me[<span class="hljs-string">'normalizeObject'</span>];
+	me.normalizeString = me[<span class="hljs-string">'normalizeString'</span>];
 
-	me.normalizeArraySeries = me[<span class="hljs-string">'normalizeArraySeries'</span>]; <span class="hljs-comment">/* istanbul ignore */</span>
-	me.normalizeBooleanSeries = me[<span class="hljs-string">'normalizeBooleanSeries'</span>]; <span class="hljs-comment">/* istanbul ignore */</span>
-	me.normalizeFunctionSeries = me[<span class="hljs-string">'normalizeFunctionSeries'</span>]; <span class="hljs-comment">/* istanbul ignore */</span>
-	me.normalizeNumberSeries = me[<span class="hljs-string">'normalizeNumberSeries'</span>]; <span class="hljs-comment">/* istanbul ignore */</span>
-	me.normalizeObjectSeries = me[<span class="hljs-string">'normalizeObjectSeries'</span>]; <span class="hljs-comment">/* istanbul ignore */</span>
-	me.normalizeStringSeries = me[<span class="hljs-string">'normalizeStringSeries'</span>]; <span class="hljs-comment">/* istanbul ignore */</span>
+	me.normalizeArraySeries = me[<span class="hljs-string">'normalizeArraySeries'</span>];
+	me.normalizeBooleanSeries = me[<span class="hljs-string">'normalizeBooleanSeries'</span>];
+	me.normalizeFunctionSeries = me[<span class="hljs-string">'normalizeFunctionSeries'</span>];
+	me.normalizeNumberSeries = me[<span class="hljs-string">'normalizeNumberSeries'</span>];
+	me.normalizeObjectSeries = me[<span class="hljs-string">'normalizeObjectSeries'</span>];
+	me.normalizeStringSeries = me[<span class="hljs-string">'normalizeStringSeries'</span>];
+	<span class="hljs-comment">/* jshint ignore:end */</span>
 	<span class="hljs-comment">/* eslint-enable */</span></pre></div></div>
             
         </li>
@@ -719,7 +719,7 @@ less code for the library and achieves the same objective.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (!me.isArray(input) &amp;&amp; !me.isObject(input) &amp;&amp; <span class="hljs-keyword">typeof</span> input !== <span class="hljs-string">'object'</span>) {
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (!me.isaArray(input) &amp;&amp; !me.isObject(input) &amp;&amp; <span class="hljs-keyword">typeof</span> input !== <span class="hljs-string">'object'</span>) {
 		<span class="hljs-keyword">return</span> [];
 	}</pre></div></div>
             
@@ -782,7 +782,7 @@ less code for the library and achieves the same objective.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (!me.isArray(normalized)) {
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (!me.isaArray(normalized)) {
 		<span class="hljs-keyword">return</span> normalized;
 	}</pre></div></div>
             
@@ -942,7 +942,7 @@ and that’s the sole purpose of these functions.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (!me.isArray(input) &amp;&amp; !me.isObject(input) &amp;&amp; <span class="hljs-keyword">typeof</span> input !== <span class="hljs-string">'object'</span>) {
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (!me.isaArray(input) &amp;&amp; !me.isObject(input) &amp;&amp; <span class="hljs-keyword">typeof</span> input !== <span class="hljs-string">'object'</span>) {
 		<span class="hljs-keyword">return</span>;
 	}</pre></div></div>
             
@@ -1114,7 +1114,7 @@ particular IE &lt; 9, doesn’t support it. @ie @ie6 @ie7 @ie8
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (!me.isArray(input) || !me.isString(value) &amp;&amp; !me.isNumber(value)) {
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (!me.isaArray(input) || !me.isString(value) &amp;&amp; !me.isNumber(value)) {
 		<span class="hljs-keyword">return</span> index;
 	}</pre></div></div>
             
@@ -1780,7 +1780,7 @@ it expects to receive of an <code>Array</code> series of data sets.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (!me.isArray(input)) {
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (!me.isaArray(input)) {
 		input = [input];
 	}</pre></div></div>
             
@@ -1925,7 +1925,7 @@ result set.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (!me.isArray(whitelist)) {
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (!me.isaArray(whitelist)) {
 		<span class="hljs-keyword">return</span> input;
 	}</pre></div></div>
             
@@ -2072,7 +2072,7 @@ the value is for <code>fallback</code> as it’s value.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> defaultsIsArray = me.isArray(defaults);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> defaultsIsArray = me.isaArray(defaults);</pre></div></div>
             
         </li>
         
@@ -2202,7 +2202,7 @@ the value is for <code>fallback</code> as it’s value.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (!me.isArray(factories)) {
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (!me.isaArray(factories)) {
 		callback();
 		<span class="hljs-keyword">return</span>;
 	}</pre></div></div>
@@ -3346,7 +3346,7 @@ me.config.globals = <span class="hljs-function"><span class="hljs-keyword">funct
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (me.isArray(value)) {
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (me.isaArray(value)) {
 		value = {
 			urls: value
 		};
@@ -4323,7 +4323,7 @@ particular case, we’ll destroy the new definition and instead alias it with ou
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (!me.isString(payload.deps) &amp;&amp; !me.isArray(payload.deps) &amp;&amp; me.isFunction(payload.factory)) {
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (!me.isString(payload.deps) &amp;&amp; !me.isaArray(payload.deps) &amp;&amp; me.isFunction(payload.factory)) {
 		payload.deps = me.args(payload.factory);
 	}</pre></div></div>
             
@@ -4508,7 +4508,7 @@ particular case, we’ll destroy the new definition and instead alias it with ou
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (me.isArray(args[<span class="hljs-number">0</span>])) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (me.isaArray(args[<span class="hljs-number">0</span>])) {</pre></div></div>
             
         </li>
         
@@ -6344,7 +6344,7 @@ subkey which are the exports that are specified in the paramter.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (!me.isArray(exports)) {
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (!me.isaArray(exports)) {
 		exports = [exports];
 	}</pre></div></div>
             
@@ -6900,7 +6900,7 @@ subkey which are the exports that are specified in the paramter.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (!me.isArray(exports)) {
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (!me.isaArray(exports)) {
 		exports = [exports];
 	}</pre></div></div>
             
@@ -8116,7 +8116,7 @@ defaults will come out of whatever is contained in the <code>input</code> parame
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (me.isArray(values)) {
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (me.isaArray(values)) {
 				value = values[<span class="hljs-number">0</span>](value, values[<span class="hljs-number">1</span>]);
 			}</pre></div></div>
             
@@ -9049,7 +9049,7 @@ dependencies have been exhausted and added to the queue.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (!me.isArray(reference) || !reference.length) {
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (!me.isaArray(reference) || !reference.length) {
 		<span class="hljs-keyword">return</span>;
 	}</pre></div></div>
             
@@ -9583,7 +9583,7 @@ an order from least to most dependent, that way our initial <code>require</code>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (!me.isArray(modules) || !modules.length) {
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (!me.isaArray(modules) || !modules.length) {
 		successCallback();
 		<span class="hljs-keyword">return</span>;
 	}</pre></div></div>
@@ -10254,7 +10254,7 @@ dependencies are actually required for it.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (!me.isString(payload.deps) &amp;&amp; !me.isArray(payload.deps) &amp;&amp; me.isFunction(payload.factory)) {
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (!me.isString(payload.deps) &amp;&amp; !me.isaArray(payload.deps) &amp;&amp; me.isFunction(payload.factory)) {
 		payload.deps = me.args(payload.factory);
 	}</pre></div></div>
             
@@ -10378,7 +10378,7 @@ dependencies are actually required for it.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (me.isArray(args[<span class="hljs-number">0</span>]) || me.isString(args[<span class="hljs-number">0</span>])) {
+            <div class="content"><div class='highlight'><pre>	} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (me.isaArray(args[<span class="hljs-number">0</span>]) || me.isString(args[<span class="hljs-number">0</span>])) {
 		payload.deps = args[<span class="hljs-number">0</span>];</pre></div></div>
             
         </li>
@@ -10487,7 +10487,7 @@ dependencies are actually required for it.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (me.isArray(args[<span class="hljs-number">0</span>]) || me.isString(args[<span class="hljs-number">0</span>])) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (me.isaArray(args[<span class="hljs-number">0</span>]) || me.isString(args[<span class="hljs-number">0</span>])) {</pre></div></div>
             
         </li>
         
@@ -10895,7 +10895,7 @@ care of that.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (!me.isArray(modules) || !modules.length) {
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (!me.isaArray(modules) || !modules.length) {
 		successCallback();
 		<span class="hljs-keyword">return</span>;
 	}</pre></div></div>

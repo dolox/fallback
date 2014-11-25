@@ -10,30 +10,30 @@ me.init = function() {
 	// Spawn our utility functions for the library.
 	me.init.utilities(me, me.utility.types);
 
-	// @todo this isn't being renamed during minification
 	// The following is for better compression with the minification process.
 	/* eslint-disable */
-	/* istanbul ignore */
-	me.isArray = me['isArray']; /* istanbul ignore */
-	me.isBoolean = me['isBoolean']; /* istanbul ignore */
-	me.isFunction = me['isFunction']; /* istanbul ignore */
-	me.isNumber = me['isNumber']; /* istanbul ignore */
-	me.isObject = me['isObject']; /* istanbul ignore */
-	me.isString = me['isString']; /* istanbul ignore */
+	/* jshint ignore:start */
+	me.isaArray = me['isArray']; // `isArray` is reserved, it won't be compressed during minification.
+	me.isBoolean = me['isBoolean'];
+	me.isFunction = me['isFunction'];
+	me.isNumber = me['isNumber'];
+	me.isObject = me['isObject'];
+	me.isString = me['isString'];
 
-	me.normalizeArray = me['normalizeArray']; /* istanbul ignore */
-	me.normalizeBoolean = me['normalizeBoolean']; /* istanbul ignore */
-	me.normalizeFunction = me['normalizeFunction']; /* istanbul ignore */
-	me.normalizeNumber = me['normalizeNumber']; /* istanbul ignore */
-	me.normalizeObject = me['normalizeObject']; /* istanbul ignore */
-	me.normalizeString = me['normalizeString']; /* istanbul ignore */
+	me.normalizeArray = me['normalizeArray'];
+	me.normalizeBoolean = me['normalizeBoolean'];
+	me.normalizeFunction = me['normalizeFunction'];
+	me.normalizeNumber = me['normalizeNumber'];
+	me.normalizeObject = me['normalizeObject'];
+	me.normalizeString = me['normalizeString'];
 
-	me.normalizeArraySeries = me['normalizeArraySeries']; /* istanbul ignore */
-	me.normalizeBooleanSeries = me['normalizeBooleanSeries']; /* istanbul ignore */
-	me.normalizeFunctionSeries = me['normalizeFunctionSeries']; /* istanbul ignore */
-	me.normalizeNumberSeries = me['normalizeNumberSeries']; /* istanbul ignore */
-	me.normalizeObjectSeries = me['normalizeObjectSeries']; /* istanbul ignore */
-	me.normalizeStringSeries = me['normalizeStringSeries']; /* istanbul ignore */
+	me.normalizeArraySeries = me['normalizeArraySeries'];
+	me.normalizeBooleanSeries = me['normalizeBooleanSeries'];
+	me.normalizeFunctionSeries = me['normalizeFunctionSeries'];
+	me.normalizeNumberSeries = me['normalizeNumberSeries'];
+	me.normalizeObjectSeries = me['normalizeObjectSeries'];
+	me.normalizeStringSeries = me['normalizeStringSeries'];
+	/* jshint ignore:end */
 	/* eslint-enable */
 
 	// Reference aliases for the library into the `global` object for the user to directly access.
@@ -165,7 +165,7 @@ me.args = function(reference) {
 // @reference http://jsperf.com/new-array-vs-splice-vs-slice/19
 me.arrayClone = function(input) {
 	// If the `input` parameter is not an `Array` or `Object`, return an empty `Array`.
-	if (!me.isArray(input) && !me.isObject(input) && typeof input !== 'object') {
+	if (!me.isaArray(input) && !me.isObject(input) && typeof input !== 'object') {
 		return [];
 	}
 
@@ -179,7 +179,7 @@ me.arrayUnique = function(input) {
 	var normalized = [];
 
 	// If an array was not passed in, halt the function.
-	if (!me.isArray(normalized)) {
+	if (!me.isaArray(normalized)) {
 		return normalized;
 	}
 
@@ -216,7 +216,7 @@ me.delimiter = '$';
 // Shorthand for a `for in` loop. Less code, easier readability. If `false` is returned, the loop will be halted.
 me.each = function(input, callback) {
 	// If anything other than an `Array` or `Object` was passed in, halt the `Function`.
-	if (!me.isArray(input) && !me.isObject(input) && typeof input !== 'object') {
+	if (!me.isaArray(input) && !me.isObject(input) && typeof input !== 'object') {
 		return;
 	}
 
@@ -266,7 +266,7 @@ me.indexOf = function(input, value) {
 	var index = -1;
 
 	// If our `input` is not an `Array`, or our `value is not a `String` or `Number`, halt the `Function`.
-	if (!me.isArray(input) || !me.isString(value) && !me.isNumber(value)) {
+	if (!me.isaArray(input) || !me.isString(value) && !me.isNumber(value)) {
 		return index;
 	}
 
@@ -442,7 +442,7 @@ me.normalizeSeries = function(input, type, fallback, strip) {
 	var normalized = [];
 
 	// Case our input to an array/series.
-	if (!me.isArray(input)) {
+	if (!me.isaArray(input)) {
 		input = [input];
 	}
 
@@ -477,7 +477,7 @@ me.objectConstrain = function(input, whitelist, reference) {
 	}
 
 	// If we don't have a `whitelist` or if it's not an `Array`, return our `input`.
-	if (!me.isArray(whitelist)) {
+	if (!me.isaArray(whitelist)) {
 		return input;
 	}
 
@@ -513,7 +513,7 @@ me.objectMerge = function(input, defaults, fallback) {
 	}
 
 	// The defaults to merge with.
-	var defaultsIsArray = me.isArray(defaults);
+	var defaultsIsArray = me.isaArray(defaults);
 
 	// If our defaults isn't an Array or Object, then return our `input`.
 	if (!me.isObject(defaults) && !defaultsIsArray) {
@@ -545,7 +545,7 @@ me.objectMerge = function(input, defaults, fallback) {
 // Run a number of functions in parallel with the ability to call a single callback once they've all completed.
 me.parallel = function(factories, callback) {
 	// Our `factories` argument must be an `Array`, if not halt the function.
-	if (!me.isArray(factories)) {
+	if (!me.isaArray(factories)) {
 		callback();
 		return;
 	}

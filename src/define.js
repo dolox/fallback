@@ -194,7 +194,7 @@ me.define.args.router = function(args) {
 	payload = me.define.args.router[reference](args, payload);
 
 	// If we need to derive the `dependencies` from the `factory` `Function`, then do so now.
-	if (!me.isString(payload.deps) && !me.isArray(payload.deps) && me.isFunction(payload.factory)) {
+	if (!me.isString(payload.deps) && !me.isaArray(payload.deps) && me.isFunction(payload.factory)) {
 		payload.deps = me.args(payload.factory);
 	}
 
@@ -231,7 +231,7 @@ me.define.args.router[2] = function(args, payload) {
 		payload.factory = args[1];
 
 	// If the first argument is an `Array`, treat the arguments as `dependencies`, and `factory`.
-	} else if (me.isArray(args[0])) {
+	} else if (me.isaArray(args[0])) {
 		// Reference the `dependencies`.
 		payload.deps = args[0];
 

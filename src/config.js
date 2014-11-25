@@ -169,7 +169,7 @@ me.config.libs.value = function(value) {
 	}
 
 	// If the value is an `Array`, convert it to an `Object` where the parameter `urls` is the value.
-	if (me.isArray(value)) {
+	if (me.isaArray(value)) {
 		value = {
 			urls: value
 		};

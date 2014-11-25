@@ -66,7 +66,7 @@ me.loader.css.check.ignore = ['//', 'http://', 'https://'];
 // subkey which are the exports that are specified in the paramter.
 me.loader.css.check.exports = function(exports) {
 	// If our `exports` parameter is not an `Array`, cast it to one.
-	if (!me.isArray(exports)) {
+	if (!me.isaArray(exports)) {
 		exports = [exports];
 	}
 

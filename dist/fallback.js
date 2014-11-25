@@ -14,30 +14,30 @@ me.init = function() {
 	// Spawn our utility functions for the library.
 	me.init.utilities(me, me.utility.types);
 
-	// @todo this isn't being renamed during minification
 	// The following is for better compression with the minification process.
 	/* eslint-disable */
-	/* istanbul ignore */
-	me.isArray = me['isArray']; /* istanbul ignore */
-	me.isBoolean = me['isBoolean']; /* istanbul ignore */
-	me.isFunction = me['isFunction']; /* istanbul ignore */
-	me.isNumber = me['isNumber']; /* istanbul ignore */
-	me.isObject = me['isObject']; /* istanbul ignore */
-	me.isString = me['isString']; /* istanbul ignore */
+	/* jshint ignore:start */
+	me.isaArray = me['isArray']; // `isArray` is reserved, it won't be compressed during minification.
+	me.isBoolean = me['isBoolean'];
+	me.isFunction = me['isFunction'];
+	me.isNumber = me['isNumber'];
+	me.isObject = me['isObject'];
+	me.isString = me['isString'];
 
-	me.normalizeArray = me['normalizeArray']; /* istanbul ignore */
-	me.normalizeBoolean = me['normalizeBoolean']; /* istanbul ignore */
-	me.normalizeFunction = me['normalizeFunction']; /* istanbul ignore */
-	me.normalizeNumber = me['normalizeNumber']; /* istanbul ignore */
-	me.normalizeObject = me['normalizeObject']; /* istanbul ignore */
-	me.normalizeString = me['normalizeString']; /* istanbul ignore */
+	me.normalizeArray = me['normalizeArray'];
+	me.normalizeBoolean = me['normalizeBoolean'];
+	me.normalizeFunction = me['normalizeFunction'];
+	me.normalizeNumber = me['normalizeNumber'];
+	me.normalizeObject = me['normalizeObject'];
+	me.normalizeString = me['normalizeString'];
 
-	me.normalizeArraySeries = me['normalizeArraySeries']; /* istanbul ignore */
-	me.normalizeBooleanSeries = me['normalizeBooleanSeries']; /* istanbul ignore */
-	me.normalizeFunctionSeries = me['normalizeFunctionSeries']; /* istanbul ignore */
-	me.normalizeNumberSeries = me['normalizeNumberSeries']; /* istanbul ignore */
-	me.normalizeObjectSeries = me['normalizeObjectSeries']; /* istanbul ignore */
-	me.normalizeStringSeries = me['normalizeStringSeries']; /* istanbul ignore */
+	me.normalizeArraySeries = me['normalizeArraySeries'];
+	me.normalizeBooleanSeries = me['normalizeBooleanSeries'];
+	me.normalizeFunctionSeries = me['normalizeFunctionSeries'];
+	me.normalizeNumberSeries = me['normalizeNumberSeries'];
+	me.normalizeObjectSeries = me['normalizeObjectSeries'];
+	me.normalizeStringSeries = me['normalizeStringSeries'];
+	/* jshint ignore:end */
 	/* eslint-enable */
 
 	// Reference aliases for the library into the `global` object for the user to directly access.
@@ -169,7 +169,7 @@ me.args = function(reference) {
 // @reference http://jsperf.com/new-array-vs-splice-vs-slice/19
 me.arrayClone = function(input) {
 	// If the `input` parameter is not an `Array` or `Object`, return an empty `Array`.
-	if (!me.isArray(input) && !me.isObject(input) && typeof input !== 'object') {
+	if (!me.isaArray(input) && !me.isObject(input) && typeof input !== 'object') {
 		return [];
 	}
 
@@ -183,7 +183,7 @@ me.arrayUnique = function(input) {
 	var normalized = [];
 
 	// If an array was not passed in, halt the function.
-	if (!me.isArray(normalized)) {
+	if (!me.isaArray(normalized)) {
 		return normalized;
 	}
 
@@ -220,7 +220,7 @@ me.delimiter = '$';
 // Shorthand for a `for in` loop. Less code, easier readability. If `false` is returned, the loop will be halted.
 me.each = function(input, callback) {
 	// If anything other than an `Array` or `Object` was passed in, halt the `Function`.
-	if (!me.isArray(input) && !me.isObject(input) && typeof input !== 'object') {
+	if (!me.isaArray(input) && !me.isObject(input) && typeof input !== 'object') {
 		return;
 	}
 
@@ -270,7 +270,7 @@ me.indexOf = function(input, value) {
 	var index = -1;
 
 	// If our `input` is not an `Array`, or our `value is not a `String` or `Number`, halt the `Function`.
-	if (!me.isArray(input) || !me.isString(value) && !me.isNumber(value)) {
+	if (!me.isaArray(input) || !me.isString(value) && !me.isNumber(value)) {
 		return index;
 	}
 
@@ -446,7 +446,7 @@ me.normalizeSeries = function(input, type, fallback, strip) {
 	var normalized = [];
 
 	// Case our input to an array/series.
-	if (!me.isArray(input)) {
+	if (!me.isaArray(input)) {
 		input = [input];
 	}
 
@@ -481,7 +481,7 @@ me.objectConstrain = function(input, whitelist, reference) {
 	}
 
 	// If we don't have a `whitelist` or if it's not an `Array`, return our `input`.
-	if (!me.isArray(whitelist)) {
+	if (!me.isaArray(whitelist)) {
 		return input;
 	}
 
@@ -517,7 +517,7 @@ me.objectMerge = function(input, defaults, fallback) {
 	}
 
 	// The defaults to merge with.
-	var defaultsIsArray = me.isArray(defaults);
+	var defaultsIsArray = me.isaArray(defaults);
 
 	// If our defaults isn't an Array or Object, then return our `input`.
 	if (!me.isObject(defaults) && !defaultsIsArray) {
@@ -549,7 +549,7 @@ me.objectMerge = function(input, defaults, fallback) {
 // Run a number of functions in parallel with the ability to call a single callback once they've all completed.
 me.parallel = function(factories, callback) {
 	// Our `factories` argument must be an `Array`, if not halt the function.
-	if (!me.isArray(factories)) {
+	if (!me.isaArray(factories)) {
 		callback();
 		return;
 	}
@@ -835,7 +835,7 @@ me.config.libs.value = function(value) {
 	}
 
 	// If the value is an `Array`, convert it to an `Object` where the parameter `urls` is the value.
-	if (me.isArray(value)) {
+	if (me.isaArray(value)) {
 		value = {
 			urls: value
 		};
@@ -1082,7 +1082,7 @@ me.define.args.router = function(args) {
 	payload = me.define.args.router[reference](args, payload);
 
 	// If we need to derive the `dependencies` from the `factory` `Function`, then do so now.
-	if (!me.isString(payload.deps) && !me.isArray(payload.deps) && me.isFunction(payload.factory)) {
+	if (!me.isString(payload.deps) && !me.isaArray(payload.deps) && me.isFunction(payload.factory)) {
 		payload.deps = me.args(payload.factory);
 	}
 
@@ -1119,7 +1119,7 @@ me.define.args.router[2] = function(args, payload) {
 		payload.factory = args[1];
 
 	// If the first argument is an `Array`, treat the arguments as `dependencies`, and `factory`.
-	} else if (me.isArray(args[0])) {
+	} else if (me.isaArray(args[0])) {
 		// Reference the `dependencies`.
 		payload.deps = args[0];
 
@@ -1548,7 +1548,7 @@ me.loader.js.check = function(module, fallback) {
 // subkey which are the exports that are specified in the paramter.
 me.loader.js.check.exports = function(exports) {
 	// If our `exports` parameter is not an `Array`, cast it to one.
-	if (!me.isArray(exports)) {
+	if (!me.isaArray(exports)) {
 		exports = [exports];
 	}
 
@@ -1676,7 +1676,7 @@ me.loader.css.check.ignore = ['//', 'http://', 'https://'];
 // subkey which are the exports that are specified in the paramter.
 me.loader.css.check.exports = function(exports) {
 	// If our `exports` parameter is not an `Array`, cast it to one.
-	if (!me.isArray(exports)) {
+	if (!me.isaArray(exports)) {
 		exports = [exports];
 	}
 
@@ -1965,7 +1965,7 @@ me.module.define.normalize = function(moduleName, input) {
 			var value = input[key];
 
 			// If our `values` is an `Array`, then run the normalization function on the input value.
-			if (me.isArray(values)) {
+			if (me.isaArray(values)) {
 				value = values[0](value, values[1]);
 			}
 
@@ -2181,7 +2181,7 @@ me.module.invoke.callbacks = function(moduleName, success) {
 	}
 
 	// If there are no callbacks, then halt the `Function`.
-	if (!me.isArray(reference) || !reference.length) {
+	if (!me.isaArray(reference) || !reference.length) {
 		return;
 	}
 
@@ -2309,7 +2309,7 @@ me.require = function() {
 // Load up all of our dependencies, along with any nested dependencies in the order of least to most dependent.
 me.require.boot = function(modules, successCallback, errorCallback) {
 	// If our `deps` argument was malformed or empty, invoke our callback and halt the function.
-	if (!me.isArray(modules) || !modules.length) {
+	if (!me.isaArray(modules) || !modules.length) {
 		successCallback();
 		return;
 	}
@@ -2451,7 +2451,7 @@ me.require.args.router = function(args) {
 	payload = me.require.args.router[reference](args, payload);
 
 	// If we need to derive the `dependencies` from the `factory` `Function`, then do so now.
-	if (!me.isString(payload.deps) && !me.isArray(payload.deps) && me.isFunction(payload.factory)) {
+	if (!me.isString(payload.deps) && !me.isaArray(payload.deps) && me.isFunction(payload.factory)) {
 		payload.deps = me.args(payload.factory);
 	}
 
@@ -2476,7 +2476,7 @@ me.require.args.router[1] = function(args, payload) {
 		payload.factory = args[0];
 
 	// If it's an `Array` or `String` it's the `dependencies`.
-	} else if (me.isArray(args[0]) || me.isString(args[0])) {
+	} else if (me.isaArray(args[0]) || me.isString(args[0])) {
 		payload.deps = args[0];
 
 	// If none of the criteria above matched, then the arguments are malformed.
@@ -2499,7 +2499,7 @@ me.require.args.router[2] = function(args, payload) {
 		payload.factory = me.normalizeFunction(args[0]);
 
 	// Otherwise treat the arguments as the `dependencies` and `factory`.
-	} else if (me.isArray(args[0]) || me.isString(args[0])) {
+	} else if (me.isaArray(args[0]) || me.isString(args[0])) {
 		// Reference the `dependencies`.
 		payload.deps = args[0];
 
@@ -2587,7 +2587,7 @@ me.require.loop = function(queue, modules, successCallback, errorCallback) {
 // Load up an `Array` of modules simultaneously.
 me.require.module = function(modules, successCallback, errorCallback) {
 	// If we have no `modules`, then invoke our callback and halt the function.
-	if (!me.isArray(modules) || !modules.length) {
+	if (!me.isaArray(modules) || !modules.length) {
 		successCallback();
 		return;
 	}

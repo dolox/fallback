@@ -24,7 +24,7 @@ me.require = function() {
 // Load up all of our dependencies, along with any nested dependencies in the order of least to most dependent.
 me.require.boot = function(modules, successCallback, errorCallback) {
 	// If our `deps` argument was malformed or empty, invoke our callback and halt the function.
-	if (!me.isArray(modules) || !modules.length) {
+	if (!me.isaArray(modules) || !modules.length) {
 		successCallback();
 		return;
 	}
@@ -166,7 +166,7 @@ me.require.args.router = function(args) {
 	payload = me.require.args.router[reference](args, payload);
 
 	// If we need to derive the `dependencies` from the `factory` `Function`, then do so now.
-	if (!me.isString(payload.deps) && !me.isArray(payload.deps) && me.isFunction(payload.factory)) {
+	if (!me.isString(payload.deps) && !me.isaArray(payload.deps) && me.isFunction(payload.factory)) {
 		payload.deps = me.args(payload.factory);
 	}
 
@@ -191,7 +191,7 @@ me.require.args.router[1] = function(args, payload) {
 		payload.factory = args[0];
 
 	// If it's an `Array` or `String` it's the `dependencies`.
-	} else if (me.isArray(args[0]) || me.isString(args[0])) {
+	} else if (me.isaArray(args[0]) || me.isString(args[0])) {
 		payload.deps = args[0];
 
 	// If none of the criteria above matched, then the arguments are malformed.
@@ -214,7 +214,7 @@ me.require.args.router[2] = function(args, payload) {
 		payload.factory = me.normalizeFunction(args[0]);
 
 	// Otherwise treat the arguments as the `dependencies` and `factory`.
-	} else if (me.isArray(args[0]) || me.isString(args[0])) {
+	} else if (me.isaArray(args[0]) || me.isString(args[0])) {
 		// Reference the `dependencies`.
 		payload.deps = args[0];
 
@@ -302,7 +302,7 @@ me.require.loop = function(queue, modules, successCallback, errorCallback) {
 // Load up an `Array` of modules simultaneously.
 me.require.module = function(modules, successCallback, errorCallback) {
 	// If we have no `modules`, then invoke our callback and halt the function.
-	if (!me.isArray(modules) || !modules.length) {
+	if (!me.isaArray(modules) || !modules.length) {
 		successCallback();
 		return;
 	}

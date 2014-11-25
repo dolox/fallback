@@ -171,7 +171,7 @@ me.module.define.normalize = function(moduleName, input) {
 			var value = input[key];
 
 			// If our `values` is an `Array`, then run the normalization function on the input value.
-			if (me.isArray(values)) {
+			if (me.isaArray(values)) {
 				value = values[0](value, values[1]);
 			}
 
@@ -387,7 +387,7 @@ me.module.invoke.callbacks = function(moduleName, success) {
 	}
 
 	// If there are no callbacks, then halt the `Function`.
-	if (!me.isArray(reference) || !reference.length) {
+	if (!me.isaArray(reference) || !reference.length) {
 		return;
 	}
 
