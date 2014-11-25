@@ -3,6 +3,10 @@ module.exports = function(grunt, tasks) {
 	var uri = grunt.app.config.uri;
 	var packageJson = grunt.file.readJSON(grunt.app.config.uri.root + 'package.json');
 
+	me.options = {};
+
+	me.options.cwd = '/';
+
 	grunt.wrapBanner = '/* fallback.js v' + grunt.file.readJSON(uri.root + 'package.json').version + ' | ' + packageJson.homepage + ' | Salvatore Garbesi <sal@dolox.com> | (c) ' + new Date().getFullYear() + ' Dolox, Inc. */\n';
 
 	grunt.wrapPrefix = grunt.wrapBanner + '\n(function(global) {\n';

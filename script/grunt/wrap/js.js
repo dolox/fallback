@@ -2,8 +2,6 @@ module.exports = function(grunt, tasks) {
 	var me = {};
 	var uri = grunt.app.config.uri;
 
-	me.cwd = '/';
-
 	me.dest = uri.dist + 'fallback.js';
 
 	me.options = {};
