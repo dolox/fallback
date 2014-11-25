@@ -12,8 +12,8 @@
 	<br />
 
 	<a href="https://travis-ci.org/dolox/fallback" target="_blank"><img src="https://travis-ci.org/dolox/fallback.svg" /></a>
-	<a href="https://codeclimate.com/github/dolox/fallback" target="_blank"><img src="http://img.shields.io/codeclimate/github/dolox/fallback.svg" /></a>
-	<a href="https://codeclimate.com/github/dolox/fallback" target="_blank"><img src="http://img.shields.io/codeclimate/coverage/github/dolox/fallback.svg" /></a>
+	<a href="https://codeclimate.com/github/dolox/fallback" target="_blank"><img src="https://codeclimate.com/github/dolox/fallback/badges/gpa.svg" /></a>
+	<a href="https://codeclimate.com/github/dolox/fallback" target="_blank"><img src="https://codeclimate.com/github/dolox/fallback/badges/coverage.svg" /></a>
 	<a href="https://david-dm.org/dolox/fallback" target="_blank"><img src="https://david-dm.org/dolox/fallback/status.svg" /></a>
 	<a href="https://david-dm.org/dolox/fallback#info=devDependencies" target="_blank"><img src="https://david-dm.org/dolox/fallback/dev-status.svg" /></a>
 
