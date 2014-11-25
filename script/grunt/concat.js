@@ -8,7 +8,7 @@ module.exports = function(grunt, tasks) {
 		uri.src + 'core.js'
 	];
 
-	grunt.file.expandMapping([uri.src + '*.js'], null, {
+	grunt.file.expandMapping([uri.src + '*.js', uri.src + '**/*.js'], null, {
 		rename: function(dest, matchedSrcPath) {
 			if (matchedSrcPath !== me.options.src[0]) {
 				me.options.src.push(matchedSrcPath);

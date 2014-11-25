@@ -10,6 +10,9 @@ me.init.utilities = function(container, input) {
 			me.utility(container, input[index]);
 		}
 	}
+
+	// @todo remove
+	me.isaArray = me.isArray;
 };
 
 // Check whether or not a variable is defined.
