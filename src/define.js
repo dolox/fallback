@@ -267,7 +267,9 @@ define.deps = function(args) {
 // Generate and return our new module.
 define.module = function(args) {
 	// Generate or reference the module.
-	var module = me.module(args.name);
+	var module = me.module(args.name, {
+		amd: true
+	});
 
 	// Set our dependencies.
 	module.deps = me.normalizeStringSeries(args.deps);

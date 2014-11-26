@@ -233,10 +233,13 @@ require.config = function(moduleName) {
 	};
 
 	// Set our URL to be relative to our configurations `base` variable.
-	config.libs[moduleName] = moduleName;
+	config.libs[moduleName] = {
+		amd: true,
+		urls: moduleName
+	};
 
 	// Pass the anonymous module over to our configuration to generate the module and URLs.
-	return me.config(config);
+	me.config(config);
 };
 
 // Assumes that all depdendencies being passed into the `deps` parameter have already been loaded. The sole purpose of

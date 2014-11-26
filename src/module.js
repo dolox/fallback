@@ -209,6 +209,9 @@ module.define.normalize = function(moduleName, input) {
 // normalization loop.
 module.define.defaults = function() {
 	return {
+		// Wheter or not the module is a AMD.
+		amd: [me.normalizeBoolean, false],
+
 		// Aliases for the module.
 		'alias': [me.normalizeStringSeries, null],
 

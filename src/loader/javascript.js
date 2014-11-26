@@ -5,16 +5,14 @@ var javascript = {};
 javascript.boot = function(module, url, callbackSuccess, callbackFailed) {
 	// If the library is already loaded on the page, don't attempt to reload it.
 	var factory = javascript.check(module);
-	console.log('>>>> precheck factory (' + module.name + '): ' + factory);
 
 	// Check if our module has already been loaded.
-	if (me.isDefined(factory)) { // @todo check in css
+	if (me.isDefined(factory)) {
 		return callbackSuccess(module, url, factory, true);
 	}
 
 	// If our library failed to load, we'll call upon this function.
 	var failed = function() {
-		console.log('**** failed');
 		return callbackFailed(module, url);
 	};
 
@@ -22,8 +20,8 @@ javascript.boot = function(module, url, callbackSuccess, callbackFailed) {
 	// We need to manually check to make sure that our libraries were loaded properly.
 	var check = function() {
 		// Attempt to fetch the factory for our module.
-		factory = javascript.check(module);
-		console.log('>>>> 2nd check factory (' + module.name + '): ' + factory);
+		factory = javascript.check(module, true);
+
 		// If the factory is empty, then it failed to load! Invoke the failure callback.
 		if (!me.isDefined(factory)) {
 			return failed();
@@ -100,9 +98,9 @@ javascript.attributes = function(attribute) {
 
 // Check to see if a module has already been loaded on the page. This `Function` will return `Boolean`, `true` being
 // that a module has already been loaded and `false` being that it hasn't.
-javascript.check = function(module, fallback) {
+javascript.check = function(module, postLoadCheck) {
 	// See if the module itself has been flagged as loaded.
-	if (module.loader.loaded === true) {
+	if (module.loader.loaded === true || module.amd === true && postLoadCheck === true) {
 		return true;
 	}
 
@@ -110,15 +108,12 @@ javascript.check = function(module, fallback) {
 	var factory;
 
 	// If globals are enabled, and we have exports for the module, check the `window` to see if they're defined.
-	if (me.config.settings.globals === true && module.exports.length) {
+	if (module.amd !== true && me.config.settings.globals === true && module.exports.length) {
 		factory = javascript.check.exports(module.exports);
 	}
 
 	// If an anonymous module was defined, then it's for this library, meaning it loaded successfully.
-	console.log(module.name);
-	console.log('>>>> pending: ' + me.define.anonymous.pending);
-	if (me.define.anonymous.pending) {
-		// @todo
+	if (me.define.anonymous.pending === true) {
 		return factory ? factory : true;
 	}
 
@@ -127,13 +122,13 @@ javascript.check = function(module, fallback) {
 		return module.check();
 	}
 
-	// If the `factory` is not `undefined`, then return it.
+	// If the `factory` is defined, then return it.
 	if (me.isDefined(factory)) {
 		return factory;
 	}
-	console.log('>>>> factory: ' + factory);
+
 	// By default return `undefined`.
-	return me.isDefined(fallback) ? fallback : undefined;
+	return undefined;
 };
 
 // Check for the instance of our library based on the exports given. If the instance of our library exists it'll be
@@ -182,35 +177,20 @@ javascript.element = function(url, success, failed) {
 	element.crossorigin = true;
 
 	// If we get an error callback, bypass any checking and just fail.
-	element.onerror = function() {
-		console.log('oh wtf');
-		failed()
-	};
+	element.onerror = failed;
 
 	// Do our checks and throw our callback.
 	element.onload = success;
 
 	// Special event handler for certain versions of IE. @ie
-	element.onreadystatechange = function() {
-					console.log('*** readystate');
-					console.log(this.readyState);
-		if (!this.readyState || this.readyState === 'loaded' || this.readyState === 'complete') {
-			// Explicity remove the callback after we receive it.
-			// Some versions of IE tend to fire off multiple success events. @ie
-			element.onreadystatechange = null;
-
-			// Fire off our callback.
-			success();
-			//callback();
-		}
-	};
+	me.loader.onReadyStateChange(element, success);
 
 	// Set the actual URL that we're going to request to load for our library.
 	element.src = url;
 
 	// Set the type, some legacy browsers require this attribute be present.
 	element.type = 'text/javascript';
-	console.log('*** ' + url);
+
 	// Load our URL on the page.
 	return me.head.appendChild(element);
 };

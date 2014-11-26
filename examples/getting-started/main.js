@@ -2,7 +2,6 @@
 
 def(function() {
 	cfg({
-		debug: true,
 		// The list of libraries that we want use for our project.
 		'libs': {
 			// Include `Twitter Bootstrap`.
@@ -22,9 +21,9 @@ def(function() {
 			'jQuery': {
 				// The URLs to load `jQuery`.
 				'urls': [
-					'//.....some-bad-cdn...../.....FAIL-ON-PURPOSE.....',
-					'//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min',
-					'//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min'
+					'//ajax.googleapis.com/ajax/libs/....FAIL-ON-PURPOSE....',
+					'//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min',
+					'//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min'
 				]
 			},
 
@@ -57,17 +56,17 @@ def(function() {
 	});
 
 	// Load Twitter Bootstrap!
-	req(function(jQuery) {
+	req(function(css$bootstrap, jQuery) {
 		jQuery('body').append('<h3 class="alert-success">Loaded Twiiter Bootstrap!</h3>');
 	});
 
 	// Load All!
-	req(function(jQueryUI, jQuery) {
+	req(function(css$bootstrap, jQueryUI, jQuery) {
 		jQuery('body').append('<h3 class="alert-success">Loaded All!</h3>');
 	});
 
 	// Stats!
-	req(function(jQueryUI, jQuery) {
+	req(function(css$bootstrap, jQueryUI, jQuery) {
 		jQuery('.container').append('<h1 class="text-center">Stats</h1>');
 		jQuery('.container').append('<pre id="stats">' + fallback.stats() + '</pre>');
 	});

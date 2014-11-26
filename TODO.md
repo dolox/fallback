@@ -1,17 +1,27 @@
 [ ] full run through in IE6-11, safari, firefox, chrome, makes sure it's working properly including for all examples
 
+	[ ] IE6, IE8 anonymous modules
+	[ ] IE6, IE8 AMD enforced
+	[ ] IE6, IE8 error handling
+	[ ] IE6, Debugging errors
+
 [ ] change gruntfile back to `localhost` instead of `10.0.1.2`
 
-[ ] nodejs integration
-
+[ ] update readme to use the getting started example code
 
 
 [ ] finish writing the README.docs for the last few things
+	[ ] amd subparam of lib
 	[ ] add all examples to README
 	[ ] state that logging won't work in minify version for better compression
 	[ ] config.amd fix the wording
 	[ ] error callbacks about halting factory executions down the waterfall
+
+[ ] tests
+
+[ ] nodejs integration
 	[ ] details about nodejs, make sure npm install works, thanks
+
 
 [ ] cleanup
 	[ ] update sample code on the website and file size

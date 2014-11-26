@@ -33,13 +33,6 @@ var config = function(input) {
 	return input;
 };
 
-// Each of these functions expect to have values that's a `Boolean`. If this isn't the case, then a value of `false`
-// will be set as the value.
-config.amd =
-config.globals = function(input) {
-	return me.normalizeBoolean(input, false);
-};
-
 // Normalize and import the configuration for our `base` parameter. If a `String` is passed in, then the value for the
 // `String` will be used for all of the loader types.
 config.base = function(input) {
@@ -123,6 +116,14 @@ config.libs = function(input) {
 	return normalized;
 };
 
+// Each of these functions expect to have values that's a `Boolean`. If this isn't the case, then a value of `false`
+// will be set as the value.
+config.libs.amd =
+config.amd =
+config.globals = function(input) {
+	return me.normalizeBoolean(input, false);
+};
+
 // Normalize the `value` parameter and populate it within the `normalized` `Object`.
 config.libs.populate = function(normalized, key, value) {
 	// If the `normalized` parameter isn't an `Object`, or the `key` parameter isn't a string, then halt the function.
@@ -141,7 +142,7 @@ config.libs.populate = function(normalized, key, value) {
 
 	// Loop through and normalize each of the values for our `Object`.
 	me.each(value, function(subValue, subKey) {
-		// If `exports` is `undefined`, then use the `moduleName` as the `exports`.
+		// If `exports` is `undefined`, then use the `moduleName` as the `exports`. @todo this doesn't need to be in a loop.
 		if (subKey === 'exports' && !me.isDefined(subValue)) {
 			subValue = [key];
 		}
@@ -215,7 +216,7 @@ config.libs.version = function(input) {
 };
 
 // The whitelist of acceptable keys for an `Object` in the `libs` parameter.
-config.libs.whitelist = ['alias', 'check', 'deps', 'init', 'exports', 'urls', 'version'];
+config.libs.whitelist = ['alias', 'amd', 'check', 'deps', 'init', 'exports', 'urls', 'version'];
 
 // The `Object` that'll retain the configuration.
 config.settings = {};

@@ -19,8 +19,8 @@ def(function() {
 
 			'jQuery': {
 				'urls': [
-					'//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min',
-					'//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min'
+					'//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min',
+					'//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min'
 				],
 
 				'version': '2.1.1'

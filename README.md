@@ -1,10 +1,10 @@
 <p align="center"><a href="http://fallback.io/" target="_blank"><img alt="Fallback JS" height="128" src="http://fallback.io/img/logo.png" /></a></p>
 <h1 align="center">Fallback JS v2.0.0</h1>
-<h6 align="center">15.39 KB Compressed / 98.4 KB Uncompressed</h6>
+<h6 align="center">14.98 KB Compressed / 97.82 KB Uncompressed</h6>
 
 <p align="center">
-	<a href="https://raw.githubusercontent.com/dolox/fallback/v2.0.0/dist/fallback.min.js"><img src="https://img.shields.io/badge/production-15.39KB-brightgreen.svg" /></a>
-	<a href="https://raw.githubusercontent.com/dolox/fallback/v2.0.0/dist/fallback.js"><img src="https://img.shields.io/badge/development-98.4KB-brightgreen.svg" /></a>
+	<a href="https://raw.githubusercontent.com/dolox/fallback/v2.0.0/dist/fallback.min.js"><img src="https://img.shields.io/badge/production-14.98KB-brightgreen.svg" /></a>
+	<a href="https://raw.githubusercontent.com/dolox/fallback/v2.0.0/dist/fallback.js"><img src="https://img.shields.io/badge/development-97.82KB-brightgreen.svg" /></a>
 	<a href="http://badge.fury.io/gh/dolox%2Ffallback" target="_blank"><img src="https://badge.fury.io/gh/dolox%2Ffallback.svg" /></a>
 	<a href="http://badge.fury.io/bo/fallback" target="_blank"><img src="https://badge.fury.io/bo/fallback.svg" /></a>
 	<a href="https://github.com/dolox/fallback/blob/master/LICENSE.txt"><img src="https://img.shields.io/badge/license-MIT-brightgreen.svg" /></a>
