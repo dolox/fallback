@@ -2,6 +2,7 @@
 
 def(function() {
 	cfg({
+		debug: true,
 		// The list of libraries that we want use for our project.
 		'libs': {
 			// Include `Twitter Bootstrap`.
@@ -56,17 +57,17 @@ def(function() {
 	});
 
 	// Load Twitter Bootstrap!
-	req(function(css$bootstrap, jQuery) {
+	req(function(jQuery) {
 		jQuery('body').append('<h3 class="alert-success">Loaded Twiiter Bootstrap!</h3>');
 	});
 
 	// Load All!
-	req(function(css$bootstrap, jQueryUI, jQuery) {
+	req(function(jQueryUI, jQuery) {
 		jQuery('body').append('<h3 class="alert-success">Loaded All!</h3>');
 	});
 
 	// Stats!
-	req(function(css$bootstrap, jQueryUI, jQuery) {
+	req(function(jQueryUI, jQuery) {
 		jQuery('.container').append('<h1 class="text-center">Stats</h1>');
 		jQuery('.container').append('<pre id="stats">' + fallback.stats() + '</pre>');
 	});

@@ -75,8 +75,10 @@ define.anonymous = function(moduleName) {
 
 	// If our module already exists and there's a module that's set as our last defined, then a file was loaded which the
 	// library assumed was anonymous, but wound up being explicitly calling the `define` `Function` with a `name`. In this
-	// particular case, we'll destroy the new definition and instead alias it with our anonymous module.
-	if (module && define.module.last) {
+	// particular case, we'll destroy the new definition and instead alias it with our anonymous module. The point in
+	// doing this is so that we only maintain a single reference. If we maintain multiple references there's a possibility
+	// of each of the references becoming out of sync.
+	if (module && define.module.last && define.module.last.name !== module.name) {
 		// Define the alias coming from the `define` function for the anonymous file that was loaded.
 		me.module.alias(module.name, [define.module.last.name]);
 
@@ -96,10 +98,14 @@ define.anonymous = function(moduleName) {
 		delete me.module.definitions[define.module.last.name];
 	} else {
 		// Set the dependencies for our anonymous `module`.
-		module.deps = define.anonymous.deps;
+		if (me.isDefined(define.anonymous.deps)) {
+			module.deps = define.anonymous.deps;
+		}
 
 		// Set the factory for our anonymous `module`.
-		module.factory = define.anonymous.factory;
+		if (me.isDefined(define.anonymous.deps)) {
+			module.factory = define.anonymous.factory;
+		}
 	}
 
 	// Reset the pending anonymous values waiting to be populated.

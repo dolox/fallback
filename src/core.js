@@ -8,7 +8,7 @@ me.init = function() {
 	me.head = global.document ? global.document.getElementsByTagName('head')[0] : null;
 
 	// Reference aliases for the library into the `global` object for the user to directly access.
-	me.init.aliases(global, me.aliases);
+	me.alias(global, me.alias.types);
 
 	// Initialize our loader object.
 	me.loader.init();
@@ -16,7 +16,7 @@ me.init = function() {
 
 // Reference the library's aliases into the `global` `Object` for the user to directly access. If a alias that we're
 // attempting to reference currently exists in our `global` `Object`, then we won't override it.
-me.init.aliases = function(container, input) {
+me.alias = function(container, input) {
 	// Loop through each of our aliases.
 	me.each(input, function(aliases, key) {
 		// Store the module name that we'll reference throughout our loop.
@@ -65,7 +65,7 @@ me.init.aliases = function(container, input) {
 };
 
 // This is where we hold all of our functional aliases for the library.
-me.aliases = {
+me.alias.types = {
 	// Referenecs for our `config` function.
 	'config': ['cfg', 'conf', 'config'],
 
@@ -153,9 +153,6 @@ me.arrayUnique = function(input) {
 	return normalized;
 };
 
-// The character to split our module names on to derive it's identity.
-me.delimiter = '$';
-
 // Shorthand for a `for in` loop. Less code, easier readability. If `false` is returned, the loop will be halted.
 me.each = function(input, callback) {
 	// If anything other than an `Array` or `Object` was passed in, halt the `Function`.
@@ -186,10 +183,6 @@ me.getProperty = function(reference, property) {
 	return reference;
 };
 
-// Whether or not to use a reference to `window` to check if a library has already been loaded. This is also used when
-// loading libraries to determine if they loaded properly for legacy browsers.
-me.globals = true;
-
 // Legacy browsers don't support `Array.prototype.indexOf`, this function dubs as a polyfill for this browsers. In
 // particular IE < 9, doesn't support it. @ie @ie6 @ie7 @ie8
 // @reference https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf
@@ -216,6 +209,65 @@ me.indexOf = function(input, value) {
 
 	// Return the index of our `value`.
 	return index;
+};
+
+// Check whether or not a variable is defined.
+me.isDefined = function(variable) {
+	return variable !== void 0;
+};
+
+// Check a `String` to see if it contains a prefix.
+me.isPrefixed = function(reference, prefixes) {
+	// Flag whether or not a URL should be ignore from being prepended with the base URL.
+	var isPrefixed = false;
+
+	// Loop through our ignore list.
+	me.each(prefixes, function(prefix) {
+		// Check to see if the prefix of our URL has a match in our ignore list.
+		if (reference.substr(0, prefix.length) === prefix) {
+			// Flag the URL as ignored.
+			isPrefixed = true;
+
+			// Halt the loop.
+			return false;
+		}
+	});
+
+	// Return whether or not we found a match.
+	return isPrefixed;
+};
+
+// Check if a variable is a specific type.
+me.isType = function(variable, type) {
+	// Special check for `null` for legacy browsers. @ie
+	if (type === 'Object' && variable === null) {
+		return false;
+	}
+
+	// Special check for `undefined` for legacy browsers. @ie
+	if (!me.isDefined(variable)) {
+		return false;
+	}
+
+	// Run our global check.
+	var valid = Object.prototype.toString.call(variable) === '[object ' + type + ']';
+
+	// Newer browsers give the proper types for these, whereas legacy browsers don't. Instead of writing separate
+	// functions and test for each, we can simply accept them all as being an object.
+	if (valid === false && (type === 'HTMLCollection' || type === 'HTMLHeadElement' || type === 'HTMLScriptElement')) {
+		// Special patch for Safari. @safari
+		if (type === 'HTMLCollection') {
+			valid = me.isType(variable, 'NodeList');
+		}
+
+		// Fallback on an `Object` for legacy browsers.
+		if (!valid) {
+			valid = me.isType(variable, 'Object');
+		}
+	}
+
+	// Return whether or not our type is valid.
+	return valid;
 };
 
 // Constrain an object to only contain a specific set of keys. All other keys are discarded, and a warning is thrown.

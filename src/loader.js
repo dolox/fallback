@@ -58,7 +58,7 @@ loader.onReadyStateChange = function(element, callback) {
 		if (!this.readyState || this.readyState === 'loaded' || this.readyState === 'complete') {
 			// Explicity remove the callback after we receive it.
 			// Some versions of IE tend to fire off multiple success events. @ie
-			this.onreadystatechange = null;
+			element.onreadystatechange = null;
 
 			// Fire off our callback.
 			callback();

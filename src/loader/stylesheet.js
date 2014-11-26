@@ -1,4 +1,5 @@
-// Cascading Stylesheet loader which is responsible for loading any CSS files for the library.
+// Cascading Stylesheet loader which is responsible for loading any CSS files for the library. A lot of browser quirks
+// to deal with here. @reference http://www.phpied.com/when-is-a-stylesheet-really-loaded/
 var stylesheet = {};
 
 // Attempt to load a stylesheet onto the page.
@@ -48,10 +49,13 @@ stylesheet.check = function(module, url, fallback) {
 		return module.check();
 	}
 
+	// This has been disabled due to a variety of timing factors with different browsers.
+	// @reference http://www.phpied.com/when-is-a-stylesheet-really-loaded/
+
 	// If globals are enabled, and we have exports for the module, check the DOM to see if they're defined.
-	if (me.globals === true && module.exports.length && !me.isPrefixed(url, stylesheet.check.ignore)) {
-		return stylesheet.check.exports(module.exports);
-	}
+	//if (me.config.settings.globals === true && module.exports.length && !me.isPrefixed(url, stylesheet.check.ignore)) {
+	//	return stylesheet.check.exports(module.exports);
+	//}
 
 	// By default just return true, as this function was hit from a success callback.
 	return me.isDefined(fallback) ? fallback : true;
@@ -131,9 +135,13 @@ stylesheet.check.exports = function(exports) {
 };
 
 // Spawn a new element on the page with our URL.
+// @reference https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement
 stylesheet.element = function(url, success, failed) {
 	// Create a new script element instance.
 	var element = global.document.createElement('link');
+
+	// Explicitly set async behavior.
+	element.async = element.defer = true;
 
 	// The browser supports it, enable crossorigin.
 	element.crossorigin = true;
@@ -148,7 +156,7 @@ stylesheet.element = function(url, success, failed) {
 	element.onload = success;
 
 	// Special event handler for certain versions of IE. @ie
-	element.onreadystatechange = me.loader.onReadyStateChange(element, success);
+	me.loader.onReadyStateChange(element, success);
 
 	// Set the type, some legacy browsers require this attribute be present.
 	element.rel = 'stylesheet';

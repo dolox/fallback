@@ -4,15 +4,17 @@ var javascript = {};
 // Attempt to load a script onto the page.
 javascript.boot = function(module, url, callbackSuccess, callbackFailed) {
 	// If the library is already loaded on the page, don't attempt to reload it.
-	var factory = javascript.check(module, false);
+	var factory = javascript.check(module);
+	console.log('>>>> precheck factory (' + module.name + '): ' + factory);
 
 	// Check if our module has already been loaded.
-	if (factory) {
+	if (me.isDefined(factory)) { // @todo check in css
 		return callbackSuccess(module, url, factory, true);
 	}
 
 	// If our library failed to load, we'll call upon this function.
 	var failed = function() {
+		console.log('**** failed');
 		return callbackFailed(module, url);
 	};
 
@@ -21,7 +23,7 @@ javascript.boot = function(module, url, callbackSuccess, callbackFailed) {
 	var check = function() {
 		// Attempt to fetch the factory for our module.
 		factory = javascript.check(module);
-
+		console.log('>>>> 2nd check factory (' + module.name + '): ' + factory);
 		// If the factory is empty, then it failed to load! Invoke the failure callback.
 		if (!me.isDefined(factory)) {
 			return failed();
@@ -108,12 +110,15 @@ javascript.check = function(module, fallback) {
 	var factory;
 
 	// If globals are enabled, and we have exports for the module, check the `window` to see if they're defined.
-	if (me.globals === true && module.exports.length) {
+	if (me.config.settings.globals === true && module.exports.length) {
 		factory = javascript.check.exports(module.exports);
 	}
 
 	// If an anonymous module was defined, then it's for this library, meaning it loaded successfully.
+	console.log(module.name);
+	console.log('>>>> pending: ' + me.define.anonymous.pending);
 	if (me.define.anonymous.pending) {
+		// @todo
 		return factory ? factory : true;
 	}
 
@@ -126,9 +131,9 @@ javascript.check = function(module, fallback) {
 	if (me.isDefined(factory)) {
 		return factory;
 	}
-
-	// By default just return true, as this function was hit from a success callback.
-	return me.isDefined(fallback) ? fallback : true;
+	console.log('>>>> factory: ' + factory);
+	// By default return `undefined`.
+	return me.isDefined(fallback) ? fallback : undefined;
 };
 
 // Check for the instance of our library based on the exports given. If the instance of our library exists it'll be
@@ -153,15 +158,10 @@ javascript.check.exports = function(exports) {
 		// We have to wrap this in a `try catch` due the possibility of our `window` decendant `Object` being `undefined`.
 		try {
 			// Attempt to get a reference of our variable.
-			factory = me.getProperty(window, variable);
-
-			// If our `factory` is undefined, force the variable back to a `null`.
-			if (!me.isDefined(factory)) {
-				factory = undefined;
-			}
+			factory = me.getProperty(global, variable);
 		} catch (exception) {
 			// Let the end user know that we hit an exception due to their malformed `exports` variable.
-			me.log(2, 'loaderJavaScript', '`fallback.loader.js.check.exports` threw an exception.', exception);
+			me.log(2, 'loader', 'javascript', '`fallback.loader.js.check.exports` threw an exception.', exception);
 		}
 	});
 
@@ -170,28 +170,47 @@ javascript.check.exports = function(exports) {
 };
 
 // Spawn a new element on the page with our URL.
+// @reference https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement
 javascript.element = function(url, success, failed) {
 	// Create a new script element instance.
 	var element = global.document.createElement('script');
+
+	// Explicitly set async behavior.
+	element.async = element.defer = true;
 
 	// The browser supports it, enable crossorigin.
 	element.crossorigin = true;
 
 	// If we get an error callback, bypass any checking and just fail.
-	element.onerror = failed;
+	element.onerror = function() {
+		console.log('oh wtf');
+		failed()
+	};
 
 	// Do our checks and throw our callback.
 	element.onload = success;
 
 	// Special event handler for certain versions of IE. @ie
-	element.onreadystatechange = me.loader.onReadyStateChange(element, success);
+	element.onreadystatechange = function() {
+					console.log('*** readystate');
+					console.log(this.readyState);
+		if (!this.readyState || this.readyState === 'loaded' || this.readyState === 'complete') {
+			// Explicity remove the callback after we receive it.
+			// Some versions of IE tend to fire off multiple success events. @ie
+			element.onreadystatechange = null;
+
+			// Fire off our callback.
+			success();
+			//callback();
+		}
+	};
 
 	// Set the actual URL that we're going to request to load for our library.
 	element.src = url;
 
 	// Set the type, some legacy browsers require this attribute be present.
 	element.type = 'text/javascript';
-
+	console.log('*** ' + url);
 	// Load our URL on the page.
 	return me.head.appendChild(element);
 };

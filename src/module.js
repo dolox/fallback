@@ -60,13 +60,13 @@ module.aliases = {};
 // Fetch the base URL for the current identity being passed in.
 module.base = function(identity) {
 	// If our `base` variable is null/empty, return null.
-	if (!me.base) {
+	if (!me.config.settings.base) {
 		return null;
 	}
 
 	// If our `base` variable is a string, then return it.
-	if (me.isString(me.base)) {
-		return me.base;
+	if (me.isString(me.config.settings.base)) {
+		return me.config.settings.base;
 	}
 
 	// If no identity was given them revert to our fallback.
@@ -75,8 +75,8 @@ module.base = function(identity) {
 	}
 
 	// If a base URL exists for the identity, then return it.
-	if (me.isDefined(me.base[identity]) && me.base[identity]) {
-		return me.base[identity];
+	if (me.isDefined(me.config.settings.base[identity]) && me.config.settings.base[identity]) {
+		return me.config.settings.base[identity];
 	}
 
 	// No base URL was found.
@@ -332,7 +332,7 @@ module.identify = function(moduleName) {
 	}
 
 	// Split the `moduleName` on our `delimiter` which is derived from our configuration.
-	var split = moduleName.split(me.delimiter);
+	var split = moduleName.split(me.config.settings.delimiter);
 
 	// If we can't find our delimiter, then return our fallback.
 	if (split.length < 2 || me.indexOf(module.identify.types, split[0]) === -1) {

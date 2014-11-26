@@ -18,12 +18,12 @@ var config = function(input) {
 		// Only accept the `value` if it's actually defined, otherwise we'll wind up overriding our existing configuration
 		// unintentionally with `undefined` values.
 		if (me.isDefined(value)) {
-			me[key] = input[key] = config[key](value);
+			config.settings[key] = input[key] = config[key](value);
 		}
 	});
 
 	// If `amd` is set to `true`, then set `define.amd` to an `Object`, otherwise force it to `undefined`.
-	if (me.isDefined(input.amd) && input.amd === true) {
+	if (me.isDefined(config.settings.amd) && config.settings.amd === true) {
 		me.define.amd = {};
 	} else {
 		me.define.amd = undefined;
@@ -216,6 +216,16 @@ config.libs.version = function(input) {
 
 // The whitelist of acceptable keys for an `Object` in the `libs` parameter.
 config.libs.whitelist = ['alias', 'check', 'deps', 'init', 'exports', 'urls', 'version'];
+
+// The `Object` that'll retain the configuration.
+config.settings = {};
+
+// The character to split our module names on to derive it's identity.
+config.settings.delimiter = '$';
+
+// Whether or not to use a reference to `window` to check if a library has already been loaded. This is also used when
+// loading libraries to determine if they loaded properly for legacy browsers.
+config.settings.globals = true;
 
 // The whitelist of acceptable keys for the `config` functions input `Object`.
 config.whitelist = ['amd', 'base', 'debug', 'delimiter', 'globals', 'libs'];
