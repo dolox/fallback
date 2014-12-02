@@ -25,6 +25,8 @@
 	<br />
 </p>
 
+# THIS BRANCH IS UNSTABLE! USE THE `v1` BRANCH!
+
 - [Getting Started](#getting-started)
 - [Open Source Examples](#open-source-examples)
 - [Tools](#tools)
