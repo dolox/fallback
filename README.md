@@ -21,7 +21,7 @@ Fallback JS
 
 To let you dive right in, we're going to provide you with a sample of code below. If you want to learn more you can read through the rest of this page for all of the technical details. This quick and easy demonstration should be enough for you to understand how to use the library and implement it in your code.
 
-```
+```html
 // Include the Fallback JS library.
 <script src="fallback.min.js"></script>
 
@@ -127,7 +127,7 @@ When we refer to **shims** or **shimming** we are refering to modifying the load
 
 Executes your function provided to the `callback` as soon as your libraries have finished loading. The `[libraries]` array parameter is **optional**, if an array is not passed in the code will assume that the first parameter passed is the `callback` and in turn will only execute once all of your libraries have finished loading. If you provide the `[libraries]` array, the `callback` will only trigger your callback when those libraries provided have finished loading. You may define the `ready` function multiple times throughout your code.
 
-```
+```javascript
 fallback.ready(function() {
 	// All of my libraries are loaded. Execute my code here!
 });
@@ -145,7 +145,7 @@ Expects to be an *object* containing a key value pair where the **key** is the l
 
 The values of your keys can be either a **string** or **array**. If you happen to pass an **array** as the **value** Fallback JS will iterate through each of items in the **order provided** until one of them has loaded successfully. This provides the *failover functionality* so that if your first request *fails*, it will try the next item in the array to load for the library in question.
 
-```
+```javascript
 {
 	// The key for stylesheets **doesn't matter**, name them however you like.
 	css: 'index.css',
@@ -183,7 +183,7 @@ Expects it's value to be an **object** containaing a key value pair where the **
 
 Expects to be a function and will accept 2 parameters `success` and `failed` which will be returned as objects. The first parameter will be `success` which is an **object** of all the libraries that were successfully loaded. The second parameter will be `failed` which is an **object** of all the libraries that failed to load.
 
-```
+```javascript
 {
 	// Shimming example. We only want to load jQuery UI after jQuery has loaded!
 	// Otherwise if jQuery UI loads before jQuery we will get JavaScript errors.
