@@ -1,4 +1,4 @@
-/* fallback.js v1.1.6 | http://fallback.io/ | Salvatore Garbesi <sal@dolox.com> | (c) 2013 Dolox Inc. */
+/* fallback.js v1.1.7 | http://fallback.io/ | Salvatore Garbesi <sal@dolox.com> | (c) 2015 Dolox, Inc. */
 
 (function (window, document) {
 	'use strict';
@@ -51,7 +51,7 @@
 	fallback.utility = function(type) {
 		fallback['is_' + type.toLowerCase()] = function(variable) {
 			/*eslint-disable*/
-			return Object.prototype.toString.call(variable) == '[object ' + type + ']';
+			return typeof variable !== 'undefined' && Object.prototype.toString.call(variable) == '[object ' + type + ']';
 			/*eslint-enable*/
 		};
 	};
@@ -475,7 +475,7 @@
 			}
 
 			// Needed for IE11 especially. `onload` is fired even when there's a 404 for `link` elements.
-			if (!me.css.check(library) && Object.hasOwnProperty.call(window, "ActiveXObject") && !window.ActiveXObject) {
+			if (type !== 'js' && !me.css.check(library) && Object.hasOwnProperty.call(window, "ActiveXObject") && !window.ActiveXObject) {
 				return me.spawn.failed(payload);
 			}
 

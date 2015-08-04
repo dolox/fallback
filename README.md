@@ -4,14 +4,14 @@ Fallback JS
 **WORKS IN LEGACY AND MODERN BROWSERS!**
 *Tested and working in Chrome, Firefox, Safari and IE 6 - 10!*
 
-**Fallback JS** is a tiny library that allows you to load both your JavaScript and CSS libaries after your page has already loaded. The library also allows you to specify **"failovers"** or **"fallbacks"** for each of your libraries, this way in case one of those external libraries your using happens to fail, you won't be leaving your users with a dysfunctional website. Just because someone elses website breaks, it doesn't mean that yours should!
+**Fallback JS** is a tiny library that allows you to load both your JavaScript and CSS libraries after your page has already loaded. The library also allows you to specify **"failovers"** or **"fallbacks"** for each of your libraries, this way in case one of those external libraries you're using happens to fail, you won't be leaving your users with a dysfunctional website. Just because someone else's website breaks, it doesn't mean that yours should!
 
 ######<a class="button1" href="http://fallback.io/" title="The official Fallback JS homepage!" target="_blank">Official Homepage</a>
 ######<a class="button1" href="https://github.com/dolox/fallback/" title="Fallback JS on GitHub" target="_blank">GitHub Repository</a>
 
 #Downloads
-######<a class="button2" href="https://raw.github.com/dolox/fallback/v1.1.6/fallback.min.js" title="Production version of Fallback JS" target="_blank">Production (v1.1.6)</a> *Compressed 3.58 KB*
-######<a class="button2" href="https://raw.github.com/dolox/fallback/v1.1.6/fallback.js" title="Development version of Fallback JS" target="_blank">Development (v1.1.6)</a> *Uncompressed 12.47 KB*
+######<a class="button2" href="https://raw.github.com/dolox/fallback/v1.1.7/fallback.min.js" title="Production version of Fallback JS" target="_blank">Production (v1.1.7)</a> *Compressed 3.58 KB*
+######<a class="button2" href="https://raw.github.com/dolox/fallback/v1.1.7/fallback.js" title="Development version of Fallback JS" target="_blank">Development (v1.1.7)</a> *Uncompressed 12.47 KB*
 
 **SEE WORKING DEMOS WITH SOURCE CODE AT <a href="http://plnkr.co/tags/fallbackjs">http://plnkr.co/tags/fallbackjs</a>**
 
@@ -21,7 +21,7 @@ Fallback JS
 
 To let you dive right in, we're going to provide you with a sample of code below. If you want to learn more you can read through the rest of this page for all of the technical details. This quick and easy demonstration should be enough for you to understand how to use the library and implement it in your code.
 
-```
+```html
 // Include the Fallback JS library.
 <script src="fallback.min.js"></script>
 
@@ -34,7 +34,7 @@ To let you dive right in, we're going to provide you with a sample of code below
 		page_css: 'index.css',
 		global_css: ['public.css', 'members.css'],
 
-		// JavaScript library. THE KEY MUST BE THE LIBARIES WINDOW VARIABLE!
+		// JavaScript library. THE KEY MUST BE THE LIBRARIES WINDOW VARIABLE!
 		JSON: '//cdnjs.cloudflare.com/ajax/libs/json2/20121008/json2.min.js',
 
 		// Here goes a failover example. The first will fail, therefore Fallback JS will load the second!
@@ -99,9 +99,9 @@ To boost the page load speed even further, you simply don't reference those libr
 
 ##Failovers For Your Libraries
 ###So that your website doesn't break!
-So you found all of these great CDNs that host popular libraries such as jQuery, Dojo and Underscore.js just to name a few. You don't want to waste bandwidth on libraries that you can include for free on your website, that's understandable. But what happens when one of those CDNs you're using goes down for maintainence? Or mysteriously stops working out of the blue? Your website breaks! That's what happens!
+So you found all of these great CDNs that host popular libraries such as jQuery, Dojo and Underscore.js just to name a few. You don't want to waste bandwidth on libraries that you can include for free on your website, that's understandable. But what happens when one of those CDNs you're using goes down for maintenance? Or mysteriously stops working out of the blue? Your website breaks! That's what happens!
 
-Don't get stuck leaving your users with a dysfunctional website because of someone elses mistakes. You should always have mutliple failovers for any external library you decide to bundle for your website.
+Don't get stuck leaving your users with a dysfunctional website because of someone else's mistakes. You should always have multiple failovers for any external library you decide to bundle for your website.
 Fallback JS makes this extremely easy for you to integrate into your website. Not only can you have as many failovers as you want for each of your libraries, but you can also implement shimming as well. Shimming for example is the ability to load certain libraries if other libraries have finished loading. Case by example jQuery UI depends on jQuery. You simply cannot load jQuery UI before jQuery has finished loading. In this instance you would shim jQuery UI to load after jQuery has completed.
 
 ##What is shimming?
@@ -116,18 +116,18 @@ verb (used with object)
 	Source: http://dictionary.reference.com/browse/shim/
 ```
 
-When we refer to **shims** or **shimming** we are refering to modifying the load context of your libraries that you specify. For instance there will be cases where you cannot load certain libraries until other libraries have first loaded. One of the main cases by example that is pointed out is jQuery UI. jQuery UI cannot be loaded until jQuery has loaded, therefore jQuery must load first, and we must **shim** jQuery UI to load only after jQuery has finished.
+When we refer to **shims** or **shimming** we are referring to modifying the load context of your libraries that you specify. For instance there will be cases where you cannot load certain libraries until other libraries have first loaded. One of the main cases by example that is pointed out is jQuery UI. jQuery UI cannot be loaded until jQuery has loaded, therefore jQuery must load first, and we must **shim** jQuery UI to load only after jQuery has finished.
 
 #API
 ##ready
 ###fallback.ready([libraries], callback)
-`[libaries]` **array** *optional*
+`[libraries]` **array** *optional*
 
 `callback` **function** *optional*
 
 Executes your function provided to the `callback` as soon as your libraries have finished loading. The `[libraries]` array parameter is **optional**, if an array is not passed in the code will assume that the first parameter passed is the `callback` and in turn will only execute once all of your libraries have finished loading. If you provide the `[libraries]` array, the `callback` will only trigger your callback when those libraries provided have finished loading. You may define the `ready` function multiple times throughout your code.
 
-```
+```javascript
 fallback.ready(function() {
 	// All of my libraries are loaded. Execute my code here!
 });
@@ -139,13 +139,13 @@ fallback.ready(['jQuery', 'jQuery.ui'], function() {
 
 ##load
 ###fallback.load({libraries}, {options})
-`{libaries}` **object** *optional*
+`{libraries}` **object** *optional*
 
 Expects to be an *object* containing a key value pair where the **key** is the library's window variable, and the value is the **url** to fetch the library from. The **keys** must be the window variable name of the library you're loading if it's a JavaScript library. This is only relevant for JavaScript libraries and **not StyleSheets**, for StyleSheets you can name them however you please. For example jQuery's key would be **jQuery** since **window.jQuery** exists after jQuery has finished loading. This is required to provide support for legacy browsers.
 
 The values of your keys can be either a **string** or **array**. If you happen to pass an **array** as the **value** Fallback JS will iterate through each of items in the **order provided** until one of them has loaded successfully. This provides the *failover functionality* so that if your first request *fails*, it will try the next item in the array to load for the library in question.
 
-```
+```javascript
 {
 	// The key for stylesheets **doesn't matter**, name them however you like.
 	css: 'index.css',
@@ -177,13 +177,13 @@ Expects to be an *object* containing a key value pair where the **key** is eithe
 
 `>` `shim` **object** *optional*
 
-Expects it's value to be an **object** containaing a key value pair where the **key** is the library you want to **shim**, and the **value** is an **array** of libraries you want to finish loading first before attempting to actually load the library specified as the **key**.
+Expects its value to be an **object** containing a key value pair where the **key** is the library you want to **shim**, and the **value** is an **array** of libraries you want to finish loading first before attempting to actually load the library specified as the **key**.
 
 `>` `callback` **function** *optional*
 
 Expects to be a function and will accept 2 parameters `success` and `failed` which will be returned as objects. The first parameter will be `success` which is an **object** of all the libraries that were successfully loaded. The second parameter will be `failed` which is an **object** of all the libraries that failed to load.
 
-```
+```javascript
 {
 	// Shimming example. We only want to load jQuery UI after jQuery has loaded!
 	// Otherwise if jQuery UI loads before jQuery we will get JavaScript errors.
@@ -212,4 +212,4 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 ##Support
 ###We use GitHub!
-Any questions, suggestions or bugs should all be submitted to the issues section of the projects GitHub repository.
+Any questions, suggestions or bugs should all be submitted to the issues section of the project's GitHub repository.

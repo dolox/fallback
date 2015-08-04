@@ -1,6 +1,11 @@
 CHANGELOG
 ========
 
+## v1.1.7 / 2015-08-04
+- Fixing IE11 issue where `ready` callback is not firing. https://github.com/dolox/fallback/issues/33
+- Fixing IE8 issue where Objects aren't being detected properly. https://github.com/dolox/fallback/issues/27
+- Updating README.md typos.
+
 ## v1.1.6 / 2014-10-20
 - Fixing IE11 CSS loading issue where it's not loading fallback stylesheets.
 - Adding more files to ignore to the `bower.json` file. PR from @jieryn
