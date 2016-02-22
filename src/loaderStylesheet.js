@@ -134,7 +134,8 @@ me.loader.css.element = function(url, success, failed) {
 	var element = global.document.createElement('link');
 
 	// The browser supports it, enable crossorigin.
-	element.crossorigin = true;
+	// @reference https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_settings_attributes
+	element.crossOrigin = 'anonymous';
 
 	// Set the actual URL that we're going to request to load for our library.
 	element.href = url;
