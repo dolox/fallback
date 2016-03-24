@@ -17,6 +17,7 @@
 		// Libraries that are imported are stored here.
 		libraries: {},
 		libraries_count: 0,
+        libraries_props: {},
 
 		// Spawned libraries, so they don't run over themselves.
 		spawned: [],
@@ -95,11 +96,25 @@
 		return false;
 	};
 
+    fallback.add_sri_attributes = function(element, props) {
+        var me = this;
+
+        if (me.is_object(props)) {
+            if (props.integrity) {
+                element.setAttribute('integrity', props.integrity);
+            }
+
+            if (props.crossorigin) {
+                element.setAttribute('crossorigin', props.crossorigin);
+            }
+        }
+    };
+
 	// Import and cleanse libraries from user input.
 	fallback.importer = function(libraries, options) {
 		var me = this;
 		var current, index;
-		var library, urls;
+		var library, library_props, urls;
 		var cleansed_shims, shim, shims;
 		var shim_libraries, shim_libraries_cleansed;
 
@@ -108,17 +123,22 @@
 
 		for (library in libraries) {
 			// URL list for each library.
-			urls = libraries[library];
+			library_props = libraries[library];
 
 			// If `urls` is undefined, null or an empty string, skip, it's invalid.
-			if (!urls) {
+			if (!library_props) {
 				continue;
 			}
 
 			// If `urls` is a string, convert it to any array.
-			if (me.is_string(urls)) {
-				urls = [urls];
-			}
+			if (me.is_string(library_props)) {
+				urls = [library_props];
+			} else if (me.is_object(library_props)) {
+                urls = library_props.urls;
+            } else {
+                // Assume an array.
+                urls = library_props;
+            }
 
 			// If `urls` is not an array, skip, it's invalid.
 			if (!me.is_array(urls)) {
@@ -134,6 +154,7 @@
 
 			cleansed_libraries[library] = urls;
 			me.libraries[library] = current.concat(urls);
+            me.libraries_props[library] = library_props;
 		}
 
 		// Cleanse the shims.
@@ -439,6 +460,7 @@
 		var payload = {
 			loaded: false,
 			library: library,
+            library_props: me.libraries_props[library],
 			spawned: true,
 			url: urls.shift(),
 			urls: urls
@@ -457,6 +479,7 @@
 			element.crossorigin = true;
 			element.rel = 'stylesheet';
 			element.href = payload.url;
+
 		} else {
 			// JavaScript variable already exists, do not attempt to spawn library
 			if (me.is_defined(library)) {
@@ -467,6 +490,8 @@
 			element = document.createElement('script');
 			element.src = payload.url;
 		}
+
+        me.add_sri_attributes(element, payload.library_props);
 
 		element.onload = function() {
 			// Checks for JavaScript library.

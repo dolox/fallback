@@ -67,7 +67,7 @@ fallback.ready(['jQuery', 'jQuery.ui'], function() {
 fallback.ready(function() {
 	// All Completed
 	$('body').append('<p>fallback.ready: ALL Completed</p>');
-	
+
 	$('#postload').click(function() {
 		fallback.ready(['jQuery'], function() {
 			// jQuery POSTLOAD!
@@ -148,7 +148,7 @@ fallback.ready(['jQuery', 'jQuery.ui'], function() {
 fallback.ready(function() {
 	// All Completed
 	$('body').append('<p>fallback.ready: ALL Completed</p>');
-	
+
 	$('#postload').click(function() {
 		fallback.ready(['jQuery'], function() {
 			// jQuery POSTLOAD!
@@ -158,7 +158,14 @@ fallback.ready(function() {
 });
 
 fallback.load({
-	bootstrap_css: '//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css',
+	bootstrap_css: {
+        urls: [
+            '//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css', // This one won't match the integrity check
+            '//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css'
+        ],
+        integrity: 'sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7',
+        crossorigin: 'anonymous'
+    },
 	jasny_css: '//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/css/jasny-bootstrap.min.css',
 	jQuery: '//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js',
 	'jQuery.fn.modal': '//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js'

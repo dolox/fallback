@@ -110,7 +110,7 @@ shim
 verb (used with object)
 
 	"to fill out or bring to a level by inserting a shim or shims."
-	
+
 	"to modify a load, clearance, or magnetic field by the use of shims"
 
 	Source: http://dictionary.reference.com/browse/shim/
@@ -143,7 +143,7 @@ fallback.ready(['jQuery', 'jQuery.ui'], function() {
 
 Expects to be an *object* containing a key value pair where the **key** is the library's window variable, and the value is the **url** to fetch the library from. The **keys** must be the window variable name of the library you're loading if it's a JavaScript library. This is only relevant for JavaScript libraries and **not StyleSheets**, for StyleSheets you can name them however you please. For example jQuery's key would be **jQuery** since **window.jQuery** exists after jQuery has finished loading. This is required to provide support for legacy browsers.
 
-The values of your keys can be either a **string** or **array**. If you happen to pass an **array** as the **value** Fallback JS will iterate through each of items in the **order provided** until one of them has loaded successfully. This provides the *failover functionality* so that if your first request *fails*, it will try the next item in the array to load for the library in question.
+The values of your keys can be either a **string**, an **array** or an **object**. If you happen to pass an **array** as the **value** Fallback JS will iterate through each of items in the **order provided** until one of them has loaded successfully. This provides the *failover functionality* so that if your first request *fails*, it will try the next item in the array to load for the library in question.  If you pass an **object** as the **value** then the object must have a `urls` property representing the failover URLs.  Passing an **object** gives you the added benefit of being able to specify `integrity` and `crossorigin` properties to ensure [subresource integrity](https://www.w3.org/TR/SRI/) when loading from a CDN.  A subresource integrity check failure is treated the same way as any other failure to load the library, meaning Fallback JS will attempt to load the library using the next URL in the array.  This protects you from compromised CDNs where the contents of the library have been altered for potentially malicious reasons.
 
 ```javascript
 {
@@ -161,13 +161,19 @@ The values of your keys can be either a **string** or **array**. If you happen t
 		'//localhost/js/jquery.min.js'
 	],
 
-	// Note that the **key** correlates to jQuery UI's window variable.
-	'jQuery.ui': [
-		'//ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js',
-		'//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js',
-		'//js/loader.js?i=vendor/jquery-ui.min.js',
-		'//localhost/js/jquery-ui.min.js'
-	]
+  // You have the option to pass an object as your value so that you can specify additional properties such as
+  // `integrity` and `crossorigin` values to ensure [subresource integrity](https://www.w3.org/TR/SRI/) when loading files from a CDN.
+  // Note that the **key** correlates to jQuery UI's window variable.
+	'jQuery.ui': {
+        urls: [
+            '//ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js',
+            '//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js',
+            '//js/loader.js?i=vendor/jquery-ui.min.js',
+            '//localhost/js/jquery-ui.min.js'
+        ],
+        integrity: 'sha384-O4jIYc8wiFPNf25AwmeP5qRInqzSLJuM9t+u843Al1M/OO67y4JsVjlJGaUl4N7J',
+        crossorigin: 'anonymous'
+    }
 }
 ```
 
