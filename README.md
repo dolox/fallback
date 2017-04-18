@@ -6,18 +6,18 @@ Fallback JS
 
 **Fallback JS** is a tiny library that allows you to load both your JavaScript and CSS libraries after your page has already loaded. The library also allows you to specify **"failovers"** or **"fallbacks"** for each of your libraries, this way in case one of those external libraries you're using happens to fail, you won't be leaving your users with a dysfunctional website. Just because someone else's website breaks, it doesn't mean that yours should!
 
-######<a class="button1" href="http://fallback.io/" title="The official Fallback JS homepage!" target="_blank">Official Homepage</a>
-######<a class="button1" href="https://github.com/dolox/fallback/" title="Fallback JS on GitHub" target="_blank">GitHub Repository</a>
+###### <a class="button1" href="http://fallback.io/" title="The official Fallback JS homepage!" target="_blank">Official Homepage</a>
+###### <a class="button1" href="https://github.com/dolox/fallback/" title="Fallback JS on GitHub" target="_blank">GitHub Repository</a>
 
-#Downloads
-######<a class="button2" href="https://raw.github.com/dolox/fallback/v1.1.7/fallback.min.js" title="Production version of Fallback JS" target="_blank">Production (v1.1.7)</a> *Compressed 3.58 KB*
-######<a class="button2" href="https://raw.github.com/dolox/fallback/v1.1.7/fallback.js" title="Development version of Fallback JS" target="_blank">Development (v1.1.7)</a> *Uncompressed 12.47 KB*
+# Downloads
+###### <a class="button2" href="https://raw.github.com/dolox/fallback/v1.1.7/fallback.min.js" title="Production version of Fallback JS" target="_blank">Production (v1.1.7)</a> *Compressed 3.58 KB*
+###### <a class="button2" href="https://raw.github.com/dolox/fallback/v1.1.7/fallback.js" title="Development version of Fallback JS" target="_blank">Development (v1.1.7)</a> *Uncompressed 12.47 KB*
 
 **SEE WORKING DEMOS WITH SOURCE CODE AT <a href="http://plnkr.co/tags/fallbackjs">http://plnkr.co/tags/fallbackjs</a>**
 
-#Introduction
-##Getting Started
-###Quick and easy demonstration.
+# Introduction
+## Getting Started
+### Quick and easy demonstration.
 
 To let you dive right in, we're going to provide you with a sample of code below. If you want to learn more you can read through the rest of this page for all of the technical details. This quick and easy demonstration should be enough for you to understand how to use the library and implement it in your code.
 
@@ -85,26 +85,26 @@ To let you dive right in, we're going to provide you with a sample of code below
 </script>
 ```
 
-##Why Fallback JS?
-###Unlimited failovers, and size that does matter!
+## Why Fallback JS?
+### Unlimited failovers, and size that does matter!
 The sole purpose of Fallback JS is to make it extremely easy for you as a developer to load as many external JavaScript and/or CSS libraries that you want with the ability to have as many failovers as you want without you having to write custom code or run through extra loops to achieve this goal.
 
 Along with this premise, the filesize the extremely small, the main purpose of loading JavaScript files after your website has already loaded is to decrease your page load time (see below). You want your users to load as little as possible so you website can load as fast as it possibly can. Think outside the box. All of your users won't always be on high speed internet connections, and we all know how slow surfing the web can sometimes be on mobile devices.
 
-##Improving Page Load Times
-###Speed is important!
+## Improving Page Load Times
+### Speed is important!
 An extremely common way of coding websites throughout the internet for years has been to put your javascript and stylesheet references in the &lt;head&gt; of your HTML. By doing this you're forcing the browser to wait for those libraries to load before it actually displays the page to the user.
 Alternatively there are a few ways around this. First you can put your references at the bottom of the page before closing the <body> tag. This alone will boost the speed of your page loads.
 To boost the page load speed even further, you simply don't reference those libraries at all in the HTML and instead you can let JavaScript load those libraries for you after the page load. This is exactly what Fallback JS does for you!
 
-##Failovers For Your Libraries
-###So that your website doesn't break!
+## Failovers For Your Libraries
+### So that your website doesn't break!
 So you found all of these great CDNs that host popular libraries such as jQuery, Dojo and Underscore.js just to name a few. You don't want to waste bandwidth on libraries that you can include for free on your website, that's understandable. But what happens when one of those CDNs you're using goes down for maintenance? Or mysteriously stops working out of the blue? Your website breaks! That's what happens!
 
 Don't get stuck leaving your users with a dysfunctional website because of someone else's mistakes. You should always have multiple failovers for any external library you decide to bundle for your website.
 Fallback JS makes this extremely easy for you to integrate into your website. Not only can you have as many failovers as you want for each of your libraries, but you can also implement shimming as well. Shimming for example is the ability to load certain libraries if other libraries have finished loading. Case by example jQuery UI depends on jQuery. You simply cannot load jQuery UI before jQuery has finished loading. In this instance you would shim jQuery UI to load after jQuery has completed.
 
-##What is shimming?
+## What is shimming?
 ```
 shim
 verb (used with object)
@@ -118,9 +118,9 @@ verb (used with object)
 
 When we refer to **shims** or **shimming** we are referring to modifying the load context of your libraries that you specify. For instance there will be cases where you cannot load certain libraries until other libraries have first loaded. One of the main cases by example that is pointed out is jQuery UI. jQuery UI cannot be loaded until jQuery has loaded, therefore jQuery must load first, and we must **shim** jQuery UI to load only after jQuery has finished.
 
-#API
-##ready
-###fallback.ready([libraries], callback)
+# API
+## ready
+### fallback.ready([libraries], callback)
 `[libraries]` **array** *optional*
 
 `callback` **function** *optional*
@@ -137,8 +137,8 @@ fallback.ready(['jQuery', 'jQuery.ui'], function() {
 });
 ```
 
-##load
-###fallback.load({libraries}, {options})
+## load
+### fallback.load({libraries}, {options})
 `{libraries}` **object** *optional*
 
 Expects to be an *object* containing a key value pair where the **key** is the library's window variable, and the value is the **url** to fetch the library from. The **keys** must be the window variable name of the library you're loading if it's a JavaScript library. This is only relevant for JavaScript libraries and **not StyleSheets**, for StyleSheets you can name them however you please. For example jQuery's key would be **jQuery** since **window.jQuery** exists after jQuery has finished loading. This is required to provide support for legacy browsers.
@@ -199,9 +199,9 @@ Expects to be a function and will accept 2 parameters `success` and `failed` whi
 }
 ```
 
-#About
-##License
-###The MIT License (MIT)
+# About
+## License
+### The MIT License (MIT)
 Copyright (c) 2013 Dolox Inc.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
@@ -210,6 +210,6 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-##Support
-###We use GitHub!
+## Support
+### We use GitHub!
 Any questions, suggestions or bugs should all be submitted to the issues section of the project's GitHub repository.
