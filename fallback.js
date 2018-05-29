@@ -271,7 +271,7 @@
 		return false;
 	};
 
-    fallback.css.scan = function(ruleset, selector) {
+	fallback.css.scan = function(ruleset, selector) {
 		var index, rule;
 
 		for (index in ruleset) {
@@ -283,7 +283,7 @@
 		}
 
 		return false;
-    };
+	};
 
 	// Spawn an instance of the library.
 	fallback.load = function(libraries, options, callback) {
