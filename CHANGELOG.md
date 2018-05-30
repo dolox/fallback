@@ -1,6 +1,14 @@
 CHANGELOG
 ========
 
+## v1.1.9 / 2018-05-30
+- Added ability to specify integrity and crossorigin properties on CSS and JS resources. Contributors @Blackbaud-PaulCrowder
+- README.md cleanup. Contributors @anirvan
+- Add matchdep in development dependency. Contributors @199911
+
+## v1.1.8 / 2016-01-06
+- Updating demo. Contributors @donlewi
+
 ## v1.1.7 / 2015-08-04
 - Fixing IE11 issue where `ready` callback is not firing. https://github.com/dolox/fallback/issues/33
 - Fixing IE8 issue where Objects aren't being detected properly. https://github.com/dolox/fallback/issues/27
