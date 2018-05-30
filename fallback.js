@@ -1,4 +1,4 @@
-/* fallback.js v1.1.7 | http://fallback.io/ | Salvatore Garbesi <sal@dolox.com> | (c) 2015 Dolox, Inc. */
+/* fallback.js v1.1.9 | http://fallback.io/ | Salvatore Garbesi <sal@dolox.com> | (c) 2015 Dolox, Inc. */
 
 (function (window, document) {
 	'use strict';
