@@ -17,7 +17,11 @@
 		// Libraries that are imported are stored here.
 		libraries: {},
 		libraries_count: 0,
-        libraries_props: {},
+    libraries_props: {},
+
+    // timeouts for libraries
+    timeouts: {},
+    timeouthandler: 0,
 
 		// Spawned libraries, so they don't run over themselves.
 		spawned: [],
@@ -456,6 +460,7 @@
 		var me = fallback;
 		var element;
 		var type = 'js';
+		var now = new Date();
 
 		var payload = {
 			loaded: false,
@@ -492,6 +497,9 @@
 		}
 
         me.add_sri_attributes(element, payload.library_props);
+
+		me.timeouts[library] = { timeout:now.setSeconds(now.getSeconds() + 5), payload:payload };
+		me.settimer();
 
 		element.onload = function() {
 			// Checks for JavaScript library.
@@ -552,6 +560,7 @@
 		var me = fallback;
 
 		// Mark the library and url as successful.
+		delete me.timeouts[payload.library];
 		if (!payload.loaded) {
 			payload.loaded = true;
 			me.success[payload.library] = payload.url;
@@ -564,6 +573,37 @@
 		// Invoke any `ready` callbacks.
 		return me.ready_invocation();
 	};
+
+	fallback.isObjectEmpty = function(obj) {
+		for(var prop in obj) {
+			if (Object.prototype.hasOwnProperty.call(obj, prop)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	fallback.settimer = function() {
+		var me = fallback;
+		if(me.timeouthandler === 0) {
+			me.timeouthandler = setInterval(function() {
+				var now = new Date;
+
+				// check list of me.timeouts if any lib is overdue
+				for (var library in me.timeouts) {
+					if ((me.timeouts[library] !== "") && (now > me.timeouts[library].timeout)) {
+						me.spawn.failed(me.timeouts[library].payload);
+					}
+				}
+
+				// reset timer if no open timeout checks
+				if (me.isObjectEmpty(me.timeouts)) {
+					clearInterval(me.timeouthandler);
+					me.timeouthandler = 0;
+				}
+			}, 100);
+		}
+	}
 
 	fallback.bootstrap();
 
