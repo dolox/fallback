@@ -50,7 +50,7 @@
 
 	// Setup individual utility function.
 	fallback.utility = function(type) {
-		fallback['is_' + type.toLowerCase()] = function(variable) {
+		fallback['is_' + type.toString().toLowerCase()] = function(variable) {
 			/*eslint-disable*/
 			return typeof variable !== 'undefined' && Object.prototype.toString.call(variable) == '[object ' + type + ']';
 			/*eslint-enable*/
